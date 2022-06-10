@@ -1,0 +1,1675 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\chapter{Appendix B: Solutions to All Exercises for the Reader}
+\label{chap:chap_15}
+
+
+NOTE: All of the M-files of this appendix (like the M-files of the text) are downloadable as text files 
+from the ftp site for this text: \\
+ftp://ftp.wiley.com/public/sci\_tech\_med/numerical\_differential / 
+\\
+Occasionally, for space considerations, we may refer a particular M-file to this site. Also, in cases 
+where a long MATLAB command does not fit on a single line (in this appendix), it will be continued 
+on the next line. In an actual MATLAB session, (long) compound commands should either be put on a 
+single line, or three periods (...) should be entered after a line to hold offMATLAB's execution until 
+the rest of the command is entered on subsequent lines and the ENTER key is pressed. The text 
+explains these and other related concepts in greater detail. \\
+\line(2,0){\textwidth}\\
+\\
+\textbf{CHAPTER 1: MATLAB BASICS }\\
+\\
+\textbf{\underline{EFR 1.1:}} \texttt{linspace(-2,3,ll )} \\
+\\
+\textbf{\underline{EFR 1.2:}} \texttt{t = 0:.01:10*pi; x = 5*cos(t/5)+cos(2*t) ;} \\
+\texttt{y = 5*sin(t/5)+sin(3*t) ; plot(x,y) , axis('equal' ) }
+\\
+\\
+\textbf{\underline{EFR 1.3:}} Simply run the code through MATLAB to see if you analyzed it correctly.
+\\
+\\ 
+\line(2,0){\textwidth}\\
+\\
+\textbf{CHAPTER 2: BASIC CONCEPTS OF NUMERICAL ANALYSIS WITH 
+TAYLOR'S THEOREM }
+\\
+\\
+\textbf{\underline{EFR 2.1:}}
+\begin{lstlisting}[numbers=none,frame=none]
+ x=-10:.05:10 ; y-cos(x) ; p2=1-x.^2/2 ; p4=1-
+x.^2/2+x.^4/gamma(5); p6=l-x.^2/2+x.^4/gamma(5)-x.^6/gamma(7); p8=1-
+x.^2/2+x.^4/gamma(5)-x.^6/gamma(7)+x.^8/gamma(9); p10=p8-
+x."10/gamma(11); hold on, plot(x,p10,'k:') , axis([-2*p i 2*pi -1. 5 
+1.5]) , plot(x,p8,'c:') , plot(x,p6,'r-.') , plot(x,p4,k--') , 
+plot(x,p2,'g') , plot(x,y,'+' ) 
+\end{lstlisting}
+\textbf{\underline{EFR 2.2:}}Computing the first few derivatives of:
+\\
+\\
+$
+f(x)=x^{1 / 2}, f^{\prime}(x)=\frac{1}{2} x^{-1 / 2}, f^{\prime \prime}(x)=-\frac{1 \cdot 1}{2 \cdot 2} x^{-3 / 2}, f^{\prime \prime}(x)=\frac{1 \cdot 1 \cdot 3}{2 \cdot 2 \cdot 2} x^{-5 / 2} \text {, }
+$
+\\
+$
+f^{(4)}(x)=-\frac{1 \cdot 1 \cdot 3 \cdot 5}{2 \cdot 2 \cdot 2 \cdot 2} x^{-7 / 2} \ldots, $leads us to discover the general pattern:
+\\
+$
+f^{(n)}(x)=(-1)^{n+1} \frac{1 \cdot 3 \cdot 5 \cdots(2[n-1]-1)}{2^{n}} x^{-(2 n-1) / 2} (for \left.n \geq 2\right). $Applying Taylor's theorem (with a= 16, x=17 ), we estimate the error of this approximation:
+\\
+\\
+$
+\left|R_{n}(17)\right|=\left|\frac{f^{(n+1)}(c)}{(n+1) !} 1^{n+1}\right|=\left|\frac{1 \cdot 3 \cdot 5 \cdots(2 n-1)}{2^{n}(n+1) !} c^{-(2 n+1) / 2}\right| \leq \frac{1 \cdot 3 \cdot 5 \cdots(2 n-1)}{2^{n}(n+1) !} 16^{-(2 n+1) / 2}=$
+\\
+$\frac{1 \cdot 3 \cdot 5 \cdots(2 n-1)}{2^{n}(n+1) ! \cdot 4 \cdot 16^{n}}=\frac{1 \cdot 3 \cdot 5 \cdots(2 n-1)}{2^{5 n+2}(n+1) !}$. We use MATLAB to find the smallest $n$ for which this last expression is less than $10^{10}$; then Taylor's theorem will assure us that the Taylor polynomial of this 
+order will provide us with the desired approximation.
+\begin{lstlisting}[numbers=none,frame=none]
+>> n=2; ErrorEst=l*3/gamma(n+2)/2^(5*n+2) ; 
+>> while ErrorEst>le-10, n=n+l; ErrorEst=ErrorEst*(2*n-l)/(n+1)/2 5; 
+end 
+>> n->n =7 
+>> ErrorEst->ErrorEst = 2.4386e-011 %this checks out . 
+\end{lstlisting} 
+So $p_{7}(17)=\sum_{k=0}^{7} \frac{1}{k !} f^{(k)}(16) \cdot 1^{k}$ will give the desired approximation. We use MATLAB to perform and check it: 
+\begin{lstlisting}[numbers=none,frame=none]
+ >> sum=16^(l/2)+16^(-1/2)/2; %first-order Taylor Polynomial 
+term = 16^(-1/2)/2; %first-order term 
+for k=2:7, term = -term*(2*(k-1)-1)/2/16/k; sum=sum+term; end, format 
+long 
+>> sum->sum = 4.12310562562925 (approximation) 
+>>abs (sum-sqrt (17))->ans =1.1590e-011 %actual error excels goal 
+\end{lstlisting}
+\textbf{\underline{EFR 2.3:}} Using ordinary polynomial substitution, subtraction, and multiplication (and ignoring 
+terms in the individual Maclaurin series that give rise to terms of order higher than 10), we use (9) and (10) to obtain: (a) sin($x^2$) - cos($x^3$)=
+$$
+\left(x^{2}-\frac{\left(x^{2}\right)^{3}}{3 !}+\frac{\left(x^{2}\right)^{5}}{5 !}-\cdots\right)-\left(1-\frac{\left(x^{3}\right)^{2}}{2 !}+\cdots\right)=-1+x^{2}-\left(\frac{1}{2 !}-\frac{1}{3 !}\right) x^{6}+\frac{x^{10}}{5 !} \cdots
+$$
+(b) $\sin ^{2}\left(x^{2}\right)=\left(x^{2}-\frac{\left(x^{2}\right)^{3}}{3 !}+\cdots\right) \cdot\left(x^{2}-\frac{\left(x^{2}\right)^{3}}{3 !}+\cdots\right)=x^{4}-\frac{2}{3 !} x^{3}+\cdots$
+In each case, $p_{10}$(x) consists of all of the terms listed on the right-hand sides. 
+\\
+\\
+\line(2,0){\textwidth}\\
+\textbf{CHAPTER 3: INTRODUCTION TO M-FILES }\\
+\\
+\textbf{\underline{EFR 3.1}} : In the left box we give the stored M-file; in the right we give the subsequent MATLAB session. 
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\texttt{\% script file for EFR 3.1:}&\texttt{>> n=5 ; listp 2 -> power = 2, power = 4}\\
+\texttt{listp2} &\texttt{>> n=264;listp 2}\\
+\texttt{power =2;} &\texttt{-> power = 2, power = 4, power = 8, power =16, }\\
+\texttt{while power <= n} &\texttt{power = 32, power = 64, power =128, power = 256,}\\
+\texttt{~~~power} &\texttt{>>n=2917;listp2 }\\
+\texttt{~~~power=2*power;} &\texttt{-> power = 2, power = 4, power = 8, power =16,}\\
+\texttt{end} &\texttt{power = 32, power = 64, power =128, power = 256,}\\
+&\texttt{power = 1024, power = 2048}\\
+\hline
+\end{tabular}
+\end{center}
+Note: If we wanted the output to be just a single vector of the powers of 2, the following modified 
+script would do the job: 
+\\
+\\
+\begin{lstlisting}[numbers=none,frame=none]
+% script file for EFR 3.1: Iistp2ver2 
+power =2; vector = [ ]; %start off with empty vector 
+whil e power <= n 
+	vector = [vector power]; 
+	power=2*power; 
+end, vector
+\end{lstlisting}
+For example, with this file stored, if we enter \texttt{>> n=264; Iistp2ver2} , we get the following 
+vector output:\\
+\texttt{->vector = 2 4 8 16 32 64 128 256 }\\
+\\
+\textbf{\underline{EFR 3.2:}} With the boxed function M-file below saved, MATLAB will give the following outputs:
+\begin{lstlisting}[numbers=none]
+functio n f = fact(n ) 
+% FACT f = fact(n) returns the factorial n! of a nonnegative integer 
+n 
+f=l; 
+for i=l:n 
+	f=f*i; 
+end 
+\end{lstlisting}
+\texttt{>> fact(4) , fact (10), fact(0)}\\
+\texttt{->ans = 24, 3628800, 1 }
+\\
+\\
+\textbf{\underline{EFR 3.3 :}} At any (non-endpoint) maximum or minimum value y($x_0$), a differentiable function has 
+its derivative equaling zero. This means that the tangent line is horizontal, so that for small values of a $ \Delta{x}$ = $x-x_0,$ $\Delta{y}/\Delta{x}$ approaches zero. Thus, the y-variations are much smaller than the x-variations as x gets close to the critical point in question. This issue will be revisited in detail in Chapter 6. 
+\\
+\\
+\textbf{\underline{EFR 3.4:}} We have only considered the values of y at a discrete set of (equally spaced) jc-values. It 
+is possible for a function to oscillate wildly in intervals between sets of discrete points (think trig 
+functions with large amplitudes). More analysis can be done to preclude such pathologies (e.g., 
+checking to see that there are no other critical points).
+\\
+\\
+\textbf{\underline{EFR 3.5 :}} The M-file for the function is straightforward:
+\begin{lstlisting}[numbers=none]
+function y = wiggly(x) 
+%Function M-file for the mathematical function of EFR 3.5 
+y=sin(exp(1./(x.^2 + 0.5).^2)).*sin(x);
+\end{lstlisting}
+\begin{lstlisting}[numbers=none,frame=none]
+(a)>> x=-2:.001:2 ; plot(x,wiggly(x) ) %plot is shown on left below 
+(b)>> quad (Gwiggly, 0,2 , le-5 ) ->ans = 1.03517910753379 
+(c) To better see what we are looking for, we create another plot of the function zoomed in near x = 0. 
+>> x=0:.001:.3 ; plot(x,wiggly(x) ) %plot is shown (w/ othe radditions) 
+on right below. 
+\end{lstlisting}
+We seek the x-coordinates of the two points marked with "x's" in the figure below.
+\begin{figure}[H]
+\includegraphics[width=0.9\linewidth]{41}
+	\centering
+	\label{pfig:ch13_41}
+\end{figure}
+\begin{lstlisting}[numbers=none,frame=none]
+>>xmax=fminbnd('-wiggly(x)',0,0.1,optimset('TolX',le-5))
+->xmin =0.02289435851906 
+>>xmax=fminbnd('-wiggly(x)',0,0.1,optimset('TolX',le-5)) 
+->xmax =0.05909071987402 
+Red and green x's can now be added to the graph as follows: >> hold on, 
+plot (xmin, wiggly (xmin), 'rx') , plot (xmin, wiggly (xmin) , ' gx')
+\end{lstlisting}
+This also gives us a visual check that we found what we were looking for.) \\
+(d) To get a rough idea of the location of the x-value we are searching for, we now add the graph of the 
+line y = x/2 (as a black dotted line): \texttt{>> plot (x, x/2 , ' k--) } From the graph, we see that the 
+intersection point we are looking for is the one closest to the midpoint of \texttt{xmin} and \texttt{xmax}.\\
+\texttt{>> xcross=fzero('wiggly(x)-x/2',(xmin+xmax)/2 ) }\\
+\texttt{-> xcross =0.04479463640226 }\\
+Let's do a quality check: \texttt{>> wiggly (xcross)-xcross/2}
+\\
+\texttt{->ans = 2.185751579730777e-016 (Very Good!) }
+\\
+\\
+\line(2,0){\textwidth}\\
+\textbf{CHAPTE R 4 : PROGRAMMIN G IN MATLA B }
+\\
+\\
+\textbf{\underline{EFR 4.1 :}} Simply run the code through MATLAB to see if you analyzed it correctly. 
+\\
+\\
+\textbf{\underline{EFR 4.2:}} (a) The M-file is boxed below:
+\begin{lstlisting}[numbers=none]
+function [ ] = sum2sq(n) 
+%M-file for EFR 4.2 
+for a=l:sqrt(n) 
+	b=sqrt(n-aA2); %solve n=aA2+bA2 for b 
+	if b==floor(b); %checks to see if b is integer 
+		fprintf('the integer %d can be written as the sum of squares 
+of %d and %d', n,a,b) 
+		return 
+	end 
+end 
+fprintf('the integer %d cannot be written as the sum of squares', n) 
+\end{lstlisting}
+(b) We now perform the indicated program runs:\\ 
+>> \texttt{sum2sq (5) ->}the integer 5 can be written as the sum of squares of 1 and 2 \\
+>> \texttt{sum2sq (25) ->} the integer 25 can be written as the sum of squares of 3 and 4 \\
+>> \texttt{sum2sq (12233)} -The integer 12233 can be written as the sum of squares of 28 and 107 \\
+(c) The following modification of the above M-file will be more suitable to solving this problem:
+\begin{lstlisting}[numbers=none]
+function flag = sum2sqb(n) 
+%M-file for EFR 4.2b 
+flag=0; %will change to 1 if n can be written as a^2+b^2 
+for a=l:sqrt(n) 
+	b=sqrt(n-a^2); %solve n=a^2+b^2 for b 
+	if b==floor(b); %checks to see if b is integer 
+		flag=l; 
+		return 
+	end 
+end 
+\end{lstlisting}
+The program has output 1 if and only if n is expressible as a sum of squares; otherwise the output is 
+zero. Now the following simple code will compute the desired integer n:
+\begin{lstlisting}[numbers=none,frame=none]
+>> for n=99999:-l:l , flag=sum2sqb(n); 
+if flag==0 
+fprintf('%d is the largest integer less than 100,000 not expressible 
+as a sum of squares',n) 
+break 
+end 
+end 
+\end{lstlisting}
+->99999 is the largest integer less than 100,000 not expressible as a sum of squares 
+(We did not have to go very far.) \\
+(d) A minor modification to the above code will give us what we want; simply change the for loop to 
+\texttt{>>for n=1001:l : 99999} (and the wording in the \texttt{fprintf} statement).\\
+We then find the integer to be 1001. \\
+(e) The following code will determine what we are looking for:\\
+\begin{lstlisting}[numbers=none,frame=none]
+>> for n=2:99999, flag=sum2sqb(n); if flag==0, count=count+l; end, 
+end 
+>> count 
+->count =75972 
+\end{lstlisting}
+\textbf{Note:} Part (e) took only a few seconds. If the programs were written less efficiently, for example, if 
+we had run a nested loop by letting a and b run separately between all integers from 0 to $\sqrt{n}$ (or 
+larger), some parts of this problem (notably, part (e)) could not be done in a reasonable amount of 
+computer time.
+\\
+\\
+\\
+\textbf{\underline{EFR 4.3 :}} (a) Before you run the indicated computations in a MATLAB session, try to figure out the 
+output by hand. This will assure that you understand both the Collatz sequence generation process as 
+well as the program. The reason for clearing the vector a at the end of the script is so that on 
+subsequent runs, this vector will not start with old values from previous runs. \\
+(b) The M-file is boxed below:
+\begin{lstlisting}[numbers=none]
+function n = collctr(an) 
+n=0; 
+while an ~= 1 
+	if ceil(an/2)==an/2 %tests if an is even 
+		an=an/2; 
+	else 
+		an=3*an+1; 
+	end 
+	n=n+l; 
+end 
+\end{lstlisting}
+\textbf{\texttt{EFR 4.4:}} (a) The M-file is boxed below: 
+\begin{lstlisting}[numbers=none]
+%raffledraw.m 
+%scriptfile for EFR 4.4 
+
+K = input('Enter number of players: ') ; 
+N=zeros(K,26); %this allows up to 26 characters for each players 
+		%name. 
+n=input('Enter IN SINGLE QUOTES first player name: ') ; 
+len(l)=length(n); 
+N(l,l:len(l))=n; 
+W(l)=input('Enter weight of first player: ') ; 
+for i=2:K-l 
+	n=input('Enter IN SINGLE QUOTES next player name: ') ; 
+	len(i)=length(n); 
+	N(i,l:len(i))=n; 
+	W(i)=input('Enter weight of this player: ') ; 
+end 
+u=inputTfcntetIN SINGLE QUOTES last player nawe: ' \; 
+len(K)=length(n) ; 
+N(K, l:len(K))=n; 
+W(K)=input('Enter weight of last player: ') ;
+ 
+totW = sum(W); %total weight of all players (=# of raffle tickets) 
+
+%the next four commands are optional, they only add suspense and 
+%drama to the raffle drawing which the computer can do in lightning 
+%time 
+fprintf('\r \r RANDOM SELECTION PROCESS INITIATED \r \r ...') 
+paused) %creates a 1 second pause
+fprintf C\r \r ...SHUFFLING \r \r') 
+pause(5) %creates a 5 second pause 
+%%%%%%%%%%%%%%%%%%%%%%% 
+
+rand('state',sum(100*clock)) 
+magic = floor(totW*rand); %this will be a random number between 0 and 
+		%totW 
+count =W(1); %number of raffle tickets of player 1 
+if magic<=count 
+	fprintf('WINNER IS %s \r \r \ char(N(1,1:len(1)))) 
+	fprintf('CONGRATULATIONS %s!!!!!!!!!!!!', char(N(1,1:len (1)))) 
+	return 
+else count = count + W(2); k=2; 
+	while 1 
+		if magic <=count 
+	 	 fprintf ('WINNER IS %s \r \r 	% char (N (k, 1: len (k) )) ) 
+	fprintf('CONGRATULATIONS %s!!!!!!!!!!!!', char(N(k,	1:len(k)))) 
+	return 
+	end 
+	k=k+l; count = count +W(k); 
+	end 
+end 	
+\end{lstlisting}
+(b) We now perform the indicated program runs: \\
+\texttt{>> raffledraw }
+Enter number of players: 4 \\
+Enter IN SINGLE QUOTES first player name: '\texttt{Alfredo} ' \\
+Enter weight of first player: 4 \\
+Enter IN SINGLE QUOTES next player name: ' \texttt{Denise} ' \\
+Enter weight of this player: 2 \\
+Enter IN SINGLE QUOTES next player name: ' \texttt{Sylvester} ' \\
+Enter weight of this player: 2 \\
+Enter IN SINGLE QUOTES last player name: ' \texttt{Laurie} ' \\
+Enter weight of last player: 4 \\
+\\
+RANDOM SELECTION PROCESS INITIATED\\
+... ...SHUFFLING.... \\
+->WINNER IS Laurie \\
+->CONGRATULATIONS Laurie!!!!!!!!!!!! \\
+\\
+On a second run the winner was Denise. If written correctly, and if this same raffledra w is run 
+many times, it should turn out (from basic probability) that Alfredo and Laurie will each win roughly 
+4/12 or 33 1/3\% of the time while Denise and Sylvester will win roughly 2/12 or 16 2/3\% of the time. 
+\\
+\\
+\\
+\line(2,0){\textwidth}\\
+\textbf{CHAPTER 5: FLOATING POINT ARITHMETIC AND ERROR 
+ANALYSIS }
+\\
+\\
+\underline{\textbf{EFR 5.1}:} For shorthand we write: FPA to mean "the floating point answer," EA to mean "the 
+exact answer," E to mean the "error" = |FAP-EA|, and RE to mean "the relative error" = E/|EA|.\\ 
+(a) FPA = 0.023, EA = 0.0225, E = 0.0005, RE = 0.02222$\cdots$\\
+(b) FPA = 370,000 $\times$.45 = 170,000, EA = 164990.2536, E - 5009.7464, RE = 0.030363... \\
+(c) FPA = 8000$ \div$ 120 = 67 , EA = 65.04878..., E = 1.9512195121$\cdots$ , RE = 0.029996... 
+\\
+\\
+\textbf{\underline{EFR 5.2:}} (a) As in the solution of Example 5.3, since the terms are decreasing, we continue to 
+compute partial sums (in 2-digit rounded floating point arithmetic) until the terms get sufficiently small 
+so as to no longer have any effect on the accumulated sum. 
+\\
+\\
+$S_1$=l, $S_2$=$S_1$+1/2=1+.5= 1.5, $S_3$ = $S_2$ +1/3=1.5+.33=1.8, $S_4$ = $S_3$+1/4=1.8+.25 = 2.1,\\ 
+$S_5$=.$S_4$+l/ =2.1+.2=2.3, $S_6$=$S_5$+1/6=2.3+.17=2.5, $S_7$= $S_6$+1/7=2.5+.14=2.6, \\
+$S_8$ = $S_7$ +1/8=2.6+.13=2.7, $S_9$ =$S_8$+1/9=2.7+.11 = 2.8, $S_{10}$ = $S_9$+1/10=2.8+.1=2.9.
+\\
+\\
+This pattern continues until we reach $S_20$ : In each such partial sum.$S_k$, 1 / k contributes 0.1 to the cumulative sum. As soon as we reach $S_21$ , the terms (1/21 = 0.048) in floating point arithmetic 
+become too small to have any effect on the cumulative sum so we have converged; thus the final 
+answer is: 2.9 + 10$\times$.l = 3.9.\\
+(b)(i)$x^2$= 100 : Working in exact arithmetic, there are, of course, two solutions: x=±10. These are 
+also floating point solutions and any other floating point solutions will lie in some intervals about these 
+two. Let's start with the floating point solution x=10. In arithmetic of this problem, the next floating point number greater than 10 is 11 and (in floating point arithmetic) $11^2$ = 120, so there are no floating 
+point solutions greater than 10. Similarly the floating point number immediately preceding 10 is 9.9 
+and (in floating point arithmetic) $9.9^2$= 98, so there are no (positive) floating point solutions less than 
+10. Similarly, -10 is the only negative floating point solution. Thus there are exactly two floating 
+point solutions (or more imprecisely: between 2 and 10 solutions). \\
+(ii) $8x^2=x^5$: In exact arithmetic, we would factor this $x^5-8x^2=x^2(x^3-8)=0$ to get the real 
+solutions: x = 0 and x = 2. Because of underflow, near x = 0, we can get many (more than 10) floating 
+point solutions. Indeed, since e=8, if $|x|<10^{-5}$
+, then both sides of the equation will underflow to 
+zero so we will have a solution. Any number of form $\pm$ a,b$ \times 10^{-c}$
+, where a and b are any digits 
+(a $\neq$ 0 ) and c = 6, 7, or 8, will thus be a floating point solution, so certainly there are more than 10 
+solutions. (How many are there exactly?)
+\\
+\\
+\textbf{\underline{EFR 5.3 :}} (a) As in the solution to Example 5.4, we may assume that x$\neq$0 and write 
+x =$.d_1d_2 \cdots d_sd_{s+1} \cdots \times 10^e.$ Now, since we are using s-digit rounded arithmetic, f1(x) is the closer of 
+the two numbers$ .d_1d_2 \cdots d_5 \times 10^e and .d_1d_2 \cdots d_s \times 10^e + 10^{-s} \times 10^e to x$. Since the gap between these two numbers has length $10^{-s} \times 10^{e}$, we may conclude that $|x-fl(x)| \leq \frac{1}{2} \cdot 10^{-s} \times 10^{e}$. On the other hand, $|x| \geq .100 \cdots 0 \times 10^{e}=10^{e-1}$. Putting these two estimates together, we obtain the following estimate for the relative error: $\left|\frac{x-fl(x)}{x}\right| \leq \frac{\frac{1}{2} \cdot 10^{-s} \times 10^{e}}{10^{e-1}}=\frac{1}{2} \cdot 10^{1-s}$. Since equality is possible, we conclude that  $u=\frac{1}{2} \cdot 10^{1-s}$, as asserted. The floating point numbers are the same whether we are using 
+chopped or rounded arithmetic, so the gap from 1 to the next floating point number is still $10^{1-s}$, as 
+explained in the solution of Example 5.4.\\
+(b) If x = 0, we can put $\delta$= 0; otherwise put $\delta$ = [fl(x)-x]/x.
+\\
+\\
+\textbf{\texttt{EFR 5.4:}} (a) Since N-i$\leq$N when i is nonnegative, we obtain from (6) that 
+$$
+\begin{aligned}
+\left|\mathrm{fl}\left(S_{N}\right)-S_{N}\right| & \leq u\left[(N-1) a_{1}+(N-1) a_{2}+(N-2) a_{3}+\cdots+2 a_{N-1}+a_{N}\right] \\
+& \leq u\left[N a_{1}+N a_{2}+N a_{3}+\cdots+N a_{N-1}+N a_{N}\right]=N u \sum_{n=1}^{N} a_{n} .
+\end{aligned}
+$$
+(b) Simply divide both sides of the inequality in (a) by $\sum_{n=1}^{N} a_{n}$ obtain the inequality in (b).  
+\\
+\\
+\textbf{\underline{EFR 5.5:}} From $1-\frac{1}{3}+\frac{1}{5}-\frac{1}{7}+\cdots=\frac{\pi}{4}$, we can write $\pi=4-\frac{4}{3}+\frac{4}{5}-\frac{4}{7}+\cdots=\sum_{n=0}^{\infty}(-1)^{n} a_{n}$, where $a_{n}=4 /(2 n+1)$. Letting $s_{N}$ denote the partial sum $\sum_{n=0}^{N}(-1)^{n} a_{n}$, Leibniz's theorem tells us that Error $=\left|\pi-S_{N}\right| \leq a_{N+1}=4 /(2 N+3)$. Since we want Error $<10^{-7}$, we should take $N$ large enough to satisfy $4 /(2 N+3)<10^{-7} \Rightarrow 2 N+3>4 \cdot 10^{7} \Rightarrow N>\left(4 \cdot 10^{7}-3\right) / 2=19,999,998.5$. \\
+Letting N = 19,999,999, we get MATLAB to perform the summation of the corresponding terms in 
+order of increasing magnitude: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> format long 
+>> Sum=0; N=19999999; 
+>> for n=N:-l:0 
+Sum=Sum+(-1)^n*4/(2*n+l) ; 
+end 
+>> Sum 
+->Sum = 3.14159260358979 (approximation to pi ) 
+>> abs(pi-Sum) 
+->ans = 4.999999969612645e-008 (exact error of approximation)
+\end{lstlisting}
+\line(2,0){\textwidth}\\
+\textbf{CHAPTER 6: ROOTFINDING} 
+\\
+\\
+\textbf{EFR 6.1:} The accuracy of the approximation \texttt{x7} is actually better than what was guaranteed from 
+(1). The actual accuracy is less than 0.001 (this can be shown by continuing with the bisection method 
+to produce an approximation \texttt{xn} with guaranteed accuracy less than 0.00001 (how large should n be?) and then estimating $\mid x7-root$ $|\leq| x 7-x n|+| x n-\operatorname{root} \mid \leq 9 \times 10^{-4}+1 \times 10^{-5}<0.001$. So actually, $|f(x 7)|$ is over 30 times as large as $\mid x 7$ - root|. This can be explained by estimating $y^{\prime}($ root $) \geq 30$ (do it graphically, for example). Thus, for small values of $\Delta x \equiv x$-root, $\Delta y / \Delta x$ gets larger than 30 . This is why the $y$-variations turn out to be more than 30 times as large as the $x$-variations, when $x$ gets close to the root.
+\\
+\\
+\textbf{\underline{EFR 6.2:}} (a) Since $f(0)=1-0>0, f(\pi / 2)=0-\pi / 2<0$, and $f(x)$ is continuous, we know from the intermediate value theorem that $f(x)$ has a root in $[0, \pi / 2]$. Since $f^{\prime}(x)=\sin (x)-1<0$ on $(0, \pi / 2), f(x)$ is strictly decreasing so it can have only one root on $[0, \pi / 2]$.
+(b) It is easy to check that the first value of $n$ for which $\pi /\left(2 \cdot 2^{n}\right)\left(=(b-a) / 2^{n}\right)$ is less than $0.01$ is $n$ $=8$. Thus by (1), using $x 0=0$, it will be sufticient to nun through $n=8$ iterations of the bisection method to arrive at an approximation $x 8$ of the root that has the desired accuracy. We do this with the following MATLAB loop:
+\begin{lstlisting}[numbers=none,frame=none]
+>> xn=0; an=0; bn=pi/2 ; n=0; 
+>> whil e n<=8 
+xn=(an+bn)/2 ; n=n+l; 
+if f(x)==0, root = xn; return 
+elseif f(x)>0, an=xn; bn=bn; 
+else, an=an; bn=xn; 
+end 
+end 
+>> xn 
+->xn =0.73937873976088
+\end{lstlisting}
+c) The following simple MATLAB loop will determine the smallest value of \texttt{n} for which $\pi$/(2$\cdot$2) will be less than $10^{12}$
+ (by (1) this would be the smallest number of iterations in the bisection method 
+for which we could be guaranteed the indicated accuracy). (This could certainly also be done using logs.) 
+\begin{lstlisting}[numbers=none,frame=none]
+>> while pi/2/2^n>=le-12 , n=n+l; end 
+>> n 
+->n = 41 
+>> pi/2/2^41, pi/2/2^40 %we perform a check 
+->ans = 7.143154683921678e-013 (OK) 1.428630936784336e-012 (too big, so it checks!)
+\end{lstlisting}
+\textbf{\underline{EFR 6.3 :}} (a) The condition \texttt{yn*ya>0} mathematically translates to yn and ya having the same 
+sign, so this is (mathematically) equivalent to our condition \texttt{sign(yn)==sign(ya)}.
+\\ 
+(b) We are aiming for a root so at each iteration, \texttt{yn and ya} should be getting very small; thus their 
+product \texttt{yn*ya} will be getting smaller much faster (e.g., if both are about 1e-175, then their product 
+would be close to 1e-350 and this would underflow). Thus, with the modified loop we run the risk of a 
+premature underflow destroying any further progress of the bisection method. 
+\\
+(c) Consider the function $f(x)=(x +.015)^{101}$ , which certainly has a (unique) root x = -0.015 and 
+satisfies the requirements for using the bisection method. As soon as the interval containing xn gets 
+to within 1 e-2 of the root, both y-values \texttt{yn} and \texttt{ya} would then be less than 1 e-200; so their product 
+would be less than 1 e-400 and so would underflow to zero. This starts to occur already when n = 2 (xn= 0), and causes the modified if-branch to default to the else-if option—taking the left half subinterval 
+as the new interval. From this point on, all approximations will be less than -0.5, making it impossible 
+to reach the 0.001 accuracy goal.
+\\
+\\
+\textbf{\underline{EFR 6.4:}} The distance from \texttt{x} to \texttt{e} is less than MATLAB's unit roundoff and the minimum gap 
+between floating point numbers (see Example 5.4 and Exercise for the Reader 5.3). Thus MATLAB 
+cannot distinguish between the two numbers \texttt{x} and \texttt{e}, and (in the notation of Chapter 5) we have fl(x) 
+= fl(e)=e (since important numbers like e are built in to MATLAB as floating point numbers). As a 
+result, when MATLAB evaluates ln(x), it really computes ln(fl(x))=ln(e) and so gets zero. 
+\\
+\\
+\textbf{\underline{EFR 6.5:}} (a) If we try to work with quadratic polynomials (parabolas), cycling cannot occur unless 
+the parabola did not touch the x-axis (this is easy to convince oneself of with a picture and not hard to 
+show rigorously). If we allow polynomials that do not have roots, then an example with a quadratic 
+polynomial is possible, as shown in the left-hand figure below. For a specific example, we could take $f(x)=x^{2}+1$. For cycling as in the picture, we would want $x_{1}=x_{0}$. Putting this into Newton's formula and solving (the resulting quadratic) gives $x_{0}=1 / \sqrt{3}$. One can easily nun a MATLAB program to see that this indeed produces the asserted cycling. To get an example of polynomial cycling with a polynomial that actually has a root we need to use at least a third-degree polynomial. Working with $f(x)=x^{3}-x=x(x-1)(x+1)$, which has the three (equally spaced) roots $x=0, \pm 1$ the graph suggests that we can have a period-two cycling, so we put $x_{1}=x_{0}$ into Newton's formula. The resulting cubic equation is easily solved exactly (it factors) or with the Symbolic Toolbox (see Appendix A) or approximately using Newton's method. The solution $x_{0}=1 / \sqrt{5}$ produces the periodtwo cycling shown in the right-hand figure below, as can be checked by running Newton's method.
+\begin{figure}[H]
+\includegraphics[width=0.9\linewidth]{42}
+	\centering
+	\label{pfig:ch13_42}
+\end{figure}
+(b) On the right is an illustration of a 
+period-four cycle in Newton's method. 
+An explicit such example is furnished 
+by f(x) = $x^3- x - 3 $. The calculations 
+would be, of course, more elaborate 
+than those of part (a); it turns out that 
+x0 should be taken to be a bit less than 
+zero. (More precisely, about -0.007446; 
+you may wish to run a couple of 
+hundred iterations of Newton's method 
+using this value for $x_0$ to observe the 
+cycling.) By contemplating the picture, 
+it becomes clear that this function has 
+cycles of any order. Just move 
+JC0 closer to the right toward the 
+location where f'(x) has a root. 
+\begin{figure}[H]
+\includegraphics[width=0.9\linewidth]{43}
+	\centering
+	\label{pfig:ch13_43}
+\end{figure}
+\textbf{\underline{EFR 6.6 :}} (a) The M-file is boxed below:
+\begin{lstlisting}[numbers=none]
+function [root, yval,niter] = secant(varfun,x0, xl, tol, nmax) 
+% input variables: varfun, x0, x1 tol, nmax 
+% output variables: root, yval, niter 
+% varfun = the string representing a mathematical function (built-in, 
+% M-file, or inline) , x0 and x1 = the two (different) initial 
+% approx. 
+% The program will perform the Secant method to approximate a root of 
+% varfun near x=x0 until either successive approximations differ by 
+% less than tol or nmax iterations have been completed, whichever 
+% comes first. If the tol and nmax variables are omitted default 
+% values of eps (approx. 10^
+(-16)) and 30 are used. 
+% We assign the default tolerance and maximum number of iterations if 
+% none are specified 
+if nargin < 4 
+tol=eps; nmax=50; 
+end 
+
+
+%we now initialize the iteration 
+xn=x0;xnnext=x1; 
+
+
+%finally we set up a loop to perform the approximations 
+for n=1:nmax 
+	yn=feval(varfun, xn); ynnext=feval(varfun, xnnext); 
+	if ynnext === 0 
+		fprintf('Exact root found\r') 
+		root = xnnext; yval = 0; niter=n; 
+		return 
+	end 
+	if yn == ynnext 
+			error('horizontal secant encountered, Secant method failed, try 
+changing x0, x1*) 
+	end 
+	newx=xnnext-feval(varfun, xnnext)*(xnnext-xn)(feval(varfun,xnnext)-feval(varfun, xn) ) ;
+	if abs(newx-xnnext)<tol 
+		fprintf('The secant method has converged\r') 
+		root = newx; yval = feval(verfun, root); niter=n;
+		return
+	elseif n==nmax
+		fprintf('Maximum number of iterations reached\r')
+		root = newx; yval = feval(varfun, root);niter=nmax
+		return
+	end
+	xn=xnnext; xnnext=newx'
+end	
+\end{lstlisting}
+(b) The syntax of this M-file is very close to that of newton: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> f=inline('x^4-2' ) ; [r y n] = secant(f , 2,1.5 ) 
+->The secant method has converged, r = 1.18920711500272, 
+y = -2.220446049250313e-016, n = 9 
+>> abs(r-2^(l/4 ) ) ->ans = 0 
+\end{lstlisting}
+In conclusion, the secant method took nine iterations and the approximate root (r) had residual which 
+was essentially zero (in floating point arithmetic) and coincided with the exact answer $\sqrt[4]{2}$ (in floating 
+point arithmetic).
+\\
+\\
+\textbf{\underline{EFR 6.7:}}mean "the highest order of convergence,* and AEC 
+to mean "the asymptotic error constant." For each sequence, we determine these quantities if they 
+exist:
+\\
+(i) HOC = 1; AEC = 1 (linear convergence), (ii) HOC = 1, AEC = 1/2 (linear convergence), (iii) 
+HOC = 3/2, AEC = 1, (iv) HOC = 2, AEC = 1 (quadratic convergence), (v) HOC does not exist. 
+There is hyperconvergence for every order a < 2, but the sequence does not have quadratic 
+convergence
+\\
+\\
+(b) The sequence $e_n$ - $e^{-3^n}$
+ has HOC = 3. In general, $e_n = e^{-k^n}$
+ has HOC = k whenever it is a positive 
+number. 
+\\
+\\
+\\
+\textbf{\underline{EFR 6.8:}} Write $f(x) = (x-r)^Mh(x)$, where M is the order of the root (and so h(r)$\neq$0). 
+Differentiating, we see that the function F(x)=f(x)/ f'(x) can be written as F(x) = (x - r)H(x), 
+where H(x) = h(x) /[Mh(x) + (x- r)h'(x)]. Since H(r)=1/M $\neq$0, we see that x = r is a simple root 
+of F(x). Since $F'(x)\equiv[(f'(x))^2-f(x)f''(x)]/(f'(x))^2$
+, this method requires computing both 
+f'(x) and f''(x). The roundoff errors can also get quite serious. For example, if we are converging to a simple root, then in the iterative computations of $F'(x_n)\equiv[(f'(x_n))^2-f(x_n)f''(x_n)]/(f'(x_n))^2$, 
+$(f'(x_n))^2$ will be converging to a positive number, while $f(x_n)f''(x_n)$ will be converging to zero. 
+Thus, when these two numbers are subtracted roundoff errors can be insidious. With higher-order roots 
+each of $(f'(x_n))^2$
+ and $f(x_n)f''(x_n)$ will be getting small very fast and can underflow to zero causing 
+Newton's method to stop. If the root is a multiple root and the order is known not to be too high then 
+this method performs reasonably well. If the order is known, however, the newtonmr method is a 
+better choice. 
+\\
+\\
+\line(2,0){\textwidth}\\
+\textbf{CHAPTER 7: MATRICES AND LINEAR SYSTEMS }
+\\
+\\
+\textbf{\underline{EFR 7.1:}} Abbreviate the matrices in (1) by DE = P and write P=[$p_{ij}$]. Now, by definition, 
+$p_{ij}$ =(ith row of D)$\cdot$(jth column of E) = $d_i\cdot e_{ij}$(by diagonal form of D). But by the diagonal form of 
+E, $e_{ij}$ (and hence also $p_{ij}$) is zero unless i = j , in which case $e_{ij}$ = $e_{i}$. Thus $p_{ij}= d_i\cdot e_{i} if i=j; 0, if i\neq j$ and this is a restatement of (1)
+\begin{lstlisting}[numbers=none]
+function A=randint(n,m,k)  
+%generates an n by m matrix whose entries are random integers whose 
+%absolute values do not exceed k 
+A=zeros(n,m); 
+for i=l:n 
+	for j=l:m 
+		x=(2*k+l)*rand-k; %produces a random real number in (-k,k+1)
+		A(i,j)=floor(x);
+	end 
+end 
+\end{lstlisting}
+(b) In the random experiments below, we print out the matrices only in the first trial\\
+\texttt{>> A=randint(6,6,9) ; B=randint(6,6,9) ; det(A*B), det(A*B)-det(A)*det(B) }
+$$
+\begin{array}{rrrrrrr}
+\rightarrow A= & 9 & -5 & 2 & 0 & 7 & 5 \\
+& -1 & -9 & 6 & -1 & 2 & 6 \\
+& 8 & 5 & -6 & -2 & 8 & 8 \\
+& -2 & 7 & -8 & -3 & 6 & -9 \\
+& -7 & -6 & -6 & 2 & -4 & -6 \\
+& -9 & 5 & -1 & 8 & -1 & -2
+\end{array}
+\begin{array}{rrrrrrr}
+\rightarrow B= & 7 & 0 & -6 & 3 & 6 & -9 \\
+& 3 & -2 & 6 & 0 & 4 & -1 \\
+& -4 & -6 & -6 & 3 & -4 & 1 \\
+& -7 & 4 & -2 & 7 & 7 & 2 \\
+& 0 & 8 & 6 & 3 & 6 & 3 \\
+& -3 & -4 & -3 & 1 & 4 & -4
+\end{array}
+$$
+\texttt{->det(A*B)=~~~ -1.9436e+010 ~~~->ans= ~~~0}
+\begin{lstlisting}[numbers=none,frame=none]
+>> A=randint(6,6,9); B=randint(6,6,9); det(A*B), det(A*B)-
+det(A)*det(B) 
+->ans = 6.8755e+009, 0 
+>> A=randint(6,6,9) ; B=randint(6,6,9) ; det(A*B), det(A*B)-
+d e t (A) Me t (B) 
+->ans = 8.6378e+010, 0 
+The last output 0 in each of the three experiments indicates that formula (4) checks. 
+(c) Here, because of their size, we do not print out any of the matrices. 
+>> A=randint(16,16,9) ; B=randint(16,16,9) ; det(A*B), det(A*B)-
+det(A)*det(B) 
+->ans = -1.2268e+035, 18816e+021 
+>> A=randint(16,16,9) ; B=randint(16,16,9) ; det(A*B), det(A*B)-
+det(A)*det(B) 
+->ans =1.4841 e+035, -6.9913e+021 
+>> A=randint(16,16,9) ; B=randint(16,16,9) ; det(A*B), det(A*B)-
+det(A)*det(B) 
+->ans = 3.3287e+035, ans = 7.0835e+021
+\end{lstlisting}
+The results in these three experiments are deceptive. In each, it appears that the left and right sides of 
+(4) differ by something of magnitude 1021. This discrepancy is entirely due to roundoff errors! 
+Indeed, in each trial, the value of the determinant of AB was on the order of 1035. Since MATLAB's 
+(double precision IEEE) floating point arithmetic works with only about 15 significant digits, the much 
+larger (3 5-digit) numbers appearing on the left and right sides of (4) have about the last 20 digits turned 
+into unreliable "noise." This is why the discrepancies are so large (the extra digit lost came from 
+roundoff errors in the internal computations of the determinants and the right side of (4)). Note that in 
+part (b), the determinants of the smaller matrices in question had only about 10 significant digits, well 
+within MATLAB's working precision. 
+\\
+\\
+\textbf{\underline{EFR 7.3:}} Using the f i 11 command as was done in the text to get the gray cat of Figure 7.3(b), you 
+can get those other-colored cats by simply replacing the RGB vector for gray by the following: Orange 
+->RGB = [1 .5 0], Brown -> RGB = [.5 .25 0], Purple -> RGB = [5 0 .5]. Since each of these 
+colors can have varying shades, your answers may vary. Also, the naked eye may not be able to 
+distinguish between colors arising from small perturbations of these vectors (say by .001 or even .005). 
+The RGB vector representing MATLAB's cyan is RGB = [0 1 1].
+\\
+\\
+\textbf{\underline{EFR 7.4:}} By property (10) (of linear transformations): $L\left(\alpha P_{1}\right)=\alpha L\left(P_{1}\right)$; if we put $\alpha=0$, we get that $L(\overrightarrow{0})=\overrightarrow{0}$ (where $\overrightarrow{0}$ is the zero vector). But a shift transformation $T_{V_{0}}(x, y)=(x, y)+V_{0}$ satisfies $T_{V_{0}}(\overrightarrow{0})=\overrightarrow{0}+V_{0}=V_{0}$. So the shift transformation $T_{V_{0}}$ being linear would force $V_{0}=\overrightarrow{0}$, which is not allowed in the definition of a shift transformation (since then $T_{V_{0}}$ would then just be the identity transformation).
+\\
+\\
+\textbf{\underline{EFR 7.5:}} (a) As in the solution of Example 7.4, we individually multiply out the homogeneous coordinate transformation matrices (as per the instructions in the proof of Theorem 7.2) from right to left. The first transformation is the shift with vector $(1,0)$ with matrix: $T_{(1,0)} \sim\left[\begin{array}{lll}1 & 0 & 1 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{array}\right]=H_{1}$. After this we apply a scaling $S$ whose matrix is given by $S \sim\left[\begin{array}{lll}2 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{array}\right]=H_{2}$. The homogeneous cooordinate matrix for the composition of these two transformations is: $M=H_{2} H_{1}=\left[\begin{array}{lll}2 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{array}\right]\left[\begin{array}{lll}1 & 0 & 1 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{array}\right]=\left[\begin{array}{lll}2 & 0 & 2 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{array}\right]$. We assume (as in the text) that we have left in the graphics window the first (white) cat of Figure 7.3(a) and that the CAT matrix A is still in our 
+workspace. The following commands will now produce the new "fat CAT":
+\begin{lstlisting}[numbers=none,frame=none]
+>> Hl=[l 0 1;0 1 0; 0 0 1] ; H2=[2 0 0;0 1 0;0 0 1] ; M=H2*H1 
+>> AH=A; AH(3,:)=ones(1,10); %homogenize the CAT matrix 
+>> AH1=M*AH; % homogenized "fat CAT" matrix 
+>> hold on 
+>> plot(AHl(l,:), AH1(2,:), 'r') 
+>> axis ([-2 10 -3 6]) % set wider axes to accommodate "fat CAT" 
+>> axis('equal') 
+\end{lstlisting}
+The resulting plot is shown in the left-hand figure that follows. 
+(b) Each of the four cats needs to first get rotated by its specified angle about the same point (1.5,1.5). 
+As in the solution to Example 7.4, these rotations can be accomplished by first shifting this point to (0, 
+0) with the shift $T_{(1.5,1.5)}$, then performing the rotation, and finally shifting back with the inverse shift $T_{(1.5,1.5)}$. In homogeneous coordinates, the matrix representing this composition is (just like in the 
+solution to Example 7.4): 
+$$
+M=\left[\begin{array}{ccc}
+1 & 0 & 1.5 \\
+0 & 1 & 1.5 \\
+0 & 0 & 1
+\end{array}\right]\left[\begin{array}{ccc}
+\cos (\theta) & -\sin (\theta) & 0 \\
+\sin (\theta) & \cos (\theta) & 0 \\
+0 & 0 & 1
+\end{array}\right]\left[\begin{array}{ccc}
+1 & 0 & -1.5 \\
+0 & 1 & -1.5 \\
+0 & 0 & 1
+\end{array}\right]
+$$
+After this rotation, each cat gets shifted in the specified direction with $T_{(\pm1,\pm1)}$. For the colors of our 
+cats let's use the following: black (rgb = [0 0 0]), light gray (rgb = [.7 .7 .7]), dark gray (rgb = [.3 .3. 
+.3]), and brown (rgb = [.5 .25 0]). The following commands will then plot those cats: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> clf, hold on %prepare graphic window 
+>> %upper left cat, theta = pi/6 (30 deg), shift vector = (-3, 3) 
+>> c = cos (pi/6); s = sin (pi/6); 
+>> M=[l 0 1.5;0 1 1.5;0 0 l]*[c -s 0;s c 0;0 0 1]*[1 0 -1.5;0 1 -
+1.5;0 0 1]; 
+>> AUL=[1 0 -3;0 1 3;0 0 1]*M*AH; 
+>> fill(AUL(l,:), AUL(2,:), [0 0 0]) 
+>> %upper right cat, theta = -pi/6 (-30 deg), shift vector = (3, 1) 
+>> c = cos(-pi/6); s = sin(-pi/6); 
+>> M=[l 0 1.5;0 1 1.5;0 0 l]*[c -s 0;s c 0;0 0 1]*[1 0 -1.5;0 1 -
+1.5;0 0]; 
+>> AUR=[1 0 1;0 1 1;0 0 1]*M*AH; 
+>> filKAURU, :) , AUR(2,:)r [.7 .7 .7]) 
+>> %lower left cat, theta = pi/4 (45 deg), shift vector = (-3, -3) 
+>> c - cos(pi/4); s = sin(pi/4); 
+>> M=[l 0 1.5;0 1 1.5;0 0 l]*[c -s 0;s c 0;0 0 1]*[1 0 -1.5;0 1 -
+1.5;0 0 1]; 
+>> ALL=[1 0 -3;0 1 -3;0 0 1]*M*AH; 
+>> fill(ALL(l,:), ALL(2,:), [.3 .3 .3]) 
+>> %lower right cat, theta = -pi/4 (-45 deg), shift vector = (3, -3) 
+>> c = cos(-pi/4); s = sin (-pi/4); 
+>> M=[l 0 1.5;0 1 1.5;0 0 l]*[c -s 0;s c 0;0 0 1]*[1 0 -1.5;0 1 -
+1.5;0 0 1]; 
+>> ALR=[1 0 3;0 1 -3;0 0 1]*M*AH; 
+>> fill(ALR(l,:), ALR(2,:), [.5 .25 0]) 
+>> axis('equal'), axis off %see graphic w/out distraction of axes
+\end{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{44}
+    \label{pfig:ch13_44}
+\end{figure}
+\textbf{\underline{EFR 7.6:}} (a) This first M-file is quite straightforward and is boxed below. 
+\begin{lstlisting}[numbers=none]
+function B=mkhom(A) 
+B=A; 
+[n m]=size(A); 
+B(3,:)=ones(l,m); 
+\end{lstlisting}
+(b) This M-file is boxed below. 
+\begin{lstlisting}[numbers=none]
+function Rh=rot(Ah,xO,yO,theta) 
+%viz. EFR 7.6; theta should be in radians 
+%inputs a 3 by n matrix of homogeneous vertex coordinates, xy 
+%coordinates of a point and an angle theta. Output is corresponding 
+%matrix of vertices rotated by angle theta about (x0,y0). 
+
+%first construct homogeneous coordinate matrix for shifting (x0,y0) 
+to (0,0) 
+SZ=[1 0 -x0;0 1 -y0; 0 0 1]; 
+%next the rotation matrix at (0,0) 
+R=[cos(theta) -sin (theta) 0; sin (theta) cos(theta) 0;0 0 1]; 
+%finally the shift back to (x0,y0) 
+SB=[1 0 x0;0 1 y0;0 0 1]; 
+%now we can obtain the desired rotated vertices: 
+Rh=SB*R*S2*Ah; 
+\end{lstlisting}
+\textbf{\underline{EFR 7.7:}} (a) The main transformation that we need in this movie is vertical scaling. To help make 
+the code for this exercise more modular, we first create, as in part (b) of the last EFR, a separate M-file 
+for vertical scaling: 
+\begin{lstlisting}[numbers=none]
+function Rh=vertscale(Ah,b,y0)
+%inputs a 3 by n matrix of homogeneous vertex coordinates,a (pos.)
+%numbers a for y- scales, and an optional arguments y0 
+
+%for center of scaling.Output is homogeneous coor. matrix of scaled 
+%vertices. default value of yO is 0. 
+
+if nargin <3 
+	y0=0; 
+end 
+%first construct homogeneous coordinate matrix for shifting y=y0 to 
+%y=0 
+SZ=[1 0 0;0 1 -yO; 0 0 1]; 
+%next the scaling matrix at (0,0) 
+S=[l 0 0; 0 b 0;0 0 1]; 
+%finally the shift back to y=0 
+SB=[1 0 x0;0 1 y0;0 0 1]; 
+%now we can obtain the desired scaled vertices 
+Rh=SB*S*SZ*Ah; 
+\end{lstlisting}
+Making use of the above M-file, the following script recreates the CAT movie of Example 7.4 using 
+homogeneous coordinates:
+\begin{lstlisting}[numbers=none]
+%script for EFR 7.6(a): catmovieNol.m cat movie creation 
+%Basic CAT movie, where cat closes and reopens its eyes. 
+elf, counter=l; 
+
+A=[0 0 .5 1 2 2.5 3 3 1.5 0; ... 
+	0 3 4 3 3 4 3 0- 1 0]; %Basic CAT matrix 
+Ah = mkhom(A); %use the M-file from EFR 7.6 
+
+t=0:.02:2*pi; %creates time vector for parametric equations for eyes 
+xL=l+.4*cos(t); y=2+.4*sin(t); %creates circle for left eye 
+LE=mkhom([xL; y]); %homogeneous coordinates for left eye 
+xR=2+.4*cos(t); y=2+.4*sin(t); %creates circle for right eye 
+RE=mkhom([xR; y]); %homogeneous coordinates for right eye 
+xL=l+.15*cos(t); y=2+.15*sin(t); %creates circle for left pupil 
+LP=mkhom((xL; y]); %homogeneous coordinates for left pupil 
+xR=2+.15*cos(t); y=2+.15*sin(t); %creates circle for right pupil 
+RP=mkhom([xR; y]); %homogeneous coordinates for right pupil
+ 
+for s=0:.2:2*pi 
+	factor = (cos(s)+1)/2; 
+	plot(A(l,:), A(2,:), 'k'), hold on 
+	axis([-2 5 -3 6]), axis('equal') 
+	LEtemp=vertscale(LE,factor,2); LPtemp=vertscale(LP,factor,2); 
+	REtemp=vertscale(RE,factor,2); RPtemp=vertscale(RP,factor,2); 
+	hold on 
+	filKLEtempd, :) , LEtemp(2, :) , 'y') , fill(REtemp(1, :) , 
+	REtemp(2,:),'y') 
+	filKLPtempd, :) , LPtemp(2, :) , " k'), f ill (RPtemp (1, :) , 
+	RPtemp(2,:),'k') 
+	M(:, counter) = getframe; 
+	hold off 
+	counter=counter+l; 
+end
+\end{lstlisting} 
+(b) As in part (a), the following script M-file will make use of two supplementary M-files, 
+\texttt{AhR=reflx (Ah, x0)} and, \texttt{AhS=shif t (Ah, x0, y0)}, that perform horizontal reflections and 
+shifts in homogeneous coordinates, respectively. The syntaxes of these M-files are explained in 
+Exercises 5 and 6 of this section. Their codes can be written in a fashion similar to the code 
+\texttt{vertscale }but for completeness are can be downloaded from the ftp site for this text (see the 
+beginning of this appendix). They can be avoided by simply performing the homogeneous coordinate 
+transformations directly, but at a cost of increasing the size of the M-file that we give: 
+\begin{lstlisting}[numbers=none]
+%coolcatmovie.m: script for making coolcat movie matrix M of EFR 7.7 
+%act one: eyes shifting left/right 
+t=0:.02:2*pi; counter=l; 
+A=[0 0 .5 1 2 2.5 3 3 1.5 0; ... 
+	0 3 4 3 3 4 3 0- 1 0] ; 
+x=1+.4*cos(t); y=2+.4*sin(t);xp=1+.15*cos(t); yp=2+.15*sin(t); 
+LE=[x;y]; LEh=mkhom(LE); LP=[xp;yp]; LPh=mkhom(LP); 
+REh=reflx(LEh/ 1.5); RPh=reflx(LPh, 1.5); 
+LW=[.3 -1; .2 -.8] ; LW2=[.25 -1.1;.25 -.6] ; %left whiskers 
+LWh=mkhom(LW); LW2h=mkhom(LW2); 
+RWh=reflx(LWh, 1.5); RW2h=reflx(LW2h, 1.5); %reflect left whiskers 
+					%to get right ones 
+M=[1 1.5 2;.25 -.25 .25]; Mh=mkhom(M); %matrix & homogenization of 
+					%cats mouth 
+Mhrefl=refly(Mh,-.25); %homogeneous coordinates for frown 
+for n=0:(2*pi)/20:2*pi 
+plot(A(1, :) , A(2, :) , 'k') 
+axis([-2 5 -3 6]), axis('equal') 
+hold on 
+plot(LW(1,:), LW(2,:),'k'), plot(LW2 (1,:), LW2(2,:),'k') 
+plot(RWh(1,:), RWh(2,:),'k') 
+plot(RW2h(1,:), RW2h(2,:),'k') 
+plot(Mhrefl(1,:), Mhrefl(2,:),'k') 
+fillUEU,:), LE(2,:),'y'), fill(REh(1,:), REh (2, :) , ' y') 
+LPshft=shift(LPh,-.25*sin(n),0); RPshft=shift(RPh,-.25*sin (n),0); 
+fill(LPshft(l,:), LPshft(2, :) , *k') , fill(RPshft(1,:), 
+RPshft(2,:),'k') 
+Mov(:, counter)=getframe; 
+hold off 
+counter = counter +1; 
+end 
+
+%act two: eyes shifting up/down 
+for n=0:(2*pi)/20:2*pi 
+plot(A(l, :) , A(2, :) , 'k') 
+axis([-2 5 -3 6]), axis('equal') 
+hold on 
+plot(LW(l,:), LW(2,:),'k'), plot(LW2(1,:), LW2 (2,:), 'k') 
+plot(RWh(l,:), RWh(2,:),'k'
+) 
+plot(RW2h(l,:), RW2h(2,:),'k') 
+plot(Mhrefl(1,:), Mhrefl(2,:),'k') 
+fill(LE(l,:), LE(2f:),'y'), fill(REh(lf:), REh(2,:),'y') 
+LPshft=shift(LPh,0,.25*sin(n)); RPshft=shift(RPh,0,.25*sin(n)); 
+fill(LPshft(1,:), LPshft(2,:),'k'), fill(RPshft(1,:), 
+RPshft(2,:),'k') 
+Mov(:, counter)=getframe; 
+hold off 
+counter = counter +1; 
+end 
+
+%act three: whisker rotating up/down then smiling 
+for n=0:(2*pi)/10:2*pi 
+plot(A(1, :) , A(2, :) , 'k') 
+axis ([-2 5 -3 6]), axis('equal') 
+hold on 
+fill(LE(1,:), LE(2,:),'y'),fill(LP(1,:), LP(2f:),'k') 
+fill(REh( 1, :) , REh(2, :) , 'y') ,fill(RPh(l , :) , RPh (2, :) , ' k' ) 
+LWrot=rot(LWh,.3,. 2 ,-pi/6*sin(n)); LW2rot=rot(LW2h, .25,.25, -
+pi/6*sin(n)) ; 
+RWrot=reflx(LWrot, 1.5); RW2rot=reflx(LW2rot, 1.5); 
+plot(LWrot(l,:), LWrot(2,:), 'k'), plot(LW2rot(1,:),), LW2rot(2,:),'k') 
+plot(RWrot(l,:), RWrot(2,:),'k'),plot(RW2rot(lf:)), RW2rot(2,:),'k') 
+if n == 2*pi 
+	plot(Mh(l,:), Mh(2,:),'k') 
+	for n=l:10, L(:,n)=getframe; end 
+	Mov(:, counter: (counter+9))=L; 
+	break 
+else 
+	plot(Mhref1(1,:), Mhref1(2,:),'k')
+	 
+end 
+Mov(:, counter)=getframe; 
+
+hold off 
+counter = counter +1; 
+end 
+
+%THE END 
+
+\end{lstlisting}
+\textbf{\underline{EFR 7.8:}} (a) Certainly the zeroth generation consists of $1=3^{0}$ triangles. Since the sidelength is one, and the triangle has each of its angles being $\pi / 3$, its altitude must be $\sin (\pi / 3)=\sqrt{3} / 2$. Thus, the area of the single zeroth generation triangle is $\sqrt{3} / 4$. Now, each time we pass to a new generation, each triangle splits into three (equilateral) triangles of half the length of the triangles of the current generation. Thus, by induction, the $n$th generation will have $3^{n}$ equilateral triangles of sidelength $1 / 2^{n}$ and hence each of these has area $(1 / 2) \cdot 1 / 2^{n} \cdot[\sqrt{3} / 2] / 2^{n}=\sqrt{3} / 4^{n+1}$.\\
+(b) From part (a), the $n$th generation of the Sierpinski carpet consists of $3^{n}$ equilateral triangles each having area $\sqrt{3} / 4^{n+1}$. Hence the total area of this $m$ th generation is $\sqrt{3}(3 / 4)^{n} / 4$. Since this expression goes to zero as $n \rightarrow \infty$, and since the Sierpinski carpet is contained in each of the generation sets, it follows that the area of the Sierpinski carpet must be zero.
+\\
+\\
+\textbf{\underline{EFR 7.9:}} (a) The $2 \times 2$ matrices representing dilations: $\left[\begin{array}{ll}s & 0 \\ 0 & s\end{array}\right](s>0)$, and reflections with respect to the $x$-axis: $\left[\begin{array}{cc}-1 & 0 \\ 0 & 1\end{array}\right]$ or $y$-axis: $\left[\begin{array}{cc}1 & 0 \\ 0 & -1\end{array}\right]$ are both diagonal matrices and thus commute with any other $2 \times 2$ matrices; i.e., if $D$ is any diagonal matrix and $A$ is any other $2 \times 2$ matrix, then $A D=D A$. In particular, these matrices commute with each other and with the matrix representing a rotation through the angle $\theta:\left[\begin{array}{rr}\cos \theta & -\sin \theta \\ \sin \theta & \cos \theta\end{array}\right]$. By composing rotations and reflections, we can obtain transformations that will reflect about any line passing through $(0,0)$. Once we throw in translations, we can reflect about any line in the plane and (as we have already seen) rotate with any angle about any point in the plane. By the definition of similitudes, we now see that compositions of these general transformations can produce the most general similitudes. Translating into homogeneous coordinates (using the proof of Theorem 7.2) we see that the matrix for such a composition can be expressed as $\left[\begin{array}{ccc}s \cos \theta & -s \sin \theta & x_{0} \\ \pm s \sin \theta & \pm s \cos \theta & y_{0} \\ 0 & 0 & 1\end{array}\right]$ where $s$ now is allowed to be any nonzero number. If the sign in the second
+row is negative, we have a reflection: If $s>0$, it is a $y$-axis reflection; if $s<0$, it is an $x$-axis reflection.
+(b) Let $T_{1}$ and $T_{2}$ be two similar triangles in the plane. Apply a dilation, if necessary, to $T_{1}$ so that it has the same sidelengths as $T_{2}$. Next, apply a shift transformation to $T_{1}$ so that a vertex gets shifted to a corresponding vertex of $T_{2}$, and then apply a rotation to $T_{1}$ about this vertex so that a side of $T_{1}$ 
+transforms into a corresponding side of $T_{2}$ \\
+At this point, either $T_{1}$ and $T_{2}$ are now the same triangle, 
+or they are reflections of one another across the common 
+side. A final reflection about this line, if necessary, will 
+thus complete the transformation of $T_{1}$ into $T_{2}$ by a similitude. \\
+(c) It is clear that dilations, rotations, and shifts are 
+essential. For an example to see why reflection is needed, 
+simply take $T_{1}$ to be any triangle with three different 
+angles and $T_{2}$ to be its reflection about one of the edges (see figure). It is clearly not possible to 
+transform one of these two triangles into the other using any combination of dilations, rotations, and 
+shifts. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{45}
+    \label{pfig:ch13_45}
+\end{figure}
+\textbf{\underline{EFR 7.10:}}(a) There will be only one generation; here are the outputs that were asked for (in 
+format short): 
+$$
+\begin{array}{cccc}
+A \rightarrow & 0 & 1.0000 & 2.0000 \\
+& 0 & 1.7321 & 0 \\
+& 1.0000 & 1.0000 & 1.0000
+\end{array}\\
+\begin{array}{llcc}
+\mathrm{A} 1 \rightarrow & 0 & 0.5000 & 1.0000 \\
+& 0 & 0.8660 & 0 \\
+& 1.0000 & 1.0000 & 1.0000
+\end{array}
+$$
+$$
+\begin{array}{cccc}
+A \rightarrow & 1.0000 & 1.5000 & 2.0000 \\
+& 0 & 0.8660 & 0 \\
+& 1.0000 & 1.0000 & 1.0000
+\end{array}\\
+\begin{array}{llcc}
+\mathrm{A} 1 \rightarrow & 0.5000 & 1.0000 & 1.5000 \\
+& 0.8660 & 1.7321 & 0.8660 \\
+& 1.0000 & 1.0000 & 1.0000
+\end{array}
+$$
+$$
+A 1\left(\left[\begin{array}{ll}
+1 & 2
+\end{array}\right], 2\right) \rightarrow \begin{array}{r}
+0.5000 \\
+0.8660
+\end{array}
+A 3\left(\left[\begin{array}{ll}
+1 & 2
+\end{array}\right], 2\right) \rightarrow \begin{array}{r}
+1.5000 \\
+0.8660
+\end{array}
+$$
+(b) Since the program calls on itself and does so more than once (as long as \texttt{niter} is greater than 
+zero), placing a \texttt{hold off} anywhere in the program will cause graphics created on previous runs to 
+be lost, so such a feature could not be incorporated into the program. \\
+(c) Since we want the program to call on itself iteratively with different vertex sets, we really need to 
+allow vertex sets to be inputted. Different vertex inputs are possible, but in order for the program to 
+function effectively, they should be vertices of a triangle to which the similitudes in the program 
+correspond, (e.g., any of the triangles in any generation of the Sierpinski gasket). 
+\\
+\\
+\textbf{\underline{EFR 7.11:}} (a)S2,Sl,S3,S2,S3,S2 \\
+b) We list the sequence of float points in nonhomogeneous coordinates and in forma t short : 
+[0.5000 0.8660], [0.2500 0.4330], [1.1250 0.2165], [1.0625 0.9743], [1.5313 0.4871], 
+[1.2656 1.1096]. \\
+(c) The program is designed to work for any triangle in the plane. The reader can check that the three 
+similitudes are constructed in a way that uses midpoints of the triangle and the resulting diagram will 
+look like that of Figure 7.15. 
+\\
+\\
+\textbf{\underline{EFR 7.12:}} (a) As with \texttt{sgasket2} , the program sgasket 3 contructs future-generation triangles 
+simply from the vertices and (computed) midpoints of the current-generation triangles. Thus, it can 
+deal effectively with any triangle and produce Sierpinski-type fractal generations. \\
+(b) For illustration purposes, the following trials were run on MATLAB's Version 5, so as to illustrate 
+the flop count differences. The code is easily modified to work on newer versions of MATLAB by 
+simply deleting the "\texttt{flops}" commands. 
+\\
+\\
+\texttt{V1=[0 0]; V2=[l sqrt(3)]; V3=[2 0] ; '\%vertices of an equilateral 
+triangle }\\
+\texttt{test=[1 3 6 8 10]}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\texttt{>> for i=l:5 }&\texttt{>> for i=l:5 }\\
+\texttt{flops(0), tic, }&\texttt{flops(0), tic, }\\
+\hline
+\texttt{sgasketl(VI,V2,V3,test(i)), toe, 
+flops 
+}&\texttt{sgasketl(VI,V2,V3,test(i)), toe, 
+flops 
+}\\
+\texttt{end}&\texttt{end}\\
+\begin{lstlisting}[numbers=none,frame=none]
+> (ngen =1) elapsedJime = 0.0600, 
+ans =191 
+	(ngen =3) elapsedjime = 0.2500, 
+ans =2243 
+	(ngen =6) elapsedjime = 0.8510, 
+ans =62264 
+	(ngen =8) elapsedjime = 7.2310, 
+ans =560900 
+	(ngen =10) elapsed time = 65.4640, 
+ans =5048624 
+\end{lstlisting}&\begin{lstlisting}[numbers=none,frame=none]
+> (ngen =1) elapsedjime = 0.1400, 
+ans = 45 
+	(ngen =3) elapsedjime = 0.1310, 
+ans =369 
+	(ngen =6) elapsedjime = 0.7210, 
+ans =9846 
+	(ngen =8) elapsedjime = 6.2990, 
+ans =88578 
+	(ngen =10) elapsedjime = 46.7260, 
+ans =797166 
+\end{lstlisting}\\
+\hline
+\end{tabular}
+\end{center}
+We remind the reader that the times will vary, depending on the machine being used and other 
+processes being run. The above tests were run on a rather slow machine, so the resulting times are 
+longer than typical.
+\\
+\\
+\textbf{\underline{EFR 7.13:}} The M-file is boxed below: 
+\begin{lstlisting}[numbers=none]
+function []=snow(n) 
+S=[0 1 2 0;0 sqrt(3) 0 0]; 
+index=l; 
+while index <=n 
+	len=length(S(1,:)); 
+	for i = l:(len-1) 
+delta=S(:,i+l)-S(:,i) ; 
+perp=[0 -l;l 0]*delta; 
+T(:,4*(i-1)+D=S(:,i); 
+T(:,4*(i-1)+2)=S(:,i) + (l/3)*delta; 
+T(:,4*(i-1)+3)=S(:,i) + (l/2)*delta-(1/3)*perp; 
+T(:,4*(i-1)+4)=S(:,i) + (2/3)*delta; 
+T(:,4*(i-1)+5)=S(:,i+1); 
+end 
+index=index+l; 
+S=T; 
+end 
+plot (S(1,;),S(2,:)), axis('equal')
+\end{lstlisting}
+The outputs of snow (1), snow (2), and snow (6) are illustrated in Figures 7.17 and 7.18.
+\\
+\\
+\textbf{\underline{EFR 7.14:}} For any pair of nonparallel lines represented by a two-dimensional linear system: $\left[\begin{array}{ll}a & b \\ c & d\end{array}\right]\left[\begin{array}{l}x \\ y\end{array}\right]=\left[\begin{array}{l}e \\ f\end{array}\right]$, the coefficient matrix will have nonzero determinant $\alpha=a d-b c$. The lines are also represented by the equivalent system $\left[\begin{array}{cc}a / \alpha & b / \alpha \\ c & d\end{array}\right]\left[\begin{array}{l}x \\ y\end{array}\right]=\left[\begin{array}{c}e / \alpha \\ f\end{array}\right]$, where now the coefficient matrix has determinant $(a / \alpha) d-(b / \alpha) c=1$. This change simply amounts to dividing the first equation by $\boldsymbol{\alpha}$.
+\\
+\\
+\textbf{\underline{EFR 7.15:}} (a) As in the solution of Example 7.7, the interpolation equations $p(-2)=4, p(1)=3$, $p(2)=5$, and $p(5)=-22$ (where $p(x)=a x^{3}+b x^{2}+c x+d$ ) translate into the linear system: $\left[\begin{array}{cccc}-8 & 4 & -2 & 1 \\ 1 & 1 & 1 & 1 \\ 8 & 4 & 2 & 1 \\ 125 & 25 & 5 & 1\end{array}\right]\left[\begin{array}{l}a \\ b \\ c \\ d\end{array}\right]=\left[\begin{array}{c}4 \\ 3 \\ 5 \\ -22\end{array}\right]$. We solve this using left division, as in Method 1 of the solution of Example 7.7: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> forma t lon g 
+>> A=[-8 4 -2 1;1 1 1 1;8 4 2 1;125 25 5 1]; b=[4 3 5 -22 ]';
+>> X =A\b 
+->x=	0.47619047619048 (=a) 
+			1.05952380952381 (= b) 
+			2.15476190476190 (= c) 
+			0.26190476190476 (=d) 
+\end{lstlisting}
+(b) As in part (a) and the solution of Example 7.7, we create the matrix A and vector b of the 
+corresponding linear system: Ax = b. A loop will facilitate the construction of A: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> xvals = -3:5; A = zeros(9) %initialize the 9 by 9 matrix A 
+>> for i =1:length(xvals) 
+A(i,:)=xvals(i). (8:-1:0); 
+end 
+>> b = [-14.5 -12 15.5 2 -22.5 -112 -224.5 318 3729.5]' 
+\end{lstlisting}
+We next go through each of the three methods of solving the linear system that were introduced in the 
+solution of Example 7.7. We are working on an older and slower computer with MATLAB Version 5, 
+so we will have flop counts, but the times will be slower than typical. The code is easily modified to 
+work on the new version of MATLAB by simply deleting the flop s commands. We show the output 
+for x only for Method 1 (in \texttt{format long}) as the answers with the other two methods are essentially 
+the same
+\\
+\textbf{\underline{Method 1:}}
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\texttt{>> flops(0), tic,}&$->x$ &$-0.00000000000000$&$->elapsed\_time = 0.1300$\\
+\texttt{x=A/b, toe, flops }&=&0.00000000000000&->ans = 1125 (flops)\\
+&&0.50000000000000 &\\
+&&-0.00000000000001 &\\
+&& -6.00000000000000&\\
+&&-1.99999999999996  &\\
+&& 0.00000000000000&\\
+&&-17.00000000000003  &\\
+&&2.00000000000000 &\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{\underline{Method 2:}}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\texttt{>> flops (0), tic, x=inv(A)*b, 
+}&\texttt{->elapsed\_time = 0.3010}\\
+\texttt{toe, flops }&\texttt{->ans = 1935 (flops) }\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{\underline{Method 3:}}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\texttt{>> Ab=A; Ab(:,10)=b; 
+}&\texttt{->elapsed\_time = 3.3150}\\
+\texttt{>> flops(0), tic, rref(Ab), toe, 
+ }&\texttt{->ans = 2175 (flops) }\\
+ flops&\\
+\hline
+\end{tabular}
+\end{center}
+The size of this problem is small enough so that all three methods produce essentially the same vector 
+x. The computation times and flop counts begin to demonstrate the relative efficiency of the three 
+methods. Reading off the coefficients of the polynomial in order (from x), we get (after taking into 
+account machine precision and rounding): a = b = d = g = 0, c = 1/2, e = -6, f = -2, h = -17, and k = 2, so that the interpolating polynomial is given by $p(x) =\frac{1}{2}x^6-6x^4-2x^3-17x+2$ It is readily checked that this function satisfies all of the interpolation requirements. 
+\\
+\\
+\textbf{\underline{EFR 7.16:}} As in Example 7.8, for a fixed n, if we let x denote the exact solution, we then have $b_n = H_nx=c(n)(1\frac{1}{2}\frac{1}{3}\cdots\frac{1}{n-1}\frac{1}{n})'$ In order for bn to have all integer coordinates, we need to have c(n) be a multiple of each of the integers 1, 2, 3, ..., n. The smallest such c(n) is thus the least 
+common multiple of these numbers. We can use MATLAB's \texttt{lcm (a, b)} to find the 1cm of any set of 
+integers with a loop. Here is how it would work to find c(n) = lcm(l,2,..., n): \\
+\texttt{>> cn=l \%initialize }\\
+\texttt{>> for k=l:n, c(n)=lcm(cn, k), end}\\
+The remaining code for constructing the exact solution x, the numerical solution of Method 1, 
+\texttt{x\_meth1}, and the numerical solution of Method 2 \texttt{x\_meth2} are just as in Example 7.9. The flop s 
+commands in these codes should be omitted if you are using Version 6 or later. Also, since these 
+computations were run on an older machine, the elapsed times will be larger than what is typical (but their ratios should be reasonably consistent). The loop below will give us the data we need for both 
+parts (a) and (b):
+\begin{lstlisting}
+>> for n=20:10:3 0 
+cn=l; %initialize 
+for k=l:nf c(n)=lcm(cn, k); end 
+x = zeros(n,l); x(l)=cn; 
+bn = hilb(n)*x; 
+flops(0), tic, x_methl=hilb(n)\bn; toc, flops 
+flops(0), tic, x_meth2=inv(hilb(n))*bn; toc, flops 
+Pct_err_methl=100*max(abs(x-x_methl))/cn, 
+Pct_err_meth2=100*max(abs(x-x_meth2))/cn 
+end
+\end{lstlisting}
+Along with the expected output, we also got some warnings from MATLAB that the matrix is either 
+singular or poorly conditioned (to be expected). The output is summarized in the following table: 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{46}
+    \label{pfig:ch13_46}
+\end{figure}
+\textbf{Note:} The errors may vary depending on which version of MATLAB you are using. 
+(c) The errors with Method 1 turn out to be undetectable as n runs well over 1000. The computation 
+times become more of a problem than the errors. MATLAB's "left divide" is based on Gaussian 
+elimination with partial pivoting. After we study this algorithm in the next section, the effectiveness of 
+this algorithm on the problem at hand will become clear. 
+\\
+\\
+\textbf{\underline{EFR 7.17:}}(a)\&(b): The first two are in reduced row echelon form. The corresponding general 
+solutions are as follows: (for $M_1$): $x_1=3, x_2 = 2; (for M2 ): x_1=2s-3t-2, x_2=s, x_3=5t+1, 
+x4=t$, where s and t are any real numbers
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\texttt{>>rref([ 1  3  2  0  3;2  6  2 -8  4])}&->ans&1  3  0 -8  1\\
+&&0  0  1  4 1 \\
+\hline
+\end{tabular}
+\end{center}
+(c) From the outputted reduced row echelon form, we obtain the following general solution of the first 
+system: $x_1 = 1 - 3s + 8f, x_2 = s, x_3 = 1 - 4t, x_4 = t$ , where s and t are any real numbers. Because of 
+the arithmetic nature of the algorithm being used (as we will learn in the next section), it is often 
+advantageous to work in \texttt{format} ra t in cases where the linear system being solved is not too large 
+and has integer or fraction coefficients. We do this for the second system:
+\\
+\\
+\textbf{\underline{EFR 7,18:}} (a) The algorithm for forward substitution:$x_{1}=b_{1} / a_{11}, \quad x_{j}=\left(b_{j}-\sum_{k=1}^{j-1} a_{j k} x_{k}\right) / a_{jj}$(the first formula is redundant since the latter includes it as a special case) is easily translated into the 
+following MATLAB code (cf. Program 7.4):
+\begin{lstlisting}[numbers=none]
+function x=fwdsubst(L,b) 
+%Solves the lower triangular system Lx=b by forward substitution 
+%Inputs: L = lower triangular matrix, b = column vector of same 
+%dimension 
+%Output: x = column vector (solution) 
+[n m]=size(L); 
+x(l)=b(l)/L(l,l); 
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\begin{lstlisting}[numbers=none,frame=none]
+ for j=2: n 
+x(j) = (b(j)-L(j,l:j-l)*x(l:j-l)')/L(j,j) ; 
+end 
+x=x'; 
+\end{lstlisting}&&\\
+\hline
+\texttt{>>L[1 2 3 4;0 2 3 4;0 0 3 4;0 0 0 4]';}&->ans&4\\
+\texttt{>> b=[4 3 2 1]'; }&&-5/2\\
+\texttt{>> format rat}&&-5/6 \\
+\texttt{>> fwdsubst(L,b)}&&-5/12\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{\underline{EFR 7.19}} : The two M-files are boxed below:
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\begin{lstlisting}[numbers=none,frame=none]
+function B-rowmult(A,i,c) 
+% Inputs: A = any matrix, i = any row index, c = any nonzero number 
+% Output: B = matrix resulting from A by replacing row i by this row 
+% multiplied by c. 
+[m,n]=size(A); 
+if i<l|i>m 
+	error(*Invalid index') 
+end 
+B=A; 
+B(i, :)=c*A(i, :); 
+\end{lstlisting}\\
+\hline
+\begin{lstlisting}[numbers=none,frame=none]
+ function B-rowcomb(A,i,j,c) 
+% Inputs: A = any matrix, i, j - row indices, c = a number 
+% Output: B = matrix resulting from A by adding to row j the number 
+% c times row i. 
+[m,n]=size(A); 
+if i<l|i>m|j<l|j>m 
+	error('Invalid index') 
+end 
+if i-j 
+	error('Invalid row operation') 
+end 
+B=A; 
+B(j, :)=c*A(i, :)+A(j, :) ; 
+\end{lstlisting}\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{\underline{EFR 7.20:}} If we use \texttt{gausslim} to solve the system of Example 7.13, we get the correct answer 
+(with lightning speed) with a flop count of 104 (if you have access to Version 5). In the table below, 
+we give the corresponding data for the linear systems of parts (a) and (b) of EFR 7.16 (compare with 
+the table in the solution ofthat exercise):
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{47}
+    \label{pfig:ch13_47}
+\end{figure} 
+We observe that the time is detectable, although it was not when we used MATLAB's "left divide". 
+Similarly, if we solve the larger systems of part (c) of EFR 7.16, we still get 0\% errors for large values 
+of n, but the times needed for \texttt{gausseiim} to do the job are much greater than they were for "left 
+divide''. MATLAB's "left divide'' is perhaps its most important program. It is based on Gaussian 
+elimination, but also relies on numerous other results and techniques from numerical linear algebra. A 
+full description of "left divide'' would be beyond the scope of this book; for the requisite mathematics, 
+we refer to [GoVL-83]. 
+\\
+\\
+\textbf{\underline{EFR 7.21:}} Working just as in Example 7.14, but this time in rounded floating point arithmetic, the answers are as follows:\\
+(a) $x_1 = 1, x_2 =.999 and (b) x_1 = .001, x2 = .999.$
+\\
+\\
+\textbf{\underline{EFR 7.22:}}  Looking at (28) we see that solving for $x_j$ takes: 1 division + (n -j) multiplications + 
+(n -j - 1) additions (if j < n) + 1 subtraction (if/ < n). 
+Summing from j = n to y = 1, we deduce that: \\
+\\
+Total multiplications/divisions $=\sum_{j=1}^{n} n-j+1=n^{2}+n-n(n+1) / 2=\left(n^{2}+n\right) / 2$,
+\\
+\\
+Total additions/subtractions $=\sum_{j=1}^{n-1}[n-j-1+1]=\sum_{j=1}^{n-1}[n-j]=\sum_{j=1}^{n-1} j=\left(n^{2}-n\right) / 2$.\\
+\\
+Adding gives the grand total of $n_2$ flops, as asserted.
+\\
+\\
+\textbf{\underline{EFR 7.23:}} Here we let $x=\left(x_{1}, x_{2}, \cdots, x_{n}\right)$ denote any $n$-dimensional vector and $\|x\|$ denote its max norm $\|x\|_{\infty}=\max \left\{\left|x_{1}\right|,\left|x_{2}\right|, \cdots,\left|x_{n}\right|\right\}$. The first norm axiom $(36 \mathrm{~A})$ is clear from the definition of the max norm. The second axiom (36B) is also immediate: $\|c x\|=\max \left\{\left|c x_{1}\right|,\left|c x_{2}\right|, \cdots,\left|c x_{n}\right|\right\}$ $=|c| \max \left\{\left|x_{1}\right|,\left|x_{2}\right|, \cdots,\left|x_{n}\right|\right\}=|c|\|x\|$. Finally, the triangle inequality (36C) for the max norm readily follows from the ordinary triangle inequality for real numbers:
+$$
+\begin{aligned}
+\|x+y\| &=\max \left\{\left|x_{1}+y_{1}\right|,\left|x_{2}+y_{2}\right|, \cdots,\left|x_{n}+y_{n}\right|\right\} \\
+&=\max \left\{\left|x_{1}\right|+\left|y_{1}\right|,\left|x_{2}\right|+\left|y_{2}\right|, \cdots,\left|x_{n}\right|+\left|y_{n}\right|\right\} \leq\|x\|+\|y\|
+\end{aligned}
+$$
+EFR 7.24: (a) We may assume that $B \neq 0$, since otherwise both sides of the inequality are zero. Using definition (38), we compute:
+$$
+\begin{aligned}
+\|A B\|=\max \left\{\frac{\|A B x\|}{\|x\|}, x \neq 0 \text { (vector) }\right\}=\max &\left\{\frac{\|A(B x)\|}{\|x\|} \cdot \frac{\|B x\|}{\|B x\|}, B x \neq 0 \text { (vector) }\right\} \\
+&=\max \left\{\frac{\|A(B x)}{\|B x\|} \cdot \frac{\|Bx\|}{\|x\|}, B x \text { (vector) }\right\} \leq\|A\| B \|
+\end{aligned}
+$$
+(b) First note that for any vector $x \neq 0$, the vector $y=A x$ is also nonzero (since $A$ is nonsingular), and $A^{-1} y=x$. Using this notation along with definition (38), we obtain:
+$$
+\begin{aligned}
+\left\|A^{-1}\right\|=\max \left\{\frac{\left\|A^{-1} y\right\|}{\|y\|},\right.&y \neq 0(\text { vector })\}=\left(\min \left\{\frac{\|y\|}{\left\|A^{-1} y\right\|}, y \neq 0(\text { vector })\right\}\right)^{-1} \\
+=&\left.\underset{y=A x}{ } \min \left\{\frac{\|A x\|}{\|x\|}, x \neq 0(\text { vector })\right\}\right)^{-1} .
+\end{aligned}
+$$
+\textbf{\underline{EFR 7.25:}} (a) We first store the matrix A with the following loop, and then ask MATLAB for its condition number:
+\begin{lstlisting}[numbers=none,frame=none]
+>> norm(z , in f )->ans =8.7156e+004 
+At first glance, the accuracy looks quite decent. The warnings, however, remove any guarantees that 
+Theorem 7.7 would otherwise allow us to have. 
+(d) >> z2=inv(A)*b; r2=b-A*z2; -> Warning: Matrix is close to singular or badly 
+scaled. Results may be inaccurate. RCOND = 8.296438e-017. 
+>> errest2=cl*nor m (r2 , inf) /norm (A, inf) ->errest2 = 2.3494 
+(e) As in Example 7.23, we solve the system symbolically and then get the norms that we asked for: 
+>> S=sym(A); x=S\b ; x=double(x); 
+>> norm (x-z , inf) ->ans =3.0347e-005 
+>> norm (x-z2 , inf) ->ans =3.0347e-005 
+\end{lstlisting}
+Thus, despite the warning we received, the numerical results are much more accurate than the estimates 
+of Theorem 7.7 had indicated. 
+\\
+\\
+\textbf{\underline{EFR 7.26:}} (a) Since $\lambda I$ - A is a triangular matrix, Proposition 7.3 tells us that the determinant 
+$p_A(X)$ = det($\lambda I - A$) is simply the product of the diagonal entries: $p_A(\lambda) = (\lambda - 2)^2(\Lambda -1)^2$. Thus A 
+has two eigenvalues: $\lambda=1,2$ , each having algebraic multiplicity 2. \\
+(b)\texttt{>> [V, D] = eig([ 2 1 0 0;0 2 0 0;0 0 1 0;0 0 0 1]) }\\
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+->V=&1.0000  -1.0000  0  0&->D=&2 0 0 0\\
+&0  0.0000  0  0&&0 2 0 0\\
+&0  0  1.0000  0&&0 0 1 0\\
+&0  0  0  1.0000&&0 0 0 1\\
+\hline
+\end{tabular}
+\end{center}
+From the output of \texttt{eig} , we see that the eigenvalue $\lambda$ = 1 has two linearly independent eigenvectors: 
+[0 0 1 0]' and [0 0 0 1]', and so has geometric multiplicity 2, while the eigenvalue $\lambda$ = 2 has only one 
+independent eigenvector [2 0 0 0]', and so has geometric multiplicity 1. \\
+(c) From the way in which part (a) was done, we see that the eigenvalues of any triangular matrix are 
+simply the diagonal entries (with repetitions indicating algebraic multiplicities). 
+\\
+\\
+\textbf{\underline{EFR 7.27:}} (a) The M-file is boxed below:
+\begin{lstlisting}[numbers=none]
+functio n [x, k, cliff] = jacobi (A,b, x0, tol , kmax) 
+% performs the Jacob i iteration on the linear system Ax=b. 
+% Inputs: the coefficient matrix 'A' , th einhomogeneity (column) 
+% vecto r 'b' , the seed (column) vector 'x0' for the iteration 
+% process, the tolerance 'tol which will causethe iteration to stop 
+% if the 2-norms of differences of successive iterates becomes 
+% smaller than 'tol' , and 'kmax which is the maximum number of 
+% iterations to perform. 
+% Outputs: the final iterate 'x' , the number of iteration sperformed 
+% 'k' , and a vector *diff which records the 2-norms of successive 
+% differences of iterates. 
+% If any of the last three input variables are not specified , default 
+% value s of x0= zero column vector , tol=1e-10 and kmax=100 ar e used .
+ 
+%assign defaul t inpu t variables , a s necessar y 
+if nargin<3 , x0=zeros(size(b)) ; end 
+if nargin<4 , tol=1e-10 ; end 
+if nargin<5 , kmax=100; end 
+if min(abs(diag(A)))<eps 
+	error('Coefficient matrix has zero diagonal entries, iteration 
+cannot be performed.\r' ) 
+end 
+
+[n m]=size(A); 
+xold=x0 ; 
+k=l ; diff=[] ; 
+
+while k<=kmax
+	xnew=b; 
+	for i=l:n 
+		for j=l:n 
+			if j~=i 
+				xnew(i)=xnew(i)-A(i,j)*xold(j); 
+			end 
+		end 
+		xnew(i)=xnew(i)/A(i,i); 
+	end 
+	diff(k)=norm(xnew-xold,2); 
+	if diff(k)<tol 
+	 fprintf('Jacobi iteration has converged in %d iterations.\r', k) 
+			x=xnew; 
+			return 
+	end 
+	k=k+l; xold=xnew; 
+end 
+fprintf('Jacobi iteration failed to converge.\r') 
+x=xnew; 
+\end{lstlisting}
+\begin{lstlisting}[numbers=none]
+(b)>> A=[3 1 -1;4 -10 1;2 1 5); b=[-3 28 20]' ; 
+>> [x, k, diff] = jacobi(A,b,[0 0 0]',le-6) ; 
+-> Jacobi iteration has converged in 26 iterations. 
+>> norm(x-[l -2 4]' , 2)->ans = 3.9913e-007 (Error is in agreement with Example 7.26.) 
+>> di f f (2 6)->ans = 8.9241e-007 (Last successive difference is in agreement with Example 7.26.) 
+>> [x, k, diff] = jacobi(A,b,[0 0 0]') ; 
+->Jacobi iteration has converged in 41 iterations. (With default error tolerance 1e-10) 
+\end{lstlisting}
+\textbf{\underline{EFR 7.28:}} (a) The M-file is boxed below:
+\begin{lstlisting}[numbers=none]
+function [x, k, diff] = sorit(A,b,omega, x0,tol,kmax) 
+% performs the SOR iteration on the linear system Ax=b. 
+% Inputs: the coefficient matrix 'A', the inhomogeneity (column) 
+% vector 'b', the relaxation paramter 'omega', the seed (column) 
+% 'x0 for the iteration process, the tolerance 'tol vector which 
+% will cause the iteration to stop if the 2-norms of successive 
+% iterates becomes smaller than 'tol*, and 'kmax which is the 
+% maximum number of iterations to perform. 
+% Outputs: the final iterate 'x', the number of iterations performed 
+% 'k', and a vector 'diff which records the 2-norms of successive 
+% differences of iterates. 
+% If any of the last three input variables are not specified, default 
+% values of x0= zero column vector, tol=le-10 and kmax=100 are used. 
+
+%assign default input variables, as necessary 
+if nargin<4, x0=zeros(size(b)); end 
+if nargin<5, tol=le-10; end 
+if nargin<6, kmax=100; end 
+
+if min(abs(diag(A)))<eps 
+	error('Coefficient matrix has zero diagonal entries, iteration 
+cannot be performed.\r') 
+end 
+
+[n m]=size(A); 
+xold=x0; 
+k=l; diff=[]; 
+
+while k<=kmax 
+	xnew~b; 
+	for i=1:n  
+		for j=l:n
+			if j<i 
+				xnew(i)=xnew(i)-A(i,j)*xnew(j); 
+			elseif j>i 
+				xnew(i)=xnew(i)-A(i,j)*xold(j) ; 
+			end 
+		end 
+		xnew(i)=xnew(i)/A(i, i); 
+		xnew(i)=omega*xnew(i) + (1-omega)*xold(i); 
+	end
+	diff(k)=norm(xnew-xold,2) ; 
+	if diff(k)<tol 
+		fprintf('SOR iteration has converged in %diterations\r,k) 
+			x=xnew; 
+			return 
+	end
+	k=k+l; xold=xnew; 
+end 
+fprintf(*SOR iteration failed to converge.\r'
+) 
+x=xnew; 
+\end{lstlisting}
+(b) We set the relaxation parameter equal to 1 for SOR to reduce to Gauss-Seidel: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> A=[3 1 -1/ 4 -10 1;2 1 5) ; b=[- 3 28 20]' ; 
+>>[x, k, diff ] = sorit(A,b,l , [0 0 0] \le-6 ) 
+-> SOR iteration has converged in 17 iterations 
+>> norm(x-[l -2 4]',2 ) 
+->ans =1.4177e-007 (This agrees exactly with the error estimate of Example 7.27.) 
+>> (x, k, diff ] = sorit(A,b,.9,[ 0 0 0]',le-6) ; 
+->	SOR iteration has converged in 9 iterations
+\end{lstlisting}
+\textbf{\underline{EFR 7.29:}} Below is the complete code needed to recreate Figure 7.41. After running this code, 
+follow the instructions of the exercise to create the key.
+\begin{lstlisting}[numbers=none,frame=none]
+>> jerr-1 ; n=1 ; 
+>> while jerr>=1e-6 
+x=jacobi(A,b,[0 0 0]'1e-7,n); 
+Jerr(n)=norm(x-(1 -2 4]', 2); jerr=Jerr(n); n=n + 1; 
+end 
+>> semilogy(1:n-1,Jerr,'bo-') 
+>> hold on 
+
+>> gserr=1; n-1; 
+>> while gserr>=1e-6 
+x=gaussseidel(A,b,[0 0 0]',1e-7,n); 
+GSerr(n)=norm(x-[1 -2 4]',2); gserr=GSerr(n); n=n+1; 
+end 
+>> semilogy(1:n-1,GSerr,'gp-') 
+
+>> sorerr=1; n=1; 
+>> while sorerr>=le-6 
+x=sorit(A,b,0.9, [0 0 0]',1e-1,n); 
+SORerr(n)=norm(x-[1 -2 4]',2); sorerr=SORerr(n); n=n+1; 
+end 
+>> semilogy(1:n-1,SORerr, 'rx-') 
+>> xlabel('Number of iterations'), ylabel('Error') 
+\end{lstlisting} 
+\textbf{\underline{EFR 7.30:}} (a) By writing out the matrix multiplication and observing repeated patterns we arrive 
+at the following formula for the vector b$\equiv$Ax of size 2500x1. Introduce first the following two 
+1x50 vectors b' $\bar{b}$: 
+$$
+\begin{aligned}
+&b^{\prime}=\left[\begin{array}{lllllllll}
+1 & 4 & -1 & 4 & -1 & \cdots & 4 & -1 & 5
+\end{array}\right] \text {, }\\
+&\bar{b}=\left[\begin{array}{lllllllll}
+0 & 2 & -2 & 2 & -2 & \cdots & 2 & -2 & 3
+\end{array}\right] \text {. }\\
+\end{aligned}
+$$
+ In terms of copies of these vectors, we can express b as the transpose of the following vector: 
+ $$
+ b = [b' ~\tilde{b}~ \tilde{b}~ \cdots ~\tilde{b} ~\tilde{b }~b'].
+ $$
+ (b) We need first to store the matrix A . Because of its special form, this can be expeditiously 
+accomplished using some loops and the \texttt{diag} command as follows:
+\begin{lstlisting}[numbers=none,frame=none]
+>> x=ones(2500,1); x(2:2:2500,1)=2 ; 
+>> tic , A=4*eye(2500); toc 
+->elapsed_time =0.6090 
+>> vl=-1*ones (49,1); v1=[v1;0]; %seed vector for sub/super diagonals 
+tic, secdiag=v1; 
+for i=l:49 
+if i<49 
+secdiag=[secdiag;v1]; 
+else 
+secdiag=[secdiag;v1(1:49)]; 
+end 
+end, toc 
+->elapsed_time =0.1250 
+>> tic, A=A+diag(secdiag,-1)+diag(secdiag,-1)-diag(ones(2450,1),50)-diag(ones(2450,1),-50); toc 
+->elapsed_time =12.7660 
+>> tic, bslow=A*x; toc 
+->elapsed_time = 0.2340
+\end{lstlisting}
+(c): To see the general concepts behind the following code, read Lemma 7.16 (and the notes that 
+precede it). 
+\begin{lstlisting}[numbers=none,frame=none]
+tic , bfast=4*x+[secdiag;0].*[x(2:2500);0]+... 
+[0;secdiag].*[0 ; x (1:2499)]-[x(51:2500) ; zeros(50,1)]-.. . 
+[zero s (50,1) ; x(l:2450)] ; toc ->elapsed_time = 0.0310
+\end{lstlisting}
+(d) If we take N = 100, the size of A will be 10,000 $\times$ 10,000, and this is too large for MATLAB to 
+store directly, so Part (b) cannot be done. Part (a) can be done in a similar fashion to how it was done 
+when N was 50. The method of part (c), however, still works in about 1/100th of a second. Here is the 
+corresponding code:
+\begin{lstlisting}[numbers=none,frame=none]
+>>x=one s (10000,1) ; x (2 :2 :10000,1 ) =2; 
+>>vl=-l*ones(99,1); vl=[vl;0); %seed vector for sub/super diagonals 
+>>tic, secdiag=vl; for i=l:99, if i<99, secdiag=[secdiag;vl]; 
+else, secdiag=[secdiag;vl(1:99)]; end 
+end, toc 
+>> tic , bfast=4*x+[secdiag;0].*[x(2:10000);0 ] +... 
+[0;secdiag ] .* [0; x (1:9999)]-[ x (101:10000); zeros(100,1)]-... 
+[zeros (100, 1) ; x (1:9900)] ; toc ->elapsed_time = 0.0100
+\end{lstlisting}
+\textbf{\underline{EFR 7.31:}} (a) The M-file is boxed below: 
+\begin{lstlisting}[numbers=none]
+function [x, k, diff] = sorsparsediag(diags, inds,b,omega, 
+x0, tol,kmax) 
+% performs the SOR iteration on the linear system Ax=b in cases where 
+% the n by n coefficient matrix A has entries only on a sparse set of 
+% diagonals. 
+% Inputs: The input variables are 'diags', an n by J matrix where 
+% eachcolumn consists of the entries of one of A's diagonals. The 
+% first column of diags is the main diagonal of A (even if all zeros) 
+% and 'inds' , a 1 by n vector of the corresponding set of indices 
+% for the diagonals (index zero corresponds to the main diagonal). 
+% the relaxation paramter 'omega', the seed (column) vector 'x0' for 
+% the iteration process, the tolerance 'tol which will cause the 
+% iteration to stop if the infinity-norms of successive iterates 
+% become smaller than 'tol', and 'kmax which is the maximum number
+% of iterations to perform. 
+% Outputs: the final iterate 'x', the number of iterations performed 
+% 'k', and a vector 'diff which records the 2-norms of successive 
+% differences of iterates. 
+% If any of the last three input variables are not specified, default 
+% values of x0= zero column vector, tol=1e-10 and kmax=1000 are used. 
+
+%assign default input variables, as necessary 
+if nargin<5, xO=zeros(size(b)); end 
+if nargin<6, tol=1e-10; end 
+if nargin<7, kmax=1000; end 
+
+if min(abs(diags(:,1)))<eps 
+	error('Coefficient matrix has zero diagonal entries, iteration 
+cannot be performed.\r') 
+end 
+
+[n D]=size(diags); 
+xold=x0; 
+k=l; diff=[]; 
+
+while k<=kmax 
+	xnew=b; 
+	for i=l:n 
+		for d=2:D %run thru non-main diagonals and scan for entries that effect xnew(i) 
+			ind=inds(d); 
+			if ind<0&i>-ind %diagonal below main and j<i case 
+				aij=diags(i+ind,d); 
+				xnew(i)=xnew(i)-aij*xnew(i+ind); 
+			elseif ind>0&i<=n-ind %diagonal above main and j>i case 
+				aij=diags(i,d); 
+				xnew(i)=xnew(i)-aij*xold(i + ind) ; 
+			end 
+		end 
+		xnew(i)=xnew(i)/diags(i, 1) ; 
+		xnew(i)=omega*xnew(i)+(1-omega)*xold(i); 
+	end 
+	diff(k)=norm(xnew-xold, inf) ; 
+	if diff(k)<tol 
+		fprintf('SOR iteration has converged in %d iterations\r', k) 
+			x=xnew; 
+			return 
+	end 
+	k=k+l; xold=xnew; 
+end 
+fprintf('SOR iteration failed to converge. \r') 
+x=xnew; 
+\end{lstlisting}
+(b) In order to use this program, we must create the input matrix diag s from the nontrivial diagonals 
+of the matrix A. The needed vectors were constructed in the solution of EFR 7.30(b); we reproduce the 
+relevant code: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> vl=-l*ones(49,1); vl=[vl;0]; %seed vector for sub/super diagonals 
+secdiag=v1; 
+for i=l:49 
+if i<49 
+secdiag=[secdiag;v1]; 
+else 
+secdiag=[secdiag;vl(1:4 9)]; 
+end 
+end
+\end{lstlisting}
+We now construct the columns of diag s to be the nontrivial diagonals of A taken in the order of the 
+vector: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> ind s =[ 0 1- 1 50 -50] 
+>> diag s = zeros(2500,5) ; 
+>> diags(:,1)=4 ; diags(1:2499,[ 2 3])=[secdiag secdiag] ; 
+>> diags(l:2450 , [4 5])= [-ones(2450,1 ) -ones(2450,1)] ;
+\end{lstlisting}
+We will also need the vectors x and b; we assume they have been obtained (and entered in the 
+workspace) in one of the ways shown in the solution of EFR 7.30. We now apply our new SOR 
+program on this problem using the default tolerance: 
+\begin{lstlisting}[numbers=none,frame=none]
+>> tic 
+>> [xsor, k, diff]=sorsparsediag(diags, inds,b,2/(1+sin(pi/51)), 
+zeros(size(b))); toc 
+->SOR iteration has converged in 222 iterations 
+->elapsed_time = 0.6510 
+>> max(abs(xsor-x)) 
+->ans = 6.1213e-010 
+\end{lstlisting}
+
+\clearpage
+\end{document} 

@@ -1,0 +1,2038 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\chapter{Introduction to Differential Equations}
+\label{chap:chap_8}
+	
+
+
+\section{WHAT ARE DIFFERENTIAL EQUATIONS? }
+Many natural phenomena are represented or modeled by functions. Such functions may depend on one or several independent variables. Choices for the independent variables are endless, but the most common ones are time and space (location) variables. Often, the explicit function is not known but rather we only know (from theory, experiments, or history) certain relations among the various rates of change (derivatives) of the function with respect to some of its independent variables. Any equation involving an unknown function along with some or all of its derivatives is called a \textbf{differential equation (DE)}. Differential equations break down into two major kinds, \textbf{ordinary differential equations (ODEs)} and \textbf{partial differential equations (PDEs)}. ODEs involve an unknown function of a single variable only, while PDEs involve an unknown function of several variables. Thus, technically an ODE falls under the umbrella of just being a special type of a PDE but the theories for these types of equations are customarily split into two different major mathematical subject areas. The derivatives of a function of several variables are called partial derivatives. We will study PDEs in Part III of this book and in this part we will focus on ODEs.
+\\
+
+The \textbf{order} of an ODE is the order of the highest derivative of the unknown function that appears in the equation. A solution of an ODE is any function for which, when it (and its derivatives) are substituted for the unknown function (and the corresponding derivatives) in the ODE, the resulting equation will be an identity (i.e., always true). Our next example gives some solutions of certain ODEs. We do not assume the reader has studied differential equations, so at this point the reader should not worry about how the solutions in these examples were obtained.
+\\
+\\
+\textbf{EXAMPLE 8.1:} For each ODE that is given, determine its order and check the given function(s) is a solution. In each of the ODEs the unknown function is written as " $y$ " and we understand " $x$ " to be the independent variable. Thus, " $y "$ really means " $y(x) "$.\\
+(a) $y^{\prime}=2 x ; y=x^{2}+C$ (here $C$ is an arbitrary constant)\\
+(b) $y^{\prime}=2 x y+1 ; y=e^{x^{2}}\left(\int_{0}^{x} e^{-t^{2}} d t\right)+e^{x^{2}}$\\
+(c) $y^{\prime \prime}+2 y^{\prime}-3 y=0 ; y_{1}=e^{-3 x}, y_{2}=e^{x}$\\
+(d) $y^{\prime \prime \prime \prime}+4 y^{\prime \prime \prime}+3 y=x ; y_{1}=x / 3 ; y_{2}=e^{-x}+x / 3$
+\\
+\\
+SOLUTION: The orders of each of these ODEs are (in order) $1,1,2$, and $4 .$ Checking that the functions given are actually solutions just requires some differentiation. We do only (b) (since it's a bit different) and the first function of (c), and leave the rest to the reader. Let's begin with checking that $y_{1}=e^{-3 x}$ solves the ODE in (c). Since $y_{1}^{\prime}=-3 e^{-3 x}$ and $y_{1}^{\prime \prime}=9 e^{-3 x}$, we have $y^{\prime \prime}+2 y^{\prime}$ $-3 y=9 e^{-3 x}+2\left(-3 e^{-3 x}\right)-3 e^{-3 x}=0$, as required.
+\\
+
+The check in part (b) will require the fundamental theorem of calculus (for differentiating functions defined by integrals). We recall this theorem here for convenience and future reference. It is summarized by the formula given below in which $f(t)$ is any continuous function:
+\begin{equation}
+\frac{d}{d x}\left(\int_{a}^{x} f(t) d t\right)=f(x)
+\end{equation}
+(This is really just a precise statement of the fact that differentiation and integration are inverse processes.) Now using (1) together with the product rule, we obtain:
+$$
+\begin{aligned}
+y^{\prime}=\left(e^{x^{2}}\left(\int_{0}^{x} e^{-t^{2}} d t\right)+e^{x^{2}}\right)^{\prime} &=e^{x^{2}}(2 x)\left(\int_{0}^{x} e^{-t^{2}} d t\right)+e^{x^{2}}\left(\int_{0}^{x} e^{-t^{2}} d t\right)^{\prime}+e^{x^{2}}(2 x) \\
+&=2 x e^{x^{2}}\left(\int_{0}^{x} e^{-t^{2}} d t\right)+e^{x^{2}} e^{-x^{2}}+2 x e^{x^{2}} \\
+&=2 x\left(e^{x^{2}}\left(\int_{0}^{-t^{2}} d t\right)+e^{x^{2}}\right)+1 \\
+&=2 x y+1 .
+\end{aligned}
+$$
+As demonstrated by part (a) in the above example, in general, an ODE will have infinitely many solutions. The collection of all solutions of a certain ODE of order $n$ (called the \textbf{general solution}) will involve $n$ arbitrary constants. So to specify one such solution, we will need $n$ \textbf{auxiliary conditions} (one for each order derivative) for the unknown function. If the independent variable is time, in many natural problems the auxiliary conditions are given at time $t=t_{0}=0$ (initially) and in this case are called \textbf{initial conditions (ICs)}. A problem that gives an ODE (of order $n$ ) along with a corresponding set of (n) ICs is called an \textbf{initial value problem (IVP)}. This terminology still applies even when the independent variable is different from time and when $t_{0} \neq 0$.
+\\
+\\
+\textbf{EXAMPLE 8.2:} Use the information in the last example to find a solution for each of the following IVPs:
+\begin{tasks}(2)
+\task 
+$\left\{\begin{array}{l}
+(D E) y^{\prime}=-\cos (x) \\
+(I C) y(0)=-3
+\end{array}\right.$
+\task
+$\left\{\begin{array}{l}
+(D E) y^{\prime \prime}+2 y^{\prime}-3 y=0 \\
+(I C)^{\prime} s y(0)=5, y^{\prime}(0)=1
+\end{array}\right.$
+\end{tasks}
+SOLUTION: Part (a): The form of the DE is a familiar one from calculus: $y^{\prime}=$ $f(x)$. The general solution is the indefinite integral $y=\int f(x) d x$, so here $y=\int-\cos (x) d x=-\sin (x)+C$. Substituting $x=0$ into both sides gives (using the IC) $-3=y(0)=-\sin (0)+C=0+C=C$, so $C=-3$, and $y=-\sin (x)-3$.
+\\
+\\
+Part (b): Example 8.l gave us two solutions of this DE. Using the rules of differentiation, we observe that if we multiply either of these solutions (or any solution of the DE) by a constant it will still solve the DE (reason: Constants can be pulled out of differentiations). Also, if we add two such solutions (or any two solutions of this DE) the sum will also solve the DE (reason: Derivatives of sums are sums of the derivatives). These important facts are not true for all DEs; we will later discuss general circumstances under which they will be true. From what we have stated, it follows that for any constants $C_{1}, C_{2}$, the function $y=C_{1} y_{1}+C_{2} y_{2}=C_{1} e^{-3 x}+C_{2} e^{x}$ will solve the DE (this actually turns out to be the general solution). If we can determine choices for $C_{1}, C_{2}$ that will make this function satisfy the ICs, then we can proceed. For this function, the ICs give: $5=$ $y(0)=C_{1}+C_{2}$, and $1=y^{\prime}(0)=-3 C_{1}+C_{2}$. Solving these two equations gives $C_{1}=1, C_{2}=4$ and so a solution of the IVP is $y=e^{-3 x}+4 e^{x}$.
+\\
+
+From calculus we know that the solution in part (a) is \textbf{unique} (meaning: There is only one), and for both problems we saw the \textbf{existence} of a solution (meaning: There is at least one). It turns out that the solution in part (b) is also unique. Not all IVPs have such a nice existence and uniqueness phenomenon; we will give some theorems about this later.
+\\
+
+The simplest type of ODE is like that given in part (a) of the last example where it is really just a calculus problem of finding an indefinite integral. In calculus courses, we learn that although it is possible to differentiate just about any function in sight, finding indefinite integrals is almost always impossible. Most of the integrals encountered in calculus courses are tailor-made to be evaluated using one of the techniques of integration. Yet, by the fundamental theorem of calculus, any continuous function has a definite integral (whose derivative is given by (1)). The hard fact is that in real life, chances are that the function we need to integrate will be impossible to do explicitly. By extension, more complicated differential equations are also extremely unlikely to be solvable explicitly. Much of the material in traditional courses in DEs is focused on developing methods for solving very limited classes of DEs explicitly. Thus in practice, \underline{most DEs that come up cannot be solved explicitly and numerical methods are the only way to go.}
+\\
+
+DEs arise in problems from practically all scientific disciplines from physics and engineering to biology and pharmacology. For each such model, certain information is known from which the DE can be formulated along with needed auxiliary conditions. In biology, for example, information might be used to set up a DE modeling an outbreak of a disease. We know the history of how the disease is spread and we will be very interested in knowing what will happen in the future. The unknown function would be the number of infected individuals, and the independent variable would be time. Biologists (and many others) would be interested in predicting the number of infected individuals in future times as well. Perhaps there are some preventative measures or vaccines that could be used. The effect of such items could further be built into the DE to help decide on the best course(s) of action to keep the disease from becoming an epidemic or preferably to wipe it out. Even people studying finance have developed a type of DE (called a stochastic differential equation) that can be used to model prices of stock and futures markets. This subject received a lot of attention recently, and has garnered generous funding from Wall Street tycoons who are always looking for creative new ways to turn profits. Of course, in any of the applied fields, an explicit solution is never really required. We would just like to know (within some specified tolerance for error) what the value of the unknown function will be at some values of the independent variables. For the remainder of this chapter, we will focus on (single) first-order ODEs. In the next two chapters we will extend many of our techniques to systems of several ODEs involving several unknown functions and to higher-order ODEs.
+ 
+ 
+\section{SOME BASIC DIFFERENTIAL EQUATION MODELS AND EULER'S METHOD}
+\noindent
+Let us begin with a simple example where pure mathematics alone would be quite awkward and inadequate, but MATLAB will easily come to the rescue.
+\\
+\\
+\textbf{EXAMPLE 8.3:} Graph the solution of the IVP: $\left\{\begin{array}{l}(D E) y^{\prime}=\sin \left(x^{2}\right) \\ (I C) y(0)=1\end{array}\right.$ for $0 \leq x \leq 5$.
+\\
+\\
+SOLUTION: Invoking the fundamental theorem of calculus, we obtain
+$$
+y^{\prime}=\sin \left(x^{2}\right) \Rightarrow y(x)=\int_{0}^{x} \sin \left(t^{2}\right) d t+C .
+$$
+Now substituting x=0 into the latter equation, the IC gives us that
+$$
+1=y(0)=\int_{0}^{0} \sin \left(t^{2}\right) d t+C=0+C \Rightarrow C=1.
+$$
+so we now have $y(x)=\int_{0}^{x} \sin \left(t^{2}\right) d t+1$. Since we cannot evaluate the indefinite integral explicitly (in fact it is impossible to do so no matter how good we are at integration by parts, substitution, etc.), pure mathematics stops here. We can now let MATLAB take over this solution. Using the numerical integrator quad (described in Chapter 3 ), we use a for loop to create $x$ - and $y$-values of the function $y(x)$ and then plot them to obtain the desired graph. We first need to store the function to be integrated (either as an M-file or an inline function). Here is how it can all be done:
+\begin{lstlisting}[frame=none,numbers=none]
+>> f=inline('sin(x.^2)');
+>> x=0:.01:5; %This will give a very decent, resolution
+>> size(x ) %Need to know many components x has to create y of same 
+>> % lencfth. 
+-> 1 501
+
+>> for i=1:501
+    y(i)=1+quad(f,0,x(i));
+end
+>> plot(x,y ) 
+\end{lstlisting}
+NOTE: If you created $f$ as an M-file rather than an inline function, the syntax for \texttt{quad} would have to be \texttt{quad (' $\left.f^{\prime}, 0, x(i)\right)$} or \texttt{quad $(@f,0,x(i))$}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{img_12}
+\caption{A plot of the solution of the IVP of Example 8.3. There exists no explicit 
+mathematical formula for this function in terms of the standard functions of calculus.}
+\end{figure}
+
+Suppose that we wanted the numerical value of the solution when $x=3$. We want to caution the reader that at this point we cannot just enter $y(3)$ in our MATLAB session to get the answer. Recall that $y$ is stored as a vector so $y$ (3) would just be its third component, i.e., the $y$-coordinate when $x=0+2(.01)=$ $0.02$. This is definitely not what we want $(y$ when $x=3)$. Let us reiterate:
+\\
+\\
+CAUTION: In the above problem, the mathematical notation $y(3)$ denotes the $y$ coordinate of the function when the $x$-coordinate equals 3 , in MATLAB notation, $y(3)$ is the third component of the vector of $y$-values constructed (which occurs at $x=0.02$ ). Thus, depending on the context, the notation $y(3)$ could mean two different things. This problem will come up repeatedly and the reader must be made aware of it early on to avoid confusion. Remember the adage: Everything (numerical) in MATLAB is a matrix.
+\\
+\\
+EXERCISE FOR THE READER 8.1: Relating to the example above, fill in the question mark: $y(3)$ (mathematical notation) $=y$ (?) (MATLAB notation). Then find this numerical value to 4 decimals.
+\\
+
+We now introduce our first set of differential equations on which we will begin a systematic study. They will model population growth. Here, the independent variable will be $t$ (time)-not $x$. We begin with the most basic model. We will let
+$$
+P(t)=\text { the number of individuals in a certain population at time } t \text {, }
+$$
+where the "individuals" could be humans, sharks, bacteria, etc. In the basic model, we assume that there is a constant \textbf{birth rate} $=\beta(\equiv$ the number of individuals born into the population per unit time per living individual) and constant \textbf{death rate} $=\delta(\equiv$ the number of individuals who die per unit time per living individual). With no other effect that would change the population (e.g., no immigrations, or other such phenomena), this gives the following differential equation for $P(t)$ :
+\begin{equation}
+P^{\prime}(t)=(\beta-\delta) P(t)=r P(t) \text { or } P^{\prime}=r P \text {, }
+\end{equation}
+\begin{wrapfigure}[20]{l}{0.25\textwidth}
+\includegraphics[width=0.25\textwidth]{img_13}
+\caption{Thomas Malthus (1766-1834), English economist.}
+\end{wrapfigure}
+where we have let $r=\beta-\delta$ ( $\equiv$ resultant growth rate). This population model is credited to the political economist Thomas Malthus\footnote{Malthus was the first scientist to realize the power of exponential growth left unchecked. He wrote a seminal work: Essay on the Principle of Population (1798). In it he observed how in nature plants and animals routinely produce more offspring than can survive. and that unless family sizes were regulated, the human race would eventually become too large and poverty and famine would eventually lead to its demise. He used his models to support his claims but some of his recommendations were quite controversial and totalitarian. He proposed, for example, that poor families not be allowed to have more offspring than they can support. His social recommendations aside, Malthus's research was quite important and was even used later on by Darwin in formulating some of his famous theories on evolution.} and is customarily referred to as the Malthus growth model. This DE is easy to solve explicitly. Thinking of a function that is its own derivative, we come up with $e^{y}$. The DE above states that the derivative of a function should equal $r$ times the function. Since $\left(e^{n}\right)^{\prime}=r e^{n}$, we see that $P(t)=e^{r t}$ will solve the DE. Also, we can multiply this solution by any constant and it will still solve the DE (why?). We have just found a collection of solutions to the DE (2) to be $P(t)=\mathrm{C} e^{n}$ (where $C$ is an arbitrary constant). It turns out that there are no other solutions (this will follow from uniqueness theorems that we give later; see also Exercise 8 of this section) and thus this is the general solution. If we substitute $t=0$ into this general solution, we get $P(0)=\mathrm{C} e^{0}=C$, so the constant $C$ turns out to be the initial population ( $\equiv$ the population at time $t=0$). Depending on the value of $r$, we have three different cases for what will happen to such a population. These situations are summarized in Figure 8.3.
+\\
+\\
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img_14}
+\caption{The three cases of the basic population model (2): (a) $r>0$ exponential growth, (b) $r=0$ constant population, (c) $r<0$ exponential decay-eventual extinction.}
+\end{figure}
+Malthus growth left unchecked can be extreme beyond imagination. The next example puts this comment into perspective.
+\\
+\\
+\textbf{EXAMPLE 8.4:} Under ideal conditions, a single cell of E. coli bacterium splits into 2 new bacteria every 20 minutes.
+\begin{tasks}(1)
+\task
+Starting with such a single cell, estimate the population of the resulting colony after 1 day ( 24 hours).\\
+\task
+(b) The average mass of an E. coli cell is $10^{-12} \mathrm{~g}$. Compare the mass of the dayold colony to that of the Earth ( $\approx 5.9763 \times 10^{24} \mathrm{~kg}$.)
+\end{tasks}
+SOLUTION: Part (a): If we use hours for the unit of time, we wish to find $P(24)$. After 20 minutes, one E. \textit{coli} cell becomes two, in 20 more minutes, these two become four, and finally after another 20 minutes (one hour), the four have become eight, resulting in the net "birth" of seven new E. coli cells in one hour $(=$ 1 unit of time). So we have a growth rate $\beta=7$. Since the death rate will not be relevant for this short-time, ideal-condition problem, this gives a growth rate of $r=$ 7 and so the DE is $P^{\prime}(t)=7 P(t)$. The general solution is
+$$
+\left.P(t)=P_{0} e^{7 t}=e^{7 t} \text { (since } P_{0}=1\right) \text { so } p(24)=e^{7.24}=9.1511 \times 10^{72} \text { ! }
+$$
+Part (b): Using the data given, this means that the resulting population would be over $10^{33}$ times as massive as our planet! In his 1969 novel, \textit{The Andromeda Strain}, Michael Crichton had made such an interesting observation. Of course, as the population starts to get big the conditions are no longer as ideal. For example, if $\mathrm{E}$. coli has infected a certain human being, this colony will be limited to the size of the host. Also, once it is detected, human antibodies will make conditions not as hospitable, and appropriate antibiotics will make conditions so unfavorable that the whole colony can be wiped out.
+\\
+
+More advanced models of population growth (or decay) will have variable growth rates. One useful such model is the so-called logistical growth model. This model takes into account factors such as limited food supply, cultural sophistication, etc., that tend to keep the population from getting too big. The DE representing this model is as follows:
+\begin{equation}
+P^{\prime}(t)=r P(1-P / k),
+\end{equation}
+Here, $r$ and $k$ are constants. The number $r$ is called the \textbf{natural growth rate} and it is damped by the factor $(1-P / k)$. The number $k$ is called the \textbf{carrying capacity} of the environment. When $P$ is small relative to $k$, the factor $(1-P / k)$ is essentially equal to one so $(3)$ implies that $P^{\prime}(t) \approx r P$ and the growth is like Malthus growth. This logistical growth model (3) was used by Belgian mathematician Pierre Francois Verhulst (1804-1849) to model the population growth in Belgium.\footnote{ In his 1845 paper Recherches mathematiques sur la loi d'accroissement de la population, Verhulst used Belgian census data to predict the parameters for his model, which he termed as logistique. His model predicted the population rather well all the way up into the 1990 s when it began to undershoot the actual figures by only about $7 \%$, and these discrepancies can be attributed more to immigrations which had been unanticipated in Verhulst's era. Shortly we will give a similar model for the U.S. population growth. The model comes from a 1920 paper of two demographers, Raymond Pearl and L. J. Reed, entitled: On the rate of growth of the population of the United States since 1790 and its mathematical representation. The latter researchers, unaware of Verhulst's work, developed a similar model using census data of the U.S. population } We will present an example shortly. The logistical growth model has also been used in many other contexts as well. In particular, it was used in the 1970s to predict U.S. oil production. Since the logistical model can be solved explicitly, we will use it as an example to demonstrate some numerical methods for solving initial value problems.
+\\
+
+The first method we present is due to Leonhard Euler,\footnote{Leonhard Euler (pronounced "Oiler") came into this world during a very exciting time in mathematics. Calculus had recently been invented by Sir Issak Newton and Gottfried W. Leibniz and the frontier was open to apply it to solve many important problems. Euler was bom and educated in Switzerland. He received his first appointment as a professor at the prestigious Saint Petersburg University in Russia at the age of 19 . Euler turned out to be the most prolific mathematician of all time. His published works fill over 100 encyclopedia-sized volumes! He is considered the founder of modern pure and numerical analysis. His remarkable work touched upon every major area of mathematics, and he was able to successfully apply mathematics to numerous areas of science, such as celestial mechanics (e.g., planetary and comet motions), ship building, optics, hydrostatics, and fluid mechanics. His work in these areas led him to many differential equations that, in turn, motivated him to develop many useful methods for dealing with them. He has even done significant work in cartography and was involved in making an extensive atlas of Russia. After about six years in St. Petersburg, Euler got appointed to the Berlin Academy and eventually became its leader. Because of some quarrels with King Frederick, he was never given the official title of "President," and so after 25 years of a distinguished career in Berlin, he decided to return again to St. Petersburg. He continued to flourish there until the day of his death. During his last 17 years of life, Euler had become completely blind, but this was also one of his most productive periods! Euler had a memory that was shockingly precise. He was able to perform huge computations in his head and recite an entire novel even at age 70! At this age he could even recite the first and last sentence on each page of Vergil's Aeneid, which he had memorized. Once he had settled an argument in his head between two students whose answers differed in the fifteenth decimal place. We owe to Euler the notation $f(x)$ for a function (1734), $e$ for the base of natural logs (1727), $i$ for the square root of $-1(1777)$, $\pi$ for pi, $\Sigma$ for summation (1755), and numerous other present-day mathematical notations. Euler was also prolific in other ways such as having had 13 children. He boasted about having made his most piercing mathematical discoveries while holding one of his infants as his other children were playing at his feet.
+} who was the first to take action against the fact that pure mathematical methods alone were not enough to solve some important differential equations that were coming up in real-life applications. \textbf{Euler's method} applies to the following type of first-order initial value problem:
+\\
+\\
+\begin{wrapfigure}[20]{l}{0.25\textwidth}
+\includegraphics[width=0.25\textwidth]{img_15}
+\caption{Leonhard Euler (1707-1783), Swiss mathematician.}
+\end{wrapfigure}
+\begin{equation}
+(I V P)\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.
+(D E)\\
+(I C)
+\end{equation}
+When it is understood that $t$ is the independent variable, the differential equation in (4) is often written more succinctly as $y^{\prime}=f(t, y)$. By extension, we are allowing the initial value problem's initial condition to commence at any time $t=a$, rather than always at $t=0$. The form of the (DE) in (4) is solved for $y^{\prime}$. Although this is not always possible, it is a form to which most of the successful theory of differential equations can be developed. It may seem restrictive in that it seems to apply only to first-order ODEs. We will see later, however, that any higher-order ODE can be transformed into a system of firstorder ODEs. Thus, the methods we will be learning about for numerically solving (4) will actually turn out to be applicable to very general ordinary differential equations (of arbitrary order) and systems of these. In order to introduce the method, we initially will only assume that the function $f(t, y)$ of the (DE) in (4) is a continuous function (in both of its variables). It turns out that this will be sufficient to guarantee the existence of a solution to (4) (at least as long as its graph stays in the region of continuity of $f(t, y)$ ). The condition for uniqueness is a bit more technical. We will come to this later, after we work through some more examples. It will turn out that all of the examples we consider (as well as the great majority that come up in real-life modeling) will satisfy the technical requirements to guarantee existence and uniqueness.
+\\
+
+Euler's method is based on the tangent line approximation (special case of Taylor's theorem):
+\begin{equation}
+y\left(t_{0}+\Delta t\right) \approx y\left(t_{0}\right)+y^{\prime}\left(t_{0}\right) \Delta t
+\end{equation}
+The method requires specifying a step size $=h>0$ (usually a small number), and will construct a sequence of $y$-coordinates $y_{0}, y_{1}, y_{2}, \cdots, y_{N}$ that will approximate the function at the equally spaced (by the step size $h$ ) $t$-coordinates $t_{0}=a, t_{1}=a+h, t_{2}=a+2 h, \cdots, t_{N}=a+N h$. The integer $N$ can be as large as we want, and the t-range will cover however long an interval on which we would like to approximate the function. The goal is to get $y_{n} \approx y\left(t_{n}\right)$ for each $n, 1 \leq n \leq N$. The initial condition (IC) in (4) lets us start off exactly: $y_{0}=y(a)=y\left(t_{0}\right)$. Next, to get $y_{1}$, we use (4), which tells us exactly what $y^{\prime}\left(t_{0}\right)$ is $\left(f\left(t_{0}, y\left(t_{0}\right)\right)=f\left(t_{0}, y_{0}\right)\right)$ and $(5)$ :
+$$
+y\left(t_{1}\right)=y\left(t_{0}+h\right) \approx y\left(t_{0}\right)+y^{\prime}\left(t_{0}\right) h=y_{0}+h f\left(t_{0}, y_{0}\right) \approx y_{1} .
+$$
+We will next get $y_{2}$ from $y_{1}$ in the same fashion as we obtained $y_{1}$ from $y_{0}$. Things are a bit different here, though, since $y_{0}$ is exactly $y\left(t_{0}\right)$, whereas $y_{1}$ is. only an approximation to $y\left(t_{1}\right)$. But since we are assuming that $f(t, y)$ is continuous, it follows that if the step size $h$ is taken small enough, the value of the actual derivative $y^{\prime}\left(t_{1}\right)=f\left(t_{1}, y\left(t_{1}\right)\right.$ ) (from the (DE) in $(4)$ ) will be very close to $f\left(t_{1}, y_{1}\right)$ (since $y_{1}$ will be very close to $\left.y\left(t_{1}\right)\right)$. We use these facts and (4) to obtain $y_{2}$ :
+$$
+y\left(t_{2}\right)=y\left(t_{1}+h\right) \approx y\left(t_{1}\right)+y^{\prime}\left(t_{1}\right) h \approx y_{1}+h f\left(t_{0}, y_{1}\right) \equiv y_{2}
+$$
+The subsequent $y_{n}$ 's are now obtained recursively in the same fashion. The actual solution is now approximated by connecting (interpolating) adjacent ordered pairs $\left(t_{n}, y_{n}\right)$ with line segments. Recall that this is what MATLAB would do anyway if we asked it to plot the vector $y=\left[y_{0}, y_{1}, y_{2}, \cdots, y_{N}\right]$ versus $t=\left[t_{0}, t_{1}, t_{2}, \cdots, t_{N}\right]$. We can summarize Euler's method by these recursion formulas:
+\\
+
+\begin{multicols}{2}
+\begin{tabular}{|l|}
+\hline
+Euler's Method:
+$t_{0}=a, y_{0}=y(a)$ given\\
+$h=$ step size\\
+$t_{n+1}=t+h, \quad y_{n+1}=y_{n}+h f\left(t_{n}, y_{n}\right)$,\\
+$n=1,2,3, \cdots$\\
+\hline
+\end{tabular}
+\captionof{figure}{Illustration of Euler's method for solving the first-order IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ using step size $h$. The approximation is the dotted graph and the actual solution is the solid graph.}
+\columnbreak
+\begin{figure}[H]
+\includegraphics[width=0.4\textwidth]{img_16}
+\end{figure}
+\end{multicols}
+
+As our first example, we will use Euler's method to numerically solve the historical U.S. population logistical model that was described earlier. Since the DE can be solved explicitly in this case, we will be able to compare the exact errors for Euler's method for this problem with different step sizes. Moreover, keeping in mind that the model was done near the beginning of the twentieth century, we will also be able to compare the model's predictions with some actual numbers in the U.S. populations. We will do this example by hand using MATLAB, and afterwards we will write a program that will perform Euler's method.
+\\
+
+\textbf{EXAMPLE 8.5:} In the Verhulst-type population model for the U.S. population (done in 1920), the logistical population growth model was used in the initial value problem
+$$
+\left\{\begin{array}{l}
+P^{\prime}(t)=r P(1-P / k) \\
+P(0)=P_{0}
+\end{array}\right.,
+$$
+using the estimates $r=0.0318$ (growth rate), and $k=200$ million (carrying capacity). It was known that $P(0)=3.9$ million (where we identified $t=0$ years with the year 1790).\\
+(a) Use Euler's method with step size $h=0.1$ in the Verhulst model to estimate the U.S. populations in the years $1850(t=60), 1900(t=110)$, and $1990(t=200)$.\\
+(b) Repeat part (a) with step size $h=0.01$.\\
+(c) The exact solution of the logistical IVP is (from ODE methods; see Exercise
+12):
+$$
+P(t)=\frac{k}{1+\left(k / P_{0}-1\right) e^{-n}}..
+$$
+
+In the same plane, plot the graph of the exact solution $P(t)$ along with the two Euler approximations to it for $0 \leq t \leq 200$ (1790 through 1990$)$.
+\\
+\\
+SOLUTION: For convenience, we express populations in millions. Since in part (c) we will need to plot the Euler approximations, we should create and store the whole vectors of approximations that we obtain from Euler's method in parts (a) and (b). We will need to create a function for the right side of the differential equation:
+\begin{lstlisting}[frame=none,numbers=none]
+>> f=inline('0.0318*P*(l-P/200)') ; 
+\end{lstlisting}
+Part (a): We first create the $t$-vector for the approximations, find out its size, and then use a for loop to create the corresponding $P$-coordinates of the approximations.
+\begin{lstlisting}[frame=none,numbers=none]
+>> t=0:0.1:200; size(t)
+-> 1     2001
+
+>> P(l)=3.9; %Unitialize P 
+>> for n=l:2000 
+P(n+l)=P(n)+0.1*f(P(n)) ; 
+end 
+\end{lstlisting}
+In order to find out the values of this vector corresponding to the times $t=60$ (1850), $t=110(1900)$, and $t=200(1990)$, we need to find the corresponding (MATLAB) indices for the vector $t$. This is not difficult; for example, if we use the recursion formula: $t(n+1)=t(n)+h$, with $t(1)=0$, we see that $t(n)=(n-1) h$ $=0.1(n-1)$. Solving for $n$ gives $n=10 t(n)+1$. So the indices for $t=60,110$, and 200 are 601,1101 , and 2001 respectively. Thus we can get the corresponding population estimates:
+\begin{lstlisting}[frame=none,numbers=none]
+>> P(601), P(1101) , P(2001) 
+->23.5827, 79.1281, 183.9685 
+\end{lstlisting}
+NOTE: The first two estimates compare quite favorably with the actual U.S. populations in the corresponding years: $1850 \rightarrow 23.2$ (million), $1900 \rightarrow 76.0$, $1990 \rightarrow 248.7$. The last estimate falls rather significantly short due to an underestimate of the carrying capacity of the United States. This is certainly excusable, given that in the early twentieth century modern industrial technology (e.g., skyscrapers and agricultural engineering) was not yet on the horizon of peoples' imagination. In this respect, Verhulst's predictions for Belgium (in 1845) were even more impressive.
+\\
+\\
+Part (b): Since in part (c) we will need to compare these approximations with those of part (a), we store both the $t$-vectors and $P$-vectors here as new vectors tb and $\mathrm{Pb}$. The constructions are analogous to those in part (a).
+\begin{lstlisting}[frame=none,numbers=none]
+>> tb=0:.01:200 ; Pb(l)=3.9 ; size(tb)
+-> 1:20001 
+>> for n=1:20000 
+Pb(n+1)=Pb(n)+0.01*f(Pb(n)); 
+end 
+>> Pb(6001), Pb(11001), Pb(20001) 
+->23.6331, 79.3010, 183.9969 
+\end{lstlisting}
+The indices of $\mathrm{Pb}$ correspond to the years 1850,1900 , and 1990 and were obtained as explained in part (a).
+\\
+\\
+Part (c): We store the exact solution as an M-file Pver.m:
+\begin{lstlisting}[frame=none,numbers=none]
+function P=Pver(t) 
+P=200./(1+(200/3.9-1)*exp(-.0318*t)); 
+\end{lstlisting}
+To obtain plots of the exact solution along with the two approximate solutions of parts (a) and (b), we must take care in plotting the two approximations with the correct $t$-vectors (the vectors in a plot must be the same size).
+\\
+
+\begin{multicols}{2}
+\begin{lstlisting}[frame=none,numbers=none]
+>> plot(t,P), hold on, plot(tb,Pb) 
+>> plot(tb,Pver(tb)) 
+>> xlabel('Years after 1790') 
+>> ylabel('Estimated U.S. 
+        population in millions')
+\end{lstlisting}
+\captionof{figure}{Illustration of the maximum absolute value of the eigenvalues of the matrix $I-B^{-1} A$ of Theorem $7.10$ for the SOR method (see Table 7.1) for various values of the relaxation parameter $\omega$. Compare with the corresponding number of iterations needed for convergence (Figure $7.40$ ).}
+\columnbreak
+\begin{figure}[H]
+\includegraphics[width=0.5\textwidth]{img_17}
+\end{figure}
+\end{multicols}
+\noindent
+Since the three graphs are indistinguishable, we give also a plot of the errors of the two Euler approximations. The following plot command will do it all in one line.
+\begin{lstlisting}[frame=none,numbers=none]
+>> hold off, plot(t,abs(Pver(t)-P), tb, abs(Pver(tb)-Pb), 
+>> xlabel('Years after 1790') 
+>> ylabel('Millions') 
+>> title('Error Graphs')
+\end{lstlisting}
+
+\begin{multicols}{2}
+\captionof{figure}{Graphs of the absolute errors in using the Euler method to solve the Verhulst-type U.S. population initial value problem of Example 8.5. The thin curve is with step size $h=0.1$ and the thick low curve is with step size $h=0.01$. Note that the error appears to have decreased 10 -fold as we increased the number of steps by a factor of 10 .
+}
+\columnbreak
+\begin{figure}[H]
+\includegraphics[width=0.5\textwidth]{img_18}
+\end{figure}
+\end{multicols}
+
+We will postpone formal error estimates and some related theory until Section 8.4. It is a simple matter to write a program for the Euler method.
+\\
+\\
+\textbf{PROGRAM 8.1:} An M-file for Euler's method for the IVP:
+$$
+\begin{cases}y^{\prime}=f(t, y) & (D E) \\ y(a) \equiv y_{0} & (I C)\end{cases}.
+$$
+\begin{lstlisting}[numbers=none]
+function [t,y]=eulermeth(f,a,b,yO,hstep) 
+% M-file for applying Euler'3 method to solve the initial value 
+% problem: (DE) y'=f(t,y), (IC) y(a) - y0, on the t-inteival [a,b] 
+% with step size hstep. The output will be a vector of t's and 
+% corresponding y's 
+% input, variables: f, a, b, yO, hstep 
+% output variables: t, y 
+% f is a function of two variables f(t,y) 
+% y(a)=y0 
+t(1)=a; y(1)=y0; 
+nmax=ceil((b-a)/hstep); 
+for n=l:nmax 
+	t(n+1)=t(n)+hstep; 
+	y(n+1)=y(n)+hstep*feval(f,t(n),y(n)); 
+end 
+\end{lstlisting}
+CAUTION: In general the function $f(t, y)$ of the (DE) in the IVP will depend on $t$ and $y$. Since the above program assumes this is the case, whenever it is used to solve an IVP, the function $\mathrm{f}$ must be created as a function of these two variables (in this order) even if it only has one (or none) of these variables appearing in its formula. Also, in order for the final approximation produced in the program, $y($ nmax $+1)$, to correspond to $y(b)$, we choose the step size $h$ so that $(b-a) / h$ is an integer. This is what is usually done in practice. In any case, $t(n m a x+1)$ will always be within $h$ units of $b$.
+\\
+\\
+\textbf{EXAMPLE 8.6:} Using the above program in conjunction with a for loop, get MATLAB to produce a single plot that contains Euler approximations with step size $h=0.1$ of solutions to the logistical growth model IVP:
+$$
+\left\{\begin{array}{l}
+P^{\prime}(t)=r P(1-P / k) \\
+P(0)=P_{0}
+\end{array}, \quad 0 \leq t \leq 1.5\right.
+$$
+using the parameters $r=2.2$ and $k=100$ for each of the following initial populations:
+$$
+P_{0}=10,20,30, \cdots, 190,200 .
+$$
+Discuss the similarities and differences of this family of solutions. 
+\\
+\\
+SOLUTION: Here " $y$ " is replaced by "P" and $f(t, P)=r P(1-P / k)$. We need to explicitly store $f$ as a function of the two variables $t$ and $P$ (even though it does not depend on $t$ ). This can be easily done by creating an M-file. Alternatively, it can be done with an inline function, but we must explicitly declare the two domain variables in order (since the usual construction would scan the formula and take it to be a function of one variable as in the previous example).
+\begin{lstlisting}[frame=none,numbers=none]
+>> f=inlineC2.2*P*(1-P/100 ) ', 'f , 'P')
+-> f=line function: f(t,P) = 2.2*P*(1-P/10
+\end{lstlisting}
+With $f(t, P)$ thus constructed, we can obtain the desired plots very quickly with the following chain of commands:
+\begin{lstlisting}[frame=none,numbers=none]
+>> hold on 
+>> for i=10:10:200 
+[t,yi]=eulermeth(f,0,1.5,i,0.1); 
+plot(t,yi) 
+end
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img_19}
+\caption{Graphs of several solutions of the logistic IVP (with different initial conditions); the parameters are $r=2.2$ and $k=100$. The green dashed line intersects solution curves in inflection points.}
+\end{figure}
+
+Notice that solutions with initial populations less than the carrying capacity will increase to it and solutions with initial populations greater than the carrying capacity will decrease to it. This behavior can be predicted from the DE since $P(t)$ $>k$ forces the right side of the $\mathrm{DE}$ (and hence the derivative of $P$ ) to be negative while $P(t)<k$ makes the derivative positive. Also, the net rate of change $\left|P^{\prime}(t)\right|$ disintegrates to zero as $P(t)$ converges to $k$. When $P(t)$ is small, the DE looks more like $P^{\prime}(t) \approx r P$, so we get exponential growth as in the Malthus model. Finally we note that all of the graphs that pass through $y=50(=1 / 2$ of carrying capacity) have an inflection point there.
+\\
+\\
+EXERCISE FOR THE READER 8.2: Use calculus to justify the statement made above regarding inflection points of solutions to the logistic DE. Are there solutions with other inflection points?
+\\
+\\
+The logistic DE has the form $P^{\prime}=f(P)$. To further understand such qualitative properties of the solutions of such DEs, it is useful to look at the graph of the function on the right. For the logistic DE, $f(P)=r P(1-P / k)$ has a graph that is just a downward-opening parabola with $P$-intercepts at $P=0$ and $P=k$, as shown in Figure 8.9. Since, by the chain rule, $P^{\prime \prime}(t)=(d / d t)\left(P^{\prime}\right)=(d / d P)\left(P^{\prime}\right)(d P / d t)$ $=f^{\prime}(P) f(P)=r(1-2 P / k) f(P)$, it is clear that $P^{\prime}$ will increase until P reaches $k / 2$ (if it starts below this value) where its steepest slope will be (i.e., $P^{\prime}$ reaches its maximum at this point $P=k / 2$ where $P^{\prime \prime}=0$ ).
+\\
+\begin{wrapfigure}[30]{l}{0.6\textwidth}
+\includegraphics[width=0.6\textwidth]{img_20}
+\caption{Growth function associated with the logistic equation. There are two equilibria: $P=0$ (unstable) and $P=k$ (stable). Flow directions for $P$ are indicated over the $P$-axis.}
+\end{wrapfigure}
+After this inflection point, $P$ will continue to increase, but at the same time the derivative will continue to decrease. This will continue on forever, $P$ never reaching the carrying capacity $k$. The two roots of $f(P), P=0$, and $P=k$, are clearly constant solutions of the logistic DE. They are called \textbf{equilibrium solutions}. The first $P=0$ equilibrium solution is different from the second in that if an initial value were to be prescribed close to $P=0$, the solution would continue to grow and eventually approach $P=k$ as $t \rightarrow \infty$. Thus solutions which start close to $P=0$ will eventually diverge away from it and such equilibrium solutions are called \textbf{unstable}. If a solution started with initial condition close to $P=k$ (either greater than or less than), then as $t \rightarrow \infty$, any such solution would continue to get closer to $P=k$. Such solutions are called stable. Again this is clear from the graph of $P^{\prime}=f(P)$ in Figure $8.9$, along with the flow directions shown there: If $P^{\prime}=f(P)>0$, flow is to the right (increasing $P$ ); if $P^{\prime}=f(P)<0$, flow is to the left; if $P^{\prime}=f(P)=0$, we are at an equilibrium.
+\\
+
+Other types of growth rates result from different functions $f(P)$. The Gomperz Law is another such example. It is modeled by the following DE:
+$$
+P^{\prime}(t)=-s P \ln (P / k)
+$$
+where $s$ and $k$ are positive constants. This DE has been proved a successful tool in clinical oncology to model tumor growth. The cells within a tumor do not have access to many nutrients and oxygen as do those on the surface, so the growth rate declines as the tumor increases in size up until the carrying capacity $k$ (which will of course vary with the type and location of the tumor as will the constant $s$ ). Eventually the cells inside a tumor stop dividing and die, thus forming the socalled necrotic center. Since $\ln (x)$ is undefined at $x=0$, this model cannot be used for very small values of $P(=$ tumor sizes). For more details, see [EdK-87] and [Mur-03].
+\\
+\\
+EXERCISE FOR THE READER 8.3: (a) Graph the right side of the Gompertz equation $g(P)$, and find all equilibrium solutions (with $P>0$ ). Classify each as stable or unstable.\\
+(b) Use MATLAB to produce graphs of solutions to the Gompertz IVPs:
+$$
+\left\{\begin{array}{l}
+P^{\prime}(t)=-s P \ln (P / k) \\
+P(0)=P_{0}
+\end{array}, 0 \leq t \leq 200\right.
+$$
+With the parameters $s=0.024$ and $k=1$ create a single plot with six graphs corresponding to the initial values $P_{0}=0.1,0.3, \cdots, 1.1$. Are there inflection points? Compare and contrast these graphs.\\
+(c) Use calculus to show that the Gompertz DE can also be written as $P^{\prime}(t)=a e^{-b t} P$, where $a$ and $b$ are constants.
+\\
+\textbf{Suggestion:} For part (c), find explicitly the general solution to the Gompertz DE as follows: Introduce the new variable $y=\ln (P / k)$ to translate the Gompertz DE into a very simple (Malthus) DE for $y$.
+\\
+\\
+\rule{485pt}{2pt}
+\textbf{EXERCISES 8.2} 
+\begin{enumerate}
+\item
+Create graphs of numerical solutions of the following IVPs on the indicated time intervals $a \leq t \leq b$. In each, $y=y(t)$. Also, determine your numerical approximation of $y(b)$ to five decimals.
+\begin{tasks}(1)
+\task
+$
+\left\{\begin{array}{ll}
+(D E) & y^{\prime}=\sqrt{1+t^{5}} \\ (I C) & y(0)=2
+\end{array} \quad 0 \leq t \leq 10\right.
+$
+\task
+$
+\left\{\begin{array}{ll}
+(D E) & y^{\prime}=\exp \left(\cos \left(2^{x}\right)\right) \\
+(I C) & y(0)=0
+\end{array} \quad 0 \leq t \leq 7\right.
+$
+\task
+$
+\left\{\begin{array}{ll}
+(D E) y^{\prime}=\cos \left(e^{x} \cos (x)\right) \\
+(I C) y(0)=0
+\end{array} \quad 0 \leq t \leq 6\right.
+$
+\task
+$
+\left\{\begin{array}{ll}
+(D E) & y^{\prime}=\arctan \left(e^{x}\right) \\
+(I C) & y(2)=-4
+\end{array} \quad 0 \leq t \leq 10\right.
+$
+\end{tasks}
+\item
+In each part below, we assume that $y=y(t)$ has initial condition $y(0)=1$ and satisfies the DE given. Determine $\lim _{t \rightarrow \infty} y(t)$ (i.e., as time goes to infinity, what value, if any, does the solution approach?). Also find all equilibrium solutions of the DE and classify each as stable or unstable.
+\begin{tasks}(1)
+\task
+$
+y^{\prime}=y(y+1)
+$
+\task
+$
+y^{\prime}=y\left(y^{2}-4\right)
+$
+\task
+$
+y^{\prime}=y^{2}(y+1)(2-y)
+$
+\task
+$
+y^{\prime}=\sin (y)
+$
+\task
+$
+y^{\prime}=\cos (y)
+$
+\task
+$
+y^{\prime}=y \sin ^{2}(y)
+$
+\end{tasks}
+\item
+For each of the DEs in Exercise 2 (parts (a) through (f)) explain when a solution will have an inflection point. What will the $y$-coordinates of these inflection points be?
+\item
+For each of the DEs in Exercise 2 (parts (a) through (f)) use the Euler program in conjunction with a loop to get MATLAB to produce plots of a family of at least 15 solutions of the DE (all in the same plot) that satisfy various initial conditions $y(0)=y_{0}$. Choose the values of the $y_{0}$ 's so that your solutions will start in at least three different intervals determined by the equilibrium solution values. For each DE, specially choose (after some experimentation) appropriate time intervals $0 \leq t \leq b$ as well as appropriate $y$-ranges on the plots (via the axis command) so that the totality of your plots are effectively displayed and accurately depict the main properties of the solutions.
+\item
+A virus culture in a host has an initial population of 10,000 and the carrying capacity of the host is known to be $k=2$ billion. After 5 days the population grew to 24,000 . Assuming logistical growth, determine the natural growth rate $r$.
+\item
+(Fishing Yields) Suppose that for a certain species of fish in a small lake it is determined that the unencumbered annual growth rate is $r=0.8$ and the carrying capacity of the lake is $k=1500$ fish. The owner of the lake would like to allow harvesting of fish in this lake at the rate of $n=$ 200 fish per year. Starting with the logistic equation and taking into account this annual removal, the DE for the fish population becomes:
+$$
+F^{\prime}(t)=r F(1-F / k)-n.
+$$
+(a) What initial fish populations $F(0)$ would support this fishing yield? When the yield is supported, what happens to the fish population as $t \rightarrow \infty$ ?\\
+(b) Get MATLAB to produce a good assortment (of about 15 ) solutions of this to the DE with several different initial conditions and put them together in a single plot. Explain some similarities and differences of your solutions.\\
+(c) What is the limit to the amount $n$ of fish per year which could be harvested from this lake? Explain any problems that might arise if the fishing were to push up to this limit. What happens if the limit is exceeded?
+\item
+(Fishing Yields) Redo Exercise 6 with the parameters $r=0.66$ (slower reproducing fish), $k=$ 20,000 (larger lake) and $n=1200$ (more fishing).
+\item
+Prove that the solutions of the Malthus growth $\mathrm{DE} P^{\prime}=r P$ (where $P=P(t)$ ) that satisfy an initial condition $P(0)=P_{0}$ are unique.
+\\
+\\
+Suggestion: Fix one such solution $P(t)$ and show that the quotient $P(t) / e^{r t}$ is a constant function.
+\item
+Prove that the general solution of the (DE) $Q^{\prime}=r Q+s$ (where $Q=Q(t)$ and $r$ and $s$ are nonzero numbers) is $Q(t)=C e^{r t}-s / r$.
+\\
+\textbf{Suggestion:} Let $P(t)=Q(t)+s / r$. Show that $Q(t)$ solves this DE if and only if $P(t)$ solves the corresponding Malthus growth DE $P^{\prime}=r P$.
+\item
+\textit{(Use of Predators to Keep Parasites at Bay)} On a certain island that had no cats, the mouse population doubled during the 10 -year period from 1960 to 1970 , In 1970 when the mouse population reached 50,000 , the rulers of the island imported several cats who thereafter killed 6000 mice per year.\\
+(a) Letting $t=0$ correspond to 1960 , find an expression for $P(t)=$ the mouse population in the range $0 \leq t \leq 10$.\\
+(b) Find an expression for $P(t)$ for $t$ in the range $t>10$\\
+(c) What was the mouse population in 1980? In 1990?\\
+\textbf{Suggestion:} For part (b), use the result of the preceding exercise.
+\item
+Consider the DE $y^{\prime}=y^{2}-t$. Use MALTAB to produce the plots of 29 solutions of this DE (approximated via the Euler method with $h=0.001$ ) satisfying the ICs $y_{0}=-14,-12, \cdots, 12,14$. In this same plot, include the graph of the parabola $t=y^{2}$. Experiment with different $t$-intervals $0 \leq t \leq b$ as well as different $y$-ranges (via the axis command) until you obtain a plot that gives good evidence of some important behavior of these 29 solutions. Compare and contrast these different solutions. How do they behave as $t \rightarrow \infty$ ?
+\item
+This exercise will show how to explicitly solve the logistical growth model equation (3) using the method of separation of variables.\\
+(a) Rewrite the equation (3): $P^{\prime}(t)(=d P / d t)=r P(1-P / k)$ so that all the "P" expressions are on the left and the " $q$ " expressions are on the right:
+$$
+\frac{d P}{P(M-P)}=rdt,
+$$
+and now integrate both sides and use the initial condition $ P(0)=P_{0}$ to obtain: 
+$$
+P(t)=\frac{k}{1+\left(k / P_{0}-1\right) e^{-r t}}
+$$
+\textbf{Suggestion:} In order to integrate the left side (if you are doing it by hand), rewrite the integrand as $1 / P+1 /(k-P)$.
+\end{enumerate}
+
+\section{MORE ACCURATE METHODS FOR INITIAL VALUE PROBLEMS}
+\noindent
+Euler's method for numerically solving the IVP (4)
+ $$
+\begin{cases}y^{\prime}(t)=f(t, y(t)) & (D E) \\ y(a) \equiv y_{0} & (I C)\end{cases}.
+$$
+was based on the first-order (tangent line) approximation. If the function $f(t, y)$ on the right-hand side of the DE of (4) is sufficiently differentiable, it seems plausible that we can obtain more accurate methods by using higher-order Taylor polynomials (which can be computed from the function $f(t, y)$ using the DE (4)). This is indeed the case and we will say more about this in the next section. Computing higher derivatives can, in general, be expensive and is not always very feasible, but what is surprising is that there are methods which converge much quicker than Euler's method (and as fast as some of these higher-order Taylor methods) which only require evaluations of $f(t, y)$ (and no higher derivatives of it). In the next section, we will analyze more carefully the relative convergence speeds of the methods we introduce here compared with Euler's method (and with each other) as well as give a more detailed explanation of how these methods came about. For now we will simply introduce two such very practical methods (the improved Euler method and the Runge-Kutta method), state their relative accuracies, write codes for them, and then run them alongside each other, as well as with Euler's method, in order to see some firsthand evidence of the improvements that these methods have to offer.
+\\
+
+Just like Euler's method, the two methods we consider require the specification of a step size $h$ and will successively construct a sequence of $y$-coordinates $y_{0}, y_{1}, y_{2}, \cdots, y_{N}$ which will be approximations of the actual $y$-coordinates of the solution\footnote{The relevant existence and uniqueness theorem will be presented in the next section.} of (4) at the equally spaced $t$-coordinates $t_{0}=a, t_{1}=a+h, t_{2}$ $=a+2 h, \cdots, t_{N}=a+N h$. Both of these methods are so-called one-step methods, which means that to get from an approximation $y_{n}$ to the next $y_{n+1}$ we will use only the information $y_{n}, h, t_{n}$ and the function $f(t, y)$. In particular, one-step methods "have no memory" of past approximations (only the current one).
+\\
+\\
+We first introduce the so-called improved Euler method (also known as Heun's method). We shall briefly motivate the method as a natural extension of Euler's method. The precise error analysis will be done in the next section. Note that $t_{n+1}=t_{n}+h$ and by the fundamental theorem of calculus, we can write (using the DE of $(4))$ :
+\begin{equation}
+\begin{aligned}
+y\left(t_{n+1}\right) &=y\left(t_{n}\right)+\int_{t_{n}}^{t_{n+1}} y^{\prime}(t) d t \\
+&=y\left(t_{n}\right)+\int_{t_{n}}^{t_{n+1}} f(t, y(t)) d t \approx y_{n}+\int_{t_{n}}^{n+1} f(t, y(t)) d t
+\end{aligned}
+\end{equation}
+In order to obtain $y_{n+1}$, our approximation of this value, we need to estimate the integral appearing in this formula. Euler's method can be viewed as approximating this last integral by the length of the $t$-interval on which we are integrating $=t_{n+1}-t_{n}=h$ times the approximate value of the integrand (function being integrated) evaluated at the left endpoint: $f\left(t_{n}, y\left(t_{n}\right)\right) \approx f\left(t_{n}, y_{n}\right)$. A more accurate approximation of the integral is obtained if we replace the integrand with something close to the average of the function at the two endpoints-a trapezoidal approximation; see Figure 8.10. To help approximate the value of $y^{\prime}\left(t_{n+1}\right)$ in the improved Euler method, we make implicit use of the Euler method as follows:
+$$
+y^{\prime}\left(t_{n+1}\right)=f\left(t_{n+1}, y\left(t_{n+1}\right)\right) \approx f\left(t_{n+1}, y_{n}+h f\left(t_{n}, y_{n}\right)\right) .
+$$
+Thus the improved Euler method will approximate the integral in (6) by
+$$
+\begin{aligned}
+h \frac{y^{\prime}\left(t_{n}\right)+y^{\prime}\left(t_{n+1}\right)}{2} &=h \frac{f\left(t_{n}, y\left(t_{n}\right)\right)+f\left(t_{n+1}, y\left(t_{n+1}\right)\right)}{2} \\
+& \approx h \frac{f\left(t_{n}, y_{n}\right)+f\left(t_{n+1}, y_{n}+h f\left(t_{n}, y_{n}\right)\right)}{2} .
+\end{aligned}
+$$
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img_21}
+\caption{A graphical comparison of the philosophy of Euler's method versus the improved Euler method. Euler's method attempts to approximate the integral of $y^{\prime}$ on the indicated interval by the dark gray rectangle; the improved Euler methods attempts to use instead the area of the trapezoid determined by the values of $y^{\prime}$ at the endpoints.}
+\end{figure}
+In summary we have 
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+The Improved Euler Method :\\
+$t_{0}=a, y_{0}=y(a)$ given\\
+$h=$ step size\\
+$t_{n+1}=t+h$,\\
+$y_{n+1}=y_{n}+h \frac{f\left(t_{n}, y_{n}\right)+f\left(t_{n+1}, y_{n}+h f\left(t_{n}, y_{n}\right)\right)}{2}, \quad n=1,2,3, \cdots$\\
+\hline
+\end{tabular}
+\end{center}
+We will defer an example until after we also present the classical Runge-Kutta method. The method can also be viewed as approximating the integral in (6) with a certain weighted average of (this time four) values of the function $f(t, y)$. It is a bit more difficult to understand how this weighted average has come about and so we will not attempt to motivate it here. It can be derived using Taylor's theorem, the approach of which is given in the next section. The Runge-Kutta method, like Newton's method for rootfinding, is classical, yet highly effective and is the basis for many contemporary production-grade ODE solving programs. We present the method in the box below:
+
+\begin{multicols}{3}
+\centering
+\begin{tabular}{|l|}
+\hline
+$
+\begin{aligned}
+&\text { The Runge-Kutta Method: } \\
+&t_{0}=a, y_{0}=y(a) \text { given, } \\
+&h=\text { step size } \\
+&t_{n+1}=t+h \\
+&k_{1}=f\left(t_{n}, y_{n}\right) \\
+&k_{2}=f\left(t_{n}+\frac{1}{2} h, y_{n}+\frac{1}{2} h k_{1}\right) \\
+&k_{3}=f\left(t_{n}+\frac{1}{2} h, y_{n}+\frac{1}{2} h k_{2}\right) \\
+&k_{4}=f\left(t_{n}+h, y_{n}+h k_{3}\right) \\
+&y_{n+1}=y_{n}+\frac{h}{6}\left(k_{1}+2 k_{2}+2 k_{3}+k_{4}\right) \\
+&\quad n=1,2,3, \cdots
+\end{aligned}
+$\\
+\hline
+\end{tabular}
+\columnbreak
+
+\begin{figure}[H]
+\ContinuedFloat*
+\centering
+\includegraphics[width=0.2\textwidth]			{img_22}
+\caption{\label{first}Carle D. T. Runge (1856 -1927), German mathematician.}\footnote{The Runge-Kutta method was first developed by Runge, who was also a physicist, to help him analyze data that came up in his work in spectroscopy. Kutta, who is well known for his work in airfoil theory, extended Runge's method to systems of differential equations (we will give this in the next chapter). Runge originally started off studying literature in college. He eventually switched to mathematics and was greatly influenced by some of his teachers, who included the famous mathematical analyst Karl Weierstrass $(1815-1897)$ and Nobel Prize-winning physicist Max Planck (1858-1947). Runge remained vigorous and prolific throughout his life and published extensively both in mathematics and in physics. During his 70 th birthday party he entertained his grandchildren by doing handstands.
+}
+\end{figure}
+
+\columnbreak
+\begin{figure}[H]
+\ContinuedFloat
+\centering
+\includegraphics[width=0.2\textwidth]{img_23}
+\caption{\label{second}Martin W. Kutta (1867-1944), German mathematician.}
+
+\end{figure}
+\end{multicols}
+In the next example we will compare these two methods with the Euler method. The example will be one where the exact solution can be computed explicitly. The solution gets very large rather quickly, making it easy to compare errors.
+$$
+\left\{\begin{array}{l}
+y^{\prime}(t)=2 t y \\
+y(1)=1
+\end{array} \quad 1 \leq t \leq 3\right.
+$$
+first with step size $h=0.1$ and then with step size $h=0.01$. Compare each of the three plots with that of the exact solution $y(t)=e^{t^{2}-1}$ (see Exercise for the Reader 8.5). In cases where the plots of any of the approximations are too close to compare with that of the exact solution, provide plots of the errors.
+\\
+\\
+SOLUTION: We first create inline functions for both the right side of the differential equation $f(t, y)$ and the exact solution which was provided.
+\begin{lstlisting}[frame=none,numbers=none]
+>> f=inline('2*t*y','t', 'y'); yexact=inline('exp(t.^
+2-l)');
+\end{lstlisting}
+We give the details of the MATLAB commands for part (a) $(h=0.1)$ only; the changes needed for part (b) are small and obvious. We need to create vectors corresponding to each of the approximation methods.
+\begin{lstlisting}[frame=none,numbers=none]
+>> %Euler 
+>> h=0.1; [t,ye]=euler(f,1/3,1,h); 
+>> %we may as well use the M-file from thelast .section 
+>> size(t) %need to know this to construct the latter approximations 
+->1 21 
+>> yie(1)=1; %initialize improved Euler 
+>> for n=1:20 
+yie(n+l)=yie(n) + (h/2)*(f(t(n),yie(n)) + f(t(n+ 1),... 
+yie(n)+h*f(t(n),yie(n)))); 
+end 
+
+>> yrk(1)=1; % initialize Runge-Kutta 
+>> for n=1:20 
+	kl=f(t(n),yrk(n)); 
+	k2=f(t(n)+h/2, yrk(n)+h/2*kl); 
+	k3=f(t(n)+h/2, yrk(n)+h/2*k2); 
+	k4=f(t(n)+h, yrk(n)+h*k3); 
+	yrk(n+1)=yrk(n) + h/6*(k1 + 2*k2 + 2*k3 + k4); 
+end 
+
+>> subplot(2,1,1) %to save space we'll use subplots 
+>> s=l:.01:3; plot(s,yexact (s)), hold on 
+>> plot(t,ye, O',t,yie,'x', t, yrk,'+'), ylabel('y') 
+>> subplot(2,1,2), plot(t,abs(yexact(t)-yrk) ) 
+>> xlabel('t'), ylabeK'y')/ title ('Runge-Kutta Error')
+\end{lstlisting}
+
+This plot is shown of Figure 8.12a. Since the Runge-Kutta plot cannot be distinguished from the exact solution, we create a separate plot (lower plot of Figure $8.12 \mathrm{a}$ ) of just this error:\footnote{We created the legends using the "Data Statistics" menu from the "Tools" menu on the graphics window. This was first done in Chapter $7 .$}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img_24}
+\caption{Solving the initial value problem of Example 8.7. In the upper plot, the solid blue line is the exact solution. The three approximations, Euler (o o o o), improved Euler $(x \times \times x)$, and Runge-Kutta $(++++)$, all used step size $h=0.1$. The lower plot represents the error for Runge-Kutta approximation to the exact solution since the two are indistinguishable in the first plot.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img_25}
+\caption{In solving the initial value problem of Example $8.7$ using step size $h=$ $0.01$, only the graph of the Euler approximation $\left(\begin{array}{llll}0 & 0 & 0 & 0\end{array}\right)$ is distinguishable from that of the exact solution (solid graph) (Upper Left). The remaining three plots compare errors. Upper Right: Euler (o o o o) vs. improved Euler $(x \times \times \times x)$; Lower Left: improved Euler vs. Runge-Kutta (+ + + +); and Lower Right: Runge-Kutta. Note the scale of the $y$-axes to see how very much smaller the errors are with the Runge-Kutta method.}
+\end{figure}
+\noindent
+EXERCISE FOR THE READER 8.4: Indicate the changes needed in the creation of the vectors ye, yie, and yrk of the above example. Also, assuming these vectors have been constructed, give MATLAB commands which would produce Figure $8.12 \mathrm{~b}$.
+\\
+\\
+EXERCISE FOR THE READER 8.5: The DE of the previous example is separable and thus can be solved exactly by the method outlined in Exercise 12 of the last section. Use this method to derive the general solution of the DE.
+\\
+
+It is now a simple matter to modify the codes in the last example to produce $M$ file programs. We do this for the Runge-Kutta method:
+\\
+\\
+PROGRAM 8.2: An M-file for the Runge-Kutta method for the IVP:
+$$
+\left\{\begin{array}{l}
+y^{\prime}=f(t, y) \\
+y(a)=y_{0}
+\end{array}\right.
+$$
+\begin{lstlisting}[numbers=none]
+function [t, y]=runkut(f, a,b,y0,hstep ) 
+% input variables: f, a, b, y0, hstep 
+% output variables: t , y 
+% f is a function of two variables f(t,y). The program will
+% apply Runge-Kutta to solve the IVP:  (DE): y'-f(t,y), (IC)
+% y(a)=y0 on the t-interval [a,b] with step size hstep. The output
+% will be a vector of: t's and corresponding y's 
+t(1)=a ; y(1]1)=y0 ; nmax=ceil((b-a)/hstep);
+for n=l:nmax 
+	t(n + 1)=t(n)+hstep ; 
+	kl=feval(f,t(n),y(n) ) ; 
+	k2=feval(f,t(n)+.5*hstep,y(n)+.5*hstep*kl) ; 
+	k3=feval(f,t(n)+.5*hstep,y(n)+.5*hstep*k2); 
+	k4=feval(f,t(n)+hstep,y(n)+hstep*k3); 
+	y(n+l)=y(n)+l/6*hstep*(kl+2*k2+2*k3+k4 ) ; 
+end
+\end{lstlisting}
+EXERCISE FOR THE READER 8.6: Write a similar MATLAB M-file, called impeuler, which will perform the improved Euler method to solve the same IVP. The syntax, input variables, and output variables should be identical to those of Program 8.2.
+\\
+
+The differences in accuracies of the three methods as evidenced in the above example are quite astounding. We now give some general information of the accuracy of the three methods. The results will be made more precise in the next section, but it is helpful to understand the main error estimates at this point. We say that an iterative method for solving an IVP:
+$$
+\left\{\begin{array}{l}
+y^{\prime}(t)=f(t, y) \\
+y(a)=y_{0}
+\end{array} \quad a \leq t \leq b\right.
+$$
+is of order $p(p=1,2,3, \ldots)$ provided that whenever the function $f(t, y)$ is sufficiently differentiable the resulting approximations corresponding to a step size $h>0: y_{0}=y\left(x_{0}\right), y_{1} \approx y\left(x_{1}\right), \ldots, y_{N} \approx y\left(x_{N}\right)$ (where $x_{N} \leq b$ ) satisfy the error estimates:
+\begin{equation}
+\left|y\left(x_{n}\right)-y_{n}\right| \leq c \cdot h^{p} \text { for } n=0,1,2, \ldots, N
+\end{equation}
+Here $c$ is a constant which, in general, depends on the method being used as well as the function $f(t, y)$ and the interval $[a, b]$ on which the IVP is being solved.
+\\
+
+To get a feel for differences in orders of convergence, the next example compares the effect of halving the step size in the error bounds of $(7)$.
+\\
+\\
+\textbf{EXAMPLE 8.8:} Suppose we had three different methods \#1, \#2, and \#3 for solving IVPs which had orders 1,2 , and 4, respectively. Suppose also that it is known that for a certain IVP, the constant $c$ in the right side of $(7)$ could be taken to be 2 for all three methods. Find the resulting error bounds (using $(7)$ ) for each of the three methods using (a) step size $h=0.1$ and (b) half of this, $h=0.05$. Compare the results.
+\\
+\\
+SOLUTION: Part (a): Using $h=0.1$, and $c=2,(7)$ would tell us that for Method \#1 the error bound is $2(0.1)=0.2$, for Method $\# 2$ it would be $2 \cdot(0.1)^{2}=0.02$, and for Method $\# 3$ it would be $2 \cdot(0.1)^{4}=0.0002$.
+\\
+\\
+Part (b): Using instead $h=0.05$, the resulting error bounds would now be (in the same order): $0.1,0.005$, and $0.00008$. Not only were the errors smaller for higherorder methods, but the same decrease in the step size resulted in more sizeable decreases in the error bound (7) with higher-order methods. For the first-order method, halving the step size halved the error bound. For the second-order method, halving the step size resulted in an error bound equal to $1 / 4$ of the original, and for the fourth-order method the error reduction factor was $1 / 16$.
+\\
+
+It turns out that Euler's method is a first-order method, the improved Euler method is a second-order method, and the Runge-Kutta method is a fourth-order method. Finding the actual constant $c$ in (7) (or a reasonable upper bound for it) for a certain IVP using one of the methods can be extremely difficult or impossible. In fact it is very often difficult to roughly estimate $c$. One common practice is to solve the IVP by repeatedly decreasing the step size and comparing the differences until the discrepancy is less than or equal to the tolerance for error. To be on the safe side, one last computation is often done by halving the step size. This does not totally guarantee the desired accuracy, but for almost all well-posed IVPs that come up in practice, this method is quite reliable.
+\\
+\\
+CAUTION: Of course, it is not feasible to try to get a solution with more significant digits than MATLAB can handle (about 15). Theoretically, all of these methods will reach any desired accuracy to the actual solution if the step size is sufficiently small (this follows from (7)). When $h$ gets very small, however, the roundoff errors begin to accumulate and the solutions we get on any floating point computer system begin to loose their accuracy. So, what will happen if we continue to decrease step sizes is that the errors will get smaller and smaller, then stop getting any smaller and afterwards begin to increase (due to roundoff error accumulation)!
+\\
+
+Our next example will deal with the problem of the free fall of an object. If we take into account air resistance, the problem becomes very difficult with conventional physics alone. In general, an object moving at a reasonable speed (e.g., a car, a baseball, a plane, a skydiver, or even a bicycle) will have a retarding air resistance force acting in the direction opposite of motion. This air resistance force will be proportional to $|v|^{p}$, where $v$ denotes the velocity and the exponent $p$ lies between 1 and 2 . The exponent $p$, as well as the constant of proportionality, will depend on things like the size and shape of the object, the speed, as well as even the density and viscosity of the air. In general, faster speeds give larger exponents $p$ and larger constants of proportionality.
+\\
+\\
+\textbf{EXAMPLE 8.9:} (Physics: Free Fall with Air Resistance) After a skydiver jumps from an airplane and until the parachute opens, the air resistance is proportional to $|v|^{1.5}$, and the maximum speed that the skydiver can reach is $80 \mathrm{mph}$.\\
+(a) Plot a graph of the skydiver's vertical falling velocity during the first 10 seconds of fall using the Runge-Kutta method with step size $h=0.01$ seconds; in the same plot include the corresponding vertical fall velocity if there were no air resistance.\\
+(b) How many seconds (to the nearest $1 / 100$ th of a second) would it take for the skydiver to break a falling speed of $60 \mathrm{mph}$ ?
+\\
+\\
+SOLUTION: Part (a): Taking the upward vertical direction as positive, there are two forces on the diver: gravity and air resistance. By Newton's second law: $F=m a=m(d v / d t)$ and since gravity's force $=m g \quad(m=$ mass, $g=$ gravity constant of the earth $=32.1740 \mathrm{ft} / \mathrm{sec}^{2}$ ) pulls the diver down (in the negative direction) and air resistance will push the skydiver upward (against the direction of motion) in the positive direction, we arrive at the following differential equation for the velocity of the diver after jumping from the plane (valid until the parachute opens and the air resistance increases considerably)
+$$
+v^{\prime}(t)=-g+c|v(t)|^{1.5}.
+$$
+The initial condition is $v(0)=0$ (where we have let $t=0$ correspond to the time that the skydiver jumped off the plane. Before we solve this IVP, we need to determine the constant $c$. We can get this by using the fact that when $v(t)$ reaches its maximum $80 \mathrm{mph}$, we must have $v^{\prime}(t)=0$, so we can substitute these values into the equation and solve for $c$. We first arrange things so that both sides of the equation will have the same units. We change $\mathrm{mph}$ to $\mathrm{ft} / \mathrm{sec}$ :
+$$
+80 \frac{\text { mile }}{\mathrm{hr}} \cdot\left(\frac{5280 \mathrm{ft}}{1 \mathrm{mile}}\right) \cdot\left(\frac{1 \mathrm{hr}}{60^{2} \mathrm{sec}}\right) \approx \frac{352}{3} \frac{\mathrm{ft}}{\mathrm{sec}} .
+$$
+Substituting this along with $v^{\prime}=0$ and $v=80$ into the DE now gives $c=$ $32.1740 /(352 / 3)^{1.5}$. We can now turn the problem over to MATLAB:
+\begin{lstlisting}[frame=none,numbers=none]
+>> f=inline('-32.1740+32.1740/(352/3)^1.5*abs(v)^1.5','t','v'); 
+>> [t,y]=runkut(f,0,10,0, 0.01); 
+>> plot(t,y*60^2/5280) %gets the v-axis to be in mph 
+>> free=inline('-32.1740', 't','v'); %free fall DE right side 
+>> [t2/y2]=runkut(free,0,10,0,.01); 
+>> hold on 
+>> plot(t2,y2*60^2/5280, '-.') 
+>> xlabel('Time(seconds)') , ylabel('Velocity of skydiver') 
+\end{lstlisting}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img_26}
+\caption{Comparison of the vertical free fall speed of the skydiver in Example 8.9 with air resistance (solid graph) and with no air resistance (dash-dotted graph). Speed is in mph (vertical axis) and time is in seconds (horizontal axis).}
+\end{figure}
+Part (b): A simple while loop will give us the index of the desired time and then we can get the time.
+\begin{lstlisting}[frame=none,numbers=none]
+>> k=l ; 
+>> while y(k)*60^2/5280 > -60 
+k=k+l; 
+end 
+>> k ->404 
+>>t(404) ->4.03 seconds (answer).
+\end{lstlisting}
+
+\rule{485pt}{2pt}
+\textbf{EXERCISES 8.3} 
+\begin{enumerate}
+\item
+For each IVP below, do the following: (i) Starting with step size $h=1 / 2$, then $h=1 / 4$, then $h=$ $1 / 8$, etc., continue to use the improved Euler method to compute $y(1)$. Stop when the computed answers for $y(1)$ differ by less than $0.001$. How small a step size was needed for the process to stop?
+(ii) Now do the same using Euler's method.
+\begin{tasks}(2)
+\task 
+$\left\{\begin{array}{l}y^{\prime}(t)=\cos (t y)+2 t \\ y(0)=0\end{array}\right.$
+
+\task
+$\left\{\begin{array}{l}y^{\prime}(t)=y+e^{-y}-t \\ y(0)=-1\end{array}\right.$
+\task
+$\left\{\begin{array}{l}y^{\prime}(t)=\frac{2 t+y^{2}}{1+t^{2}+y} \\ y(0)=1\end{array}\right.$
+\task
+$\left\{\begin{array}{l}y^{\prime}(t)=t y^{2}-y \\ y(0)=0\end{array}\right.$
+\end{tasks}
+\item
+Redo all parts (a) through (d) of Exercise 1 but change task (i) to use the Runge-Kutta method instead of the improved Euler method.
+\item
+This exercise will be similar to what was done in Example 8.7. For each part, an IVP is given along with an explicit solution (so these IVPs are rare exceptions where explicit solutions exist). (i) Verify that the explicit function does indeed solve the IVP. (ii) Next, use each of the three methods: Euler, improved Euler, and Runge-Kutta, to numerically solve the IVP on the specified interval using the given step size $h$. Graph the approximations alongside the exact solution and plot additional error graphs as necessary.
+\begin{tasks}(1)
+\task 
+$
+\left\{\begin{array}{l}
+y^{\prime}(t)=t^{3}-2 t y \\
+y(1)=1
+\end{array} 1 \leq t \leq 5, \text { Exact Solution: } y(t)=\frac{1}{2}\left(t^{2}-1\right)+e^{t-t^{2}}, h=0.1\right.
+$
+\task
+$
+\left\{\begin{array}{l}
+r^{\prime}(t)=\frac{r \sin (t)}{1-\cos (t)} \quad 0 \leq t \leq 4, \text { Exact Solution: } r(t)=4(1-\cos (t)), h=0.01 \\
+y(0)=4
+\end{array}\right.
+$
+\task
+$
+\left\{\begin{array}{l}
+y^{\prime}(t)=t^{2} \cos (t)+\frac{2 y}{t} \quad 2 \pi \leq t \leq 10, \text { Exact Solution: } y(t)=t^{2} \sin (t), h=0.05 \\
+y(2 \pi)=0
+\end{array}\right.
+$
+\end{tasks}
+\item
+(Physics: Free Fall with Air Resistance) Redo the skydiver Example $8.9$ changing the air resistance to be proportional to $|v|^{1.1}$ (a more aerodynamic skydiver), but keeping the maximum speed at $80 \mathrm{mph}$. How does the graph differ from that of the example?
+\item
+(Physics: Free Fall with Air Resistance) Redo the skydiver Example $8.9$ changing the air resistance to be proportional to $|v|^{1.9}$ (a less aerodynamic skydiver), but keeping the maximum speed at $80 \mathrm{mph}$. How does the graph differ from that of the example?
+\end{enumerate}
+NOTE: The next three problems come from fluid dynamics. \textit{Toricelli's Law}\footnote{Evangelista Torricelli $(1608-1647)$ was an Italian physicist who is famous for having invented the mercury barometer.} describes how fast the level of fluid falls in a leaking tank. If the tank has cross-sectional area $A(y)$ (where $y$ is the height fluid level measured from the bottom of the tank), and the tank has a hole of area $a$ at its bottom, then the rate at which the fluid level drops is given by the $D E$
+$$
+y^{\prime}(t)=-a \sqrt{2 g y} / A(y)
+$$
+where g is the Earth's gravitational constant. 
+\begin{enumerate}[resume]
+\item
+(Draining a Tank) Suppose a cylindrical tank of radius $R=20$ feet and height $h=80$ feet is situated with a flat side on the ground and at the bottom there is a circular hole of radius 5 inches. Initially $(t=0)$, the tank is full with water.\\
+(a) What does Torricelli's DE look like for this problem?\\
+(b) Using the Runge-Kutta method (with step size $h$ smaller than one minute), obtain a plot of the height of the water level (in feet) versus the elapsed time (in minutes).\\
+(c) Using your approximate solution, estimate how long it will take (to the nearest minute) for the tank to drain.\\
+(d) Redo part (c) using the Runge-Kutta approximation with half of your original step size. Did this significantly affect the answer? If did, explain what needs to be done to get a more accurate answer, if possible, and do it.\\
+(e) What effect would doubling the area of the drain hole have on the answer to part (a)?
+\item
+(Draining a Tank) Redo Exercise 6 with the same cylinder but this time assume that it is lying on the ground on its round (long) side (with struts to keep if from rolling away). Do you think it would take more or less time for the tank to drain if it is situated like this? Explain. (Of course, if you have done Exercise 6, you will know the answer to this last question.)
+\item
+(Draining a Tank) Redo Exercise 6 this time for a hemispherical tank of radius $R=20$ feet which is supported with struts so the equator is at the top and the hole is circular of radius 5 inches and at the bottom.
+\item
+(Ecology) An accidental release of 10 mongooses on a pacific island has resulted in their numbers rising and their subsequent destruction of several species of native birds. An ecologist has been tracking their numbers since their release. Since the food supply is limited and varies with the month (due to seasonal changes), the ecologist has found that the mongoose population $P(t)$ will satisfy the following $\mathrm{DE}$ :
+$$
+r^{\prime}(t)=r P^{-s p^{1.6}}
+$$
+where $t$ is measured in months, $r$ is the natural growth rate of the species, which she has determined to be $0.75$, and the values of $s$ (whose factor gives rise to the death rate of mongooses due to limitations in food supply) are given monthly as follows:
+$$
+\begin{array}{|c|c|c|c|c|}
+\hline t & s & & t & s \\
+\hline 1 \text { (January) } & 0.0084 & & 7 & 0.0026 \\
+\hline 2 & 0.0032 & & 8 & 0.0033 \\
+\hline 3 & 0.0014 & & 9 & 0.0039 \\
+\hline 4 & 0.0006 & & 10 & 0.0042 \\
+\hline 5 & 0.0005 & & 11 & 0.0066 \\
+\hline 6 & 0.0011 & & 12 & 0.0075 \\
+\hline
+\end{array}
+$$
+(a) Using the above values for $s$ as constants for each corresponding monthly time interval (i.e., for all of January $0 \leq t \leq 1$ use the value $s=0.0084$, next for $1<t \leq 2$ use the value $s=0.0032$,
+
+
+\end{enumerate}
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+%Tutaj reszta od osoby 3	
+
+\section[THEORY AND ERROR ANALYSIS FOR INITIAL VALUE PROBLEMS]{THEORY AND ERROR ANALYSIS FOR INITIAL VALUE PROBLEMS}
+\label{sec:sec_8_4}
+\noindent The hypotheses that will guarantee the initial value problem \ref{eqa4}
+	$$(IVP)\left\{\begin{array}{ll}
+	y'(t) = f(t,y(t))&(DE),\\
+	y(a) = y_{0}&(IC)
+	\end{array} \right.$$
+to have a solution (existence) and, furthermore, for such a solution to be unique (uniqueness) are quite natural and, as indicated in the previous sections, will automatically be satisfied for most IVPs which come up as real-life models. In this section, we will state the existence and uniqueness theorems and we will also discuss example 8:18and prove some error estimates for numerical methods for solving IVPs. The error estimation techniques that we introduce have a practical advantage in that they lead naturally to derivations of general one-step numerical methods for solving IVPs.\\
+
+\indent The function $f(t,y),$ when thought of as a function of the two independent variables t and y (i.e., do not think of $y$ as a function of t), is said to satisfy a \textbf{ Lipschitz condition} in the y-variable with constant L on the time interval $a\le t\le b$ provided that for all such $t$ and for all $y_{1},y_{2},$ we have
+\begin{equation}\label{eqa8}
+	\left| f(t,y_{1}) -f(t,y_{2}) \right|\le L\left| y_{1}-y_{2} \right|.
+\end{equation}
+The reason that this condition is a natural one is that if the partial derivative $\partial f/\partial y$ (i.e., just the ordinary derivative of $f(t,y),$ with respect to $y,$ treating $t$ as a constant) is bounded in absolute value by $L$, $\left| \partial f/\partial y(t,y) \right|$ are not bounded for all $y$ and for $a\le t\le b$ then it can be shown that $f(t,y)$ cannot satisfy a Lipschitz condition in the time interval $a\le t\le b$.\\
+
+\noindent \paragraph*{EXAMPLE 8.10: }Which of the functions $f(t,y)$ given satisfy a Lipschitz condition in the $y$-variable on $0\le t\le 1?$
+
+\begin{multicols}{3}
+$(a) f(t,y)=(1+t^{2})\cos(ty)$
+
+$(b) f(t,y) = y^{1/3} $
+
+$(c) f(t,y)=g(t)$
+\end{multicols}
+
+\noindent SOLUTION: Part (a): Differentiating with respect to $y$ gives $\partial f/\partial y = (1+t^{2})(-\sin(ty))t=-t(1+t^{2})sin(ty).$ Taking absolute values, we get $\left| \partial f / \partial y(t,y) \right| \le 1(1+1^{2})\cdot 1\le 2$ (since $0\le t\le 1$) so $f(t,y)$ will satisfy the Lipschitz condition (8) with L = 2.
+\\
+\\
+Part (b): $\partial f/ \partial y = \frac{1}{3}y^{-2/3}.$ This function goes to infinity as $y \downarrow 0 f(t,y)$ cannot satisfy a Lipschitz condition (on any $t$-interval).
+\\
+\\
+Part (c): $\partial f/ \partial y = 0$ (no matter what the function $g(t)$ is) so the Lipschitz condition holds with $L = 0$\\
+
+\indent We are now ready to state the existence and uniqueness theorem. We will omit the proof; it can be found in many decent ordinary differential equations textbooks (see, e.g., [Hur-90], [Arn-78], or [HiSm-97]).\\
+
+\noindent \paragraph*{THEOREM 8.1: }\textit{(Existence and Uniqueness for Solutions of Initial Value Problems)} Consider the IVP (4) on a interval $a\le t\le b$:
+	$$(IVP)\left\{\begin{array}{ll}
+	y'(t) = f(t,y(t))&(DE),\\
+	y(a) = y_{0}&(IC)
+	\end{array} \right.$$
+(a) If the function $f(t,y)$ is a continuous function for all a $a\le t\le b$ and all $y$, then this IVP has a solution which is valid on some interval $a\le t\le a + \delta ( \delta > 0)$.\\
+(b) If furthermore the function $f(t,y)$ satisfies a Lipschitz condition $a\le t\le b$, then there is a unique solution which is valid on the whole interval $a\le t\le b$.\\
+
+\noindent REMARK: The Lipschitz condition (\ref{eqa8}) is required to hold for all $y$ with the same constant $L$. Often, even when $f(t,y)$ is a very simple function, the inequality \ref{eqa8} will only hold when the $y$-coordinates are bounded. In such a case it turns out that there will be a unique solution, valid not necessarily on the whole interval but on some subinterval $a\le t\le a + \delta ( \delta > 0)$ as guaranteed by part (a). The basic pathology that can prevent the IVP from having a (unique) solution on the whole interval is that the solution can "blow up" to infinity in finite time.\\
+
+\noindent \paragraph*{EXAMPLE 8.11: }a) Apply the Runge-Kutta method with step size $h$ = 0.01 to (attempt) to solve the IVP
+$$\left\{
+\begin{array}{ll}
+y'(t)=y^{2}\\
+y(0)=2\
+\end{array}
+\right.\quad 0\le t\le 1,
+$$
+and plot this solution.
+\newline
+(b) Explain why this solution is not defined for all $t$ in [0,1].
+
+\begin{minipage}{0.50\linewidth}
+\noindent SOLUTION: Part (a):
+\begin{lstlisting}[numbers=none,frame=none]
+	>> f=inline('y^2', 't', 'y')
+	>> [t,y]=runkut(f,0,1,2, .01);
+	>> plot(t,y)
+\end{lstlisting}
+\noindent The plot of this approximation is included as Figure \ref{fig:fig_8_14}.\\
+\\
+Part (b): As warned in the cautionary note above, even the simple function $f(t,y) = y^{2}$	of the DE has partial derivative $\partial f/ \partial y = 2y$ which is not bounded for all $y$. The problem can be seen by looking at the exact solution of the IVP. The DE is separable (see Exercise 12 of Section 8.2) and so can be solved explicitly:
+      \end{minipage}
+      \hspace{0.05\linewidth}
+      \begin{minipage}{0.40\linewidth}
+          \begin{figure}[H]
+              \includegraphics[width=\linewidth]{fig_8_14}
+              \label{fig:fig_8_14}
+              \caption{Plot of the Runge-Kutta approximation to the solution of the IVP of Example 8.11. Note the size of the y-coordinates.}
+          \end{figure}
+          \end{minipage} 
+
+
+
+$$y' = y^{2} \Rightarrow \frac{dy}{dt} = y^{2} \Rightarrow \int y^{-2}dy = \int dt \Rightarrow -y^{-1}=t+C\Rightarrow y = \frac{-1}{t+C}$$
+To get the solution of the IVP from this general solution, we substitute $t=0$ to find (from the IC)	$C = -1/2$, so the solution of the IVP is $y = 1/(0.5 - t)$, which blows up to infinity at $t = 0.5$. The Runge-Kutta method provides us with a rather accurate portrayal of this blowing-up phenomenon. This example shows the importance of checking the hypotheses in the theorem. The simple innocuous-looking expression for $f(t,y)$ in the DE actually gave rise to an explosive growth rate. The solution reached infinity in finite time. For natural phenomena this is certainly not possible. In summary then, this exact solution shows us that it is not possible to find a solution of the IVP on the whole indicated time interval $[0,1]$ (the resulting growth rate is too explosive to allow it).
+\newline
+\\
+\indent For differentiable functions $f(t,y)$ s in the example above, unless $\left| \partial f/\partial \right|$ has a uniform upper bound $L$ for all $t$ in $[a,b]$, Theorem 8.1 and the subsequent remark guarantee only that the IVP has a unique \textbf{local solution} $y(t)$. This means that $y(t)$ will satisfy the IC and the DE on some time interval of positive length which starts at $t = a: a\le t\le a + \delta$. The last example shows that a \textbf{global solution} (defined on the whole stretch $a\le t\le b$) may not exist under such circumstances.
+\newline
+\\
+\indent We now turn to error estimates for the numerical methods of approximating solutions to the IVP (4):
+	$$(IVP)\left\{\begin{array}{ll}
+	y'(t) = f(t,y(t))&(DE),\\
+	y(a) = y_{0}&(IC)
+	\end{array} \right.$$
+For the three methods that we have so far introduced, only Euler's method has a somewhat manageable error estimate. We present this estimate in the next theorem and then proceed along more general lines to obtain error estimates for general methods.\\
+
+\noindent \textbf{THEOREM 8.2: }\textit{(Error Estimates for Euler's Method} Suppose that the IVP (4) above has $f(t,y)$ satisfying $L = \left\{ \left| \partial f / \partial y(t,y)) \right|:a \le t \le b \right\} < \infty $ and $M_{2} = max\left\{ \left| y^{n}(t) \right|:a\le t\le b \right\} < \infty$  If Euler's method is used to solve the IVP(4) with step $size = h$, then for any $n$ such that $a\le t_{n} \le b$, we have:
+
+\begin{equation}\label{eqa9}
+        Error = \left| y(t_{n}) - y_{n} \right| \le \frac{hM_{2}}{2L}(e^{L(b-a)}-1)
+\end{equation}
+
+\noindent REMARK: The right side of (\ref{eqa9}) can be written as $ch$, where $c$ is a constant (depending on $f(t,y)$). Thus this theorem gives a quantitative version of the result stated in the last section about the Euler method being a first-order method. Such an explicit theorem is not known for the improved Euler or Runge-Kutta methods. A proof of the Euler method result can be found, for example, in [Hur-90]. At first glance it may seem that the constant $M_{2}$ is impossible to calculate without knowing the solution, but the DE and the chain rule help with this job. The use of the theorem is illustrated in the next example.
+
+
+\noindent \paragraph*{EXAMPLE 8.12: }Suppose we wish to use Euler's method to solve the IVP 
+$\left\{
+\begin{array}{ll}
+y'=0.05y\\
+y(0)=10\
+\end{array}
+\right.
+$
+on the interval $[0,5]$, and seek a solution with error being less than
+0.05. If we use Theorem 8.3, how small a step size $h$ would be necessary to guarantee this desired accuracy?\\
+
+\noindent SOLUTION: Here $y(t,y) = 0.05y$ so that $\partial f/ \partial y=0.05$. Using the DE twice we get $y^{n}(t) = (0.05)y'=0.05^{2}y = 0.0025y.$  So to estimate $M_{2}$ we need to get some kind of an upper bound on how large $y$ will get. Ignoring the fact that we can get the general solution here, one could proceed as follows. From the DE and IC, $y'(0)=0.5$. Now, as long as $y$ is less than 20, we will have $y'(t) \le 1$, so it follows that $y(t) \le y(5) = y(0) \int_{0}^{5}1dt \le 10+5=15.$ Thus in Theorem 8.2, we can take $L = 0.05$ and $M_{2}=0.0025x 15 = 0.0375,$ and the right side of (\ref{eqa9}) becomes:$\frac{h(0.0325)}{2(0.05)}(e^{0.05(5)}-1) \approx 1.06515h$ and for this error bound to be less than the desired $0.05$, we would need to take $0.05/1.06515 = 0.046942$.\\
+
+\noindent EXERCISE FOR THE READER 8.7: Perform the Euler approximation with step size $h = 0.046$ (the $t$'s will not quite reach up to 5 but do not worry about this) and compare with the exact solution of this Malthus IVP to see that the resulting actual error of the approximation is $< 0.004$,  quite a bit less than what we had needed. It is typical that the error bound of Theorem 8.3 is conservative since it is a very general result.
+\\
+We now turn to another approach for estimating error bounds for general one-step methods that will lead to natural constructions of the Euler and improved Euler methods, the Runge-Kutta method, and many others of various orders. The method is focused on the so-called local truncation error, which we introduced at each step in the iterative approximation. For motivation, recall that Euler's method was based on the tangent line approximation, which we rewrite as:
+$$y(t_{n+1}) = y(t_{n})+hf(t_{n},f(t_{n}))+\varepsilon_{n}$$
+where $\varepsilon_{n}$ is the so-called \textbf{local truncation error}. From Taylor's theorem, if $y$ is sufficiently differentiable, we have $\left| \varepsilon_{n} \right| \le Ch^{2}$, which turns out to give the order $p = 1$ of convergence in Euler's method. To arrive at a more general one-step method, we modify the above formula to a more general one:
+\begin{equation}\label{eqa10}
+	y(t_{n+1}) = y(t_{n})+G(t_{n},y(t_{n}),h)+\varepsilon_{n}
+\end{equation}
+where the expression "G(t,y(t),h)" is allowed to depend on $t$, $y(t)$, and $h$. The
+resulting one-step method from (\ref{eqa10}) would simply replace the exact values $y(t_{n+1})$ and $y(t_{n})$ with the corresponding approximations $y_{n+1}$ and $y_{n}$. Efficient numerical schemes arise from intelligent choices for the expression G. The idea is to make the local truncation errors to satisfy
+\begin{equation}\label{eqa11}
+	\left| \varepsilon_{n} \right|\le Ch^{p+1}
+\end{equation}
+where $p$ is as large as possible and $C$ is some fixed constant.
+\footnote 
+{Intuitively, for a method of order p, the error at each step is $O(h^{p+1})$, and there are $O(1/h)$ steps, so the total error is $O(h^{p+1}/h) = O(h^{p}$. The big-0 notation $f(x)$ is $O(g(x))$ will be introduced shortly in the text and means that the inequality $\left| f(x) \right| \le C \left| g(x) \right|$ eventually is valid if $x$ lies close enough to some specified (or understood) value. In our estimates, the understood value of h is $0$.}
+When this can be done, we say that the one-step method arising from (\ref{eqa10}) \textbf{has local truncation error of order \textit{p}}. The reason for this terminology is because the following theorem would then imply that the method will yield global errors of order \textit{p} (as defined in the last section).\\
+
+\noindent \paragraph*{THEOREM 8.3: }\textit{(Error Estimates for One-Step Methods)} Suppose that the IVP (4) above has $f(t,y)$ satisfying the hypotheses of Theorem 8.1, and, furthermore, that the function $G(t,y(t),h)$ in (\ref{eqa10}) satisfies a Lipschitz condition in $y(t)$ with constant $L$ on $a \le t \le 	b$, and that the one-step method arising from (\ref{eqa10}) has local truncation error of order $p$ satisfying (\ref{eqa11}). If this one-step method is used to solve the IVP (4) withstep $size = h$, then for any $n$ such that $a \le t_{n} \le b$, we have: 
+
+\begin{equation}\label{eqa12}
+	Error = \left| y(t_{n})-y_{n} \right| \le \frac{Ch^{p}}{L}(e^{L(b-a)}-1)
+\end{equation}
+Notice that Theorem 8.2 is a special case of this one, in case the Euler method is used. The reader is encouraged to read the proof of this theorem, which can be found in [StBu-92] or [Atk-87].
+\\
+
+The most obvious way to improve the Euler method is to use higher-order Taylor polynomials for G(t,y) in (\ref{eqa10}). We include this as our next example.\\
+
+\noindent \paragraph*{EXAMPLE 8.13: }\textit{(Higher-order Taylor Methods)} If $f(t,y)$ is p-times differentiable, then it will follow from the $DE y'(t) = f(t,y)$ that $y(t)$ is $(p+1)$ times differentiable, and in (\ref{eqa10}) we take G to be the order-p Taylor polynomial less the first term (since it is already included in (\ref{eqa10})):
+\begin{equation*}
+	G(t_{n},y(t_{n}),h) = hy'(t_{n})+\frac{h^{2}}{2!}y^{n}(t_{n})+...+\frac{h^p}{p!}y^{(p)}t_{n})
+\end{equation*}
+From Taylor's theorem, (\ref{eqa10}) now implies that
+$$\left| \varepsilon_{n} \right| = \left|R_{n}(t_{n}+h)\right| = \left| \frac{h^{p+1}}{(p+1)!}  y^{p+1}(c) \right|$$
+where $c$ is a number between $t_{n}$ and $t_{n}+h$. Using the chain rule, under these
+conditions and if the partial derivatives of f (up to order p) which involve y are bounded over the indicated range, it can be shown that this $G(t,y(t),h)$ will satisfy a Lipschitz condition in the $y$-variable if $f(t,y)$ does (but with a larger constant). From this it now follows from Theorem 8.3 that this pth-order Taylor method is of order p. Since h is usually fixed in a given implementation of such a method, notation is sometimes abused a bit to write $G(t,y(t))$ in place of $G(t,y(t),h)$. Also, if G depends only on y, it is furthermore abbreviated as $G(y)$. Since the derivatives are, in general, expensive and awkward to compute, the method is not so widely used in practice.
+
+
+\noindent \paragraph*{EXAMPLE 8.14: }Use the third-order Taylor method to solve the IVP
+	$$
+	\left\{\begin{array}{ll}
+	y'(t) = 2ty&\\
+	y(1) = 1&
+	\end{array}1 \le t  \le 3\right.
+	$$
+using step size $h = 0.01$. This was the IVP of Example 8.7 where we compared our three main methods. Use the exact solution of this IVP given in that example and plot the error of the present third-order Taylor approximation.\\
+
+\noindent SOLUTION:The function $G(t_{n},y_{n})$ is given in the last example, but to get an explicit expression for it we need to use the specific DE for this problem to find $y^{n}(t)$ and $y^{m}(t)$. This is done here (and in general) using both the DE and the
+chain rule repeatedly:
+$$y^{t}=(y'(t))'=(2ty(t)')=2y(t)+2ty'(t)=2y(t)+4t^{2}y(t)=(2+4t^{2})y(t),$$
+$$y^{m}(t)=(y^{m}(t))' = 8ty(t)+(2+4t^{2})y'(t)=8ty(t)+(2+4t^{2})2ty(t) = (12t+8t^{3})y(t)$$
+Thus from the last example (with p = 3),
+$$G\left(t_{n}, y_{n}\right)=h\left(2 t_{n} y_{n}\right)+\left(h^{2} / 2\right)\left(2+4 t_{n}^{2}\right) y_{n}+\left(h^{3} / 6\right)\left(12 t_{n}+8 t_{n}{ }^{3}\right) y_{n}$$
+We may now allow MATLAB to take over.
+
+\begin{minipage}{0.50\linewidth}
+  \begin{lstlisting}[numbers=none,frame=none]
+>>onestep=inline('y+2*h*t*y+h^2/2*(2+4*t^2)*y+h^3/6*...(12*t+8*t^3)*y', 't', 'y', 'h') ;
+>> t=l:.01:3;
+>> size(t)
+-> 1 201
+>>ytay(1)=1;
+>>for n=l:200 ytay(n+1)=onestep(t(n),ytay(n), 0.01);
+end
+>> yexact=inline('exp(t.^2- 1)');
+>> plot{t,abs(yexact(t)-ytay))
+\end{lstlisting}
+
+      \end{minipage}
+      \begin{minipage}{0.45\linewidth}
+          
+          \begin{figure}[H]
+              \includegraphics[width=\linewidth]{fig_8_15}
+              \label{fig:fig_8_15}
+              \captionof{figure}{A plot of the error for the approximation of Example 8.14.}
+          \end{figure}
+          \end{minipage} 
+
+
+\noindent Upon comparing the error for this method with those in Figure \ref{fig:fig_8_12} for the Euler, improved Euler, and Runge-Kutta methods, we see that the error here is significanly less than that of the improved Euler method, but is noticeably more than for the Runge-Kutta method. This makes sense since the order of this method (three) is between those of the latter two methods (two and four).	\\
+
+\noindent \paragraph*{EXAMPLE 8.15: }
+\textit{(Derivation of a Class of Simple One-Step First- and Second- Order Methods)} Derive all first- and second-order one-step methods (\ref{eqa10}) which arise from the function G(t,y) being of the following form:
+$$
+G\left(t_{n}, y_{n}, h\right)=h\left[a f\left(t_{n}, y_{n}\right)+b f\left(t_{n}+c h, y_{n}+d h f\left(t_{n}, y_{n}\right)\right)\right],
+$$
+where a, b, c, and d are constants.\\
+
+\noindent SOLUTION: The goal is to judiciously choose the parameters a, b, c, and d so that the one-step method arising from (\ref{eqa10}) will result in the pth-order (with p = 1 or 2) estimate (\ref{eqa11}) being valid. Each such choice will give an order-p one-step method.
+\\
+
+We first need to express $G(t_{n},y_{n})$ in terms of an expression involving f (and
+some of its partial derivatives) evaluated at $t(_{n},y_{n})$ plus some error terms
+involving h. This can be accomplished by repeatedly using Taylor's theorem. To make things more simple when we do this, we omit writing arguments for functions when they are $t(_{n},y_{n})$. The error terms involving h will all be less than, in absolute value, some constant times a power of $h: h^{p}$. Since the individual constants that come up will be unimportant for our present purposes, we will denote each such term as $O(h_{p})$. This useful notation is very often used in both pure and numerical analysis; it is commonly and affectionately called the \textbf{"big O" notation}. In what follows below, we first apply Taylor's theorem to $f(t,y)$ in the $t$-variable, and next in the y-variable.
+$$G=h\left[a f+b f\left(t_{n}+c h, y_{n}+d h f\right)\right]=$$
+$$=h\left[a f+b\left\{f\left(t_{n}, y_{n}+d h f\right)+c h f_{t}\left(t_{n}, y_{n}+d h f\right)+\frac{c^{2} h^{2}}{2} f_{n}\left(t_{n}, y_{n}+d h f\right)+O\left(h^{3}\right)\right\}\right]=$$
+$$=h\left[a f+b\left\{f+dhff_{y}+\frac{d^{2} h^{2}}{2} f^{2} f_{y y}+O\left(h^{3}\right)+c h f_{t}+c d h^{2} f_{ty}+O\left(h^{3}\right)+\frac{c^{2} h^{2}}{2} f_{n}+O\left(h^{3}\right)\right\}\right]$$
+$$=h\left[(a+b) f+b h\left(d f f_{y}+c f_{1}\right)+\left(b h^{2} / 2\right)\left(d^{2} f^{2} f_{y y}+2 c d f f_{y}+c^{2} f_{tt}\right)\right]+O\left(h^{4}\right)$$
+In order to see how best to choose the parameters a, b, c, and d, we will compare the above expansion with that of the corresponding Taylor expansion for the unknown function y(t). In obtaining the expansion below, we will be using the DE and the chain rule repeatedly. Since we wish only to approximate local errors, we assume that $y(t_{n})=y_{n}$. The reader should keep in mind that each time we replace $y'(t)$ with $f(t,y)$ and differentiate the latter, since y is implicitly a function of t, we must use the chain rule.
+
+\begin{equation*}
+\begin{aligned}
+y\left(t_{n+1}\right) &=y\left(t_{n}\right)+h y^{\prime}\left(t_{n}\right)+\left(h^{2} / 2\right) y^{\prime \prime}\left(t_{n}\right)+\left(h^{3} / 6\right) y^{\prime \prime \prime}\left(t_{n}\right)+O\left(h^{4}\right) \\
+&=y_{n}+h f+\left(h^{2} / 2\right)(d / d t) f+\left(h^{3} / 6\right)\left(d^{2} / d t^{2}\right) f+O\left(h^{4}\right) \\
+&=y_{n}+h f+\left(h^{2} / 2\right)\left(f_{t}+f f_{y}\right)+\left(h^{3} / 6\right)\left(f_{n}+f f_{n y}+f_{t} f_{y}+f^{2} f_{y y}\right)+O\left(h^{4}\right)
+\end{aligned}
+\end{equation*}
+\\
+Now since $y_{n}$ is already part of the one-step formula resulting from (\ref{eqa10}), we may
+equate coefficients of positive powers of h in the last lines of the above two expressions to minimize local truncation errors. Examination of the equations shows that it is only possible to equate the powers of h and $h^{2}$ from which we get the following conditions:
+
+\begin{center}
+for $h: a+b=1$, \qquad for $h^{2}: b d=1 / 2$ and \quad $b c=1 / 2$\par
+\end{center}
+\noindent
+If we take a as an arbitrary real number and b = 1- a, then we get agreement of the h coefficients and hence this leads to a first-order method for any choices of a, b, c, and d. Euler's method comes from the choice a = 1. If, furthermore, we require that b $\neq$ 0 and d = c = 1/2b, then we arrive at a family of second-order methods. The improved Euler method results from the choice b = 1/2. When b = 1 we get another well-known second-order method given by the recursive formula $y_{n+1}=y_{n}+h f\left(t_{n}+h / 2, y_{n}+(h / 2) f\left(t_{n}, y_{n}\right)\right)$. Of course, in order to use Theorem 8.3 to show us that these methods have the indicated orders, we must know that G(t,y) satisfies a Lipschitz condition in y. This follows nicely from the fact that this is true for f(t,y) and the way in which G(t,y) was defined using f(t,y) (see Exercise 10).
+\\
+ 
+Higher-order methods can be obtained with the method of this example (using
+more terms, of course). It turns out that if we only use p terms involving f(t,y) per step, we will be able to obtain a method of order p for p = 1,2,3,4, but not when p = 5. This partially explains the popularity of the classical Runge-Kutta method. All such methods obtainable in this way (with whatever order) are often collectively referred to as "Runge-Kutta methods."
+\\
+
+Many popular and effective IVP solver methods used these days are based on Runge-Kutta methods, but they vary the step size. One such method is the Runge- Kutta-Fehlberg Method (abbreviated as RKF45), which is an order-5 method and requires six evaluations per step. Roughly, the way this method works is to figure out two $y_{n+1}$'s at each iteration: one using an order-5 Runge-Kutta-type method and the other using an order-4 Runge-Kutta-type method. If the two approximations are not close enough to each other (in comparison to the desired error goal), then these approximations are discarded, the step size is reduced, and another such pair of approximations is generated. If the approximations agree nicely, $y_{n+1}$ is taken to be the higher-order one. If the approximations agree with much more accuracy than the desired error goal requires, then the step size is increased for the next iteration. This way, we focus the intensity of the iterations in parts of the solution where the graph is more oscillatory. When the riding is smooth we conserve energy and use large step sizes. This and other more advanced methods will be developed in more detail in the next section. MATLAB has a program which performs a more elaborate version of RKF45 which is also designed to handle systems of ODEs (which we will learn about in the next chapter). For the single IVP (4), the syntax is similar to the functions that we have built.
+
+
+\begin{center}
+\begin{tabular}{ |p{0.3\linewidth} | p{0.65\linewidth}|} 
+ \hline
+ \begin{lstlisting}[numbers=none,frame=none]
+[t,y] = ode45('f', [a b], yO, options)
+\end{lstlisting} & Numerically solves the IVP $\left\{\begin{array}{ll}
+y'(t) = f(t,y(t))&(DE),\\
+y(a) = y_{0}&(IC)
+\end{array} \right.$ where the function f(t,y) is stored as an M-file f (or an inline function entered w/out quotes), a is the initial time, b is the final time, and y0 is the value of the function at t = a. The last argument is optional.\\
+ \hline
+\end{tabular}
+\end{center}
+
+You can enter help \texttt{ode45} for more details on how the program works. In particular, the default goal for the relative error is $10^{-3}$ and the default goal for the absolute error is $10^{-6}$. In fact, MATLAB allows its users to view the actual program. To see it just enter type \texttt{ode45} and MATLAB will spit the program out for you on the command window so you can analyze it at will. MATLAB lets you view many of its programs in this way. It is a great way to expand your programming skills.
+
+
+\noindent \paragraph*{EXAMPLE 8.16: }Use \texttt{ode45} to re-solve the IVP of Example 8.7 with default options and plot (only) the error graph. Next reset the default relative tolerance to $10^{-8}$ and compare the absolute error. Compare both with the result of Example 8.7 where our three basic methods were used to solve the same IVP.\\
+
+\noindent SOLUTION: Since \texttt{ode45} does not allow inline functions, we first must store the right side of the DE as an M-file function:
+\begin{lstlisting}[numbers=none,frame=none]
+f = inline('2*t*y'/'t','y')
+\end{lstlisting}
+Using default settings, \texttt{ode45} will now work similarly to our three basic ODE solvers (except no step size is specified).
+\begin{lstlisting}[numbers=none,frame=none]
+>> [t,y]=ode45(f,[1 3},1);
+>> yexact=inline('exp(t.^2-1)'); \fromExample 
+>> subplot (2,1,1) \will combine the two plots
+>> plot(t,abs(yexact(t)-y))
+\end{lstlisting}
+
+Resetting the options in \texttt{ode45} takes a bit of special syntax. It is illustrated below. There are several other options that can be adjusted in a similar fashion. To see them all along with their default settings enter \texttt{odeset}.
+
+\begin{lstlisting}[numbers=none,frame=none]
+>> options =odeset('RelTol',le-8);
+>> [t2,y2]=ode45(f,[1 3],1, options);
+>> subplot(2,1,2)
+>> plot(t2,abs(yexact(t2)-y2))
+\end{lstlisting}
+
+\begin{figure}[H]
+	 \label{fig:fig_8_16}
+\includegraphics[width=8cm]{fig_8_16.png}
+\centering
+\caption{Plots of the errors that resulted from using MATLAB's \texttt{ode45} to solve the IVP of Example 8.7. The top plot used the default options and the latter plot set the goal for the relative error at $10^-8$.}
+\end{figure}
+\noindent MATLAB has done quite well. Since (from Figure 8.11) the maximum value of the exact solution (which increases) is about 3000 , this shows a relative error at $x$ $=3$ of about $0.5 / 3000=.000167$ for the first approximation (the goal was $.001$ ) and a relative error of about $1.333 \times 10^{-8}$ for the second approximation. The program is very efficient. Tests with \texttt{tic...toc} will show it nicely beats even Runge-Kutta when the same accuracy is sought. Some insight can be gained into the efficiency of \texttt{ode45} by looking at the size of the vectors constructed $(=$ the number of iterations).
+
+\begin{lstlisting}[numbers=none,frame=none, escapeinside={(*}{*)}]
+>> size(t), size(t2) (*$\rightarrow$*) 45		1,		297		1
+
+\end{lstlisting}
+
+\noindent One disadvantage of such variable step programs is that the time vectors of each approximation are no longer uniformly spaced. It makes comparison of different plots a bit awkward. MATLAB has a vast library of ODE solver software; other examples include \texttt{ode23}, a lower-order version of \texttt{ode45}, \texttt{ode113} (a variable order solver; orders from 1 to 13 can be specified), and \texttt{ode15s} (a good one to use if \texttt{ode45} is not working well). The program \texttt{ode45} represents the best allaround IVP solver.\\
+
+We end this section with a few words about the \textbf{stability} of an ODE. This is an important concept which permeates many different facets of differential equations. We have seen one version of it already in this chapter. The stability of an ODE will have important effects on how errors propagate when we use a numerical method to solve an IVP. A first-order differential equation $y=f(t, y)$ which satisfies a Lipschitz condition in $y$ on the interval $a \leq t \leq b$ will always give rise to a unique solution for any IC $y(a)=y_{0}$. Two different solution curves (for the same DE but with different initial conditions) could never cross one another (see Exercise 11). Also, any point $(t, y)$ in the strip $\{a \leq t \leq b,-\infty<y<\infty\}$ must have a solution curve passing through it (see Exercise 12). Because of these two facts, the $\mathrm{DE}$ can be thought of geometrically as a \textbf{flow} throughout the strip $\{a \leq t \leq b,-\infty<y<\infty\}$. These facts remain true if we allow infinite strips $\{a \leq t<\infty,-\infty<y<\infty\}$ (provided the Lipschitz condition still holds). If the strip were a flowing fluid and a small dust particle were to be dropped anywhere in the strip, then it would be carried along some solution curve and eventually reach the line $t=b$. Geometrically, the $\mathrm{DE}$ is called \textbf{stable} if whenever we start off with two initial conditions that are close, the two solution curves move closer and closer to one another as $t$ advances to $b$ (if $t$ is allowed to go to infinity, the two curves should converge). The DE is called \textbf{neutrally stable} if the curves remain nearby but do not actually move together, and it is called \textbf{unstable} if the curves diverge away from one another with increasing time. The concept makes sense even for many DEs for which $f(t, y)$ no longer satisfies a Lipschitz condition.\\
+
+\indent More generally, we can extend this notion of stability to specific $y$-ranges of the strip. Examples of stable DEs include the Malthus model $y^{\prime}=r y$ with $r<0$ on any time interval (see Figure 8.3; all the solutions decay to zero), as well as the logistic DE (see Figure 8.8) on any time interval but on the $y$-range $y>0$. Examples of unstable DEs include the Malthus model with $r>0$ on any time interval and the logistic DE on the $y$-range $y<0$. Any equation of the form $y^{\prime}=g(t)$ is neutrally stable (the solutions $\int_{0}^{1} g(s) d s+C$ only differ by constants). The Lipschitz constant does not tell us about the stability since, for example, the two Malthus DEs $y^{\prime}=r y$ and $y^{\prime}=r y$ both have the same Lipschitz constant $L=|r|$, but one is stable and the other is unstable.\\
+
+\indent Note that in any one-step numerical IVP solver, at each iteration, we jump in time by a certain step size and the $y-coordinate$ jumps, in general, to a different solution (flow) curve. The amount of vertical jump from the flow curve we were on to the new one equals what we called the local truncation error. If the equation is stable, then these local truncation errors will decay as time advances, but if it is unstable they will be amplified. Thus for stable DEs, the total error will be less than the sum of the local truncation errors and so the method performs well. For unstable DEs, the total error will exceed (sometimes greatly) the sum of the local truncation errors, so the method does not work as nicely. This phenomenon is illustrated in Figures \ref{fig:fig_8_17} and \ref{fig:fig_8_18}.
+
+\begin{figure}[H]
+ \label{fig:fig_8_17}
+\includegraphics[width=8cm]{fig_8_17}
+\centering
+\caption{In the stable DE $y'= 2t - y$ the solution curves move closer to one another as time advances, making the local truncation errors in a numerical IVP solver tend to zero as time advances. An exact solution curve is followed by the pentagrams; the computed values are the heavy black segments.}
+\end{figure}
+
+\begin{figure}[H]
+	 \label{fig:fig_8_18}
+\includegraphics[width=8cm]{fig_8_18.png}
+\centering
+\caption{In the unstable DE $y' = 0.8y - 0.5ycos(3t)$the solutions curves move apart as time advances, making the local truncation errors in a numerical IVP solver tend to be amplified as time advances. An exact solution curve is followed by the pentagrams; the computed values are the heavy black segments.}
+\end{figure}
+
+Fortunately, there is a simple criterion for determining stability of a DE on a certain region of the form $\{a<t<b, c<y<d\}$ of the $(t, y)$-plane (here any of $a$, $b, c, d$ can take on infinite values). If $\partial f / \partial y<0$ in such a region, then the $D E$ $y^{\prime}=f(t, y)=$ is stable in the region whereas if $\partial f / \partial y>0$ then the DE is unstable in that region. In general, more negative/positive values of this partial derivative result in greater degrees of stability/instability.\\
+
+\noindent\rule{480pt}{0.4pt}\\
+\noindent EXERCISES 8.4
+\begin{enumerate}[itemsep=2pt,parsep=2pt]
+\item Which of the following functions satisfy a Lipschitz condition in the $y$-variable on the $t$-interval $0 \leq t \leq 2$ ? For those that do, find a corresponding Lipschitz constant $L$.
+\begin{multicols}{2}
+(a)\quad$f(t, y)=6 t \sin (t y)+\cos (t y)$\\
+(b)\quad$f(t, y)=t^{2} e^{-y}$\\
+(c)\quad$f(t, y)=t^{3}-y^{3}$\\
+(d)\quad$f(t, y)=\cos \left(t^{2}+y^{2}\right)$
+\end{multicols}
+
+\item For each of the following IVPs, first derive the recursion formula for Taylor's second-order method, and then use it to solve the given IVP on the indicated $t$-interval with the indicated step size. Plot the resulting solution along with the corresponding improved Euler solution obtained by using the same step size. In cases where the two plots are indistinguishable, provide also a plot of the absolute value of the difference of these two approximations.]
+\\
+\\
+(a) $\left\{\begin{array}{l}y^{\prime}(t)=\cos \left(t^{2} y\right), 0 \leq t \leq 5 ; h=0.1 \\ y(0)=2\end{array}\right.$\\
+(b) $\left\{\begin{array}{l}y^{\prime}(t)=2+y / t^{2} \\ y(1)=0\end{array}, 1 \leq t \leq 7 ; h=0.1\right.$\\
+(c) $\left\{\begin{array}{l}y^{\prime}(t)=e^{t / 2}+\cos (y)-y, 0 \leq t \leq 4 ; h=0.05 \\ y(0)=0\end{array}\right.$\\
+(d) $\left\{\begin{array}{l}y^{\prime}(t)=\frac{2+y^{3}}{1+t y^{2}}, 0 \leq t \leq 4 ; h=0.05 \\ y(0)=-1\end{array}\right.$\\
+
+\item Repeat parts (b) and (c) of Exercise 2, this time using the third-order Taylor approximation, but still comparing to the improved Euler solution.\\
+\item Repeat parts (b) and (c) of Exercise 2, this time using the fourth-order Taylor approximation, and now comparing to the Runge-Kutta method.\\
+\item \textit{(Simpon's Rule Is Special Case of Runge-Kutta Method)} Show that if the Runge-Kutta method is used to solve the IVP $y^{\prime}=f(t), y(a)=0$ over $[a, b]$ using $h=(b-a) / N$, it produces the formula:
+$$
+\int_{a}^{b} f(t) d t(\equiv y(b)) \approx \frac{h}{6} \sum_{n=0}^{N}\left[f\left(t_{n}\right)+4 f\left(t_{n}+h / 2\right)+f\left(t_{n+1}\right)\right],
+$$
+which is known as \textbf{Simpson's rule} for approximating definite integrals.\\
+\item For each of the DEs given below, find regions $\{a<t<b, c<y<d\}$ on which the $\mathrm{DE}$ is stable/unstable. Try and account for as much of the $(t, y)$ plane as possible.
+\begin{multicols}{4}
+(a)\quad$y^{\prime}=y^{2}-8 y$\\
+(b)\quad$y^{\prime}=\arctan (y)$\\
+(c)\quad$y^{\prime}=y+3 t$\\
+(d)\quad$y^{\prime}=4 t-t \sin (y)$
+\end{multicols}
+\item Provide an example of a neutrally stable $D E$ of the form $y^{\prime}(t)=f(t, y)$, where the function
+$f(t, y)$ does not depend on $t$ alone, and the neutral stability is valid on the entire region $\{0<t<\infty,-\infty<y<\infty\}$.\\
+\item Here is an example of an extremely unstable differential equation: $y^{\prime}=100 y-101 e^{-t} \equiv f(t, y)$. Its general solution is given by $y(t)=e^{-t}+C e^{100 t}$. Show that the solution of the IVP
+$\left\{\begin{array}{ll}
+	y'(t) = f(t,y)&(DE),\\
+	y(0) = 1&(IC)
+	\end{array} \right.$ $ 0\le t\le 2\oplus$ decays of the same DE with a slightly perturbed (IC): $y(0)=1+c$ do not. How small a step size would the Runge-Kutta method need to solve the original IVP to within an error $<0.1$ ? Is it possible for MATLAB to do this or would the roundoff errors become too significant? Justify your claims and use MATLAB to provide some numerical evidence.\\
+\item Is it possible for a solution curve of a $D E$ to pass into both a region of stability and a region of instability? Either provide an example or explain why it is not possible.\\
+\item Suppose that $f(t, y)$ satisfies a Lipschitz condition in the $y$-variable with constant $L$. Prove that the function $G(t, y)$ as defined in Example $8.15$ satisfies a Lipschitz condition in the $y$-variable with constant $L_{1}=\left[|1-b|+|b|+\frac{H L}{2}\right] L$, whenever $0 \leq h \leq H$.\\
+\item Prove that if $f(t, y)$ satisfies a Lipschitz condition in the $y$-variable on the range $a \leq t \leq b$ and $y_{1}(t)$ and $y_{2}(t)$ are solutions of the DE $y^{\prime}=f(t, y)$ on $a \leq t \leq b$, then either these curves are identical or they never cross.\\
+\textbf{Suggestion:} Assume that the curves crossed at some value $t=c$. If $c<b$, use Theorem $8.3$ to show the curves agree also for $t>\mathrm{c}$. If $c>a$, consider the DE $y^{\prime}(t)=-f(-t, y)$ and look at $y_{1}(-t)$ and $y_{2}(-t)$.\\
+\item Prove that if $f(t, y)$ satisfies a Lipschitz condition in the $y$-variable on the range $a \leq t \leq b$ and if $(t . y)$ is any point in the strip $\{a \leq t \leq b,-\infty<y<\infty\}$, then there exists a real number $y_{0}$ such that the solution curve of the
+IVP: $\begin{cases}y^{\prime}=f(t, y) & (D E) \\ y(a)=y_{0} & (I C)\end{cases}$
+passes through the point $(t, y)$.\\
+\item Verify the Lipschitz condition statement about the function $G(t, y(t), h)$ of Example 8.13.
+\end{enumerate}
+\section{ADAPTIVE, MULTISTEP, AND OTHER NUMERICAL \\METHODS FOR INITIAL VALUE PROBLEMS}
+\noindent In this section we briefly survey some of the more sophisticated methods for the numerical solution of initial value problems, which serve as a basis for contemporary production quality codes. We begin by describing adaptive methods that will vary the step size as the iterations progress in a way that uses smaller step sizes when needed (to reach accuracy goals) but otherwise will allow large step sizes so as to avoid unnecessary computation. Subsequently we will describe some implicit methods and contrast them with the explicit methods that have been used exclusively up to this point. We will then move on to describe the idea behind a multistep method and give some typical examples. Finally, we end the section with a further discussion of stability. We will contrast the purely mathematical concept of stability, which was introduced in the last section, with numerical stability, which depends on the particular algorithm being used.\\
+\\
+\indent An \textbf{adaptive} initial value problem solver is any which uses some sort of check on the local truncation error at each iteration, and adjusts the step size accordingly. If the local error estimate is too large, a smaller step size is used. If it is too small, the step size is increased for the next iteration. In all other cases, the step size is maintained and the method progresses. With a constant step size, we need to set it according to the worst-case behavior of the DE; with an adaptive method, choice of a suitable step size is no longer an issue.\\
+\\
+One rather plausible method of checking the local error for a given iteration with step size h would be to compare the result with that resulting (with the same method) from making two smaller steps of size h/2. A more efficient way would be to use two related schemes of different orders to approximate the next step value of the solution. An accurate estimate of the local truncation error would be the difference of these two approximations. If it is too large, the step size is cut in half and the computation is repeated. Otherwise, the higher-order approximation is accepted and we move on to the next iteration with the proviso that the step size is doubled if the measured error is very small. Because of their diversity, Runge- Kutta-type methods are often used with such schemes. Oftentimes, the Runge- Kutta methods are chosen so that the computations of each of the two different approximations share many common computations. This will be the case in the so-called \textbf{Runge-Kutta-Fehlberg method} which we now describe. This algorithm, abbreviated as \textbf{RKF45}, will be based on the following 4th- and 5th- order Runge-Kutta schemes:
+\\
+\\
+\fbox{\begin{minipage}{480pt}
+\textbf{The Runge-Kutta-Fehlberg Method (RKF45) for Solving the IVP: (3)}
+$$
+(I V P)\left\{\begin{array}{ll}
+y^{\prime}(t)=f(t, y(t)) & (D E) \\
+y(a)=y_{0} & (I C)
+\end{array}\right.
+$$
+$t_{0}=a, y_{0}=y(a)$ given, $h=$ initial step size, $\varepsilon=$ error tolerance\\ Iterative Steps: Compute\\
+\\
+$
+\begin{array}{l}
+k_{1}=h f\left(t_{n}, y_{n}\right) \\
+k_{2}=h f\left(t_{n}+\frac{h}{4}, y_{n}+\frac{1}{4} k_{1}\right), \\
+k_{3}=h f\left(t_{n}+\frac{3 h}{8}, y_{n}+\frac{3}{32} k_{1}+\frac{9}{32} k_{2}\right), \\
+k_{4}=h f\left(t_{n}+\frac{12 h}{13}, y_{n}+\frac{1932}{2197} k_{1}-\frac{7200}{2197} k_{2}+\frac{7296}{2197} k_{3}\right), \\
+k_{5}=h f\left(t_{n}+h, y_{n}+\frac{439}{216} k_{1}-8 k_{2}+\frac{3680}{5613} k_{3}-\frac{845}{4104} k_{4}\right), \\
+k_{6}=h f\left(t_{n}+\frac{h}{2}, y_{n}-\frac{8}{27} k_{1}+2 k_{2}+\frac{3544}{2565} k_{3}+\frac{1859}{4104} k_{4}-\frac{11}{40} k_{5}\right) .
+\end{array}
+$\\
+\\
+From these form the order 4 Runge-Kutta approximation:
+$$
+z_{n+1}=y_{n}+\frac{25}{216} k_{1}+\frac{1408}{2565} k_{3}+\frac{2197}{4104} k_{4}-\frac{1}{5} k_{5},
+$$
+and also the order-5 Runge-Kutta approximation:\\
+$$
+y_{n+1}=y_{n}+\frac{16}{135} k_{1}+\frac{6656}{12,825} k_{3}+\frac{28,561}{56,430} k_{4}-\frac{9}{50} k_{5}+\frac{2}{55} k_{6}
+$$
+Compute the local error estimate using:
+$$
+E=\left|y_{n+1}-z_{n+1}\right|=\left|\frac{1}{360} k_{1}-\frac{128}{4275} k_{3}-\frac{2197}{75240} k_{4}+\frac{1}{50} k_{5}+\frac{2}{55} k_{6}\right|
+$$
+If $E>h \varepsilon$ (step size is too large) reduce $h$ to $h / 2$ and repeat above computations. If $E<h \varepsilon / 4$ (step size is too small) accept $y_{n+1}$ but increase $h$ to $2 h$ for next iteration. Otherwise (step size is good), accept $y_{n+1}$ and continue iteration.
+\end{minipage}}
+\\
+\\
+Some comments are in order. At each iteration, in the notation of the above algorithm, the local truncation error of the fourth-order RK method is essentially $E / h$. To see this, we let $\varepsilon_{n}$ denote the local truncation error of the 4 th-order method at the $n$th iteration and we write:
+$$
+\left|\varepsilon_{n}\right|=\left|y\left(t_{n+1}\right)-z_{n+1}\right| \approx\left|y\left(t_{n+1}\right)-y_{n+1}\right|+\left|y_{n+1}-z_{n+1}\right|=\mathrm{O}\left(h^{6}\right)+E \approx E
+$$
+The approximations hold true since $\varepsilon_{n}=\mathrm{O}\left(h^{5}\right)$ (and the $\mathrm{O}\left(h^{6}\right)$ is much smaller for small values of h.
+\footnote{For the fourth-order method, from the $\varepsilon_{n}=O\left(h^{5}\right)$ estimate for the local truncation error at each iteration, we obtain a rough estimate for the global error for a time interval of unit length by: (\# of iterations) $\cdot \varepsilon_{n}=(1 / h) \cdot \mathrm{O}\left(h^{5}\right)=\mathrm{O}\left(h^{4}\right)$. This assumes stability and also that $h$ is constant. For the latter assumption, think of it as an average. The lost factor of $h$ in going from the local truncation error to the global error estimate is the reason that the factor of $h$ is being multiplied by the (global) error tolerance in the above RKF45 algorithm. For a more detailed error analysis and general development of Runge-Kutta-type methods, we refer to Chapter 6 of [Atk-89].}
+Such RK methods as the ones implemented in the above algorithm can be derived using Taylor's theorem (as was done in the last section for first- and second-order methods), but the algebra gets very complicated quite quickly as the order of the RK method increases. See Exercises 22-24 for examples of this type of construction.\\
+\\
+\indent In the criterion $E<h \varepsilon / 4$ for a step size being too small, the factor $1 / 4$ could have been any fraction (less than one). The construction aims to keep the truncation error more or less constant. It is not difficult to put the above RKF4S algorithm into a MATLAB code. One additional feature to put in such a code is to require that the step size does not get too large or too small (by prescribing minimum and maximum values for the step size $h$ ). If the program requires a step size smaller than the minimum permitted, it should either terminate or at least give an error message indicating what has happened. We will leave the writing of such an $M$-file as our next exercise for the reader. Producing production-level codes, however, such as MATLAB's ode 45 , which is a variation of RKF45, takes a lot more work. For more related issues behind this and other MATLAB ODE solvers we refer to [ReSh-97]. Up to about 1970, the standard Runge-Kutta method was the most commonly used numerical method for solving IVPs. Since then the variations of the RKF45 method seem to have become the most popular general IVP numerical solvers.\\
+
+\noindent EXERCISE FOR THE READER 8.8: (a) Write a function M-file for the RKF45 method for solving the IVP (4): (IVP) $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \quad(D E) \\ y(a)=y_{0} \quad(I C)\end{array}\right.$, which has the following syntax:
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}[numbers=none,frame=none]
+[t, y] = rkf45(f, a, b, y 0$, tol, hinit, hmin, hmax)
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+\noindent where the two output variables and first four inputs are exactly as in the runkut M-file of Program 8.2. The input variable tol is optional and specifies the error goal. The default value is \texttt{tol=1e-6}. The last three input variables are optional and have to do with the step sizes: \texttt{hinit} is the initial step size used, \texttt{hmin} is the minimum allowable step size, and \texttt{hmax} is the maximum allowable step size. The default values of these optional input variables are as follows: \texttt{hinit=(b-a)/100,hmin = (b-a) /1e-5, hmax = (b-a)/2.} Set it up so that if the minimum step size is reached the program will still run but will produce a message of what transpired.\\
+(b) Run the program \texttt{rkf45} to re-solve the IVP of Example $8.7$ with the default settings. Compare the resultant error and number of iterations with the corresponding data for the standard Runge-Kutta method that was obtained in Example 8.7.\\
+
+\indent Adaptive methods are particularly useful for numerical solutions of DEs which undergo abrupt changes. Such DEs can often be recognized by the presence of coefficient functions which are discontinuous or vary rapidly over certain regions. DEs with discontinuous coefficients come up naturally with problems involving electric circuits as well as certain mechanical problems involving discontinuous forces, such as in tracking the velocity of a skydiver or the effects of an earthquake on a certain mechanical structure. Our next example shows how an adaptive solver such as RKF45 will automatically give more attention to such trouble areas.\\
+
+\noindent \paragraph*{EXAMPLE 8.17: }Consider the following IVP: $\left\{\begin{array}{l}y^{\prime}+b(t) y=t, \quad y=y(t) \\ y(0)=1\end{array}\right.$, where the coefficient function is given by: $b(t)=\left\{\begin{array}{l}1, \text { if } 0 \leq t \leq 2 \\ 3, \text { if } 2 \leq t\end{array}\right.$.\\
+(a) Solve this IVP on the interval $0 \leq t \leq 3$ using the program $r k f 45$ using the value of $0.0001$ for \texttt{tol}.\\
+(b) Count the number of time values (iterations) used in part (a), and resolve this problem using the \texttt{runkut} program with a step size chosen so that the number of iterations will be about equal to the number used in part (a).\\
+(c) Compare both numerical solutions in parts (a) and (b) with the exact solution:\footnote{
+Such IVP's with discontinuous data are often amenable to solution by so-called Laplace transform methods, which are covered in any standard textbook on the analytical theory of ODEs (see, e.g., [Asm-00]). Alternatively, this one could be solved using the Symbolic Math Toolbox with the following strategy. Find the general solution of the DE using $b(t)=1$ and use the IC to determine the unknown constant. This will be the first half of the solution, valid for $0 \leq t \leq 2$. Next find the general solution of the DE using $b(t)=3$ and adjust the constant so the function matches with the first one at $t=$ 2. This will be the second half of the solution, valid for $t>2$.} $:^{10}$
+$$
+y(t)= \begin{cases}t-1+2 e^{-t}, & \text { for } 0 \leq t \leq 2 \\ \frac{1}{3} t-\frac{1}{9}+e^{-3 t}\left(\frac{4}{9} e^{6}+2 e^{4}\right), & \text { for } t>2\end{cases}
+$$\\
+
+\noindent SOLUTION: Part (a): Discontinuous functions such as $b(t)$ are not well suited to be stored as inline functions, so we first create the following $M$-file for $f(t, y)=t-b(t) y$ (note: $f(t, y)$ is as in (4)):
+\begin{lstlisting}[numbers=none,frame=none]
+function f = eg0817(t, y)
+if $(0<=t<=2)$
+ f=t-y;
+else
+ f=t-3*y;
+end
+\end{lstlisting}
+
+\noindent The following commands will now solve the IVP with the specified numerical method and create a plot of the numerical solution using green circles to show the step locations.\\
+\begin{lstlisting}[numbers=none,frame=none]
+\end{lstlisting}
+\texttt{$>> $ [t,yrkf] = rkf45('eg0817',0,3,1,le-4);}\\
+\textsf{WARNING: Minimum step size has been reached; it is recommended to run the
+program again with a smaller hmin and or a larger tol}\\
+\texttt{$>> $ plot(t,yrkf,'g-o'), size(t)}\\
+\textsf{$\rightarrow$ans = 1 29}
+\\
+\\
+Thus 29 steps were used. The resulting plot is shown in Figure \ref{fig:fig_8_19} (the green one). Notice from the warning that our default step size $(=1 \mathrm{e}-5)$ has been reached. Such occurrences are quite normal for such discontinuous IVPs.\\
+\\
+Part (b): Using 29 steps, the corresponding Runge-Kutta numerical solution is created and plotted (with red $x$ 's along with the curve of part (a)) by the following commands:
+\begin{lstlisting}[numbers=none,frame=none]
+>> [trk,yrk]=runkut('eg0817',0,3,1,3/29);,hold on 
+>> plot(trk,yrk, 'r-x')
+\end{lstlisting}
+
+\noindent Part (c): So as to facilitate easy plotting we first create an M-file for the exact solution as follows:
+
+\begin{lstlisting}[numbers=none,frame=none]
+function y = eg0817b(t) 
+for i = 1: length(t)
+if (0<=t(i) & t(i)<=2)
+  y(i)=t(i)-l+2*exp(-t(i));
+else
+  y(i)=t(i)/3-l/9+exp(-3*t(i))*(4*exp(6)/9+2*exp(4)); end
+end
+end
+\end{lstlisting}
+Now we may add the plot of the exact solution (in blue) onto the graph containing the two numerical plots:
+\begin{lstlisting}[numbers=none,frame=none]
+>>plot(0:.01:3, eg0817b(0:.01:3),'b')
+\end{lstlisting}
+Figure \ref{fig:fig_8_19} shows the end result. To compare more accurately the two numerical solutions, we next create plots of their respective errors; the results are shown in Figure \ref{fig:fig_8_20}.\\
+\begin{lstlisting}[numbers=none,frame=none]
+>> plot(t,abs(yrkf-eg0817b(t)), 'g-o')
+>> title('Error for RKF45 Solution')
+>> plot(trk,abs(yrk-eg0817b(trk)), 'r-x') 
+>> title('Error for Runge-Kutta Solution')
+\end{lstlisting}
+
+\newpage
+
+\begin{minipage}{0.50\linewidth}
+          \begin{figure}[H]
+          		\centering
+              \includegraphics[width=\linewidth]{fig_8_19}
+              \label{fig:fig_8_19}
+          \end{figure}
+      \end{minipage}
+      \begin{minipage}{0.40\linewidth}
+          \captionof{figure}{Comparison of the adaptive RKF45 solution and the standard Runge-Kutta solution with the exact solution of the IVP in Example 8.17. Although the number of data points of each of the numerical methods is the same (29), the adaptive RKF45 had a much more interesting and intelligent deployment of data points, concentrating them more in the area of the jump discontinuity of the data at x = 2. Both numerical solutions are rather good up to x = 2, but for x > 2 the standard Runge-Kutta solution is not as good—see Figure 8.2.}
+          \end{minipage} 
+
+
+ \begin{figure}[H]
+          		\centering
+              \includegraphics[width=\linewidth]{fig_8_20}
+              \label{fig:fig_8_20}
+              \caption{Comparison of the error plots for the two numerical solutions of the IVP of Example 8.17. (a) (left) The error plot for the RKF45 solution is much smaller than that for the Runge-Kutta solution in (b) (right). Indeed, by comparing y-axes scales, we see that the maximum error for RKF45 is on the order of $10^{-4}$ ofthat for the Runge-Kutta solution.}
+\end{figure}
+
+
+\indent We point out that the standard Runge-Kutta method is only a fourth-order method so at first glance the above comparisons may seem a bit unfair. The reader can check, however, that the results would not be much different if we instead used the fifth-order RK method that is part of the RKF45 scheme; see Exercise 14.\\
+\\
+\indent We next move on to a brief discussion of implicit numerical methods for IVPs. Thus far, all of our numerical methods have been \textbf{explicit}, meaning that the value of the next approximation $y_{n+1}$ was always expressed explicitly in terms of other known information. A numerical method for which $y_{n+1}$ is merely expressed as the implicit solution of some equation (which is not usually analytically solvable for $y_{n+1}$ ) is called an \textbf{implicit} method. As a prototypical example of an implicit method, we describe now the so-called \textbf{backward Euler method} for solving the $\operatorname{IVP}(4)\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \quad(D E) \\ y(a)=y_{0}\qquad(I C)\end{array}\right.$:
+\begin{equation}\label{eqa13}
+y_{n+1}=y_{n}+h_{n} f\left(t_{n+1}, y_{n+1}\right) .
+\end{equation}
+
+\noindent We have allowed for variable step sizes. Comparing this with the corresponding formula for the (original) Euler method
+$$
+y_{n+1}=y_{n}+h_{n} f\left(t_{n}, y_{n}\right),
+$$
+it would seem a lot less practical. Indeed, at each iteration, we would need to use some rootfinding method to compute (approximately) $y_{n+1}$. Moreover, the resulting benefits, if any, are unclear. Indeed, as was done with Euler's method, the backward Euler method can be shown to be a first-order method. Choosing the slope at the end of the interval $\left(t_{n}, t_{n+1}\right)$ would seem to be no more than an arbitrary modification rather than a plausible improvement. Despite this discouraging first impression, implicit methods like the backward Euler method do have their merits. Before justifying this statement, we give an example of the usage of the backward Euler method.
+
+\noindent \paragraph*{EXAMPLE 8.18: } Using the backward Euler method in conjunction with the rootfinding program newton of Program 6.2, re-solve the IVP of Example 8.5, and plot the error of this numerical solution (using the exact solution given in that example). Use a (constant) step size $h = 0.01$. Compare with the corresponding error plot for the Euler method shown in Figure 8.7.\\
+
+\noindent SOLUTION: Recall the IVP of Example 8.5:
+$$
+\left\{\begin{array}{l}
+P^{\prime}(t)=r P(1-P / k) \\
+P(0)=P_{0}
+\end{array}\right.
+$$
+where $r=0.0318, k=200$, and $\mathrm{P}(0)=3.9$. Using a constant step size $h_{n}=h$, the Euler's backward method (\ref{eqa13}) becomes: $p_{n+1}=p_{n}+h r p_{n+1}\left(1-p_{n+1} / k\right)$. Although this quadratic formula for $p_{n+1}$ is easily solved, we will nevertheless take a more general approach using Newton's method. The M-file newton from Chapter 6 cannot be directly applied here since the equation needed to solve changes at each iteration. Recall the syntax of newton (Program 6.2):
+
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}[numbers=none,frame=none]
+[root, yval] = newton(f, df, xO, tol, nmax)
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+\noindent requires that we enter the function for which we seek a root, as well as its derivative, as inline functions. Since the function (here) changes (slightly) at each iteration, the following useful MATLAB command will allow us to incorporate such changes in the string for the function in a loop:
+
+\begin{center}
+\begin{tabular}{ |p{0.30\linewidth} | p{0.65\linewidth}|}
+\hline
+\begin{center}
+\texttt{st=num2str (a, n) $\rightarrow$}
+\end{center} & This command converts a number a to a string st of length at most $n$ which represents the number $a$. The inputs are a number a and a positive integer $n, n \leq 15 .$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Using $P$ for the variable $p_{n+1}$ in (\ref{eqa13}), we can view the solutions of (\ref{eqa13}) as the roots of the function:
+$$
+g(P)=P-p_{n}-h r P(1-P / k)
+$$
+We will also need the derivative of this function:
+$$
+g^{\prime}(P)=1-h r(1-P / k)-h r P(-1 / k)=1+h r(2 P / k-1)
+$$
+The following code will now solve the IVP with the backward Euler method. Before running this code, the reader may wish to modify the $M$-file for newton so that the convergence statement is suppressed (otherwise this will be printed on the screen 2000 times!).
+
+\begin{lstlisting}[numbers=none,frame=none]
+t=0:.1:200; P(l)=3.9;
+%since the derative does not change, we compute it outside the loop
+gprime=inline(' 1 + 0.01*0.0318*(2*P/200-1)');
+for n=l:2000
+	g=inline(['P-' num2str(P(n),15) '-.1*.0318*P*(1-P/200)']);
+	P(n+1)=newton(g,gprime,P(n)); 
+end
+\end{lstlisting}
+
+\noindent If we plot this function and the error as in Example 8.5, we see that the results are graphically indistinguishable from those of the ordinary Euler method (Figures $8.6$ and $8.7$ ).\\
+\\
+\indent In order to write a function $M$-file that will be able to perform the backward Euler method on an arbitrary IVP, we would need to make use of MATLAB's symbolic toolbox capabilities (so that the differentiation could be done automatically). This task will be completed in the following program.\footnote{We remind the reader that since such symbolic capabilities are not very often needed in this book (since exact arithmetic is more expensive and often unnecessary), we do not spend a lot of time explaining symbolic toolbox capabilities. The program is mainly given as an illustration, in case the reader might wish to write a similar sort of program. For more details about MATLAB's symbolic toolbox, we refer to Appendix A. We point out two useful commands that are used in this M-file.}\\
+
+\noindent \paragraph*{PROGRAM: 8:3} An M-file for the backward Euler method for the IVP:
+function $$\left\{\begin{array}{ll}y^{\prime}(t)=f(t, y(t)) & (D E) \\ y(a)=y_{0} & (I C)\end{array}\right.$$
+
+\begin{lstlisting}[numbers=none]
+function [t, y] = backeuler (f, a, b, yo, h)
+%Performs the backward Euler method to solve the IVP y'(t) = f (t,y), 
+%y(a) - y0. Calls M-file 'newton' for rootfinding and uses symbolic 
+%capabilities. Input variables: f a function of two variables f(t,y) 
+%describing the ODE y' = f(t,y). Can be an inline function 
+%or a M-file a, b = the left and right 
+%endpoints for the time of the IVP y(the initial value y(a) 
+%given in the initial condition h - the step 
+%size to be usedOutput vairables: t - the vector of equally 
+%spaced  time values for the numerical solution, y - the correspending 
+%vector of y coordinates.
+
+syms ys
+t(l)=a; y(l)=yO;
+nmax=ceil((b-a)/h);
+for n=1:nmax
+	t(n+l)=t(n)+h;
+	g=inline(char(ys-y(n)-h*f(t(n+1) ys)), 'ys'); 						
+	gp=diff(g(ys));
+	gprime=inline(vectorize(char(gp) , 'ys'); 
+	y(n+1)=newton(g,gprime,y(n));
+end
+
+\end{lstlisting}
+
+\noindent The above M-file could be invoked to re-solve the above example; just enter:\\
+\\
+\texttt{>> [t, y]= backeuler(f, 0, 200, 3.9, .1);}\\
+\\
+Having seen firsthand all of the extra complexity needed for an implicit method, a good question to ask would be why anyone would bother using them. The answer lies in the fact that the backward Euler method (and other implicit methods) often have better numerical stability than their explicit counterparts. We have already explained the concept of (theoretical) stability for an IVP. Even when we are solving an IVP which is theoretically stable, the numerical method may not be stable but conversely, a numerical method may be numerically stable for an IVP which is not mathematically stable. Recall that an IVP is stable if small perturbations of the IC lead to solutions which converge to the desired solution as time goes on. It is unstable if small perturbations can lead to solutions which diverge away from the desired solution as time goes on. We say that an IVP is \textbf{numerically stable}
+\footnote{We caution the reader that the word "stability" is one of the most often used words in numerical differential equations and unfortunately its definitions can vary significantly from author to author and even among different works by the same author.}
+with respect to a certain numerical method if the following condition holds:
+$$
+\lim_{h \to 0} max_{a\le t\le b} \left| y(t) -\tilde{y}(t) \right| = 0
+$$
+\hrule
+\noindent \texttt{(char(...)} is used to convert expressions containing symbolic variables into strings; \texttt{vectorize(...)} converts a string formula into vector capability notation (i.e., the dot is inserted before any *, \/, or \^). Once a symbolic expression is differentiated, any such dots that were present will disappear, so it is necessary to reinsert them.\\
+
+where $y(t)$ is the exact solution of the IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t))(DE) \\ y(a)=y_{0}(IC)\end{array}\right.$ $a \leq t \leq b$ and $\tilde{y}(t)$ is the numerical solution with the method using step size (at most) $h$. This condition basically states that we can get the numerical solution to be (uniformly) as close as we like to the actual solution by taking the step size sufficiently small. We say the method is \textbf{numerically unstable} for a particular IVP if it is not numerically stable for it. Our next example will explain this concept in the setting of a very simple IVP.\\
+
+\noindent \paragraph*{EXAMPLE 8.19: }Consider the following IVP:
+\begin{equation}\label{eqa14}
+\left\{\begin{array}{l}
+y^{\prime}(t)=ry. \\
+y(0)=y_{0}
+\end{array} .\right.
+\end{equation}
+We know (see Section 8.4) that this equation is (theoretically) stable if $r<0$ and unstable if $r>0$.\\
+(a) With the Euler method and for $r<0$, for which step sizes is this method numerically stable?\\
+(b) Repeat part (a) for the backward Euler method.\\
+
+\noindent SOLUTION: Part (a): For (\ref{eqa14}), the Euler method reads as follows:
+$$
+y_{k+1}=y_{k}+h r y_{k}=(1+r h) y_{k} .
+$$
+Iterating this produces the explicit formula:
+\begin{equation}\label{eqa15}
+y_{k}=(1+r h)^{k} y_{0} .
+\end{equation}\\
+Think of $(1+r h)$ as a magnification factor. Recall the exact solution of (\ref{eqa14}) (see Section 8.2) is $y(t)=y_{0} e^{r t}$ and this converges to 0 as $t \rightarrow \infty$. In order for the expression on the right side of (\ref{eqa14}) to also converge to zero, it is equivalent that $|1+r h|<1$ (unless $y_{0}=0$ ). Since $r<0$ this means that $1+r h>-1$ or equivalently, $(0<) h<-2 / r$. This range for the step size is sometimes referred to as the \textbf{region of numerical stability}.\footnote{In more advanced treatments, e.g., [Atk-87], the region of stability is defined instead using the parameter z = hr, and r is allowed to be a complex number, so that the region of numerical stability is defined to be a subset of the complex plane.}
+Note that if the step size is outside of this range, the Euler method will diverge, even though the IVP is numerically stable. Note that for very large negative values of $r$, although the IVP becomes increasingly theoretically stable (the solutions converge to zero very rapidly), the region of numerical stability for the Euler method gets very small. For example if $r=-100$, Euler's method would diverge unless $h<0.02$. This type of behavior is prototypical in what are known as \textbf{stiff} initial value problems. These problems have a solution of the form $y(t)=e^{-c t}+s(t)$, where $c$ is a large positive constant. The term $e^{-c t}$ is called the \textbf{transient part} of the solution and $s(t)$ is called the \textbf{steady-state solution}. (For (\ref{eqa14}), the steady-state solution is zero.) Although the transient part will decay rapidly to zero, its derivatives $\left(d^{n} / d t^{n}\right) e^{-c t}=\pm c^{n} e^{-c t}$ can remain much larger, interfering with the numerical convergence.\\
+\\
+Part (b): For the IVP (\ref{eqa14}), the backward Euler method recursion (\ref{eqa13}) reads as:
+$$
+y_{k+1}=y_{k}+h r y_{k+1} \Rightarrow(1-r h) y_{k+1}=y_{k} \Rightarrow y_{k+1}=\frac{1}{1-r h} y_{k} .
+$$
+Iterating this last formula produces the following explicit formula:
+\begin{equation}\label{eqa16}
+y_{k}=\left(\frac{1}{1-r h}\right)^{k} y_{0} \text {. }
+\end{equation}
+Since $r$ is negative and $h$ is positive, the magnification factor in (\ref{eqa16})$, 1 /(1-r h)$, is always strictly between 0 and 1 so that, regardless of the step size $h$, (\ref{eqa16}) will converge to zero. Thus, the region of numerical stability for the backward Euler method is $0<h<\infty$. Such a situation is called \textbf{unconditional numerical stability}.
+\footnote{Some numerical analysis treatments use the terms absolutely stable or A-stable for what we call unconditionally stable.}
+Implicit methods do not always enjoy unconditional stability, but their regions of stability are generally larger than those for the corresponding explicit methods.\\
+\\
+\indent The simple equation (\ref{eqa14}) is often used as a test problem for examining numerical stability of a certain numerical method. When a general single-step method is applied to the test problem (\ref{eqa14}), it will be possible to write
+$$
+y_{n+1}=Q(h r) y_{n}
+$$
+for some function $Q$. Numerical stability of the method will be equivalent to $|Q(h r)|<1$, which will correspond to a certain region of numerical stability in terms of the step size $h$. See Exercise 10 for the analysis for the standard RungeKutta method. For a more detailed discussion of such stability issues we refer to Chapter 6 in [Atk-89].\\
+
+\noindent EXERCISE FOR READER 8.9: Apply Euler's method to the IVP (\ref{eqa14}) with $r=-2$, using initial condition $y(0)=5$ and an unstable step size to get a numerical solution on $0 \leq t \leq 50$ that is similar to that shown in Figure \ref{fig:fig_8_21} $\mathrm{a}$. Solve and plot the solution on the interval $0 \leq t \leq 50$. Then solve it using the Runge-Kutta method with the same step size. The numerical solution should now at least converge to zero. Find a larger step size for which the Runge-Kutta method becomes unstable and the numerical solution looks like that in Figure \ref{fig:fig_8_21}$b$.\\
+
+\begin{figure}{H}
+	\centering
+ 	\includegraphics[width=0.8\linewidth]{fig_8_21}
+	 \captionof{figure}{(a) (left) Instability of the Euler method and (b) (right) of the Runge-Kutta method in solving the simple IVP: $\left\{\begin{array}{l}y^{\prime}(t)=-2 y \\ y(0)=5\end{array}\right.$, whose exact solution $y(t)=5 e^{-2t}$ (flat) decays rapidly to zero. The numerical solutions (jagged/curved) diverge exponentially; the Euler solution does so in an oscillatory fashion, while the Runge-Kutta solution does so unilaterally. A larger step size was needed to make the Runge-Kutta method unstable.}
+	 \label{fig:fig_8_21}
+\end{figure}
+
+\noindent EXERCISE FOR READER 8.10: \textit{(Stability of the Trapezoid Method)} If we average the Euler and backward Euler methods, we obtain the so-called \textbf{trapezoid method} for solving IVPs:
+\begin{equation}\label{eqa17}
+y_{n+1}=y_{n}+h_{n}\left[f\left(t_{n}, y_{n}\right)+f\left(t_{n+1}, y_{n+1}\right)\right] / 2
+\end{equation}
+Show that the trapezoid method is unconditionally stable when it is applied to the IVP (\ref{eqa14}) with $r<0$.\\
+\\
+\indent Up to this point, all of the numerical iterative methods for IVPs discussed have used only the information at the present iteration $\left(t_{n}, y_{n}\right)$ (along with, possibly some auxiliary functional evaluations) to obtain the approximation at the next iteration $y_{n+1}$. In moving on to the next iteration, none of the data is re-used. Such methods fall under the category of \textbf{single-step methods}. It seems reasonable that we might get better results if we were to reuse some of our previously obtained iterates to help us better determine the current iterate. Such methods are known as \textbf{multistep methods}. We will consider \textbf{linear multistep methods} with constant step size; these have the following general form:
+
+\begin{equation}\label{eqa18}
+y_{n+1}=\sum_{i=1}^{K} \alpha_{i} y_{n+1-i}+h \sum_{i=0}^{K} \beta_{i} f\left(t_{n+1-i}, y_{n+1-i}\right)
+\end{equation}
+
+The positive integer $K$ is the number of steps used in the multistep method. If $\beta_{0}=0$ the method is explicit, otherwise it is an implicit method. In the creation of any multistep method, the coefficients $\alpha_{i}$ and $\beta_{i}$ are chosen according to some polynomial interpolation (data-fitting) scheme.
+
+\begin{multicols}{2}
+
+\begin{figure}{}
+	\centering
+ 	\includegraphics[width=0.65\linewidth]{fig_8_22}
+	 \captionof{figure}[Caption for LOF]{John Couch Adams\footnotemark (1819-1892), English mathematician.}
+	 \label{fig:fig_8_22}
+\end{figure}
+
+We present here a pair of very popular multistep methods which lie in the so-called \textbf{Adams families} of multistep methods. These methods are usually distinguished into two types, \textbf{Adams- Bashforth} multistep methods, which are explicit, and \textbf{Adams-Moulton} multistep methods, which are implicit. The specific versions of these methods that we use will be a pair of fifth-order methods (with local truncation error 0 ( A 6 ) ) , which are given below. These methods can be derived in a number of ways, we give one approach in the exercises.
+
+\end{multicols}
+
+\noindent\textbf{The Adams-Bashforth 5-step method} for the IVP $\left\{\begin{array}{ll}y^{\prime}(t)=f(t, y(t)) & (D E) \\ y(a)=y_{0} & (I C)\end{array}\right.$ : $h=($ constant $)$ step size, $t_{n}=a+n h, y_{0}=y(a)$ given $y_{1}, y_{2}, y_{3}, y_{4}$ found using a single-step method
+For $n \geq 4$,
+
+\begin{equation}\label{eqa19}
+\begin{aligned}
+y_{n+1} &=y_{n}+\frac{h}{720}\left[1901 f\left(t_{n}, y_{n}\right)-2774 f\left(t_{n-1}, y_{n-1}\right)\right.\\
+&\left.+2616 f\left(t_{n-2}, y_{n-2}\right)-1274 f\left(t_{n-3}, y_{n-3}\right)+251 f\left(t_{n-4}, y_{n-4}\right)\right] .
+\end{aligned}
+\end{equation}
+
+
+\footnotetext{ Early in his youth, John Couch Adams developed a remarkable ability to perform numerical computations. He studied at St. John's College in Cambridge where he graduated as valedictorian (the term used then at Cambridge was \textit{"Wrangler"}) and it has been said that his marks were double those of the second-best student. His main research interest was in the motion of the heavenly bodies. As an undergraduate, he was able to predict the existence of the eighth planet (Neptune) based on his observations of irregularities in the orbit of Uranus. He passed his detailed prediction on to the director of the Cambridge Observatory but unfortunately action was not taken and subsequently credit for the discovery of Neptune was given to the French Astronomer Urbain LeVerrier, who had done a similar analysis after Adams. In 1858, Adams became a professor of mathematics at St. Andrews College but the next year he accepted a professorship at the Cambridge Observatory. Soon after moving to Cambridge, he became director of the observatory and he remained there for the rest of his career. Adams was a true scholar of many subjects. Despite his great intellect and remarkable achievements, his demeanor was always very modest. He even declined a knighthood which was offered in $1947 .$ Adams's extensive work in planetary motion let him to seek appropriate and efficient numerical methods for solving IVP's. Francis Bashforth (1819-1912) was a classmate of Adams at St. Johns. He did extensive work in ballistics. The Adams-Bashforth methods came from a joint work published in 1883 on capillary action. Forest Ray Moulton (1872-1952) was an American mathematician who was also interested in astronomy and ballistics. He developed the so-called Adams-Moulton methods during his work for the U.S. Army in which he generalized the work of Adams and Bashforth.}
+
+
+\noindent \textbf{The Adams-Moulton 4-step method} for the IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \quad(D E) \\ y(a)=y_{0}\quad(I C) \end{array}\right.$ $h=\left(\right.$constant) stop size, $t_{n}=a+n h, y_{0}=y(a)$ given $y_{1}, y_{2}, y_{3}$ found using a single step method
+For $n \geq 3$,
+
+
+\begin{equation}\label{eqa20}
+y_{n+1}= y_{n}+\frac{h}{720}\left[251 f\left(t_{n+1}, y_{n+1}\right)+646 f\left(t_{n}, y_{n}\right)\right.\\
+\left.-264 f\left(t_{n-1}, y_{n-1}\right)+106 f\left(t_{n-2}, y_{n-2}\right)-19 f\left(t_{n-3}, y_{n-3}\right)\right] .
+\end{equation}
+The advantage of multistep methods such as those shown above is that since they make use of previously computed and stored information, they can attain very decent accuracies with much less number crunching than comparably accurate single-step methods. It is a minor inconvenience that such methods need to use an auxiliary method to get started; usually some sort of Runge-Kutta method is used. A more serious drawback is that multistep methods are not very amenable to adaptive schemes which use nonconstant step sizes. Implicit multistep methods have, of course, the added complication of the need for some rootfinding subroutine. What is usually done in practice with multistep methods is that a pair of implicit and explicit methods of comparable order are used in conjunction with what is called a \textbf{predictor-corrector scheme}. In the context of the above Adams family pair, here is how such a scheme progresses (after having found the "seed" iterates $y_{1}, y_{2}, y_{3}, y_{4}$ ): First compute $y_{n+1}$ using the explicit Adams-Bashforth formula (\ref{eqa19}); label this first approximation as $y_{n+1}^{*}$ (the \textbf{predictor}). Next, substitute this value for $y_{n+1}$ into the right-hand side of the Adams-Moulton formula (\ref{eqa20}) and take the resulting left side value of $y_{n+1}$ (the \textbf{corrector}) as the approximation to $y\left(t_{n+1}\right)$. It is a simple matter to convert each of the above two Adams family methods as well as the corresponding predictor-corrector scheme into MATLAB M-files. This task will be left to the next exercise for the reader.\\
+
+\noindent EXERCISE FOR READER 8.11 \textit{(M-files for Adams Family Methods)} This exercise asks to write $M$-files for two of the fifth-order Adams family methods described above to solve the IVP (4): $\left\{\begin{array}{ll}y^{\prime}(t)=f(t, y(t)) & (D E) \\ y(a)=y_{0} & (I C)\end{array}\right.$. In each, invoke the fifth-order single-step Runge-Kutta program described earlier in this section to obtain the seed iterates.\\
+(a) Write an M-file for the Adams-Bashforth fifth-order method (\ref{eqa19}) which has the following syntax:
+\begin{center}
+\texttt{[t, y] = adamsbash5(f, a, b,  0, h)}
+\end{center}
+The inputs and outputs are as in the M-files for the single step (nonadaptive) methods.\\
+(b) Write an M-file for the Adams-Bashforth-Moulton fifth-order predictorcorrector method which has the following syntax:
+\begin{center}
+\texttt{[t, y]=adamspc5(f, a, b, y0, h)}
+\end{center}
+The inputs and outputs are as in the M-files for the single step (nonadaptive) methods.\\
+\\
+In our next example we compare performances with the above three multistep methods.\\
+
+\noindent \paragraph*{EXAMPLE 8.20: }It is easily shown that the IVP
+$$
+\left\{\begin{array}{l}
+y^{\prime}(t)=(t-3.2) y+8 t e^{(t-3.2)^{2} / 2} \cos \left(4 t^{2}\right) \\
+y(0)=0
+\end{array}\right.
+$$
+has solution $y(t)=e^{(t-3.2)^{2} / 2} \sin \left(4 t^{2}\right)$\footnote{
+The solution can be obtained using MATLAB's symbolic toolbox.
+} 
+Compute the numerical solutions on the interval $0 \leq t \leq 6$ using each of the three multistep methods: Adams-Bashforth, Adams-Moulton, and the corresponding predictor-corrector method. Plot the exact solution, and display graphically the errors for each of these three methods.\\
+
+\noindent SOLUTION: After creating the needed inline function, two of the three numerical solutions are easily obtained from the $M$-files of the preceding exercise for the reader:
+\begin{lstlisting}[numbers=none,frame=none]
+f=inline('(t-3.2).*y+8*t.*cos(4*t.^2).*exp((t-3.2).^2/2)', 't', 'y') 
+>> [t yab5]=adamsbash5(f,0,6,0,.02);
+>> [t yabm]=adamspc5(f,0,6,0,.02);
+\end{lstlisting}
+
+\noindent For the Adams-Moulton solution, we need to write a code. Under the circumstances, examination of the formula (\ref{eqa20}) shows that the following code will do the job.
+
+\begin{lstlisting}[numbers=none,frame=none]
+nmax=ceil((b-a)/h);
+%first from the seed iterates using single step Runge-Kutta
+[t,yam]=rk5(f,a,a+4*h,yO,h);
+
+for n=5:nmax
+	t(n+1)=t(n)+h;
+	g=inline(['Y-' num2str(yam(n),15) '-.02/720*251*(' num2str(t(n+1)...
+		- 3.2,15) '*Y+' num2str(feval(f, t(n+1),0),15) ')-.02/720'...
+		num2str(646*feval(f, t(n),yam(n))-264*feval(f, t(n-1),yam(n-...
+		l))+106*feval(f, t(n-2), yam(n-2))...
+		-19*feval(f, t(n-3),yam(n-3)),15)]);
+		gprime = inline(['1-.02/720*251*' num2str(t(n+1)-3.2,15)],'Y');
+	yam(n+l)=newton(g,gprime,yam(n));
+end
+\end{lstlisting}
+
+\noindent The exact solution can be plotted as follows (see Figure \ref{fig:fig_8_23}a):
+\texttt{>>s=0:.001:6; plot(s,exp((s-3.2).\^2/2.*sin(4*s\^2))}
+\begin{lstlisting}[numbers=none,frame=none]
+>>s=0:.001:6; plot(s,exp((s-3.2).^2/2.*sin(4*s^2))
+\end{lstlisting}
+
+\noindent We can add the other plots to this graph in the usual way; for example, to add the Adams-Bashforth (in green) to the existing graph we could enter:
+
+\begin{lstlisting}[numbers=none,frame=none]
+>> hold on
+>> plot(t,yab5,'g')
+\end{lstlisting}
+\newpage
+\begin{figure}{!htb}
+	\centering
+ 	\includegraphics[width=0.8\linewidth]{fig_8_23}
+	 \captionof{figure}{(a) (left) Exact solution to the IVP of Example 8.20. (b) (right) Closeup of the exact solution (dark) and the Adams-Bashforth numerical solution (light), in a problem area}
+	 \label{fig:fig_8_23}
+\end{figure}
+\noindent See Figure \ref{fig:fig_8_23}b for a closeup of where these graphs show differences. If we plot the other two numerical solutions, they will be graphically indistinguishable from the exact solution, so we create a plot comparing the errors of all three methods as follows:\\
+
+\begin{lstlisting}[numbers=none,frame=none]
+>>plot(t,abs(yab5-exp((t-3.2).^2/2).*sin(4*t.^2)), 'g-x'), hold on 
+>>plot(t,abs(yabm-exp((t-3.2).^2/2).*sin(4*t.^2)), 'r')
+>>plot(t,abs(yam-exp((t-3.2) .^2/2).*sin(4*t.^2)), 'b')
+\end{lstlisting}
+\noindent The result is shown in Figure \ref{fig:fig_8_24}.\newline
+\begin{figure}{!htb}
+	\centering
+ 	\includegraphics[width=0.5\linewidth]{fig_8_24}
+	 \caption{Error plots for each of the three Adams family methods: Adams-Bashforth (light), Adams-Moulton (dark), and predictor-corrector (medium) for the IVP of Example 8.20. The errors would not be noticeable in this graph for t $\le$4.}
+	 \label{fig:fig_8_24}
+\end{figure}
+
+\indent Although all methods are of the same fifth-order, notice how much better the Adams-Moulton and the predictor-corrector method are than the Adams-Bashforth method. Also despite its being much simpler (and less expensive) to use, the predictor-corrector method actually slightly beats the implicit Adams-Moulton method. These results are rather typical and this is why the predictor-corrector methods are the most popular multistep methods. The exercises will introduce some Adams family methods of different orders.\\
+\\
+\indent We give a brief discussion of stability for multistep methods. For a general linear $K$-step method $(K>1)$ of the form (\ref{eqa18}):
+$$
+y_{n+1}=\sum_{i=1}^{K} \alpha_{i} y_{n+1-i}+h \sum_{i=0}^{K} \beta_{i} f\left(t_{n+1-i}, y_{n+1-i}\right),
+$$
+(we assume that either $\alpha_{K} \neq 0$ or $\beta_{K} \neq 0$ so the method is truly a $K$-step method) we associate the so-called \textbf{characteristic polynomial}, which is given by:
+\begin{equation}\label{eqa21}
+P(\lambda)=\lambda^{K}-\left(\alpha_{1} \lambda^{k-1}+\alpha_{2} \lambda^{K-2}+\cdots+\alpha_{K}\right) .
+\end{equation}
+The stability of a $K$-step method can be expressed in terms of the roots of its characteristic polynomial.\\
+
+\indent It is not difficult to show that if a $K$-step method is at least first-order accurate, then $\lambda=1$ will be a root of its characteristic polynomial (see Exercise 20). If all of the other $K-1$ roots of $P(\lambda)$ (counted according to multiplicity) have absolute values less than 1,
+\footnote{17 In general, the roots of a polynomial will be complex numbers; recall that the absolute value of a complex number $a+b i$ is $\sqrt{a^{2}+b^{2}}$.}
+then the numerical method will be numerically stable for all sufficiently small step sizes $h$ on any initial value problem (4) $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array},\right.$ provided that the function $f(t, y)$ satisfies a Lipschitz condition in $y$. If some root of $P(\lambda)$ has absolute value greater than one, then the method is numerically unstable, even for the basic (IVP) (\ref{eqa14}). Intermediate cases in which all roots of $P(\lambda)$ have absolute values \underline{at most one}, $P(\lambda)$ has more than one root of absolute value one, but all such roots are simple are sometimes called (numerically) \textbf{weakly stable methods}. Weakly stable methods eventually will experience instability, for any step size, but it usually is less innocuous than ordinary instability. An example of weak stability will follow in the exercise for the reader below; see also Exercise 12. Note that these results do not directly apply to predictor-corrector methods. For proofs of these and related stability results we refer to either Chapter 6 of [Atk-87] or Chapter 7 of $[S t B u-92]$. It is important to notice that the characteristic polynomial, as well as the stability results just mentioned, do not depend at all on the particular form of the IVP being solved.\\
+
+\noindent \paragraph*{EXAMPLE 8.21: }For the test problem IVP (\ref{eqa14}) $\left\{\begin{array}{l}y^{\prime}(t)=r y \\ y(0)=y_{0}\end{array}\right.$, with $r<0$, classify each of the Adams-Bashforth 5-step method and the Adams-Moulton 4-step method as stable, weakly stable, or unstable.\\
+
+\noindent SOLUTION: For both methods, we see that $P(\lambda)=\lambda^{5}-\lambda^{4}=\lambda^{4}(\lambda-1)$. Hence the characteristic polynomial has a simple root $\lambda=1$ along with a root $\lambda=0$ of multiplicity 4 , and so by the theorems mentioned above, both methods are stable. This is true not just for the test problem but for any IVP satisfying the Lipschitz assumption.\\
+\\
+Finding out the precise regions of numerical stability for these methods is a more advanced task. For the test problem in the above example, it turns out that the Adams-Bashforth 5 -step method is numerically stable if $h<-0.3 / r$ and the Adams-Moulton 4-step method is numerically stable if $h<-3 / r$ (see [Gea-71]).\\
+
+\noindent EXERCISE FOR READER 8.12 Consider the following \textbf{midpoint method} for the IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ :
+\begin{equation}\label{eqa22}
+y_{n+1}=y_{n-1}+2 h f\left(t_{n}, y_{n}\right) .
+\end{equation}
+(a) Use Taylor's theorem to show the midpoint method has local truncation order $O\left(h^{2}\right)$ (and so this is a first-order method).\\
+(b) Show that the midpoint method is weakly stable.\\
+(c) Use the midpoint method to solve the IVP: $\left\{\begin{array}{l}y^{\prime}(t)=20-4 y \\ y(0)=1\end{array}\right.$ for step sizes $h=$ $0.1,0.01,0.001$, etc., until the plot looks something like that in Figure \ref{fig:fig_8_25}. The exact solution is $y(t)=5-4 e^{-4 t}$.
+\newpage
+\begin{figure}{H}
+	\centering
+ 	\includegraphics[width=0.4\linewidth]{fig_8_25}
+	 \captionof{figure}{Illustration of weak stability of the midpoint method for IVP of Exercise for the Reader 8.12.}
+	 \label{fig:fig_8_25}
+\end{figure}
+
+\noindent In general, the region of stability can change depending on the current values of $t$ and $y$. This can force different constraints on the step sizes that must be taken into consideration. This is where using an implicit method may be advantageous. Although implicit methods usually require more work per iteration, often larger step sizes can be used resulting in a net reduction in the total amount of computation (over an explicit method).\\
+
+\noindent\rule{480pt}{0.4pt}\\
+\noindent EXERCISES 8.5
+\begin{enumerate}
+
+\item For each part, an IVP is given along with an exact solution. Solve the IVP using the following indicated numerical methods. Graph the exact solution alongside the numerical solution and in cases where the graphs are indistinguishable, graph also the error. In the multistep methods use the fifth-order Runge-Kutta method to obtain the seed iteration values, as was done in the text. \\
+(i) Use the RKF 45 method with tolerance $=1 \mathrm{e}-3$ and then again with tolerance $=1 \mathrm{e}-6$.\\
+(ii) Use the Adams-Bashforth 5 -step method with step size $h=0.1$, and then again with $h=$ $0.001$.\\
+(iii) Use the Adams-Bashforth-Moulton predictor-corrector method with step size $h=0.1$, and then again with $h=0.001$.\\
+
+\begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}y^{\prime}(t)=t^{3}-2 t y \\ y(1)=1\end{array} 1 \leq t \leq 5\right.$, Exact Solution: \quad $y(t)=\frac{1}{2}\left(t^{2}-1\right)+e^{1-t^{2}}$\\
+\item $\left\{\begin{array}{l}
+r^{\prime}(t)=\frac{r \sin (t)}{1-\cos (t)} \\ y(0)=4 \end{array} \quad 0 \leq t \leq 4, \text { Exact Solution: } \quad r(t)=4(1-\cos (t)) \\\right.$\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=t^{2} \cos (t)+\frac{2 y}{t} \\ y(2 \pi)=0\end{array} \quad 2 \pi \leq t \leq 10\right.$, Exact Solution: \quad$y(t)=t^{2} \sin (t)$\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=\frac{4 t-t y^{2}}{y} \\ y(0)=3\end{array} \quad 0 \leq t \leq 4\right.$, Exact Solution: \quad$y(t)=\sqrt{4+5 \exp \left(-x^{2}\right)}$\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=\frac{t^{2}+t y+y^{2}}{t^{2}} \\ y(1)=0\end{array} \quad 1 \leq t \leq 3\right.$, Exact Solution: \quad$y(t)=t \tan (\ln t)$\\
+\end{enumerate}
+\item Repeat the directions of Exercise 1 for each of the following IVPs:\\
+\begin{enumerate}[label=(\alph*)]
+\item  $\left\{\begin{array}{l}y^{\prime}(t)=-y \ln y \\ y(0)=3\end{array} 0 \leq t \leq 4\right.$, Exact Solution: \quad $y(t)=e^{(\ln 3) e^{-1}}$\\
+\item[(b)] $\left\{\begin{array}{l}y^{\prime}(t)=1-y^{2} \\ y(0)=0\end{array} \quad 0 \leq t \leq 6\right.$, Exact Solution: \quad$y(t)=\frac{1-e^{-2 t}}{1+e^{-2 t}}$\\
+\item[(c)] $\left\{\begin{array}{l}y^{\prime}(t)=y(2-t) \\ y(2)=1\end{array} \quad 2 \leq t \leq 5\right.$, Exact Solution: \quad$y(t)=e^{-(t-2)^{2} / 2}$\\
+\item[(d)] $\left\{\begin{array}{l}y^{\prime}(t)=e^{t^{2}}-y / t \\ y(0)=e / 2\end{array} \quad 1 \leq t \leq 2\right.$, Exact Solution: \quad$y(t)=e^{t^{2}} / 2 t$\\
+\item[(e)] $\left\{\begin{array}{l}y^{\prime}(t)=y-y / t \\ y(1)=1 / 2\end{array} \quad 1 \leq t \leq 5\right.$, Exact Solution: \quad$y(t)=e^{t-1} / 2 t$\\
+\end{enumerate}
+
+\item (a) Write a function M-file, $[t, y]=r k 5(f, a, b, y 0, h)$, which has the same syntax, input variables, and output variables as the runkut of Program 8.2, except that this one will use the $S^{\text {th }}$-order RK method of the RKF45 algorithm to solve an IVP.\\
+(b) Apply the program to resolve the IVP of Example $8.17$ and compare the resulting error plots with those in Figure \ref{fig:fig_8_20}.\\
+	
+\item Each of the following IVPs has a coefficient either with a jump discontinuity or that makes abrupt changes over a small time interval. For each one, perform the following tasks:\\
+(i) Solve it with the fifth-order Runge-Kutta method (the one used in RKF4S) by starting with a step size of $h=1 / 4$ and continuing to halve the step size until the difference (in absolute value) of the current approximation and the previous one is less than $0.0001$.\\
+(ii) Repeat (i) with the Adams-Moulton predictor-corrector method.\\
+(iii) Apply the RKF program to the problem with tolerance $=0.0001$. Compare the number of grid points used with the numbers in the final approximations of (i) and (ii).
+
+\begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y) \\ y(0)=2\end{array} \quad 0 \leq t \leq 4, \quad f(t, y)=\left\{\begin{array}{l}t y, \text { if } t<2 \\ 1-t, \text { if } t \geq 2\end{array}\right.\right.$\\
+\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y) \\ y(0)=0\end{array} \quad 0 \leq t \leq 4, \quad f(t, y)=\left\{\begin{array}{l}t^{2}+y^{2}, \text { if } t<2 \\ 3 y, \text { if } t \geq 2\end{array}\right.\right.$\\
+\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=\sin \left(\frac{1}{2.01-t}\right),\\ y(0)=2\end{array}  \quad 0 \leq t \leq 2 \right.$\\
+\end{enumerate}
+\item Repeat the instruction of Exercise 4 with each of the following IVPs:\\
+
+\begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y) \\ y(0)=-1\end{array} \quad 0 \leq t \leq 4, \quad f(t, y)=\left\{\begin{array}{l}3 y-2 \sin (y), \text { if } t<2 \\ 1+2 y+\cos (y), \text { if } t \geq 2\end{array}\right.\right.$\\
+\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y) \\ y(0)=0\end{array} \quad 0 \leq t \leq 4, \quad f(t, y)=\left\{\begin{array}{l}e^{-y t}, \text { if } t<1 \\ -4 y^{3 / 2}, \text { if } t \geq 1\end{array}\right.\right.$\\
+\\
+\item $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y) \\ y(0)=2\end{array} \quad 0 \leq t \leq 4, f(t, y)=\left\{\begin{array}{l}50 \sin (50 t), 1.7 \leq t \leq 2.5 \\ y-2 t, \text { otherwise }\end{array}\right.\right.$\\
+\end{enumerate}
+\item \textit{(Comparison of Methods on a Very Stiff Problem)} The following IVP is very stiff:
+
+$\left\{\begin{array}{l}y^{\prime}(t)=101+100(t-y) \\ y(0)=1\end{array} \quad 0 \leq t \leq 1\right.$. The exact solution, $y(t)=1+t$, comes from the general solution $y(t)=1+t+c e^{-100 t}$ which has an extremely fast decaying transient term.\\
+(a) Apply the RKF45 method on this IVP with a tolerance goal of le-5.\\
+(b) Compare the runtime and accuracy of this solution with that for the Adams-BashforthMoulton predictor-corrector method. Start with a stepsize of $h=1 / 4$ and continue to halve it until the absolute value of successive numerical approximations is less than le-5.\\
+(c) Compare both the above performances with that of MATLAB's built-in \texttt{ode45}.\\
+(d) For stiff IVPs like this one, MATLAB has built-in solvers ode $15 \mathrm{~s}$ and ode $23 \mathrm{~s}$ whose syntax is just like that of \texttt{ode45} (explained in Section 8.4). Compare the performances and runtimes of these two with all of the previous methods.\\
+\item \textit{(Comparison of Methods on a Mathematically Very Unstable Problem)} (a) The following IVP is very unstable: $\left\{\begin{array}{l}y^{\prime}(t)=100 y-101 e^{-t} \\ y(0)=1\end{array} \quad 0 \leq t \leq 3\right.$. The general solution $y(t)=e^{-t}+C e^{t 00 t}$ gives rise to the specific solution $y(t)=e^{-t}$. Any numerical method will have extreme difficulty with this problem. As soon as we have a roundoff error, we are no longer on our solution curve and pick up the unwanted $C e^{100 t}$ term, which grows explosively fast. Try to solve this problem using each of the methods in parts (a) through (d) of the previous exercise. Do not worry about the tolerances mentioned there; simply aim to get a numerical solution with error remaining less than one in absolute value on the entire interval.\\
+(b) Repeat part (a) on the following IVP: $\left\{\begin{array}{l}y^{\prime}(t)=100(\sin t-x) \\ y(0)=0\end{array}, 0 \leq t \leq 3\right.$. Since the exact solution here is not given, for each numerical method, continue to solve the problem by halving the step-size (or tolerance) until successive iterates seem reasonably close, if possible. Comment on the numerical difficulties which arise and compare with the situation in the IVP of part (a). In particular, since we do not have the general solution here at our disposal, comment on the possibility of being able to predict the instability.\\
+
+\item \textit{(Comparison of Methods on a Nonlinear Problem)} Consider the following nonlinear IVP:
+$$
+\left\{\begin{array}{l}
+y^{\prime}(t)=-300 t^{2} y^{3} \\
+y(0)=1
+\end{array} \quad 0 \leq t \leq 3 .\right.
+$$
+
+\begin{enumerate}[label=(\alph*)]
+\item Verify (or use separation of variables to show) that the exact solution of the DE is $y(t)=1 /\left(200 t^{3}+C\right)^{2} .$
+\item Apply the RKF45 method to solve this IVP using a tolerance of $0.0001$, and compare the error with that of the exact solution.
+\item Change the IC in the above IVP to $y(-2)=1 / 1601$ and solve it with RKF45 using a tolerance of $0.0001$ on the interval $-2 \leq t \leq 3$ and examine the error.
+\item Carefully examine how the step sizes changed in parts (b) and (c) above.
+\item What uniform step size would be needed with the fifth-order Runge-Kutta method to achieve the same results?
+\item Repeat part (e) for the Adams-Bashforth-Moulton predictor-corrector method.\\
+\end{enumerate}
+
+\item \textit{(Evaluation of an Oscillatory Integral)} The integral $I=\int_{0}^{1} t^{2} \sin (1 / t) d t$ is awkward to analyze numerically due to the oscillatory behavior of the integrand near $x=0$. By the fundamental theorem of calculus, any integral can be viewed as the solution of an IVP (for this one $I=y(1)$, where $y(t)$ solves the IVP: $\left.y^{\prime}=t^{2} \sin (1 / t), y(0)=0\right)$. This integral is proper since the integrand $t^{2} \sin (1 / t)$ has a limit of zero as $t \rightarrow 0$; we just need to redefine the integrand to equal zero at $t$ $=0$. We have already seen that the popular Simpson's rule for estimating integrals is really a special case of the Runge-Kutta method (Section 8.4, Exercise 5).\\
+(a) Use the RKF45 method with tolerance $=1 \mathrm{e}-5$ to estimate this integral. Plot the endpoints of the step intervals along with the graph of the integrand. Repeat with tolerance $=1 \mathrm{e}-10$.\\
+(b) Use the Adams-Bashforth-Moulton predictor-corrector method to estimate the integral. Start with a step size $h=1 / 4$ and continue halving the step size until successive approximations differ by less than le-10.\\
+(c) Apply the change of variable $u=1 / t$ to the integral $I$, and express $I$ as the followi ng convergent improper integral:
+$$
+I=\int_{1}^{\infty} \frac{\sin (t)}{t^{4}} d t
+$$
+How large should $M$ be so that the definite integrals $I_{M}=\int_{1}^{M} \frac{\sin (t)}{t^{4}} d t$ approximate $I$ with total errors less than $5 \mathrm{e}-11$ ?\\
+(d) Repeat part (a) on the integral $I_{M}$ of part (c) (with $M$ appropriately large). Compare the answers and number of iterations used with those in part (a).\\
+(e) Repeat part (b) on the integral $I_{M}$ of part (c) (with $M$ appropriately large). Compare the answers and number of iterations used with those in part (b).\\
+(f) Repeat parts (a) through (e) on the integral $J=\int_{0}^{1} \sin (1 / t) d t=\int_{1}^{\infty} \frac{\sin (u)}{u^{2}} d u$. Here the original integrand is definitely not continuous at $t=0$, but try anyway to do parts (a) and (b) if you can.\\
+
+\item \textit{(Stability of the Runge-Kutta Method)} (a) Show that when the standard Runge-Kutta method (Section 8.3) is applied to the test IVP (\ref{eqa14}) $\left\{\begin{array}{l}y^{\prime}(t)=r y \\ y(0)=y_{0}\end{array}\right.$, the iteration can be expressed as:
+$$
+y_{n+1}=\left(1+r h+(r h)^{2} / 2+(r h)^{3} / 6+(r h)^{4} / 24\right) y_{n} .
+$$\\
+
+\begin{enumerate}[label=(\alph*)]
+\item[(b)] For $r=-2$, what is the approximate range of step sizes for which the method is numerically stable?
+\item[(c)] Repeat part (b) with $r=-10$.
+\end{enumerate}
+\item \textit{(Stability of the Improved Euler Method)} (a) Derive a recursion formula, analogous to that in part (a) of the preceding exercise, for the improved Euler method's (Section 8.3) solution of the test IVP: $\left\{\begin{array}{l}y^{\prime}(t)=r y \\ y(0)=y_{0}\end{array}\right.$.
+
+\begin{enumerate}[label=(\alph*)]
+\item[(b)] For $r=-2$, what is the approximate range of step sizes for which the method is numerically stable?
+\item[(c)] Repeat part (b) with $r=-10$.
+\end{enumerate}
+
+\item \textit{(Mathematical Analysis of the Weak Stability of the Midpoint Method)} In this exercise, we carefully examine what happens when the midpoint method (see Exercise for the Reader 8.12) is applied to the test problem $\left\{\begin{array}{l}y^{\prime}(t)=r y \\ y(0)=1\end{array}\right.$, whose exact solution is $y(t)=e^{n}$.
+
+\begin{enumerate}[label=(\alph*)]
+\item Show that for this IVP the iteration scheme becomes $y_{n+1}=y_{n-1}+2 r h y_{n}$. In order to leave any blame for errors on the method itself, we use the exact value for the seed iterate $y_{1}=e^{r h}$ and we proceed (in the following outline) to explicitly solve the recursion formula in part (a) with the form: $y_{n}=c_{1} \rho_{1}^{n}+c_{2} \rho_{2}^{n}$, where the constants $c_{i}, \rho_{i}$ are to be determined.
+\footnote{The general theory of difference equations is quite vast and parallels somewhat the analytical theory of ordinary differential equations. We refer the interested reader to [Ela-99] for an introduction to this theory and to [Aga-00] for a more advanced treatment.}
+\item  Substitute the formula $y_{n}=\rho^{n}$ into the recursion formula of part (a) and arrive at the equation $\rho^{2}-2 h r \rho-1=0$, which has roots $\rho=r h \pm \sqrt{(r h)^{2}+1}$.
+\item  Using for $\rho_{1}, \rho_{2}$ the two values found in part (b) (with $\rho_{1}$ corresponding to the t-sign), show that for any constants $c_{1}, c_{2}$ the expression $y_{n}=c_{1} \rho_{1}^{n}+c_{2} \rho_{2}^{n}$ will solve the recursion equation of part (a). Next, determine the values of $c_{1}, c_{2}$ in order that this expression satisfy also the initial conditions $y_{0}=1, y_{1}=e^{r h}$. The resulting formula $y_{n}=c_{1} \rho_{1}^{n}+c_{2} \rho_{2}^{n}$ is the exact solution of the numerical method.
+\item Show that the values of $c_{1}, c_{2}$ found in part (c) satisfy $0<c_{1}<1$ and $c_{2}<-1$. Thus the second term of the method $c_{2} \rho_{2}^{n}$ will diverge as $n \rightarrow \infty$, but rather slowly (see part (e)), which is the nature of the weak stability.
+\item  Use Taylor's theorem to show that for the values of $c_{1}, c_{2}$ obtained in part (c), we have $c_{1}=1-c_{2}$, and $c_{2}=O\left([r h]^{3}\right)$.
+\end{enumerate}
+\item (a) By mimicking the method of Exercise 12, show that the exact solution to the recursion formula
+$$
+y_{n+1}=y_{n-1}+\frac{h}{3}\left[f\left(t_{n+1}, y_{n+1}\right)+4 f\left(t_{n}, y_{n}\right)+f\left(t_{n-1}, y_{n-1}\right)\right] \text {, }
+$$
+applied to the test IVP $\left\{\begin{array}{l}y^{\prime}(t)=r y \\ y(0)=1\end{array}\right.$ has general solution given by $y_{n}=c_{1} e^{r_{n}}+c_{2}(-1)^{n} e^{-r t_{n} / 3}$.
+This recursion formula is known as Milne's corrector formula.
+\begin{enumerate}[label=(\alph*)]
+\item[(b)] Assuming exact values for the seed iterates, determine the exact solution of the recursion problem in part (a), and discuss the resulting stability for the numerical method.
+\item[(c)]  Use Taylor's theorem to determine the local truncation error of Milne's corrector formula.
+\end{enumerate}
+\item \textit{(The Hamming Predictor-Corrector Method)} A popular predictor-corrector method in engineering fields is the following \textbf{Hamming
+\footnote{Richard Wesley Hamming (1915-1998) was an American mathematician born in Illinois. He received his PhD from the University of Illinois at Urbana-Champaign in 1942. Subsequently he spent most of his career working in industry. He joined the Manhattan Project in 1945. Incidentally, the project got its name since it originated at Columbia University in New York, but later much of the research took place at Los Alamos National Laboratories in New Mexico, which is where Hamming worked. After WWII, he moved on to accept a research position at Bell Laboratories where he remained until 1976 when he moved to become chair of the computer science department at the Naval Postgraduate School in Monterey, California. Hamming wrote numerous textbooks on numerical analysis. He is best known for his research on error-correcting codes (such as the one in Exercise 19) and he has won many prestigious awards for his work. These awards include the Turing Prize from IEEE in 1968, and an award from the National Academy of Engineering in $1980 .$}
+ method} for the IVP (4) $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ :\\
+After choosing the seed iterates $y_{1}, y_{2}, y_{3}$ :\\
+Predictor explicit scheme: $y_{n+1}=y_{n-3}+\frac{4 h}{3}\left[2 f\left(t_{n-2}, y_{n-2}\right)-f\left(t_{n-1}, y_{n-1}\right)+2 f\left(t_{n}, y_{n}\right)\right]$\\
+Corrector implicit scheme: $y_{n+1}=\frac{9 y_{n}-y_{n-2}}{8}+\frac{3 h}{8}\left[-f\left(t_{n-1}, y_{n-1}\right)+2 f\left(t_{n}, y_{n}\right)+f\left(t_{n+1}, y_{n+1}\right)\right]$.\\
+
+(a) Write a MATLAB M-file for the Hamming method having the following syntax:
+$[t, y)=$ hamming $(f, a, b, y 0, h)$
+The input and output variables are exactly as in the program adamspc5 of Exercise for the Reader 8.11.\\
+(b) Run this program on the IVP of Example $8.20$ and compare with the exact solution. Approximately how small a step size should be used to attain the same accuracy that was seen for the Adams-Bashforth-Moulton predictor-corrector method in that example?\\
+(c) Compare the accuracy of the Hamming method for the IVP in part (b) using a step size of $h$ $=0.1$ with that for just the predictor explicit scheme.\\
+(d) Compare the accuracy of the Hamming method for the IVP in part (b) using a step size of $h$ $=0.1$ with that for just the corrector implicit scheme.\\
+
+\item (a) Write a function $M$-file, $[t, y]=\operatorname{adamsmoulton}(f, a, b$, $y 0, h)$, which has the same syntax, input variables, and output variables as the backeuler of Program 8.3, except that this one will use the 5 th order Adams-Moulton multistep method (\ref{eqa20}) to solve an IVP. The fifth-order Runge-Kutta method should be used to obtain the seed iterates.\\
+(b) Apply the program to re-solve the IVP of Example $8.20$ and compare the resulting error plots with the corresponding one in Figure \ref{fig:fig_8_24}.
+
+\item Consider the 2-step explicit method given by the following recursion formula for the IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}: \quad y_{n+1}=2 y_{n-1}-y_{n}-2 h f\left(y_{n-1}, y_{n-1}\right) .\right.$\\
+(a) Use Taylor's theorem to find the local truncation order of this method.\\
+(b) Discuss the stability of this method and perform some numerical experiments to justify your statements.\\
+
+\item (a) Use the trapezoid method to resolve the IVP of Example $8.5$ with step size $h=0.1$. Compare the error with that for the Euler method (Figure 8.7) as well as that for the improved Euler method. (So you will also need to solve it with the improved Euler method.)\\
+(b) Show that the trapezoid method has second-order accuracy.\\
+
+\item \textit{(Weighted Trapezoid Methods)} For a parameter $\sigma, 0 \leq \sigma \leq 1$, consider the iteration scheme obtained by combining the Euler and backward Euler methods in a weighted average as follows:
+$$
+y_{n+1}=y_{n}+h_{n}\left[\sigma f\left(t_{n}, y_{n}\right)+(1-\sigma) f\left(t_{n+1}, y_{n+1}\right)\right] .
+$$
+Note that when $\sigma=0$ we have the backward Euler method, when $\sigma=1$ the Euler method, and when $\sigma=1 / 2$ the trapezoid rule.\\
+(a) For each $\sigma, 0<\sigma<1$ determine the region of numerical stability for this method.\\
+(b) For each $\sigma, 0<\sigma<1$ determine the order of accuracy of this method.\\
+(c) What happens to the answers in parts (a) and (b) if we allow $\sigma<0$ ?\\
+(d) What happens to the answers in parts (a) and (b) if we allow $\sigma>1$ ?\\
+
+\item (a) Classify the Hamming method (see Exercise 14) as either stable, unstable, or weakly stable.\\
+(b) Use Hamming's method to re-solve the IVP in Exercise for the Reader 8.12. First use a step size of $h=0.2$. Repeat using step sizes $h=0.1, h=0.05$, and finally with $h=0.005$. In each case compute the solution on a large enough time interval to detect any instability. Compare with Figure \ref{fig:fig_8_14} and the results of Exercise for the Reader 8.12. Compare and contrast the Hamming method and the midpoint method in terms of this example.\\
+(c) Use Taylor's theorem to find the local truncation error for both the prediction scheme and the correction scheme in the Hamming method.\\
+
+\item Show that if a $K$-step method $(K>1) y_{n+1}=\sum_{i=1}^{K} \alpha_{i} y_{n+1-i}+h \sum_{i=0}^{K} \beta_{i} f\left(t_{n+1-i}, y_{n+1-i}\right)$ is at least first-order accurate then $\sum_{i=1}^{K} \alpha_{i}=1$ and hence $\lambda=1$ will be a root of the associated characteristic polynomial.\\
+\item (Runge-Kutta-England Scheme) A modification of the RKF45 scheme, introduced by England [Eng-69], uses half-steps as follows to solve the IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ with a step size $h$ :\\
+First estimate $y(t+h / 2)$ by\\
+$y_{n+1 / 2}=y_{n}+\frac{h}{12}\left(k_{1}+4 k_{2}+k_{3}\right), \text { where }$\\
+\\
+$k_{0}=f\left(t_{n}, y_{n}\right)$ \\
+$k_{1}=f\left(t_{n}+h / 4, y_{n}+(h / 4) k_{0}\right)$ \\
+$k_{2}=f\left(t_{n}+h / 4, y_{n}+(h / 8)\left(k_{0}+k_{1}\right)\right)$ \\
+$k_{3}=f\left(t_{n}+h / 2, y_{n}-(h / 2) k_{1}+h k_{2}\right)$\\
+
+Use this to next estimate $y(t+h)$ by:\\
+$z_{n+1}=y_{n+1 / 2}+\frac{h}{12}\left(k_{4}+4 k_{6}+k_{7}\right) \text {, where }$\\
+
+$k_{4}=f\left(t_{n}+h / 2, y_{n+1 / 2}\right)$ \\
+$k_{5}=f\left(t_{n}+3 h / 4, y_{n+1 / 2}+(h / 4) k_{4}\right)$ \\
+$k_{6}=f\left(t_{n}+3 h / 4, y_{n+1 / 2}+(h / 8)\left(k_{4}+k_{5}\right)\right)$ \\
+$k_{7}=f\left(t_{n}+h, y_{n+1 / 2}-(h / 2) k_{5}+h k_{6}\right)$\\
+
+The above method can be shown to be a fourth-order method, and furthermore with one additional functional evaluation:
+$$
+k_{8}=f\left(t_{n}+h, y_{n}+(h / 12)\left(-k_{0}-96 k_{1}+92 k_{2}-121 k_{3}+144 k_{4}+6 k_{5}-12 k_{6}\right)\right),
+$$
+the following estimate for $y(t+h)$ will constitute a fifth-order method:
+$$
+y_{n+1}=y_{n}+\frac{h}{180}\left(14 k_{0}+64 k_{2}+32 k_{3}-8 k_{4}+64 k_{6}+15 k_{7}-k_{8}\right) \text {. }
+$$\\
+
+(a) Write an M-file for an adaptive Runge-Kutta-England solver with syntax
+\begin{lstlisting}[numbers=none,frame=none]
+[t, y]=r \operatorname{ke} 45(f, a, b, y 0 \text {, tol, hinit, hmin, hmax) }
+\end{lstlisting}
+and whose input and output variables are as in the $r k f 45 \mathrm{M}$-file of Exercise for the Reader 8.8.\\
+(b) Apply your program to the IVP of Example $8.17$ using a similar tolerance to what was used with \texttt{rkf45} in that example. Compare performances of the two methods.\\
+\textbf{Note:} We refer the interested reader to Section $6.5$ of [ShAIPr-97] for some nice ideas on how to create an effective program using the Runge-Kutta-England method.\\
+
+
+\noindent NOTE: The general single-step Runge-Kutta (RK) method for the solution of the IVP (4):$\left\{\begin{array}{ll}y^{\prime}(t)=f(t, y(t)) & (D E) \\ y(a)=y_{0} & (I C)\end{array}\right.$ takes the following form:
+$$
+y_{n+1}=y_{n}+h F\left(x_{n}, y_{n}, h ; f\right)
+$$
+where the notations for $x_{n}, y_{n}$ and $h$ (the step size) are as in the text. In this form, the local truncation error of the method can be expressed as $\varepsilon_{n}=Y\left(x_{n+1}\right)-y_{n+1}$, where $Y(x)$ is the solution of the related local IVP: $\left\{\begin{array}{ll}Y^{\prime}(t)=f(t, Y(t)) & (D E) \\ Y\left(x_{n}\right)=y_{n} & (I C)\end{array}\right.$ (so, more properly, $Y(x)$ depends on $\left.n\right) .$ In order that the RK method be of order $\mathrm{O}\left(h^{n}\right)$, the function $F$ should be chosen so that this local truncation error is $\mathrm{O}\left(h^{n+1}\right)$. To facilitate construction of such function $F$, the following 2 -dimensional version of Taylor's Theorem in two variables is very useful:
+
+\noindent \paragraph*{THEOREM 8.4: }\textit{(Taylor's Theorem for Functions of Two Variables)}
+\footnote{In our notation, the powers of the differential operator are to be done symbolically (just like regular binomial multiplication) and then applied to the function $g(x, y)$. For example, $\left[h \frac{\partial}{\partial x}+k \frac{\partial}{\partial y}\right]^{2} g(x, y)$ is equal to $h^{2} g_{x x}(x, y)+2 h k g_{x y}(x, y)+k^{2} g_{y y}(x, y)$. (Mixed partials are equal from the differentiability assumption). Actually, the ordinary Taylor theorem would also be sufficient to derive general RK methods, but the two-dimersional notation is more convenient. Indeed, the proof of the two-dimensional version of Taylor's theorem is an easy corollary of the one-dimensional Taylor theorem (Exercise 25).} Suppose that $g(x, y)$ is a function which is continuous along with all of its partial derivatives of order up through $n+1$ in a region containing the line segment (in the $x y$-plane) which joins the points $\left(x_{0}, y_{0}\right)$ and $\left(x_{0}+h, y_{0}+k\right)$. There exists a number $c, 0 \leq c \leq 1$ for which we can write:\\
+$$g\left(x_{0}+h, y_{0}+k\right)=g\left(x_{0}, y_{0}\right)+
+\left.\sum_{j=1}^{n} \frac{1}{j !}\left[h \frac{\partial}{\partial x}+k \frac{\partial}{\partial y}\right]^{j} g(x, y)\right|_{\substack{x=x_{0} \\ y=y_{0}}}+\left.\frac{1}{(n+1) !}\left[h \frac{\partial}{\partial x}+k \frac{\partial}{\partial y}\right]^{n+1} g(x, y)\right|_{\substack{x=x_{0}+c h \\ y=y_{0}+c k}} .$$
+
+The next several problems will examine such RK derivations.\\
+
+\item \textit{(Second-Order RK Formulas)} Assume that the function $F$ in the above note has the following form:
+$$
+F(x, y, h ; f)=c_{1} f(x, y)+c_{2} f(x+\alpha h, y+h \beta f(x, y)),
+$$
+where the parameters $c_{1}, c_{2}, \alpha$, and $\beta$ are to be determined.
+\begin{enumerate}[label=(\alph*)]
+
+\item Use Theorem $8.4$ to obtain the following expansion:
+$$
+\begin{aligned}
+F(x, y, h ; f)=c_{1} f+c_{2}\left\{f+h\left[\alpha f_{x}+\beta h f f_{y}\right]\right.\\
+&\left.+h^{2}\left[\frac{1}{2} \alpha^{2} f_{x x}+\alpha \beta \int_{x y} f+\frac{1}{2} \beta^{2} f^{2} f_{y y}\right]\right\}+\mathrm{O}\left(h^{3}\right)
+\end{aligned}
+$$
+(here and in what follows all evaluations of $f$ and its partials are at $(x, y)$ unless indicated otherwise).
+\item Using the chain rule, obtain the following expansion for the function $Y(x)$ which is defined in the preceding note:
+$$
+Y^{(3)}(x)=f_{x x}+2 f_{x y} f+f_{y y} f^{2}+f_{y} f_{x}+f_{y}^{2} f .
+$$\item Using the results of parts (a) and (b) obtain the following expression for the local truncation error for the RK method associated with $F$ :
+$$
+\begin{aligned}
+\varepsilon_{n}\left(\equiv Y\left(x_{n+1}\right)-y_{n+1}\right) &=h\left[1-c_{1}-c_{2}\right] f+h^{2}\left[\left(\frac{1}{2}-c_{2} \alpha\right) f_{x}+\left(\frac{1}{2}-c_{2} \beta\right) f_{y} f\right] \\
++& h^{3}\left[\left(\frac{1}{6}-\frac{1}{2} c_{2} \alpha^{2}\right) f_{x x}+\left(\frac{1}{3}-c_{2} \alpha \beta\right) f_{x y} f\right.\\
++&\left.\left(\frac{1}{6}-\frac{1}{2} c_{2} \beta^{2}\right) f_{y y} f^{2}+\frac{1}{6} f_{y} f_{x}+\frac{1}{6} f_{y}^{2} f\right]+O\left(h^{4}\right)
+\end{aligned}
+$$
+where $\mathrm{f}$ and its derivatives are evaluated at $\left(x_{0}, y_{0}\right)$.
+\item Observe from part (c) that the following conditions on the parameters will make $\varepsilon_{n}=\mathrm{O}\left(h^{3}\right)$ (and hence give rise to a second-order RK method): $c_{1}+c_{2}=1, c_{2} \alpha=1 / 2, c_{2} \beta=1 / 2$.
+\item By suitably choosing the parameters in part (d), realize both the improved Euler method and the scheme $y_{n+1}=y_{n}+h f\left(t_{n}+h / 2, y_{n}+(h / 2) f\left(t_{n}, y_{n}\right)\right.$ ) (from Example 8.15) as special cases of this general second-order RK method.
+\end{enumerate}
+\end{enumerate}
+NOTE:  The RK methods developed in the last exercise were so-called \textbf{two-stage RK methods} because each iteration involved two evaluations using the function $f(x, y)$. The general (explicit) $s-$ \textbf{stage RK method} will have (in the notation of the note above):
+$$
+F(x, y, h ; f)=\sum_{i=1}^{s} c_{i} k_{i}, \quad \text { where } k_{i}=f\left(x+\alpha_{i} h, y+\sum_{j=1}^{s-1} \beta_{i j} k_{j}\right), \quad i=1,2, \cdots s \text {. }
+$$
+Third- and fourth-order RK methods can be realized as 3 -stage and 4 -stage RK methods respectively, but a fifth-order RK method cannot be obtained as a 5 -stage RK method ( 6 stages are needed) and this explains the popularity of the (original) fourth-order RK method. Derivations of such formulas get extremely complicated and even computer algebra systems on a PC can only handle up to about order- 5 RK methods. The minimum number of stages required for RK methods is known up to about order-8 (where 11 stages are needed). For order-9 RK methods, it is known that a minimum of somewhere between 12 and 17 stages would be required. There is a whole theory on s-stage RK methods that is quite well developed; we refer the interested reader to either the book by Butcher [But-87] or that by Lambert [Lam-91].
+\begin{enumerate}
+\setcounter{enumi}{22}
+\item \textit{(Third-Order RK Formulas)} Show that, in the notation of the above note, under the assumption that
+$$
+\alpha_{i}=\sum_{j=1}^{i-1} \beta_{i j}(i=1,2,3) \text {, }
+$$
+the following conditions on a 3-stage RK method will make it into a third-order method:
+$$
+c_{1}+c_{2}+c_{3}=1, \quad c_{2} \alpha_{2}+c_{3} \alpha_{3}=\frac{1}{2}, c_{2} \alpha_{2}^{2}+c_{3} \alpha_{3}^{2}=\frac{1}{3}, c_{2} \alpha_{2} \beta_{32}=\frac{1}{6}
+$$
+
+\item (Classical RK Formulas) Show that the classical Runge-Kutta formulas have local truncation error $\varepsilon_{n}=\mathrm{O}\left(h^{5}\right)$, and hence result in a 4 th-order method.
+\item Prove Taylor's theorem in two variables (Theorem 8.4).\\
+\textbf{Suggestion:} Apply the one variable Taylor theorem (in Chapter 2) to the function $\varphi(t)=f\left(x_{0}+t h, y_{0}+t k\right)$ on the interval $[0,1]$.
+\end{enumerate}
+
+\noindent NOTE: The next three exercises explore a general method of derivation for multistep methods which is analogous to \textit{the method of undetermined coefficients} in the analytical theory of ODE. We give a brief introduction of this method here, in the setting of deriving a S-step explicit method for the IVP (4): $\left\{\begin{array}{ll}y^{\prime}(t)=f(t, y(t)) & (D E) \\ y(a)=y_{0} & (I C)\end{array}\right.$. The exercises will explore more details. From the fundamental theorem of calculus, we can write: $y\left(t_{n+1}\right)=y\left(t_{n}\right)+\int_{t_{n}}^{t_{n+1}} f(t, y(t)) d t$, which leads to the approximation: $y_{n+1} \approx y_{n}+\int_{t_{n}}^{t_{n+1}} f(t, y(t)) d t$. Letting $f_{i}$ denote $f\left(t_{i}, y_{i}\right)$, in a 5 -step explicit method, we seek an approximation of the last integral of the form:
+$$
+\int_{t_{n}}^{t_{n+1}} f(t, y(t)) d t \approx h\left[A f_{n}+B f_{n-1}+C f_{n-2}+D f_{n-3}+E f_{n-4}\right] .
+$$
+The coefficients will be determined by forcing the approximation to be exact whenever $f(t, y(t))$ is a polynomial in $t$ of degree at most four.
+
+\begin{enumerate}
+\setcounter{enumi}{25}
+\item \textit{(Derivation of the Adams-Bashforth 5-Step Method)} Complete the following outline to derive the Adams-Bashforth 5-step explicit method (formula (19)):
+(a) For simplicity, we first assume that $h=1$ and $t_{n}=0$, so that $t_{n-1}=-1, t_{n-2}=$ $-2, t_{n-3}=-3, t_{n-4}=-4$. It is then convenient to use the following five test polynomials (which form a basis\footnote{This means that any polynomial of degree at most $4, p(t)=a_{0}+a_{1} t+a_{2} t^{2}+a_{3} t^{3}+a_{4} t^{4}$, can be expressed as a (unique) linear combination of the five polynomials given.} of the degree-four polynomials):
+$$
+\begin{aligned}
+&p_{0}(t)=1, \\
+&p_{1}(t)=t, \\
+&p_{2}(t)=t(t+1), \\
+&p_{3}(t)=t(t+1)(t+2), \\
+&p_{4}(t)=t(t+1)(t+2)(t+3) .
+\end{aligned}
+$$
+(Note these polynomials are chosen to have their root sets be increasing subsets of the $t_{i}$ 's.) Substituting each of these polynomials $p_{j}(t)$ for $f(t, y(t))$ in the approximation of the above note to obtain the following:
+$$
+\int_{t_{n}}^{t_{n+1}} p_{j}(t) d t \approx h\left[A p_{j}(0)+B p_{j}(-1)+C p_{j}(-2)+D p_{j}(-3)+E p_{j}(-4)\right],
+$$
+for $j=0,1,2,3,4$, leads to the following linear system:
+\begin{center}
+\begin{tabular}{lllllllllll}
+A & + & B & + & C  & + & D  & + & E   & = & 1      \\
+  & - & B & - & 2C & - & 3D & - & 4E  & = & 1/2    \\
+  &   &   &   & 2C & + & 6D & + & 12E & = & 5/6    \\
+  &   &   &   &    & - & 6D & - & 24E & = & 9/4    \\
+  &   &   &   &    &   &    &   & 24E & = & 251/20
+\end{tabular}
+\end{center}
+Solve this linear system to obtain the coefficients of the Adams-Bashforth method.\\
+(b) Show that the coefficients for the general case of arbitrary $h$ and $t_{n}$ are the same as those obtained in part (a), by making an appropriate change of variables in both sides of the formula
+$$
+\int_{t_{n}}^{t_{n+1}} f(t, y(t)) d t \approx h\left[A f_{n}+B f_{n-1}+C f_{n-2}+D f_{n-3}+E f_{n-4}\right],
+$$
+from the special case in part (a).\\
+(c) Using the fact that the approximation $\int_{t_{n}}^{I_{n+1}} f(t, y(t)) d t \approx h\left[A f_{n}+B f_{n-1}+\right.$ $\left.C f_{n-2}+D f_{n-3}+E f_{n-4}\right]$ is exact for polynomials of degree at most four, use Taylor's theorem to show that the local truncation error for the Adams-Bashforth method is $O\left(h^{6}\right)$, assuming that the solution of the IVP is $C^{6}$.\\
+\textbf{Suggestion:} For part (c), use Taylor's theorem to express the derivative of solution using a fourth-order Taylor polynomial. Substitute this expression into the right side of the DE for $f(t, y(t))$.
+\item \textit{(Derivation of the Adams-Moulton 4-Step Method)} (a) Using the derivation for the AdamsBashforth method in the previous exercise as a guide, derive the Adams-Moulton implicit 4-step method (formula (20)).\\
+(b) Assuming that the solution of the IVP is $C^{6}$, show that the local truncation error for the Adams-Moulton method is $O\left(h^{6}\right)$.
+\end{enumerate}
+	
+	
+	
+	
+	
+	
+\clearpage
+\end{document} 

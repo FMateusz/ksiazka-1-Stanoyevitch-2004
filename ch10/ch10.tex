@@ -1,0 +1,2248 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+
+\chapter{Boundary Value Problems for Ordinary Differential Equations}
+\label{chap:chap_10}
+
+\section{WHAT ARE BOUNDARY VALUE PROBLEMS AND HOW CAN THEY BE NUMERICALLY SOLVED?}
+\label{sec:sec_10_1}
+
+\noindent All of the auxiliary conditions considered so far on a differential equation (or system) were so-called initial conditions in that they all specified values of the unknown 'function(s) and/or derivatives at a single value of the independent variable. It is also quite common to see problems with a second-order differential equation (so it will require two auxiliary conditions) with values of the unknown function being specified at two different values of the independent variable. Examples of this include finding out how far a steel beam will bend at interior points (unknown function) given that the ends are fixed. Other examples include motion and mechanics problems where a (coordinate of the) position of an object is known at two different times and we want to find out the precise trajectory of motion during intermediate times. In this chapter we will focus our attention on second-order two-point \textbf{boundary value problems (BVPs)} of the form:
+\begin{equation}\label{eqa1}
+\text { (BVP) }\left\{\begin{array}{ll}
+y^{\prime \prime}(t)=f\left(t, y, y^{\prime}\right) & (D E) \\
+y(a)=\alpha, y(b)=\beta & (B C s)
+\end{array} .\right.
+\end{equation}
+\indent We will present three categories of methods for numerically solving the BVP (\ref{eqa1}). The first types of these methods, called \textbf{shooting methods}, are based on our methods for solving the initial value problems (IVPs) and are quite intuitive. They work basically as follows: Introduce a corresponding IVP that has the same DE, the same first BC $y(a)=\alpha$, and a "reasonable" initial condition for $y^{\prime}(a)$ (we will give some schemes later, but for now just take it to be zero). Next, solve this IVP with, say, the Runge-Kutta method, on the interval of interest $a \leq t \leq b$. Now check the value of $y(b)$ to see how it compares with the desired value $\beta$. If it is close enough; we accept this solution; otherwise it will be either too small or too large. Readjust the initial condition for $y^{\prime}(a)$ accordingly (we will give efficient ways for this). Solve the new IVP and continue "shooting" solutions of IVPs in this way at $y(b)=\beta$ until we get close enough ("hit it").\\
+
+\indent The second type of methods we present for solving BVPs, called \textbf{finite difference methods}, are based on approximating derivatives by difference quotients. Multiple approximations are done simultaneously and so the methods will require some matrix manipulations. Finite difference methods will be seen again in later chapters to numerically solve PDEs. In the last section we introduce yet another approach called the \textbf{Rayleigh-Ritz} method. This method recasts the BVP as a minimization problem for a certain functional associated with the BVP. The Rayleigh-Ritz method is the one-dimensional analogue of the very successful finite element method for solving BVPs for partial differential equations that will be discussed in Chapter 13. In contrast to the first two rather intuitive methods, the Rayleigh-Ritz method rests on many theoretical underpinnings. The shooting methods are usually more efficient than the latter two methods, but when we move on to partial differential equation B.VPs, they have no analogue, but the latter two methods generalize quite well.\\
+
+\indent To compare and test efficiency of our methods, we will use the example of the deflection of a horizontal beam which is supported (at equal heights at its ends) as illustrated in Figure 10.1.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig_10_1}
+    \caption{Deflection of a horizontal beam.}
+    \label{fig:fig_10_1}
+\end{figure}
+
+\noindent Letting $y(x)$ denote the vertical level of the beam $x$ units from the left side (making $y=0$ correspond to the height of the supports), we have the boundary conditions $y(0)=y(L)=0$, where $L$ is the horizontal distance between the supports. If $y^{\prime}$ is relatively small, and if the beam has a uniform transverse load $w$ and tension $T$, it can be shown that $y(x)$ is modeled by the differential equation:
+
+\begin{equation}\label{eqa2}
+y^{\prime \prime}(x)=\frac{T}{E I} y+\frac{w x(x-L)}{2 E I}, 0 \leq x \leq L .
+\end{equation}
+
+\indent In this equation, $E$ and $I$ are physical constants associated with the beam and its materials ( $E=$ modulus of elasticity, $I=$ moment of inertia). Actually the true $\mathrm{DE}$ has $y^{\prime \prime}(t)$ being replaced by the more complicated term $y^{\prime \prime}(t) /\left[1+\left(y^{\prime}\right)^{2}\right]^{3 / 2}$, which needs to be used in cases where $y^{\prime}(x)$ gets large. Our reason for using (\ref{eqa2}) as our basic DE in this chapter is that the BVP can be explicitly solved. The general solution of the $\mathrm{DE}$ is given by
+\begin{equation}\label{eqa3}
+\begin{aligned}
+y(x)=C \sinh (\theta x)+D \sinh (\theta(L-x)) \\
++w L x / 2 T-w / \theta^{2} T-w x^{2} / 2 T
+\end{aligned}
+\end{equation}
+\noindent where $C$ and $D$ are arbitrary constants.\\
+
+\noindent EXERCISE FOR THE READER 10.1: (a) Verify that each function of the form (\ref{eqa3}) satisfies the DE (\ref{eqa2}); provided that $\theta^{2}=T / E I$.\\
+(b) Show further that the function (\ref{eqa3}) will satisfy the boundary conditions $y(0)=$ $y(L)=0$ if and only if $C=D=\frac{w}{\theta^{2} T \sinh (\theta L)} .$\\
+
+Shooting methods are more easily applied to BVPs (\ref{eqa1}) that have a linear differential equation. This means that the DE in (\ref{eqa2}) has the form
+\begin{equation}\label{eqa4}
+y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) .
+\end{equation}
+\noindent If, in a linear $\mathrm{DE}$, the extra term $r(x)$ in (\ref{eqa4}) is zero, then we say further that the $\mathrm{DE}$ is \textbf{homogeneous}. There is a very important fact about homogeneous linear equations that makes them amenable to solution:\\
+
+\noindent FACT: If $y_{1}$ and $y_{2}$ are two solutions of a linear homogeneous $\mathrm{DE}$, and $c$ is any constant, then $y_{1}+y_{2}$ and $c y_{1}$ are also solutions.\\
+
+\noindent \textit{Proof:} Introducing the (linear) operator: $L[y]=p(t) y^{\prime}+q(t) y$, the homogeneous linear $\mathrm{DE}$ can be rewritten as $y^{\prime \prime}=L[y]$. Using the basic differentiation rules from calculus, we can write:
+$$
+\begin{aligned}
+L\left[y_{1}+y_{2}\right] &=p(t)\left[y_{1}+y_{2}\right]^{\prime}+q(t)\left[y_{1}+y_{2}\right] \\
+&=p(t)\left(y_{1}^{\prime}+y_{2}^{\prime}\right)+q(t) y_{1}+q(t) y_{2} \\
+&=p(t) y_{1}^{\prime}+q(t) y_{1}+p(t) y_{2}^{\prime}+q(t) y_{2} \\
+&=L\left[y_{1}\right]+L\left[y_{2}\right]
+\end{aligned}
+$$
+\noindent which proves that $y_{1}+y_{2}$ is also a solution. Similarly, the following computation shows that $c y_{1}$ is a solution:
+$$
+\begin{aligned}
+L\left[c y_{1}\right]=p(t)\left[c y_{1}\right]^{\prime}+q(t) c y_{1} &=p(t) c y_{1}^{\prime}+c q(t) y_{1} \\
+&=c\left(p(t) y_{1}^{\prime}+q(t) y_{1}\right)=c L\left[y_{1}\right] .
+\end{aligned}
+$$
+EXERCISE FOR THE READER 10.2: Does the above fact continue to hold true for linear DEs that are not homogeneous?
+
+\noindent \paragraph*{EXAMPLE 10.1:} For each of the second-order DEs below, indicate whether it is linear and whether it is homogeneous.
+\begin{multicols}{2}
+(a) $y^{\prime \prime}+3 \cos (t) y^{\prime}+\sin (t) y^{2}=0$
+
+(b) $y^{\prime \prime}+e^{\prime} y=e^{t}$
+\end{multicols}
+
+
+\noindent SOLUTION: Part (a): The equation is nonlinear due to the $y^{2}$ term (in each term, the unknown function or one of its derivatives-but not both, can only appear to the first power and must not be inserted in other functions to be linear). The homogeneity question is not applicable.\\
+
+\noindent Part (b): The equation is linear (putting it in standard form it will have $p(t)=-e^{t}$, $q(t)=0$,and $r(t)=e^{t}$ ) but not homogeneous because of the $e^{t}$ term.\\
+
+\noindent EXERCISE FOR THE READER 10.3: For each of the second-order DEs below, indicate whether it is linear or not and (if linear) whether it is homogeneous.
+\begin{multicols}{2}
+(a) $y^{\prime \prime}=t y y^{\prime}$ 
+
+(b) $y^{\prime \prime}+\cos (t) y-\sin (t)=0$
+\end{multicols}
+
+\noindent We now state a general existence and uniqueness theorem for the BVP (1). It is often a good idea to check to see if this theorem is verified before a numerical scheme is applied to any particular BVP, otherwise a solution may not be unique, or worse, may not exist and so the output could be meaningless.
+\noindent \paragraph*{THEOREM 10.1:} \textit{(Existence and Uniqueness for BVP)} If in the BVP (2)
+$$
+\begin{cases}y^{\prime \prime}(t)=f\left(t, y, y^{\prime}\right) & (D E) \\ y(a)=\alpha, y(b)=\beta & (B C s)\end{cases}
+$$
+the function $f\left(t, y, y^{\prime}\right)$ along with its two partial derivatives $f_{y}$ and $f_{y^{\prime}}$ are continuous in the region $R=\left\{a \leq t \leq b,-\infty<y, y^{\prime}<\infty\right\}$, and furthermore if we also have satisfied on $R$ the following two conditions: (i) $f_{y}\left(t, y, y^{\prime}\right)>0$ and (ii) $\left|f_{y^{\prime}}\left(t, y, y^{\prime}\right)\right| \leq M$ for some fixed positive number $M$, then the BVP has a unique solution.\\
+
+\indent A proof of this theorem can be found in [Kel-68]. We caution the reader that this theorem is not a definitive result on BVPs. For example, the BVP that we numerically solve in Example $10.4$ of Section $10.3$ violates both of the two conditions of the theorem but nevertheless does have a unique solution. In case that the $D E$ is linear, the above theorem simplifies as follows:
+
+\paragraph*{COROLLARY 10.2:} (Existence and Uniqueness for Linear $B V P$ ) If in the linear BVP
+$$
+\left\{\begin{array}{ll}
+y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) & (D E) \\
+y(a)=\alpha, y(b)=\beta & \left(B C^{\prime} s\right),
+\end{array},\right.
+$$
+the functions $p(t), q(t)$ and $r(t)$ are all continuous on the interval $[a, b]$ and also $q(t)$ $>0$ throughout $[a, b]$, then the BVP has a unique solution.
+
+\paragraph*{EXAMPLE 10.2:} For each of the following BVPs, indicate if it is linear or nonlinear and then determine whether the appropriate existence and uniqueness result above applies.
+\begin{multicols}{2}
+(a) $\left\{\begin{array}{l}y^{\prime \prime}(t)+2 y^{2}=\cos (t) \\ y(0)=1, y(1)=2\end{array}\right.$
+
+(b) $\left\{\begin{array}{l}y^{\prime \prime}(t)+3 y^{\prime}-e^{t} y=\sin \left(t^{2}\right) \\ y(0)=0, y(1)=-3\end{array}\right.$
+\end{multicols}
+\noindent SOLUTION: Part (a): The DE is nonlinear because of the $y^{2}$ term. To apply Theorem $10.1$, we put $f\left(t, y, y^{\prime}\right)=\cos (t)-2 y^{2}$. This function and its partial derivatives are continuous everywhere, and so certainly on the required region $R=\left\{0 \leq t \leq 1,-\infty<y, y^{\prime}<\infty\right\}$. However, the partial derivative $f_{y}\left(t, y, y^{\prime}\right)=-4 y$ is not always positive on the region $R$ (just take $y$ to be zero or any positive number). Since not all of the hypotheses are satisfied the existence and uniqueness theorem is not applicable. The BVP still may or may not have a (unique) solution but theoretically we cannot say more with what we know.\\
+Part (b): The DE now is clearly linear with $p(t)=-3, q(t)=e^{t}$, and $r(t)=\sin \left(t^{2}\right)$, and the hypotheses of Corollary $10.2$ are clearly satisfied so we may conclude that the BVP has a unique solution.\\
+
+\noindent EXERCISE FOR THE READER 10.4: For each of the following BVPs, indicate if it is linear or nonlinear and then determine whether the appropriate existence and uniqueness result above applies.
+\begin{multicols}{2}
+(a) $\left\{\begin{array}{l}y^{\prime \prime}(t)=y^{2}+e^{t} y^{\prime} \\ y(2)=1, y(4)=50\end{array}\right.$
+
+(b) $\left\{\begin{array}{l}y^{\prime \prime}(t)=t y+t \cos \left(\left[y^{\prime}\right]^{2}\right) \\ y(1)=0, y(3)=2\end{array}\right.$
+\end{multicols}
+
+\noindent\rule{480pt}{0.4pt}
+\paragraph*{EXERCISE 10.1: }
+\begin{enumerate}
+
+\item For each of the second-order DEs below, indicate whether it is linear or not and if it is linear whether it is homogeneous.
+
+
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+        \item[(a)] $y^{\prime \prime}(t) \cos t=\left(y+y^{\prime}+1\right) \sin t$
+        \item[(c)] $y^{\prime \prime}(t)=\frac{1+y}{1+y^{\prime}}$
+        
+        \item[(b)] $y^{\prime \prime}(t)=3 t^{\prime} y-y^{\prime}+y^{\prime} \cos t$
+        \item[(d)] $\quad y^{\prime \prime}(t)+y^{\prime}=\frac{y}{t}$
+    \end{enumerate}
+   \end{multicols}
+
+\item For each of the following BVPs, indicate if it is linear or nonlinear and then determine whether or not the appropriate existence and uniqueness result above applies.
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+        \item[(a)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=-2 t y^{\prime}+\cos (t) \\ y(0)=1, y(2)=1\end{array}\right.$
+        \item[(c)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=y^{\prime} y^{2} t^{3} \\ y(1)=1, y(2)=2\end{array}\right.$
+        
+        \item[(b)] $\left\{\begin{array}{l}\cos (t) y^{\prime \prime}(t)=\sin (t) y^{\prime}+y+\cos t \\ y(3 \pi / 4)=1, y(\pi)=0\end{array}\right.$
+        \item[(d)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=y^{5}+\cos \left(y^{\prime}\right) e^{\prime} \\ y(0)=0, y(10)=5\end{array}\right.$
+    \end{enumerate}
+   \end{multicols}
+
+\item Repeat Exercise 2 for the following BVPs:
+
+
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+        \item[(a)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=(t+y)^{2} \\ y(0)=1, y(5)=0\end{array}\right.$
+        \item[(c)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=\frac{1+y^{\prime}}{1-y^{\prime}}+6 y \\ y(0)=0, y(2)=0\end{array}\right.$
+        
+        \item[(b)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=\tan (t) y^{\prime}+\arctan (t) y+\cos t \\ y(1)=1, y(100)=100\end{array}\right.$
+        \item[(d)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=\left(1+t+y+y^{\prime}\right)^{2} \\ y(2)=0, y(3)=-4\end{array}\right.$
+    \end{enumerate}
+   \end{multicols}
+\end{enumerate}
+
+
+\section{THE LINEAR SHOOTING METHOD}
+\label{sec:sec_10_2}
+
+\noindent In case of a linear DE in (\ref{eqa1}), the shooting method will require only "two shots." More precisely, we will be able to solve the BVP (\ref{eqa1}) by solving two corresponding IVPs. An appropriate linear combination of the latter two solutions will yield a solution to the former. Passing now to the details, we begin with a linear BVP,
+\begin{equation}\label{eqa5}
+\text { (LBVP) } \begin{cases}y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) & (D E) \\ y(a)=\alpha, y(b)=\beta & (B C s)\end{cases}
+\end{equation}
+\noindent With this we associate the following two IVPs:
+
+\begin{equation}\label{eqa6}
+\text { (IVP-1) } \begin{cases}y_{1}^{\prime \prime}(t)=p(t) y_{1}^{\prime}+q(t) y_{1}+r(t) & (\mathrm{DE}) \\ y_{1}(a)=\alpha, y_{1}^{\prime}(a)=0 & (\text { IC-1's) }\end{cases}
+\end{equation}
+and
+\begin{equation}\label{eqa7}
+\text { (IVP-2) } \begin{cases}y_{2}^{\prime \prime}(t)=p(t) y_{2}^{\prime}+q(t) y_{2} & (D E-2) \\ y_{2}(a)=0, y_{2}^{\prime}(a)=1 & (I C-2 s)\end{cases}
+\end{equation}
+\noindent We point out that the DE in IVP-1 is identical to the linear DE in the original BVP while the DE-2 in IVP-2 is the \textbf{homogenization} of the original DE.\\
+
+\noindent CLAIM: If $y_{1}(t)$ is a solution of (IVP-1) and $y_{2}(t)$ is a solution of IVP-2 then
+\begin{equation}\label{eqa8}
+y(t)=y_{1}(t)+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}(t) .
+\end{equation}
+\noindent is a solution of the original (BVP), as long as $y_{2}(b) \neq 0$.\\
+
+\noindent \textit{Proof: } Write $L[y]=p(t) y^{\prime}+q(t) y$ so that the original DE is $y^{\prime \prime}(t)=L[y]+r(t)$ and the homogenization DE-2 is $y^{\prime \prime}(t)=L[y]$. Because of linearity, we have $L\left[c y_{1}+d y_{2}\right]=c L\left[y_{1}\right]+d L\left[y_{2}\right]$, for any constants $c$ and $d$. Using first the basic properties of differentiation and then this property we can write (keeping in mind which DEs $y_{1}$ and $y_{2}$ solve):
+$$
+\begin{aligned}
+y^{\prime \prime}(t) &=\left(y_{1}+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}\right)^{\prime \prime}(t) \\
+&=y_{1}^{\prime \prime}(t)+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}^{\prime \prime}(t) \\
+&=\left(L\left[y_{1}\right]+r(t)\right)+\frac{\beta-y_{1}(b)}{y_{2}(b)} L\left[y_{2}\right] \\
+&=L\left[y_{1}+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}\right]+r(t) \\
+&=L[y]+r(t) .
+\end{aligned}
+$$
+This shows that $y(t)$ solves the DE of (LBVP) (\ref{eqa5}). The boundary conditions are easily checked using the (specially designed) initial conditions in (\ref{eqa6}) and (\ref{eqa7}):
+$$
+\begin{gathered}
+y(a)=y_{1}(a)+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}(a)=\alpha+\frac{\beta-y_{1}(b)}{y_{2}(b)} 0=\alpha, \\
+y(b)=y_{1}(b)+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}(b)=y_{1}(b)+\frac{\beta-y_{1}(b)}{y_{2}(b)} y_{2}(b)=\beta .
+\end{gathered}
+$$
+
+\noindent The method just described for solving the linear BVP (\ref{eqa5}) is called the \textbf{linear shooting method.} We present now an example involving the deflection of a beam.\\
+
+\paragraph*{EXAMPLE 10.3:} (a) Use the linear shooting method with $h=0.1$ in the RungeKutta method to solve the following beam deflection BVP:
+$$
+\left\{\begin{array}{l}
+y^{\prime \prime}(x)=\frac{T}{E I} y+\frac{w x(x-L)}{2 E I}, 0 \leq x \leq L, \\
+y(0)=0=y(L)
+\end{array},\right.
+$$
+\noindent having the parameters: $L=50$ feet (length), $T=300 \mathrm{lbs}$ (tension at ends), $w=50$ $\mathrm{lb} / \mathrm{ft}$ (vertical load), $E=1.2 \times 10^{7} \mathrm{lb} / \mathrm{ft}^{2}$ (modulus of elasticity), and $I=4$ $\mathrm{ft}^{4}$ (central moment of inertia). Graph the resulting numerical solution.\\
+(b) Graph the error as it compares with the exact solution as given in (\ref{eqa3}).\\
+
+\noindent SOLUTION: Part (a): Comparing the generic linear BVP (\ref{eqa5}) with ours and translating the two IVPs (\ref{eqa6}) and (\ref{eqa7}) into our setting we obtain:
+$$
+(\mathrm{IPP}-1)\left\{\begin{array}{ll}
+y_{1}^{\prime \prime}(x)=\frac{T}{E I} y_{1}+\frac{w x(x-L)}{2 E I} & (\mathrm{DE}) \\
+y_{1}(0)=0, y_{1}^{\prime}(0)=0 & (\mathrm{IC}-1)
+\end{array},\right.
+$$
+and
+$$
+\text { (IVP-2) }\left\{\begin{array}{l}
+y_{2}^{\prime \prime}(x)=\frac{T}{E I} y_{2} \\
+y_{2}(0)=0, y_{2}^{\prime}(0)=1
+\end{array}\right.
+$$
+We apply the Runge-Kutta method to solve both of these problems on the interval $[0, L]$, and once this is done, we take (using (\ref{eqa8})):
+$$
+y(x)=y_{1}(x)+\frac{0-y_{1}(L)}{y_{2}(L)} y_{2}(x)=y_{1}(x)-\frac{y_{1}(L)}{y_{2}(L)} y_{2}(x),
+$$
+as our solution to the original BVP. To solve each of the second-order IVPs, we need to translate them into a system of first-order ODEs as explained in Section 9.1. Introducing the new functions $u_{1}=y_{1}^{\prime}$ and $u_{2}=y_{2}^{\prime}$, the above two IVPs translate to the following equivalent two-dimensional systems:
+$$
+\text { (IVP-1') } \left\{\begin{array}{ll}
+y_{1}^{\prime}(x)=u_{1}, & y_{1}(0)=0 \\
+u_{1}^{\prime}(x)=\frac{T}{E I} y_{1}+\frac{w x(x-L)}{2 E I}, & u_{1}(0)=0
+\end{array},\right.
+$$
+and
+$$
+\left(I V P-2^{\prime}\right) \begin{cases}y_{2}^{\prime}(x)=u_{2}, & y_{2}(0)=0 \\ u_{2}^{\prime}(x)=\frac{T}{E I} y_{2}, & u_{2}(0)=1\end{cases}
+$$
+
+
+\noindent At this point, we turn things over to MATLAB and make use of the program \texttt{runkut2d} of the last chapter, which is ideally suited for the present purposes.
+
+\begin{lstlisting}[numbers=none, frame=none, mathescape]
+>> f1 =inline('u', 'x', 'y','u');
+>> g1=inline('300*y/1.2e7/4 + 50*x*(x-50)/2/1.2E7/4', 'x', 'y', 'u');
+>> f2=f1;
+>> g2=inline('300*y/1.2e7/4','x','y','u');
+>> [x,y1,u1]=runkut2d(fl,g1, 0,50, 0,0, .1);
+>> [x,y2,u2]=runkut2d(f2,g2, 0,50, 0,1, .1) ;
+\end{lstlisting}
+
+\noindent The solutions to (IVP-1) and (IVP-2) are now stored as vectors \texttt{y1} and \texttt{y2} respectively. We next take the indicated linear combination of these two solutions to get the solution of the BVP, which we store in the vector ybvp. To get the (MATLAB's) vector index of $x=L$, we use the size command, as usual.
+
+\begin{lstlisting}[numbers=none, frame=none, mathescape]
+>> size(x) $\rightarrow$ 1 501
+>> ybvp=y1-y1(501)/y2(501)*y2;
+>> plot (x,ybvp) %See figure 10.2
+>> xlabel('x-values'), ylabel('y-values')/ title('Deflection')
+\end{lstlisting}
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig_10_2}
+    \caption{The graph of the vertical deflection of the horizontal beam of Example 10.3. The bending is much less severe than the graph seems to indicate (compare units on the axes); both $x$-and $y$-values are given in feet.}
+    \label{fig:fig_10_2}
+\end{figure}
+
+\noindent Part (b): Using the formula (\ref{eqa3}) for the exact solution of the DE (along with the conditions on the constants in the Exercise for the Reader $10.1$ for the boundary conditions), we can easily construct the vector of the exact solution's $y$ coordinates and then plot the desired error. We construct this vector directly (since we only need it for this particular instance and an inline function construction would be a bit awkward with all of the constants).
+
+\begin{lstlisting}[numbers=none, frame=none, mathescape]
+>> L=50;T=300; w=50; E=1.2e7; I=4; theta=sqrt(T/E/I);
+>> C=w/theta^2/T/sinh(theta*L); D=C;
+>> yexact=C*sinh(theta*x)+C*sinh(theta*(L-x))+...
+	w*L*x/2/T-w/theta^2/T-w*x.^2/2/T;
+>> max(abs(ybvp-yexact)) 	$\rightarrow$ans=7.2526e-012
+\end{lstlisting}
+
+
+\noindent The maximum error shows that the linear shooting method gave us quite an accurate solution.\\
+
+\noindent EXERCISE FOR THE READER 10.5: Use the linear shooting method to solve the following BVP. Your IVP solver should be the Runge-Kutta method with step size $h=0.01$. Plot your solution with a solid graph, together with the solutions of the two associated IVPs with $x$ 's and o's. Do the $x$ - and o-plots using vectors with gaps $=0.1$ to make them print nicely. Also, what is the value of the solution when $x=1.5$ ?
+$$
+\left\{\begin{array}{l}
+x y^{\prime \prime}-y^{\prime}-x^{5}=0(D E) \\
+y(1)=1, y(2)=4\left(B C^{\prime} s\right)
+\end{array} \quad 1 \leq x \leq 2, y=y(x)\right.
+$$
+\noindent EXERCISE FOR THE READER 10.6: (a) Write an M-file that will perform the linear shooting method in conjunction with the Runge-Kutta method to solve a general linear BVP (5) $\left\{\begin{array}{l}y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) \\ y(a)=\alpha, y(b)=\beta\end{array}\right.$. The inputs and outputs should be as follows:
+\begin{center}
+\begin{lstlisting}[numbers=none,frame=none]
+	[t,y] = linearshooting(p, q, r, a, alpha, b, beta, hstep)
+\end{lstlisting}
+\end{center}
+but we intentionally leave the syntax open since the construction involves a new
+concept (see the suggestion below).\\
+(b) Run this program on the BVP of Example $10.3$ and compare the resulting plot with the one in Figure \ref{fig:fig_10_2}\\
+
+\noindent \textbf{Suggestion:} This program is an interesting one to contemplate and the reader is encouraged to spend a decent amount of time thinking and writing such a program before consulting the solution in Appendix B. Depending on how the program is written, it will highlight the differences between different sorts of data types in MATLAB (inline objects, character strings, numbers). It is possible to write this program elegantly without resorting to the Symbolic Toolbox. Ideally, we would like to be able to write this $M$-file so that it will internally be able to call on the \texttt{runkut2d} program of Exercise for the Reader 9.2. Since the functions that need to be inputted into the latter Runge-Kutta program are constructed from (but different from) $p(t), q(t)$, and $r(t)$, for this scheme to work it will be necessary to construct inline functions within the program that are built up from the inputted functions $p(t), q(t)$, and $r(t)$. The syntax by which these functions are inputted should be carefully thought out to facilitate the writing of the program. Below we give a way to construct an inline function from two previously inputted strings.\\
+ 
+\indent Suppose that we have two strings in our workspace: \texttt{s1=x\textasciicircum 2+1}, and \texttt{s2 = cos(x)}, and we would like to create an inline function whose formula is the following combination of these strings: \texttt{s1\textasciicircum 2 +2*s2} + x, i.e., the function $f(x)=\left(x^{2}+1\right)^{2}+2 \cos (x)+x$. The following construction creates this inline function directly in terms of the two previously inputted strings:
+
+
+\begin{lstlisting}[numbers=none, frame=none, mathescape]
+>> s1 = 'x^2+1'; s2 = 'cos(x)'; %enter two strings
+>> f = inline(['(',s1,')^2+2*', s2, '+x'])
+$\rightarrow$f=		Inline function: f(x)=(x^2+1)^2+2*cos(x)+x
+\end{lstlisting}
+
+
+\noindent\rule{480pt}{0.4pt}
+\paragraph*{EXERCISE 10.2: }
+\begin{enumerate}
+
+\item For each of the following linear BVPs, do the following (if possible): (i) Verify the DE is linear so that the linear shooting method is applicable. (ii) Write down the two associated IVPs of the linear shooting method. (iii) Introduce new variables to recast each of these IVPs into a system of first-order IVPs. (iv) Use the Runge-Kutta method with step size $h=0.01$ to solve both IVPs. (v) Plot the solution (solid curve) together with the plots of both solutions to the IVPs done in different plotting styles.
+
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+\item[(a)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=-2 y \\ y(0)=1, y(2)=4\end{array}\right.$
+\item[(c)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=y \cos (t)+e^{l} \\ y(0)=1, y(3)=-3\end{array}\right.$
+\item[(b)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=-y^{\prime}-2 y \\ y(0)=1, y(2)=1\end{array}\right.$
+\item[(d)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=t y-2 t y^{\prime} \\ y(2)=2, y(4)=4\end{array}\right.$
+	\end{enumerate}
+\end{multicols}
+
+\item Repeat all parts of Exercise 1 for each of the following BVPs.
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+\item[(a)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=t+2 y+3 y^{\prime} \\ y(0)=0, y(2)=-4\end{array}\right.$
+\item[(c)] $\left\{\begin{array}{l}t y^{\prime \prime}(t)+y^{\prime}-y \sin (t)=0 \\ y(1)=1, y(3)=4\end{array}\right.$
+\item[(b)] $\left\{\begin{array}{l}y^{\prime \prime}(t)=-t-2 y-3 y^{\prime} \\ y(0)=0, y(2)=-4\end{array}\right.$
+\item[(d)] $\left\{\begin{array}{l}2 t^{2} y^{\prime \prime}(t)+t y^{\prime}+y=0 \\ y(1)=1, y(3)=-1\end{array}\right.$
+	\end{enumerate}
+\end{multicols}
+\item Below we give a series of BVPs together with the general solution $y(t)$ of each DE. For each part, do the following (if possible): (i) Verify the DE is linear so that the linear shooting method is applicable and also that the "general solution" given actually solves the DE. (ii) Use the linear shooting method with the Runge-Kutta method, first with step size $h=0.1$, next with $h=0.05$, and then again with step size $h=0.01$ to obtain vectors (use different names) for the numerical solutions. (iii) Determine the constants in the general solution given so that it solves the given BVP. (iv) Plot the four curves in the same graph using different plot colors/styles for each. In situations where graphs are indistinguishable, plot also the errors.
+ \begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)+\frac{y^{\prime}}{t}+\left(1-\frac{1}{4 t^{2}}\right) y=0 \\ y(1)=0, y(10)=4\end{array}, y(t)=\frac{C \cos (t)+D \sin (t)}{\sqrt{t}}\right.$
+\item $\left\{\begin{array}{l}t^{2} y^{\prime \prime}(t)-t y^{\prime}+y=0 \\ y(1)=0, y(3)=-2\end{array}, y(t)=C t+D t \ln (t)+t^{2}\right.$
+\item $\left\{\begin{array}{l}t^{2} y^{\prime \prime}(t)-t y^{\prime}+2 y=0 \\ y(1)=0, y(3)=-2\end{array}, y(t)=t[C \cos (\ln t)+D \sin (\ln t)]\right.$
+  \end{enumerate}
+\item Repeat Exercise 3 for each of the following:
+ \begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}t^{2} y^{\prime \prime}(t)+3 t y^{\prime}=2 \\ y(1)=4, y(3)=0\end{array}, y(t)=\ln t+\frac{C}{t^{2}}+D\right.$
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)=16 y \\ y(0)=1, y(2)=12 e^{-8}, y(t)=C e^{4 t}+D e^{-4 t}\end{array}\right.$
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)-3 y^{\prime}+2 y=3 e^{-t}-10 \cos (3 t) \\ y(0)=1, y(2)=4\end{array}, y(t)=C e^{t}+D e^{2 t}-\frac{e^{-t}}{2}+\frac{7 \cos (3 t)}{13}+\frac{9 \cos (3 t)}{13}\right.$
+\end{enumerate}
+\item \textit{(Physics: Flight of a Well-Hit Baseball)} This problem deals with the flight of a baseball in two dimensions (which we take for convenience as the $x y$-plane). We consider a ball that is hit so it lands 300 feet from home plate after 3 seconds. Many factors influence the flight of the ball. We assume that the air resistance acts only against the horizontal velocity, and for this particular baseball it is proportional to the horizontal velocity. Assuming the coordinates of home plate are $(x, y)=(0,0)$, we let $x(t)$ and $y(t)$ denote the $x$ and $y$ coordinates of the position of the ball $t$ seconds after it is hit. Thus, at time $t$, the coordinates of the baseball are $(x(t), y(t)), 0 \leq t \leq 3$. The air resistance assumption and Newton's law from basic physics give the following system of second-order DEs:
+$$
+\left\{\begin{array}{l}
+x^{\prime \prime}(t)=-c x(t) \\
+y^{\prime \prime}(t)=-g
+\end{array}\right.
+$$
+where for the ball being used the constant $c=0.5$. The initial position of the ball is $(x(0), y(0))=$ $(0,3)<$ feet $>$. Since the ball lands after 3 seconds we also get $(x(3), y(3))=(300,0)$.\\
+(a) Explicitly find the function $y(t)$, just using basic calculus.\\
+(b) Numerically find $x(t)$, by using the shooting method with step size $h=0.01$ (implementing the Runge-Kutta method), and sketch a plot of the path of the ball, i.e., of $y$ vs $x$. (For this part, you need not print the graph of $x$ vs $t$, or give any explicit values for $x(t)$.)\\
+(c) After how many seconds does the ball reach its maximum height? At this time what is the $x$ coordinate?\\
+(d) With the same hit, how far would the ball have gone (on the $x$-axis), if, as in the imaginary assumptions of freshman physics courses, there was no air resistance?\\
+\end{enumerate}
+
+\noindent NOTE: \textit{(Mixed Boundary Conditions)} Suppose that we modify the LBVP (5):
+$$
+\begin{cases}y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) & (\mathrm{DE}) \\ y(a)=\alpha, y(b)=\beta & \text { (BCs) }\end{cases}
+$$
+to the following:
+\begin{equation}\label{eqa9}
+\text { (LBVP) } \begin{cases}y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) & \text { (DE) } \\ y(a)=\alpha, y^{\prime}(b)+d y(b)=\beta & \text { (BCs) }\end{cases}
+\end{equation}
+The $\mathrm{DE}$ and first $\mathrm{BC}$ of (\ref{eqa9}) are identical with those of $(5)$, the only change is that the second (BC) is now a so-called \textbf{mixed boundary condition} involving a linear combination of the values of the unknown function and its first derivative at the right endpoint $t=b$ ( $d$ is a constant).
+
+\begin{enumerate}\addtocounter{enumi}{5}
+\item Show that if $y_{1}$ and $y_{2}$ are solutions of the associated IVPs (\ref{eqa6}) and (\ref{eqa7}) respectively, then the function
+
+\begin{equation}\label{eqa}
+y(t)=y_{1}(t)+\frac{\beta-y_{1}^{\prime}(b)-d y_{1}(b)}{y_{2}^{\prime}(b)+d y_{2}(b)} y_{2}(t) .
+\end{equation}
+\noindent will solve the mixed LBVP (\ref{eqa9}), provided that $y_{2}^{\prime}(b)+d y_{2}(b) \neq 0$.
+\item In each of the following parts you are given a mixed linear BVP along with the general solution for the DE. For each one, perform (if possible) the following tasks:\\
+(i) Use the linear shooting method (as adapted in Exercise 6) with the Runge-Kutta method, first with step size $h=0.1$, next with $h=0.04$, and then again with step size $h=0.01$ to obtain vectors (use different names) of numerical solutions. (ii) Determine the constants in the general solution given so that it solves the given BVP. (iii) Plot the four curves in the same graph using different plot colors/styles for each. In situations where graphs are indistinguishable, plot also the errors of the approximations with the exact solution.
+ \begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}t^{2} y^{\prime \prime}(t)+3 t y^{\prime}=2 \\ y(1)=4, y^{\prime}(3)+y(3)=0\end{array}, y(t)=\ln t+\frac{C}{t^{2}}+D\right.$
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)=16 y \\ y(0)=1,2 y^{\prime}(2)-y(2)=12 e^{-8}, y(t)=C e^{4 t}+D e^{-4 t}\end{array}\right.$
+
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)-3 y^{\prime}+2 y=3 e^{-t}-10 \cos (3 t) \\ y(0)=1, y(2)-y^{\prime}(2)=4\end{array}, y(t)=C e^{t}+D e^{2 t}-\frac{e^{-t}}{2}+\frac{7 \cos (3 t)}{13}+\frac{9 \cos (3 t)}{13}\right.$
+\end{enumerate}
+
+\item\textit{ (Thermodynamics)} A metal alloy cylindrical pipe at a chemical plant has a very hot fluid flowing through it. The pipe has an inner radius of one inch and an outer radius of 2 inches. The fluid inside the pipe has a temperature of $1000^{\circ} \mathrm{F}$ and the outside temperature is $70 \circ \mathrm{F}$. The temperature $T$ within the thick pipe is a function of the radius $r$ only and it satisfies the following heat differential equation: $r T^{\prime \prime}(r)+T^{\prime}=0$.\\
+(a) Solve numerically for the temperature function $T(t)$, graph it, and find $T(1.5)$.\\
+(b) If the pipe is insulated to minimize heat loss, the insulation will change the boundary condition at the outer radius $r=2$ to make the derivative of the temperature function proportional to the difference of the pipe's temperature (on the outside) with the surrounding room's temperature as follows: $T^{\prime}(2)=-0.068[T(2)-70]$. Under this new insulation condition, solve numerically for the temperature function $T(t)$, graph it, and find $T(1.5)$.\\
+\noindent \textbf{Suggestion:} For part (b), see Exercise 6 and the note which precedes it. We will deal in more detail with heat equations in the chapters on partial differential equations.
+\item The linear shooting method can be further modified to deal with mixed boundary conditions at both ends, i.e., with the LBVP:
+\begin{equation}\label{eqa11}
+\text { (LBVP) } \begin{cases}y^{\prime \prime}(t)=p(t) y^{\prime}+q(t) y+r(t) & \text { (DE) } \\ y^{\prime}(a)+c y(a)=\alpha, y^{\prime}(b)+d y(b)=\beta & \text { (BCs) }\end{cases}
+\end{equation}
+The associated IVPs (\ref{eqa6}) and (\ref{eqa7}), however, must be modified to the following:
+\begin{equation}\label{eqa12}
+\text { (IVP-1) } \begin{cases}y_{1}^{\prime \prime}(t)=p(t) y_{1}+q(t) y_{1}+r(t) & (\mathrm{DE}) \\ y_{1}(a)=0, y_{1}^{\prime}(a)=\alpha & (\text { IC-1's) }\end{cases}
+\end{equation}
+and,
+\begin{equation}\label{eqa13}
+\text { (IVP-2) } \begin{cases}y_{2}^{\prime \prime}(t)=p(t) y_{2}^{\prime}+q(t) y_{2} & (\mathrm{DE}-2) \\ y_{2}(a)=1, y_{2}^{\prime}(a)=-c & \text { (IC-2's) }\end{cases}
+\end{equation}
+Prove that with these modified IVPs, the linear combination (\ref{eqa10}) will solve the LBVP (\ref{eqa11}), provided that $y_{2}^{\prime}(b)+d y_{2}(b) \neq 0$.
+
+\item In each of the following parts you are given a mixed linear BVP along with the general solution for the DE. For each one, perform (if possible) the following tasks:
+(i) Use the linear shooting method (as adapted in Exercise 9) with the Runge-Kutta method, first with step size $h=0.1$, next with $h=0.04$, and then again with step size $h=0.01$ to obtain vectors (use different names) for numerical solutions. (ii) Determine the constants in the general solution given so that it solves the given BVP. (iii) Plot the four curves in the same graph using different plot colors/styles for each. In situations where graphs are indistinguishable, plot also the errors of the approximations with the exact solution.
+ \begin{enumerate}[label=(\alph*)]
+
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)+\frac{y^{\prime}}{t}+\left(1-\frac{1}{4 t^{2}}\right) y=0 \\ y^{\prime}(1)=0, y^{\prime}(10)+y(10)=0\end{array}, y(t)=\frac{C \cos (t)+D \sin (t)}{\sqrt{t}}\right.$
+\item $\left\{\begin{array}{l}t^{2} y^{\prime \prime}(t)-t y^{\prime}+y=0 \\ y^{\prime}(1)=0, y(3)=0\end{array}, y(t)=C t+D t \ln (t)+t^{2}\right.$
+\item $\left\{\begin{array}{l}t^{2} y^{\prime \prime}(t)-t y^{\prime}+2 y=0 \\ y^{\prime}(1)+y(1)=0,2 y^{\prime}(3)-y(3)=-2\end{array}, y(t)=t[C \cos (\ln t)+D \sin (\ln t)]\right.$
+\end{enumerate}
+\item What do our existence and uniqueness theorems (of Section 10.1) say about BVPs that involve the DE: $y^{\prime \prime}(t)=y$ ?
+\item Consider the linear DE: $y^{\prime \prime}(t)=-y$. Obviously $\sin (t)$ and $\cos (t)$ are two solutions. From these and linearity, we obtain the general solution $y(t)=C \cos (t)+D \sin (t)$ where $C$ and $D$ are arbitrary constants. To convince yourself of (prove) this, you can apply the existence and uniqueness theorem (adapted from those given in the last chapter) and show that any IVP starting at $t=0$, say, can be solved by one of these functions. In this problem you will see that depending on the boundary conditions, different $\mathrm{BCs}$ for this $\mathrm{DE}$ can lead to nonexistence or nonuniqueness of solutions or neither. For the BVP: $\left\{y^{\prime \prime}=-y, y(0)=0, y(b)=\beta\right.$,
+ \begin{enumerate}[label=(\alph*)]
+\item Exactly which values of $b$ and $\beta$ would make the BVP have no solution?
+\item Exactly which values of $b$ and $\beta$ would make the BVP have infinitely many solutions?
+\item Exactly which values of $b$ and $\beta$ would make the BVP have a unique solution?
+\end{enumerate}
+\noindent \textbf{Note:} Your answers to these three parts should cover all possible values of $b$ and $\beta$.
+
+
+\end{enumerate}
+%%%%%%%%%%%
+%OSOBA 5
+%%%%%%%%%%%
+
+
+\section{THE NONLINEAR SHOOTING METHOD}
+
+\noindent This method will really appear more like we are "shooting" at the solution than was the case with the linear shooting method of the last section. We once again turn to the general BVP (1):
+
+$$
+	\left\{\begin{matrix}
+	y{}''\left ( t \right )=f\left ( t,y,y{}' \right ) \ \ \ \left ( DE \right )\\
+	y\left ( a \right )=\alpha ,y\left ( b \right )=\beta \ \ \ \ \left ( BCs \right )
+	\end{matrix}\right.
+$$
+ 
+\noindent Recall that when the DE was linear, we obtained the solution of the BVP as a
+linear combination of two solutions of (just) two specially associated IVPs. In the
+nonlinear case, we will solve a sequence of related IVPs:
+
+$$
+	\left ( IVP \right )_{k}\left\{\begin{matrix}
+	y{}''\left ( t \right ) =f\left ( t,y,y{}' \right )& \ \ \ \ same\left ( DE \right ) \\
+	y\left ( a \right )=\alpha ,y{}'\left ( a \right )=m_{k}& \left ( ICs \right )
+	\end{matrix}\right. \Rightarrow \ \ solution \ y_{k}\left ( t  \right )\equiv y\left ( t,m_{k} \right )
+$$   
+\begin{figure}[H]
+\begin{wrapfigure}[10]{l}{.5\textwidth}
+	\vspace{-20pt}
+	\centering
+	\includegraphics[scale=1]{img_103}
+\end{wrapfigure}
+Each of the IVPs above is identical,
+except for the second initial condition
+$y{\left ( a \right )}'=m_{k}$ ,where the parameter will be
+appropriately adjusted ( "aimed' ) at each
+iteration. We have denoted the solution
+of $(IVP)_{k}$ as $y_{k}(t)$ and , since it depends
+on $m_{k}$, we have introducet the function
+of two variables $y(t,m_{k})\equiv y_{k}(t)$. The
+method is roughly illustrated and
+explained in Figure 10.3. \\\\\\\\\\\\\\\\\\\
+\caption{Illustration of the nonlinear shooting method for a BVP: \\
+$ \left\{\begin{matrix} y{}''\left ( t \right )=f\left ( t,y,y{}' \right ) \\ y\left ( a \right )=\alpha ,y\left ( b \right )=\beta) \end{matrix}\right.$
+The initial approximation $y_{0}(t)=y(t,m_{0})$ is the solution of the corresponding IVP having the same DE, the same first condition, and satisfying the initial slope $y_{0}'(t)=m_{0}$,obtained numerically by methods of the last chapter. The desired second boundary condition is compared with $y_{0}(b)$, and ,if neccesery, this process is repeated with adjusted initial slopes $m_{1},m_{2},\cdots $ until we arrive at a solution that satisfies the second boundary condition(within a desired tolerance).\\
+ The only detail left to tend to is the important issue of how best to choose our
+initial slopes. It turns out to be a bit complicated; indeed, figuring out subsequent
+initial slopes will require solving an additional IVP. We outline the procedure
+now, give a specific example, and afterwards give a theoretical explanation of it.\\} 
+\end{figure}
+
+\begin{tcolorbox}
+
+	\textbf{The Nonlinear Shooting Method:}
+	\begin{enumerate}
+		\item Start with an estimate (or guess) for the initial slope of the first IVP\\ 				
+		$m_{0}=y_{0}'(a)$; a good default is the difference quotient $m_{0}=\dfrac{\beta-\alpha}{b-a}$\\
+		\item Solve the associated $\left ( IVP \right )_{k}\left\{\begin{matrix}	y{}''\left ( t \right ) =f\left (t,y,y{}' \right )\\ 
+		y\left ( a \right )=\alpha ,y{}'\left ( a \right )=m_{k}\end{matrix}\ \ \ (k=0)\ on \ a\leq t\leq b\right .$\\
+		using, say, the Runge-Kutta method; denote the solution as\\
+		$y_{k}(t)=y(t,m_{k})\ \ (k=0)$\\
+		\item Check for accuracy by evaluating: $Diff \equiv y(b,m_{k})-\beta$. If $\left | Diff \right |< $\\
+		tolerance, accept $y_{k}(t)=y(t,m_{k})$ as solution to BVP, otherwise update
+		$$
+			m_{k+1}=m_{k}-\frac{Diff}{z(b,m_{k})},
+		$$
+		where $z(t,m_{k})$ solves the IVP:
+		$$
+			\left\{\begin{matrix}
+			z{}''(t)=zf_{y}(t,y,y')+z'f_{y}(t,y,y')\\ 
+			z(a)=0,z'(a)=1
+			\end{matrix}\right.
+		$$
+		Increase $k$ and return to step 2 to iterate this procedure.
+	\end{enumerate}
+\end{tcolorbox}
+
+\noindent NOTE: To numerically solve the IVP for z in step 3, we will need to do it in
+conjunction with the concurrent IVP $y(y_{k})$ in step 2 since, in general, the DE of $z$ involves $y$. Thus, we will have to solve the two IVPs simultaneously by writing them into an equivalent four-dimensional first-order system.\\
+
+\begin{example}
+Numerically solve the BVP:
+\end{example} 
+
+$$
+	\left\{\begin{matrix}
+	y{}''\left ( t \right )=-2(yy'+ty'+y+t) & \left ( DE \right )\\
+	y\left ( 1 \right )=0,y(2)=-2 & \left ( BCs \right )\end{matrix}\right.
+$$	
+
+\noindent by using the nonlinear shooting method in conjunction with the Runge-Kutta
+method with step size $h = 0.01$.\\
+\begin{enumerate}[label=(\alph*),align=left]
+\item Do it first with a tolerance of 0.01. How many "shots" were required? Get
+MATLAB to display the totality of graphs of the functions $y_{k}(t)=y(t,m_{k})("shots")$ in the same plot with the final one in a different color from the rest.
+\item Next do it for a tolerance of $10^{7}$. How many "shots" were required? This
+time, using the subplot command, display the plots of the successive difference
+errors $\left | y_{k+1}(t)-y_{k}(t) \right | for k=0,1,2,3,\ldots$
+\end{enumerate}
+SOLUTION: We point out the DE is nonlinear (because of the $yy'$ term) and so
+the linear shooting method would not be applicable. The associated initial value
+problems for $y$ are
+
+$$
+	(IVP)_{k}\left\{\begin{matrix}
+	y''(t)=f(t,y,y')\equiv -2(yy'+ty'+y+t)\\ 
+	y(1)=0,y'(1)=k_{k}
+	\end{matrix}\right.
+$$
+By introducing the new function $yp(t)=y'(t)$ we can translate this IVP into the following equivalent system:
+
+$$
+	(IVP)_{k}'\left\{\begin{matrix}
+	y'(t)=yp,                   & y(1)=0\\ 
+	yp'(t)=-2(y(yp)+t(yp)+y+t), & yp(1)=m_{k}
+	\end{matrix}\right.
+$$	
+To get the IVP for the auxiliary function $z$, we compute
+
+$$
+	\begin{matrix}
+	f_{y}(t,y,y')=-2y'-2 & f_{y'}(t,y,y')=-2y-2t,
+	\end{matrix}
+$$
+which brings us to the following companion IVP for $z$:
+
+$$
+	\left\{\begin{matrix}
+	z''(t)=z(-2y'-2)+z'(-2y-2t)\\ 
+	z(1)=0,z'(1)=1
+	\end{matrix}\right.
+$$
+By introducing the new function $zp(t)=z'(t)$ and combining this IVP with the
+previous one, we arrive at the following four-dimensional system:
+
+$$
+	\left\{\begin{matrix}
+	y'(t)=yp, & y(1)=0\\ 
+	yp'(t)=-2(y(yp)+t(yp)+y+t), & yp(1)=m_{k}\\ 
+	z'(t)=zp, & z(1)=0\\ 
+	zp'(t)=-2(yp+1)z-2(y+t)zp, & zp(1)=1 
+	\end{matrix}\right.
+$$
+For the initial slope we use the suggested default $m_{0}=\dfrac{y(2)-y(1)}{2-1}=\dfrac{-2-0}{2-1}=-2$.\\
+In turning the problem over to MATLAB, since we plan to make use of the
+\texttt{rksys} routine of the last chapter, we must first construct the vector-valued
+function corresponding to the right sides of the four-dimensional system above.
+We do this in the following rather generic way that can be easily mimicked for any
+other nonlinear shooting problem:
+\begin{lstlisting}[numbers=none,frame=none]
+function xp=nlshoot(t,x)
+xp(1)=x(2);
+xp(2)=-2*(x(2)*x(2)+t*x(2)+x(1)+t);
+xp(3)=x(4);
+xp(4)=-2*(x(2)+1)*x(3)-2*(x(1)+t)*z(4);
+\end{lstlisting}
+Note that we have identified $x(1)$ with $y$, $x(2)$ with $yp$, $x(3)$ with $z$ and $x(4)$
+with $zp$.\\\\
+Part (a): We can now perform the desired plots using the following while loop.
+
+\begin{lstlisting}[numbers=none,frame=none]
+>>mk=-2; \%initialize\\
+>> while 1 \%since 1 is true, loopwill continue to execute
+	[t,x]=rksys('nlshoot',1,2,[0 \ mk \ 0 \ 1],0.01);
+	y=X(:1); z=X(:3); \%peel off the vectors we need
+	Diff=y(101)+2; \%y(101) (MATLAB) corresponds to y(2) (Math)
+	if abs(Diff)<0.01
+		plot(t,y,'r'), return
+		end
+	plot(t,y,'b'), \ \ hold on
+	n=n+1; \%bump counter up one
+	mk=mk-Diff/z(101); \%update slope
+end
+\end{lstlisting}
+\begin{SCfigure}[][h]
+\caption{Illustration of the nonlinear
+shooting method applied to the BVP of
+Example 10.4(a). The successive approx-
+imations $y_{k}(t)$ are shown until the value of
+$y_{k}(2)$ is within a tolerance of 0.01 to - 2 , at
+which point the process grinds to a halt.
+The code is set up to graph the final
+approximation in red.}
+\includegraphics[scale=.75]{img_104}
+\end{SCfigure}
+The plot shown in Figure 10.4 clearly
+shows that 3 iterations ("shots") were
+done: The first was too high, the second too low, and the third about right (within
+tolerance). Alternatively, by the way that the loop was set up, we could just enter
+$n$ to query MATLAB to tell us how many iterations were done.\\\\
+ Part (b): We can easily modify the above loop to get the desired information and
+plots. We leave this as an exercise, but include the plot in Figure 10.5. We point
+out that in order to use the \texttt{subplot} command to get a decent plot, we first found
+out the number of shots needed and then ran through the loop again with an
+appropriately dimensioned "subplot" window. We also comment that a plot like
+the one in part (a) would be not quite so useful here since all approximations from
+the third onward are essentially indistinguishable using the graphs. This is why
+we look at successive differences. This is also a good way to check global errors.
+\newpage
+\begin{SCfigure}[][h]
+\centering
+\includegraphics[scale=0.7]{img_105}
+\caption{These graphs display the successive differences $\left | y_{k+1}(t)-y_{k}(t) \right |$ for nonlinear shooting method in part (b) of Example 10.4;
+this time the iterations continue until $y_{k}(2)$ gets
+within $10^{-7}$ of the desired value -2 and only 5
+approximations ("shots") are needed.\\}
+\end{SCfigure}
+
+\begin{exeforreader}\end{exeforreader} \noindent(a) Write a function M-file that will
+perform the nonlinear shooting method to numerically solve the BVP (1):
+
+
+\begin{flushleft}$ 
+	\left\{\begin{matrix}
+	y{}''\left ( t \right )=f\left ( t,y,y{}' \right ) & (DE) \\
+	y\left ( a \right )=\alpha ,y\left ( b \right )=\beta)&(BCs)
+	\end{matrix}\right.$\ \ The inputs and outputsshould be as follows:\\
+\end{flushleft}
+ 	
+\begin{lstlisting}[numbers=none,frame=none]
+[t, y, nshots] = nonlinshoot(a, alpha, b, beta, f, fy, fyp, tol, hstep)
+\end{lstlisting} 
+
+\noindent The input and output variables more or less correspond to the data of the problem,
+but we leave the syntax open (see the suggestion for Exercise for the Reader 10.7).
+The variable $tol$ will provide a stopping criterion for the iterations:
+$\left | y(b)-\beta  \right |<tol$.\footnote{Creation of this M-file will require features from MATLAB's Symbolic Toolbox; see Appendix A.
+Without the symbolic toolbox features, a similar program could be constructed but it would need more
+input variables, for example, $f_{y}(t,y,y')$ and $f_{y'}(t,y,y')$} The last output variable is a positive integer giving the number
+of iterations (shots) that were executed.\\
+(b) Test your program by applying it to the two sets of data of Example 10.4.
+(c) Does Theorem 10.1 tell us anything about solutions for the following BVP?
+
+$$
+	\left\{\begin{matrix}
+	y{}''(t)=te^{y}-\sin(\cos(t))y{}' & (DE)\\ 
+	y(0)=0 ,y(6)=10 & (BCs)
+	\end{matrix}\right.
+$$
+
+\noindent Apply the nonlinear shooting method with tolerance $h = 0.01$ to solve this
+problem. Then repeat with tolerance $10^{-7}$ . Plot the final numerical solution and
+record the number of iterations.\\
+\textbf{Note:} It is possible to write this program using MATLAB's Symbolic Toolbox
+capabilities and in this case the input variables $fy$ and $fyp$ could be dispensed
+with. The program we write in Appendix B does not use the Symbolic Toolbox;
+we leave such a construction to the interested reader.\\\\
+
+\noindent \ As promised, we will now give a theoretical explanation of what has motivated
+the nonlinear shooting method. We assume that for any initial slope $m$, the IVP
+associated with the BVP (1),
+
+$$
+	\left\{\begin{matrix}
+	y{}''(t)=f(t,y,y{}') & same(DE)\\ 
+	y(a)=\alpha ,y{}'(a)=m & (ICs))
+	\end{matrix}\right.
+$$
+
+\noindent always has a unique solution on the time interval $[a,b]$, and we denote it by $y(t,m)$,
+which is a function of two variables. Our goal is to make m be a root of the equation
+\begin{equation}
+		y(b,m)-\beta = 0
+\end{equation}
+In this equation we have held the $t$-variable of $y(t,m)$ to be fixed at $t = b$ so that the
+left side of (14) is a function of a single variable (namely $m$). Assuming it is
+differentiate, Newton's recursion formula for rootfinding (Chapter 6) suggests
+that it would be a good idea to define our sequence recursively using the following
+scheme:
+\begin{equation}
+		m_{k}=m_{k-1}-\frac{y(b,m_{k-1})-\beta }{\partial /\partial m\{y(b,m_{k-1})\}}
+\end{equation}
+To go from one iteration to the next, after having (numerically) found $y(t,m_{k-1})$,
+the only difficult part of the formula (15) to obtain is the partial derivative
+$\partial /\partial m\{y(b,m_{k-1})\}$. This can be done (in an at first seemingly roundabout way) by
+finding an IVP for which the function
+
+$$
+	z(t)=z(t,m)\equiv\frac{\partial y}{\partial m}(t,m)
+$$
+
+is a solution and then numerically solving this IVP and evaluating it at $t = b$ to get
+the needed partial derivative. We can get a DE for $z(t,m$) by differentiation of the
+DE for $y(t,m)$ and using the chain rule as follows (wherein we reserve primes
+(') for differentiations in the $t$-variable):
+
+\begin{flushleft}
+	$y{}''(t,m)=f(t,y(t,m),y'(t,m))\Rightarrow$ \\$
+	\frac{\partial y''}{\partial m}(t,m)=f_{t}(t,y,y')\frac{\partial t}{\partial m}+f_{y}(t,y,y')\frac{\partial y}{\partial m}(t,m)+f_{y'}(t,y,y')\frac{\partial y'}{\partial m}(t,m)
+	$
+\end{flushleft}	
+
+\noindent Since $t$ and $m$ are independent variables, $\partial t/\partial m = 0$ and so the first term on the
+right vanishes. We now simply replace $\partial t/\partial m (t,m)$ by $z(t,m)$ and the above
+becomes the following DE for $z$:
+\begin{equation}
+		z''(t,m)=f_{y}z+f_{y'}z'
+\end{equation}
+If we differentiate the initial conditions for $y(t,m)$: $\left\{\begin{matrix}
+y(a,m)=\alpha \\ 
+y'(a,m)=m
+\end{matrix}\right.$ we obtain corresponding initial conditions for $z(t,m)$:
+\begin{equation}
+		\left\{\begin{matrix}
+		z(a,m)=0\\ 
+		z'(a,m)=1
+		\end{matrix}\right.
+\end{equation}
+Replacing the partial derivative in (15) by $z(b,m_{k-1})$ we see at once that (15), (16),
+and (17) yield the nonlinear shooting algorithm.\\
+\rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+	\item For each of the linear BVPs in parts (a) through (d) of Exercise 1, Section 10.2, apply the
+	nonlinear shooting method to solve it via the Runge-Kutta method with step size $h = 0.01$ by
+	following the outline below (if possible):
+	\begin{enumerate}[label=(\roman*),align=left]
+		\item Write down the associated IVPs both for $y$ and for the auxiliary function $z$.
+		\item Translate both IVPs for $y$ and $z$ into a single four-dimensional IVP system of first-order DEs.
+		\item Use MATLAB to apply the nonlinear shooting method to solve the BVP with a tolerance
+		of $10^4$. Display all of the approximations ("shots") in a single plot with the final one being
+		displayed in a different color or plot style.
+	\end{enumerate}
+	\item For each of the linear BVPs in parts (a) through (d) of Exercise 2, Section 10.2, repeat the
+	instructions of the last exercise, but change item (iii) to: (iii'): Use MATLAB to apply the
+	nonlinear shooting method to solve the BVP with a tolerance of $10^-6$ . How many "shots" were
+	required? Plot the final graph and also in a separate window and using the \texttt{subplot} command,
+	get MATLAB to display the plots of the successive differences of the "shots": $| y_{k+1}(t)-y_k(t) |$ for $k = 0,1,2,3,...$
+	\item For each of the nonlinear BVPs given, perform the following tasks (if possible):\\
+	\begin{enumerate}[label=(\roman*),align=left]
+		\item Write down the associated IVPs both for >> and for the auxiliary function z.
+		\item Translate both IVPs for y and z into a single four-dimensional IVP system of first-order DEs.
+		\item Use MATLAB to apply the nonlinear shooting method to solve the BVP with a tolerance of
+		$10^4$. Display all of the approximations ("shots") in a single plot with the final one being displayed in a different color or plot style.
+		\item Along with the BVP, an exact solution $f(t)$ is given; verify that this function actually solves the BVP.
+		\item Using a subplot window if you prefer, plot the errors of each of the successive shots with the
+		exact solution given.
+	\end{enumerate}
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $\left\{\begin{matrix}
+		y''=12y^{5/3}\\ 
+		y(0)=1,y(2)=1/27
+		\end{matrix}\right.,\ \ 
+		f(t)=\frac{1}{(t+1)^3}$
+		\item $\left\{\begin{matrix}
+		y''=-[y']^2/y\\ 
+		y(0)=1,y(5)=4
+		\end{matrix}\right.,\ \ 
+		(t)=\sqrt{3t+1}$
+		\item $\left\{\begin{matrix}
+		y''=y'+2(y-\ln t)^3\\ 
+		y(1)=1/2,y(2)=1/2+\ln 2
+		\end{matrix}\right.,\ \ 
+		f(t)=\frac{1}{t}+\ln t$
+	\end{enumerate}
+	\item Repeat the instructions for Exercise 3 on the following BVPs.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $\left\{\begin{matrix}
+		y''=y'\cos t - y\sin t\\ 
+		y(0)=1,y(8\pi)=1
+		\end{matrix}\right.,\ \ 
+		f(t)=\exp(\sin t)$
+		\item $\left\{\begin{matrix}
+		y''=y^3-yy'\\
+		y(1)=1/2,y(2)=1/3
+		\end{matrix}\right.,\ \ 
+		f(t)=\frac{1}{t+1}$
+		\item $\left\{\begin{matrix}
+		''=y'(\ln t +1)+y(1+1/t)\\ 
+		y(1)=1,y(5)=3125
+		\end{matrix}\right.,\ \ 
+		f(t)=t^t$
+	\end{enumerate}
+	\item Use the nonlinear shooting method to solve the following BVP. Your IVP solver should be
+	Runge-Kutta with step size $h = 0.01$. Your tolerance (for the right BC) should be 0.0001. How
+	many iterations did this take? Plot your solution. Also, what is the value of the solution when $x
+	= 0.4$ ?
+	$$
+	\left\{\begin{matrix}
+	y''(t)=-t(y')^3\\ 
+	y(0)=0,y(1)=\pi /2
+	\end{matrix}\right.
+	$$
+	\item \textit{(Physics: Flight of a Well-Hit Baseball)} This problem deals with the flight of a baseball in two
+	dimensions (which we take for convenience as the $xy$-plane). We consider a ball that is hit so it
+	lands 300 feet from home plate after 3 seconds. Many factors influence the flight of the ball.
+	We assume that the air resistance acts only against the horizontal velocity, and for this particular
+	baseball it is proportional to the horizontal velocity with exponent 1.2. Assuming the
+	 of home plate are $(x,y) = (0,0)$, we let $x(t)$ and $y(t)$ denote the $x$ and $y$ coordinates of
+	the position of the ball $t$ seconds after it is hit. Thus, at time $t$, the coordinates of the baseball are
+	$(x(t),y(t)),\ 0 \leq t \leq 3$. The air resistance assumption and Newton's law from basic physics give
+	the following system of second-order DEs:
+	$$
+	\left\{\begin{matrix}
+	x''(t)=-cx(t)^(1.2)\\ 
+	y''(t)=-g
+	\end{matrix}\right.,
+	$$
+	where for the ball being used the constant $c = 0.44$. The initial position of the ball is $(x(0),y(0))=(0,3)$
+	<feet>. Since the ball lands after 3 seconds we also get $(x(3),y(3)) = (300,0)$.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Explicitly find the function $y(t)$ just using basic calculus.
+		\item Numerically find $x(t)$ by using the shooting method with step size $h = 0.01$ (and
+		implementing the Runge-Kutta method), and sketch a plot of the path of the ball (i.e., of $y$ vs. $x$).
+		(For this part, you need not print the graph of $x$ vs. $t$, or give any explicit values for $x(t)$.)
+		\item After how many seconds does the ball reach its maximum height? At this time what is the $x$-
+		coordinate?
+		\item With the same hit, how far would the ball have gone (on the $x$-axis), if, as in the imaginary
+		assumptions of physics courses, there was no air resistance?
+	\end{enumerate}
+	\item \textit{(Civil Engineering: Deflection of a Beam)} Use the nonlinear shooting method with $h = 0.01$ in
+	the Runge-Kutta method to solve the exact beam-deflection model BVP:
+	$$
+		\left\{\begin{matrix}
+		y''(t)/[1+(y')^2]^{3/2}=\dfrac{T}{EI}y+\dfrac{wx(x - L)}{2EI}\\ 
+		y(0)=0=y(L)
+		\end{matrix}\right.,
+	$$
+	having the parameters: $L$ = 50 feet (length), $T$ = 300 lb (tension at ends), $w$ = 50 lb/ft (vertical
+	load), $E = 1.2 \times 10^7\ \text{lb/ft}^2$ (modulus of elasticity), and $I = 4\ \text{ft}^4$ (central moment of inertia).\\
+	(a) Graph the resulting numerical solution, (b) How does the solution compare with that
+	obtained for the corresponding linear approximating BVP of Example 10.3?
+	\end{enumerate}
+
+\section{THE FINITE DIFFERENCE METHOD FOR LINEAR BVP'S}
+\noindent The method we present next is philosophically quite different from the shooting
+methods. It immediately discretizes the BVP by approximating the derivatives
+with difference quotients. The problem is then translated into a linear system that
+is easily solved directly. This method will pave the way for the corresponding
+finite difference methods that we will employ in the next two chapters for solving
+PDEs. There are analogues of this method for nonlinear BVPs; the discretization
+is done in the same way but the resulting system of equations will no longer be
+linear.\footnote{For the nonlinear analogues of the finite difference method, we cite the reference: [BuFa-01] (see
+Section 11.3 therein.)}\\
+
+All finite difference methods are based on approximating derivatives of a
+function by certain difference quotients. These difference quotient formulas can
+always be obtained using Taylor's theorem. We will be needing them only for
+first and second derivatives, and we now present them in the following lemma. To
+describe the error bounds, we employ the "big O" notation that was introduced in
+Section 8.3.\\
+
+\begin{lemma}(Central Difference Formulas)\end{lemma} 
+\begin{enumerate}[label=(\alph*),align=left] 
+	\item If $f(x)$ is a function having a continuous second derivative in the interval $a-h\leq x\leq a + h$, then we have
+	\begin{equation}
+		f'(a)\approx \dfrac{f(a+h) - f(a-h}{2h},
+	\end{equation}
+	where the error of the approximation is $O(h^2)$.
+	\item If, furthermore, f(x) has a continuous fourth derivative throughout
+	$a-h\leq x\leq a + h$, then we also have the approximation
+	\begin{equation}
+		f''(a)\approx \dfrac{f(a+h) - 2f(a) + f(a-h)}{h^2},
+	\end{equation}
+	and the error of this approximation is also $O(h^2)$.
+\end{enumerate}
+Proof of part $(a)$: Taylor's theorem allows us to write
+$$
+f(a+h) = f(a)+hf'(a)+h^2f''(a)/2+O(h^3),\text{and}$$
+$$
+f(a-h) = f(a)- hf'(a)+h^2f''(a)/2+O(h^3).
+$$
+Subtracting the second of these equations from the first gives $f(a + h) - f(a - h)
+= 2hf'(a) + O(h^3)$ and solving this for $f'(a)$ produces (18). We have used the
+facts that $O(h^3) + O(h^3) = O(h^3)$ and $O(h^3)/h = O(h^2)$. The proof of part (b) is
+similar and is left as the next exercise for the reader.\\\\
+\begin{exeforreader}\end{exeforreader}\noindent Prove part (b) of Lemma 10.3.\\\\
+We now explain the finite difference method in more detail. Consider the linear
+BVP (5):
+$$
+	\left\{\begin{matrix}
+	y''(t)=p(t)y'+q(t)y+r(t)&(DE)\\ 
+	y(a)=\alpha, y(b)=\beta &(BCs)
+	\end{matrix}\right.
+$$
+Choose a positive integer $N$, and subdivide the interval $a<t<b$ into $N$ equal
+subintervals using $N - 1$ interior grid values: $t_1 = a + h,t_2 = a + 2h, \cdots, t_{N-1}
+= a + (N - 1)h$ , where $h = (b - a)/N$. We also write $t_0 = a$ and $t_N = b$; see Figure
+10.6. We let,
+$$
+	y_i=y(t_i) \ \ (0 \leq i \leq N),
+$$
+and similarly,
+$$
+	p_i = p(t_i),\ q_i = q(t_i),\ r_i = r(t_i)\ (0 \leq i \leq N).
+$$
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img_106}\\
+	\caption{Grid value notation for the finite difference method for a BVP.}
+
+\end{figure}
+
+At each internal grid value $f_i (0 < i < N)$ , we approximate the DE (5)
+$$
+	y''(t_i) = p(t_i)y'(t_i) + q(t_i)y(t_i)+r(t_i)
+$$
+using the central difference formulas of Lemma 10.3, to obtain the approximation
+with local truncation error $O(h^2)$:
+\begin{equation}
+	\frac{y_{i+1}-2y_i+y_{i-1}}{h^2}=p_i \dfrac{y_{i+1}-y_{i-1}}{2h}+q_i y_i + r_i \ \ \ (0 \leq i \leq N)
+\end{equation}
+Multiplying by $h^2$ , and then regrouping, we can rewrite each equation in (20) as:
+$$
+	y_{i+1}-2y_i+y_{i-1}=hp_i(y_{i+1}-y_{i-1})/2+h^2 q_i y_i + h^2 r_i, \text{or}
+$$
+\begin{equation}
+	(1+p_i h/2)y_{i-1}-(2+h^2 q_i)y_i+(1-p_i h/2)y_{i+1}=h^2 r_i \ \ \ (0 \leq i \leq N)
+\end{equation}
+Since we know from the two BCs of (5) that
+$$
+	y_0 = \alpha,\ \ \ y_N=\beta , 
+$$
+the equations of (21), form a linear system in the $N - 1$ unknowns $y_1,y_2,\cdots,y_{N-1}$,
+which, when put in matrix form $AY = C$, has
+$$
+	A=\begin{bmatrix}
+	-(2+h^2 q_1) & 1-p_1 h/2 & 0 & \cdots  & 0 \\ 
+	1+p_2 h/2 & -(2+h^2 q_2) & 1-p_2 h/2 & \cdots & 0\\ 
+	0 & \ddots  & \ddots & \ddots  & \vdots\\ 
+	\vdots &  & 1+p_{N-2}h/2 & -(2+h^2 q_{N-2}) & 1-p_{N-2}h/2\\ 
+	0 & \cdots & 0 & 1+p_{N-1}h/2 & -(2+h^2 q_{N-2})
+	\end{bmatrix}
+$$
+and
+\begin{equation}
+	C=\begin{bmatrix}
+	h^2 r_1-(1+p_1 h/2)\alpha\\ 
+	h^2 r_2\\ 
+	\vdots \\ 
+	h^2 r_{N-2h}\\ 
+	h^2 r_{N-1}-(1-p_{N-1} h/2)\beta
+	\end{bmatrix}
+\end{equation}
+Notice the special form of the coefficient matrix $A$. Often in finite difference
+methods and in many other applications, the coefficient matrices that arise are of a
+similar \textbf{banded} form (i.e., nonzero entries lie entirely on a few diagonal bands).
+This special type of banded matrix is called a \textbf{tridiagonal matrix}. Banded
+matrices are special cases of what are called \textbf{sparse} matrices, which are matrices
+having the majority of the entries being zero. An $n \times n$ tridiagonal matrix has at
+most $3n - 2$ nonzero entries (among its $n^2$ entries). Since large matrices often eat
+up a lot of memory with storage, it is often more expedient to deal with sparse
+matrices of specialized forms using specialized methods. To solve such tri-
+diagonal systems, rather than Gaussian elimination, we will be using the so-called
+Thomas method, whose algorithm is given below:\footnote{Banded and sparse matrices were studied in Chapter 7; in particular, the Thomas method was
+introduced in Exercise 9 of Section 7.5}\\\\
+\begin{program} The Thomas method for solving tridiagonal systems of the form:\end{program}
+$$
+\begin{bmatrix}
+d_1 & a_1 & 0 & 0 & 0 & \cdots &  & 0 & 0\\ 
+b_2 & d_2 & a_2 & 0 & 0 & \cdots &  & 0 & 0\\ 
+0 & b_3 & d_3 & a_3 & 0 &  &  & \vdots & \vdots\\ 
+0 & 0 & b_4 & d_4 & a_4 & 0 &  &  & \\ 
+\vdots & \vdots & \ddots & \ddots & \ddots & \ddots &  &  & \\ 
+ &  &  &  &  &  &  &  & \\ 
+0 & 0 &  &  & 0 & b_{n-2} & d_{n-2} & a_{n-2} & 0\\ 
+0 & 0 & \cdots &  &  & 0 & b_{n-1} & d_{n-1} & a_{n-1}\\ 
+0 & 0 & \cdots &  &  &  & 0 & b_n & d_n
+\end{bmatrix}
+\begin{bmatrix}
+x_1\\ 
+x_2\\ 
+x_3\\ 
+\\ 
+\vdots \\ 
+\\ 
+x_{n-2}\\ 
+x_{n-1}\\ 
+x_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+c_1\\ 
+c_2\\ 
+c_3\\ 
+\\ 
+\vdots \\ 
+\\ 
+c_{n-2}\\ 
+c_{n-1}\\ 
+c_n
+\end{bmatrix}.
+$$
+\begin{lstlisting}[numbers=none]
+function x = thomas(a,d,b,c)
+%solves matrix equation Ax=c, where A is a tridiagonal matrix
+%inputs: a=upper diagonal of matrix A a(n)=0, d=diagonal of A,
+%b=lower diagonal of A, b(1)=0, c=right-hand side of equation
+n=length(d);
+a(1)=a(1)/d(1);
+c(1)=c(1)/d(1);
+for i=2:n-1
+	denom=d(i)-b(i)*a(i-1);
+	if (denom==0), error('zero in denominator'), end
+	a(i)=a(i)/denom;
+	c(i)=(c(i)-b(i)*c(i-1))/denom;
+end
+c(n)=(c(n)-b(n)*c(n-1))/(d(n)-b(n)*a(n-1));
+x(n)=c(n);
+for i=n-l:-l:l
+	x(i)=c(i)-a(i)*x(i+l);
+end
+\end{lstlisting}
+\begin{example}Use the thomas program above to solve the tridiagonal system:\end{example}
+$$
+	\begin{matrix}
+	2x_1 & - & x_2 &  &  &  &  & = & 1\\ 
+	-x_1 & + & 2x_2 & - & x_3 &  &  & = & 0\\ 
+	 & - & x_2 & + & 2x_3 & - & x_4 & = & 0\\ 
+	 &  &  & - & x_3 & + & 2x_4 & = & 1
+\end{matrix}
+$$
+\begin{lstlisting}[numbers=none,frame=none]
+>> a=[-l -1 -1 0]; d=[2 2 2 2]; b=[0 -1 -1 -1]; c=[1 0 0 1];
+>> format rat;
+>> thomas(a,d,,b,c)
+\end{lstlisting}
+\textbf{ans $\rightarrow$ 1~~~~~~~~~~~~~~~~~~~~~~1~~~~~~~~~~~~~~~~~~~~~~1~~~~~~~~~~~~~~~~~~~~~~1~~~~~~~~~~~~ (This answer is easily checked.)}\\\\
+\indent We now make some technical comments on implementing the finite difference
+method. In order to solve the system $AY = C$, we will need the coefficient matrix
+$A$ of (22) to be nonsingular. In general this can fail, but the following theorem
+gives sufficient conditions to guarantee $A$'s invertibility.\\
+\begin{theorem}\end{theorem}Suppose that the functions $p(t), q(t), \text{and} r(t)$ are continuous on
+$a \leq t\leq b $ and that $q(t)\geq 0$on this time interval. Then the linear system $AY = C$
+where $A$ and $C$ are as in (22) will have a unique solution provided that $h < 2/M$,
+where $M = max\{|p(t)|:a\leq t\leq b\}$. The hypotheses guarantee that the coefficient matrix $A$ will be \textbf{strictly diagonally dominant}, which means that
+\begin{equation}
+	|a_{ii}|>\sum\limits_{\substack{j=1 \\ j\neq i}}^n |a_{ij}|.
+\end{equation}
+In other words, the absolute value of any diagonal entry dominates the sum of the
+absolute values of all other entries in its row. Diagonally dominant matrices are
+always invertible
+\footnote{
+Proof: Suppose that $A$ is diagonally dominant. If $A$ were not invertible, then there would exist a
+nonzero vector x such that $Ax$ = 0. Let $k$ be an index so that the absolute value $|x_k|$
+is as large as possible (in the norm notation from Section 7.6, this would mean $|x_k|$ = $||x||_\infty$)
+Take the $k$th equation of $Ax = b: \sum_{j=1}^n a_{kj}x_j=0$, divide by $x_k$, and solve for $a_{kk}$ to
+get a $a_{kk} = - \sum_{j=1,j\neq k}^n a_{kj} \cdot (x_j/x_k)$. Now take absolute values and use the triangle inequality to get
+$|a_{kk}|\leq \sum_{j=1,j\neq k}^n |a_{kj} \cdots (x_j/x_k)|\leq \sum_{\substack{j=1\\j\neq k}}^n$.
+Wh at we now have contradicts diagonal dominance of the matrix $A$, so we have proved that $A$ must indeed be invertible.
+
+}, 4 and furthermore, it can be shown that the Thomas algorithm
+works very well in their presence. There are instances, however, where the
+Thomas method will fail for tridiagonal nonsingular matrices (e.g., this happens if
+$a_{11} = 0$), but there are ways to modify the method to deal with such cases.\\
+Generally speaking, the linear shooting method is more efficient for solving a
+linear BVP when the former is coupled with the Runge-Kutta method. This is
+because the Runge-Kutta method has a local truncation error of $O(h^4)$ while that
+for the finite difference method is $O(h^2)$. Our main reason for introducing it here
+is to prime the way for its generalization to solving partial differential equations;
+the shooting methods do not naturally extend to the setting of PDEs.
+\begin{exeforreader}\end{exeforreader}\noindent Show that under the conditions of
+Theorem 10.4, the matrix $A$ of (22) is diagonally dominant.
+\begin{example} Use the finite difference method with $h = 0.1$ to solve the
+beam-deflection BVP of Example 10.3:\end{example}
+\vspace{-20pt}
+$$
+	\left\{\begin{matrix}
+	y''(x)=\frac{T}{EI}y+\frac{wx(x-L)}{2EI}\\ 
+	y(0)=0=y(L)
+	\end{matrix}\right.,
+	0\leq x\leq L,
+$$
+having the parameters $L$ = 50 feet (length), T = 300 lb (tension at ends), $w$ = 50
+lbs/ft (vertical load), $E$ = 1.2x$\times 10^7$ lb/ft$^2$ (modulus of elasticity), and $I$ = 4 ft$^4$ (central moment of inertia).
+\begin{enumerate}[label=(\alph*),align=left]
+\item Do it first for $N$ = 20 subdivisions to obtain the approximate solution yl and plot its graph.
+\item Redo it for both $N$ = 40, and $N$ = 80 subdivisions, to get approximate solutions y2,and y3.
+\end{enumerate}
+SOLUTION: Since the scripts are similar, we present only the one for obtaining
+$y1$ when $N$ = 20. The script is written in such a way as to be easily modified to
+work for any linear BVP. The graphs of the solutions look identical, so we present
+only the graph of $y1$, but give plots of the differences $y1 - y2$ and $y2 - y3$.
+\begin{lstlisting}[numbers=none,frame=none]
+%MATLAB script for finite difference method for above problem.
+xa=0; xb=50; n=20; h=(xb-xa)/n;x=h:h:(xb-h);
+for i=1:n-1, a(i)=0;end, b=a;
+a(1:n-2)=1-p(1:n-2)*h/2; %above diagonal band
+d=-(2+h*h*q); %diagonal
+b(2:n-1)=1+p(2:n-1)*h/2; %below diagonal band
+c(2:n-2)=h*h*r(2:n-2);
+c(1)=h*h*r(1)-(1+p(1)*h/2)*ya; c(n-1)=h*h*r(n-1)-(1-p(n-1)*h/2)*yb;
+y=thomas(a,d,b,c);
+X=(xa x xb);
+Y=(ya y yb);
+plot(X,Y), grid on
+\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img_107}\\
+	\caption{Graph of the solution of the beam-deflection problem of Example 10.6 using $N$=20 subdivisions.}
+\end{figure}
+	
+
+We can now store these $x$- and $y$-values as xl and yl by entering:
+\begin{lstlisting}[numbers=none,frame=none]
+>> xl=X; yl=Y;
+\end{lstlisting}
+and next go on to slightly change the script to do $N$ = 40 iterations and then $N$ = 80
+iterations and store the corresponding $x$ and $y$-values as x2, y2 and x3, y3
+respectively. You will notice that the graphs look quite identical. To plot the
+differences: yl - y2 , and y2 - y3 , one must be a bit careful since yl , y2, and y3
+all have different lengths. Each has $N$ + 1 components ($N$ - 1 grid points + the two
+boundary points). Here is one strategy to plot yl - y2 versus x.
+The grid points for y2 consist of those of yl plus one extra grid point between
+each adjacent pair of grid points for yl (located at the midpoint). We must
+reformulate y2, only at the grid values for yl (throwing away the extra ones at the
+midpoints). Let's call this "trimmed down" version of y2 by y2 trim . To form
+y2 trim in MATLAB, we could use the following line:
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=1:21, y2trim(i)=y2(2*i-1); end %alternatively: y2trim = y2(1:2:41)
+\end{lstlisting}
+Now we can plot the difference of yl - y2 by simply entering:
+\begin{lstlisting}[numbers=none,frame=none]
+>> plot (x1,y1-y2trim)
+\end{lstlisting}
+In a similar fashion, the following commands give the plot of the difference y2 - y3:
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=1:41, y3trim(i)=y3(2*i-1); end
+>> plot(x1,y2-y3trim)
+\end{lstlisting}
+See Figure 10.8 for both of these error plots. Both scripts finished on the author's
+computer in less than a second, and the differences are quite small. We leave it to
+you to see what happens if one continues this by repeatedly doubling the number
+on subintervals $N$. $N$= 160, $N$=320, $N$=640,....
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img_108}
+	\caption{Plots of differences of finite difference approximated solutions to the
+	deflected beam problem of Example 10.6. (a) The left graph is of the difference of the $N$ =
+	20 and $N$ = 40 interior grid point solutions and (b) the right one is the graph of the
+	difference of the $N$ = 40 and $N$ = 80 interior grid point solutions.}
+\end{figure}
+\noindent \rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+\item For each of the linear BVPs of parts (a) through (d) of Exercise 1 of Section 10.2, use the finite
+difference method with $N = 100$ to solve and then plot the solution. Whenever possible, use the
+Thomas method to solve the tridiagonal system. If the coefficient matrix fails to be invertible
+(so that errors will come up with both the Thomas and the Gaussian methods), try bumping $N$
+up to 500.
+\item For each of the linear BVPs of parts (a) through (d) of Exercise 2 of Section 10.2, use the finite
+difference method with $N = 100$ to solve and then plot the solution. Whenever possible, use the
+Thomas method to solve the tridiagonal system. If the coefficient matrix fails to be invertible
+(so that errors will come up with both the Thomas and the Gaussian methods), try bumping $N$
+up to 500.
+\item For each of the BVPs and corresponding general solutions for the DEs given in parts (a) through
+(c) of Exercise 3 of Section 10.2, do the following (if possible): (i) Use the finite difference
+method with $N = 100$ to solve and store the solution in vectors $t1$, $y1$. (ii) Repeat with $N = 500$
+and store the solution in vectors $t2$, $y2$. (iii) Repeat once again with $N = 2500$ and store the
+solution in the vectors $t3$,$y3$. (iv) Determine the constants in the general solution given so that
+it solves the given BVP. (v) Plot the four curves in the same graph using different plot
+colors/styles for each. In situations where graphs are indistinguishable, plot also the errors
+(differences of approximations with exact solutions). Whenever possible, use the Thomas
+method to solve the tridiagonal system.
+\item Repeat all parts of the previous exercise for each of the BVPs and general solutions given in
+parts (a) through (c) of Exercise 4 of Section 10.2.
+\item A thin rod of length $L$ is insulated along the lateral surface but kept at temperature $T = 0$ at both
+ends $x = 0$ and $x = L$. The rod has a heat source which is proportional to the temperature at
+cross-section $x$ with proportionality constant $Q$, The steady-state temperature function $T(x)$
+$0\leq x\leq L$ then satisfies the DE:
+$$
+	T_{xx} + QT = 0, T = T(x), 0\leq x\leq L.
+$$
+(See Section 11.2 for a derivation of more general heat equations.) Solve this DE with the given
+BC's $T(0) = T(L) = 0$ using the finite difference method with $N = 20$. Repeat with $N = 40,N =
+60$, and $N = 120$. Plot these four approximations together (using different plot styles/colors). In
+cases where two are indistinguishable, plot the corresponding successive differences.\\
+(See Section $11.2$ for a derivation of more general heat equations.) Solve this DE with the given $\mathrm{BC}^{\prime}$ s $T(0)=T(L)=0$ using the finite difference method with $N=20$. Repeat with $N=40, N=$ 60, and $N=120$. Plot these four approximations together (using different plot styles/colors). In cases where two are indistinguishable, plot the corresponding successive differences.
+
+
+
+
+\item  The general solution of the DE $y'' = -y \text{ is } y = A \sin t + B \cos t$.
+\begin{enumerate}[label=(\alph*),align=left]
+	\item What restriction (on the parameters $A$ and $B$) does the condition $y(0) = 0$ place?
+	\item For which values of $L > 0$ does the BVP consisting of the DE and the BC's $y(0) = y(L) = 0$
+	have a solution (existence)? For such values of $L$, show that the solution is not unique.
+	\item Use $L = 1$ in the BVP of part (b) and apply the finite difference method with $N = 20$. What
+	happens? Does the Thomas algorithm work? If not, try Gaussian elimination. Is the coefficient
+	matrix nonsingular?
+	\item Repeat part (c) using $L = \pi$.
+\end{enumerate}
+\item 
+\begin{enumerate}[label=(\alph*),align=left]
+	\item Use Taylor's theorem to establish the following fourth-order central difference formula:
+	$$
+		f^{\prime}(a) \approx \frac{-f(a+2 h)+8 f(a+h)-8 f(a-h)+f(a-2 h)}{12 h}
+	$$
+	with error $O\left(h^{4}\right)$, provided that $f^{(5)}(x)$ is continuous in the interval $a-2 h \leq x \leq a+2 h$.
+	\item In the same fashion, derive the fourth-order central difference formula
+	$$
+		f^{\prime \prime}(a) \approx \frac{-f(a+2 h)+16 f(a+h)-30 f(a)+16 f(a-h)-f(a-2 h)}{12 h}
+	$$
+	with error $=O\left(h^{4}\right)$, provided that $f^{(6)}(x)$ is continuous in the interval $a-2 h \leq x \leq a+2 h$.
+
+\end{enumerate}
+\end{enumerate}
+\newpage
+\section{THE RAYLEIGH-RITZ METHOD}
+
+\begin{wrapfigure}[20]{l}{0.35\textwidth}
+	\vspace{-20pt}	
+	\centering    
+    \includegraphics[scale=0.5]{img_109}
+    \caption{Johny William Strutt (Lord Rayleigh) (1942-1919), English physicist and mathematician.}
+\end{wrapfigure}
+
+
+\noindent The material of this section contains much more theory than a typical section of the text. The ideas contained herein come from an important and very beautiful area of mathematics which blends linear algebra and analysis. It is fair to say that this area gave birth to the subject of functional analysis. Furthermore, the generalization of the Rayleigh-Ritz method to higher dimensions gives rise to the very important finite element method (Chapter 13) for numerical solution of PDEs. As the language in the development will indicate, many of the concepts leading to the Rayleigh-Ritz method are motivated by concepts in physics. Indeed, this was the motivational setting that led to its development. Despite the fact that the RayleighRitz method
+\footnote{Despite family attempts to dissuade him from vigorously pursuing a career as a full-time scientist,
+Lord Rayleigh (who succeeded to the title at age 30) was so intrigued by the mysteries of physics and
+the power of mathematics, that he made a firm commitment not to let his official diplomatic and social
+functions interfere too much with his dedication to scientific inquiry. For most of his life, he was
+financially independent, and this allowed him to set up a personal laboratory in his estate and gave him
+more time to focus on his research without the distraction of the other duties associated with an
+academic post. For the periods that he did hold academic posts at Cambridge, he took his duties with
+utmost conscientiousness and made some very lasting improvements in the university's scientific
+programs. Lord Rayleigh was a model scientist; his work touched upon and connected many areas (the
+Rayleigh-Ritz method is a good example inside mathematics) and was extensive (446 publications),
+and he won numerous prizes and recognitions for his work. Beside his scientific prowess, he was also
+a kind, modest, and generous man. When he won the Nobel Prize in physics in 1904, he donated his
+prize money to Cambridge University for the purpose of building more laboratories. In 1902, in his
+acceptance speech for the National Order of Merit, he stated "... the only merit of which I personally
+am conscious was that of having pleased myself by my studies, and any results that may be due to my
+researches were owing to the fact that it has been a pleasure for me to become a physicist."\\\\
+Walter Ritz (1878-1909) was a Swiss/German mathematician/physicist. After entering the
+Polytechnic University of Zurich in an engineering program, he found that he was not satisfied with the
+compromises and lack of rigor in his engineering courses, so he switched to physics. He was a
+classmate of Albert Einstein. For health reasons, he needed to move away from the humid climate of
+Zürich, and went on to the University Göttingen to complete his studies. There he was influenced by
+the teachings of David Hubert. Despite his short life and career, he was able to accomplish quite a lot
+of scientific research. Actually, Lord Rayleigh and Ritz never met. Rayleigh first developed a
+mathematical method for predicting the first natural frequency of simple structures by minimizing the
+distributed energy. Ritz subsequently extended the method to solve (numerically) associated
+displacement and stress functions.} 
+dates back to the beginning of the twentieth century, it took another half century before the finite element method
+came to fruition. The basic idea of the Rayleigh-Ritz method is that a boundary
+value problem can be recast as a certain minimization problem.\\\\\\\\\\\\
+Rather than strive for generality, our purpose in this section will be to understand
+the concepts behind the Rayleigh-Ritz method so we begin by focusing our
+attention on the following boundary value problem:
+\begin{equation}
+\text{(BVP)}  \left\{\begin{array}{l}
+-u^{\prime \prime}(x)=f(x), 0<x<1 \\
+u(0)=0, u(1)=0
+\end{array}\right.
+\end{equation}
+Here $f(x)$ is a continuous function. This problem has, by itself, numerous
+physical interpretations, as we have seen in previous chapters. As examples we
+mention the steady-state heat distribution on a thin rod (Chapter 11) with ends
+maintained at temperature zero, or the deflection of an elastic beam (Section 10.1)
+whose ends are fixed.\\\\
+We introduce the \textbf{inner product} $\langle u, v\rangle$ for a pair of piecewise continuous bounded functions on $[0,1]$ :
+\begin{equation}
+	\langle u, v\rangle=\int_{0}^{1} u(x) v(x) d x.
+\end{equation}
+Recall that for a function $u(x)$ to be piecewise continuous on $[0,1]$, it means that the domain can be broken up into subintervals: $0=a_{0}<a_{1}<\cdots<a_{n}=1$ such that $u(x)$ is continuous on each open subinterval $\left(a_{i-1}, a_{i}\right)$. We point out the following simple yet very important properties of this inner product. By linearity of the integral, it immediately follows that the inner product is linear in each variable, i.e.,
+\begin{equation}
+	\begin{aligned}
+	&\left\langle\alpha u_{1}+\beta u_{2}, v\right\rangle=\alpha\left\langle u_{1}, v\right\rangle+\beta\left\langle u_{2}, v\right\rangle \\
+	&\left\langle u, \alpha v_{1}+\beta v_{2}\right\rangle=\alpha\left\langle u, v_{1}\right\rangle+\beta\left\langle u, v_{2}\right\rangle
+	\end{aligned},
+\end{equation}
+where the $u, u_{i}, v, v_{i}$ denote arbitrary (piecewise continuous bounded) functions and $\alpha, \beta$ denote arbitrary real numbers. Even clearer is the following symmetry property:
+\begin{equation}
+	\langle u, v\rangle=\langle v, u\rangle
+\end{equation}
+In light of properties (26) and (27), the inner product is said to be a\textbf{ symmetric bilinear form}. Another property of the inner product is that it is \textbf{positive definite}: If $u(x)$ is a piecewise continuous function on $[0,1]$ that is not zero on some open interval $\left(a_{i-1}, a_{i}\right)$, then $\langle u, u\rangle>0$ (see Exercise 17).\\\\
+We consider the following rather large class of \textbf{admissible functions} on $[0,1]$ which obey the boundary conditions of our problem $(24)$ :
+\begin{equation}
+\mathcal{A}=\left\{v:[0,1] \rightarrow \mathbb{R}: v(x)\right. \text{is continuous, } 
+v^{\prime}(x) \text{is piecewise continuous and bounded, and } v(0)=0, v(1)=0\}.
+\end{equation}
+\begin{exeforreader}\end{exeforreader}\noindent Show that the space $\mathcal{A}$ is closed under the operations of addition of functions and scalar multiplication. More precisely, if $v, w \in \mathcal{A}$ and $\alpha$ is any real number, show that the functions $v+w$, and $\alpha v$ also belong to $\mathcal{A}$.\\
+For functions in this class we further define the following functional: $F: \mathcal{A} \rightarrow \mathbb{R}$ by the formula:
+\begin{equation}
+	F(v)=\frac{1}{2}\left\langle v^{\prime}, v^{\prime}\right\rangle-\langle f, v\rangle
+\end{equation}
+In the setting where (24) models the deflection of an elastic beam, certain 
+physical interpretations can be given to some of these quantities. For a given
+displacement $v(x)$, the inner product $\langle f, v\rangle$ represents the 
+so-called \textbf{load potential} and the term $\frac{1}{2}\left\langle v^{\prime}, v^{\prime}\right\rangle$ 
+represents the internal \textbf{elastic energy}. The functional $F(v)$ then
+represents the \textbf{total potential energy}. Using physics it can be proved that the solution of 
+(24) will have minimal total potential energy over all possible admissible functions 
+$v \in \mathcal{A}$. This fact is known as the \textbf{Principle of Minimum Potential Energy (MPE)} and 
+we will prove it mathematically in Theorem $10.5$ below. Thus, the variational problem
+which turns out to be equivalent to the boundary value problem (24) is the following:
+\begin{equation}
+	\text { (MPE) Find } u \in \mathcal{A} \text { satisfying } F(u) \leq F(v) \text { for all } v \in \mathcal{A} \text {. }
+\end{equation}
+Another equivalent, but very different looking problem whose equivalence to the
+boundary value problem is known in physics as \textbf{Principle of Virtual Work
+(PVW)}, is the following:
+\begin{equation}
+	\text { (PVW) Find } u \in \mathcal{A} \text { satisfying }\left\langle u^{\prime}, v^{\prime}\right\rangle=\langle f, v\rangle \text { for all } v \in \mathcal{A}
+\end{equation}
+It is quite a surprising fact that the three seemingly different problems (24), (30),
+and (31) have equivalent solutions. The precise result is stated in the following
+theorem.
+\begin{theorem}
+(Variational Equivalences of a Boundary Value Problem)
+\end{theorem}
+Suppose that $f(x)$ is any continuous and bounded function on $0<x<1$, and tha $u(x)$ is an admissible function of the class $\mathcal{A}$ defined in (28). Then the followin are equivalent:
+\begin{enumerate}[label=(\alph*),align=left]
+\item The function $u(x)$ is a solution of the (BVP) (24) $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$.
+\item The function $u(x)$ is a solution of the (MPE) (30): $F(u) \leq F(v)$ for all $v \in \mathcal{A}$.
+\item  The function $u(x)$ is a solution of the (PVW) $(31):\left\langle u^{\prime}, v^{\prime}\right\rangle=\langle f, v\rangle$ for all $v \in \mathcal{A}$.
+\end{enumerate}
+Furthermore, each of these three problems has unique solutions.\\\\
+\textit{Proof}: The proof is rather long, so we break it up into several pieces. The proof
+that (24) has a unique solution can be accomplished quite easily (see Exercise 22).
+We point out that Theorem 10.1 does not apply.\footnote{
+A general result shows that existence and uniqueness questions about general BVPs can be reduced to
+questions about homogeneous BVPs. The following is taken from page 197 of [Sta-79]:
+\textbf{Theorem}  For a pair of $2 \times 2$ matrices $\mathcal{A}$ and $B$, and continuous functions $f(x), g(x), h(x)$ on an interval $[a, b]$, the BVP consisting of the DE $y^{\prime \prime}=h(x) y^{\prime}+g(x) y+f(x)\ (y=y(x))$ and the general boundary conditions $A\left[\begin{array}{c}y(a) \\ y^{\prime}(a)\end{array}\right]+B\left[\begin{array}{c}y(b) \\ y^{\prime}(b)\end{array}\right]=\left[\begin{array}{l}\alpha \\ \beta\end{array}\right]$ has a unique solution if and only if the corresponding homogeneous problem with $f(x)=0$, and $\alpha, \beta=0$ has only the trivial solution $y(x)=0$.
+For our special problem (24) we need only take $h(x)=g(x)=0$ to get the DE and $\mathcal{A}=\left[\begin{array}{ll}1 & 0 \\ 0 & 0\end{array}\right]$, $B=\left[\begin{array}{ll}0 & 0 \\ 1 & 0\end{array}\right]$ to get the $B C$ 's. The corresponding homogeneous problem is just: $y^{\prime \prime}=0$ and $y(0)=y(1)=0$. Integrating this DE and using the BC's easily shows $y(x)=0$ is the only solution. Thus, this theorem implies our problem (24) has a unique solution.
+}\\\\
+\textit{Step 1}: We first show that (b) implies (c). To this end, suppose that $u(x)$ solves the (MPE), so that $F(u) \leq F(v)$ for all $v \in \mathcal{A}$. Letting $\varepsilon$ denote any real number, we may conclude that $F(u) \leq F(u+\varepsilon v)$, where $v \in \mathcal{A}$ is arbitrary. If we hold the functions $u$ and $v$ fixed, we can view the function on the right $\phi(\varepsilon) \equiv F(u+\varepsilon v)$ as a real-valued function of $\varepsilon$. Using bilinearity and then symmetry of the inner product, we may expand this function as follows:
+$$
+\begin{aligned}
+\phi(\varepsilon) & \equiv \frac{1}{2}\left\langle(u+\varepsilon v)^{\prime},(u+\varepsilon v)^{\prime}\right\rangle-\langle f, u+\varepsilon v\rangle \\
+&=\frac{1}{2}\left\langle u^{\prime}+\varepsilon v^{\prime}, u^{\prime}+\varepsilon v^{\prime}\right\rangle-\langle f, u\rangle-\varepsilon\langle f, v\rangle \\
+&=\frac{1}{2}\left\langle u^{\prime}, u^{\prime}\right\rangle+\frac{\varepsilon}{2}\left\langle u^{\prime}, v^{\prime}\right\rangle+\frac{\varepsilon}{2}\left\langle v^{\prime}, u^{\prime}\right\rangle+\frac{\varepsilon^{2}}{2}\left\langle v^{\prime}, v^{\prime}\right\rangle-\langle f, u\rangle-\varepsilon\langle f, v\rangle \\
+&=\frac{1}{2}\left\langle u^{\prime}, u^{\prime}\right\rangle+\varepsilon\left\langle u^{\prime}, v^{\prime}\right\rangle+\frac{\varepsilon^{2}}{2}\left\langle v^{\prime}, v^{\prime}\right\rangle-\langle f, u\rangle-\varepsilon\langle f, v\rangle .
+\end{aligned}
+$$
+Since each of the inner products in the last expression is simply a real number, the function $\phi(\varepsilon)$ is just a second-degree polynomial (in the variable $\varepsilon$ ). Since we know this function has a minimum value at $\varepsilon=0$, we must have $\phi^{\prime}(0)=0$. Differentiating the last expression for $\phi(\varepsilon)$ in the above expansion, this gives $\left\langle u^{\prime}, v^{\prime}\right\rangle-\langle f, v\rangle=0$, and since $v \in \mathcal{A}$ was arbitrary, this shows (PVW).
+\textit{Step 2}: We show that (c) implies (b). So assume that $u(x)$ solves the (PVW), i.e., $\left\langle u^{\prime}, v^{\prime}\right\rangle=\langle f, v\rangle$ for all $v \in \mathcal{A}$. Fix now an admissible function $v \in \mathcal{A}$. Our task is to show that $F(v) \geq F(u)$. Setting $w=v-u$ so $v=u+w$, we may use bilinearity and symmetry as above to write:
+$$
+\begin{aligned}
+F(v) &=F(u+w) \\
+&=\frac{1}{2}\left\langle u^{\prime}+w^{\prime}, u^{\prime}+w^{\prime}\right\rangle-\langle f, u+w) \\
+&=\underbrace{\frac{1}{2}\left\langle u^{\prime}, u^{\prime}\right\rangle-\langle f, u\rangle}_{=F(u)}+\underbrace{\left\langle u^{\prime}, w^{\prime}\right\rangle-\langle f, w\rangle}_{=0 \text { by }(\mathrm{PVW})}+\underbrace{\frac{1}{2}\left\langle w^{\prime}, w^{\prime}\right\rangle}_{\geq 0} \\
+& \geq F(u),
+\end{aligned}
+$$
+as desired.
+\textit{Step 3}: We show that (a) implies (c). We thus assume that the function $u(x)$ solves the BVP (24). From the differential equation $-u^{\prime \prime}(x)=f(x), 0<x<1$, the second derivative of $u(x)$ exists (and is continuous) so it follows that the first derivative $u^{\prime}(x)$ is continuous (from calculus, differentiability implies continuity). Furthermore, since $f(x)$ is assumed to be bounded, so must be $u^{\prime}(x)$, and from the boundary conditions stipulated by (24), it follows that $u(x)$ is an admissible function (i.e., $u \in \mathcal{A}$ ). We now fix an admissible function $v \in \mathcal{}$ and proceed to integrate by parts. Doing this and translating into inner products gives:
+$$
+\langle f, v\rangle=\left\langle-u^{\prime \prime}, v\right\rangle=-\int_{0}^{1} u^{n}(x) v(x) d x=\underbrace{\left.u^{\prime}(x) v(x)\right]_{x=1}^{x=0}}_{=0 \text { by }(\mathrm{BC})}+\int_{0}^{1} u^{\prime}(x) v^{\prime}(x) d x=\left\langle u^{\prime}, v^{\prime}\right\rangle
+$$
+It follows that $u(x)$ solves the (PVW), as asserted.\\\\
+Up to this point we have rigorously shown the following implications for
+solutions of the various three problems:
+$$
+(B V P) \Rightarrow(P V W) \Leftrightarrow(M P E).
+$$
+We will next show that the solutions of (PVW) are unique. From this and what
+was already proved, it will follow that all three problems have unique solutions.\\\\
+\textit{Step 4}: We prove that any two solutions $u_{1}$ and $u_{2}$, both belonging to $\mathcal{A}$, of the problem (PVW) must be identical. Thus we are assuming that $\left\langle u_{i}^{\prime}, v^{\prime}\right\rangle=$ $\langle f, v\rangle$ for all $v \in \mathcal{A}(\mathrm{i}=1,2)$. Our task is to show $u_{1}=u_{2}$. If we use $v=u_{1}-u_{2} \in \mathcal{A}$, we obtain that: $\left\langle u_{1}^{\prime},\left[u_{1}-u_{2}\right]^{\prime}\right\rangle=\left\langle f, u_{1}-u_{2}\right\rangle$ and $\left\langle u_{2}^{\prime},\left[u_{1}-u_{2}\right]^{\prime}\right\rangle$ $=\left\langle f, u_{1}-u_{2}\right\rangle$, Subtracting and using linearity gives us: $\left\langle\left[u_{1}-u_{2}\right]^{\prime},\left[u_{1}-u_{2}\right]^{\prime}\right\rangle=0$, which translates to $\int_{0}^{1}\left(u_{1}^{\prime}(x)-u_{2}^{\prime}(x)\right)^{2} d x=0$. Since the integrand is nonnegative and piecewise continuous, it follows that it must equal zero everywhere on $[0,1]$ except, possibly, at the endpoints of the intervals making up its pieces. We have used positive definiteness of the inner product here. The same is therefore true for $u_{1}^{\prime}-u_{2}^{\prime}=\left[u_{1}-u_{2}\right]^{\prime}$, so it follows that the antiderivative of this latter function must be a constant. Thus we can write $u_{1}-u_{2}=C$ or $u_{1}=u_{2}+C$. But the boundary conditions $u_{i}(0)=0$ then force $C=0$ and we can conclude $u_{1}=u_{2}$, as desired.\\\\
+\textit{Step 5: (Final Step)} We show that (PVW) implies (BVP). At this point we invoke the fact, mentioned at the outset of this proof, that the (BVP) has a solution $u(x)$ (existence). From what was already proved, this function $u(x)$ is also a solution of (PVW), but from step 4 , the solution of (PVW) is unique. Consequently, any solution of (PVW) really must be the (unique) solution of (BVP), as required. QED\\\\
+In order to solve the BVP $(24)$, the above theorem allows us to focus our attention on either of the equivalent problems MPE (30) or PVW (31). The finite element method will use one of these two formulations but will replace the very large space $\mathcal{A}$ of admissible functions by a much smaller (finite-dimensional) space in each of the corresponding governing conditions.
+We begin by partitioning the interval $(0,1)$ into subintervals: $\mathscr{P}: 0 = x_{0} < x_{1} < \cdots < x_{n+1}=1$. We denote these intervals by $I_{i}=\left(x_{i}, x_{i+1}\right)$ $(i=0,1,2, \cdots, n)$ and their lengths by $h_{i}=x_{i+1}-x_{i}$. Unlike with finite difference methods, we do not require that these lengths be equal. We define the \textbf{mesh size} $\left \|  \mathscr{P} \right \|$ of this partition as the maximum of the lengths $\max _{0 \leq i \leq n} h_{i}$. Corresponding to such a partition $\mathscr{P}$ we define the following space of piecewise linear functions:
+\begin{center}
+$\mathcal{A}(\mathscr{P})=\left\{v:[0,1] \rightarrow \mathbb{R}: v(x)\right.$ is continuous on $[0,1]$, linear on each $I_{i}$ and $v(0)=0, v(1)=0\}$.
+\end{center}
+A typical function in this space is depicted in Figure 10.10.
+\begin{exeforreader}\end{exeforreader}
+\noindent Show that the space $A(\mathscr{P})$ is closed under the operations of addition of functions and scalar multiplication. More precisely, if $v, w \in \mathcal{A}(\mathscr{P})$ and $\alpha$ is any real number, show that the functions $v+w$, and $\alpha \nu$ also belong to $\mathcal{A}(\mathscr{P})$.
+\begin{figure}[H]
+	\centering    
+    \includegraphics[scale=0.7]{img_1010}
+    \caption{llustration of a typical function in the space $\mathcal{A}(\mathscr{P})$.}
+\end{figure}
+\noindent Notice that a function $v \in \mathcal{A}(\mathscr{P})$ is entirely determined by its values at the interior grid points: $v\left(x_{1}\right), v\left(x_{2}\right), \cdots, v\left(x_{n}\right)$. This follows from linearity and continuity. We need a set of basis functions that can be used to easily describe functions in $\mathcal{A}(\mathscr{P})$. These $n$ functions are usually chosen so that each one equals zero on most of the interval $[0,1]$, so that it will have minimum interaction with other basis functions.
+\footnote{General Rayleigh-Ritz methods result from using any set of linearly independent functions which are
+continuous, piecewise differentiable and satisfy the required boundary conditions as a set of "basis
+functions."}
+ One simple set of basis functions meeting this criterion are the so-called \textbf{hat functions} $\phi_{i}(x)(1 \leq i \leq n)$. Each hat function $\phi_{i}(x)$ is that member of $\mathcal{A}(\mathscr{P})$ determined by the assignments: $\phi_{i}\left(x_{i}\right)=1$ and $\phi_{i}\left(x_{j}\right)=0$ for any index $j \neq i$. A typical hat function is shown in Figure $10.11$.
+\begin{figure}[H]
+	\centering    
+    \includegraphics[scale=0.7]{img_1011}
+    \caption{A typical hat function for a certain partition of $(0,1)$. Note the (possible) asymmetry.}
+\end{figure}
+\noindent We observe that any function $v \in \mathcal{A}(\mathscr{P})$ can be expressed in a unique way as a linear combination of the hat functions:
+\begin{equation}
+	v(x)=\sum_{i=1}^{n} v\left(x_{i}\right) \phi_{i}(x).
+\end{equation}
+\noindent (To prove this, just check that both functions agree at each partition point $x_i$, and
+then it will follow that they are always equal since both are piecewise linear.) In
+the language of linear algebra, we say that the $n$ hat functions form a basis for the
+$n$-dimensional space $\mathcal{A}(\mathscr{P})$.\\\\
+The equations of the hat functions are as follows:
+\begin{equation}
+	\phi_{i}(x)= \begin{cases}0, & \text { if } 0 \leq x \leq x_{i-1} \text { or } x_{i+1} \leq x \leq 1, \\ \frac{x-x_{i-1}}{h_{i-1}}, & \text { if } x_{i-1} \leq x \leq x_{i}, \\ \frac{x_{i+1}-x}{h_{i}}, & \text { if } x_{i} \leq x \leq x_{i+1}.\end{cases}
+\end{equation}
+\noindent The \textbf{Rayleigh-Ritz method} for approximating the BVP (24) is to solve the
+following finite-dimensional version (discretization) of it:
+\begin{equation}
+	\text { Find } u \in \mathcal{A}(\mathscr{P}) \text { satisfying } F(u) \leq F(v) \text { for all } v \in \mathcal{A}(\mathscr{P}) \text {. }
+\end{equation}
+\noindent Note that the Rayleigh-Ritz problem (34) is obtained by the corresponding (MPE) problem (30) simply by replacing $\mathcal{A}$ by $\mathcal{A}(\mathscr{P})$. We will proceed now to discuss the special Rayleigh-Ritz method for our BVP (2) using the hat functions $\phi_{i}(x)$ of (33). Different basis functions and, more generally, different finite dimensional spaces give rise to different versions of the Rayleigh-Ritz method. Implementations using such hat functions are often referred to as the \textbf{(piecewise) linear Rayleigh-Ritz method}. Since, as in (32), any function in $\mathcal{A}(\mathscr{P})$ can be written as $\sum c_{i} \phi_{i}$, making use of bilinearity, we may write:
+\begin{equation}
+\begin{aligned}
+F\left(\sum c_{i} \phi_{i}\right) &=\frac{1}{2}\left\langle\left[\sum c_{i} \phi_{i}\right]^{\prime},\left[\sum c_{i} \phi_{i}\right]^{\prime}\right\rangle-\left\langle f, \sum c_{i} \phi_{i}\right\rangle \\
+&=\frac{1}{2}\left\langle\sum c_{i} \phi_{i}^{\prime}, \sum c_{j} \phi_{j}^{\prime}\right\rangle-\sum c_{i}\left\langle f, \phi_{i}\right\rangle \\
+&=\frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} c_{i} c_{j}\left\langle\phi_{i}^{\prime}, \phi_{j}^{\prime}\right\rangle-\sum c_{i}\left\langle f, \phi_{i}\right\rangle
+\end{aligned}
+\end{equation}
+The above expression can be viewed as a (quadratic) function of the variable $\left(c_{1}, c_{2}, \cdots, c_{n}\right) \in \mathbb{R}^{n}$. We can locate its minimum by setting each of the partial derivatives equal to zero. Using the product rule, we can compute as follows:
+$$
+\frac{\partial}{\partial c_{k}} F\left(\sum c_{i} \phi_{i}\right)=0 \Rightarrow \frac{1}{2} \sum_{j=1}^{n} c_{j}\left\langle\phi_{k}^{\prime}, \phi_{j}^{\prime}\right\rangle+\frac{1}{2} \sum_{i=1}^{n} c_{i}\left\langle\phi_{i}^{\prime}, \phi_{k}^{\prime}\right\rangle=\left\langle f, \phi_{k}\right\rangle(1 \leq k \leq n) .
+$$
+Now using symmetry of the inner product, we can combine the two summations
+on the left into one:
+\begin{equation}
+\sum_{j=1}^{n}\left\langle\phi_{k}^{\prime}, \phi_{j}^{\prime}\right\rangle c_{j}=\left\langle f, \phi_{k}\right\rangle(1 \leq k \leq n)
+\end{equation}
+We abbreviate this linear system as
+\begin{equation}
+A c=b,
+\end{equation}
+where $A=\left[a_{i j}\right]=\left[\left\langle\phi_{i}^{\prime}, \phi_{j}^{\prime}\right\rangle\right]$ is the so-called $(n \times n)$ \textbf{stiffness matrix}, and $b$ is the so called $(n \times 1)$ \textbf{load vector}: $\left[b_{j}\right]=\left[\left\langle f, \phi_{j}\right\rangle\right]$. The terminology comes from the model of $(24)$ for an elastic beam.\\\\
+To compute the entries of the stiffness matrix: $\left\langle\phi_{i}^{\prime}, \phi_{j}^{\prime}\right\rangle=\int_{0}^{1} \phi_{i}^{\prime}(x) \phi_{j}^{\prime}(x) d x$, we first observe that, from the properties of the hat functions, $\phi_{i}^{\prime}(x) \phi_{j}^{\prime}(x)=0$ unless $i$ and $j$ are equal or are adjacent indices. Thus, the stiffness matrix is both symmetric and tridiagonal. To compute the nonzero entries of $A$, there are just two cases. We use (33) for the computations:
+\begin{equation}
+\left\langle\phi_{i}^{\prime}, \phi_{i}^{\prime}\right\rangle=\int_{x_{i-1}}^{x_{i+1}}\left[\phi_{i}^{\prime}(x)\right]^{2} d x=\int_{x_{i-1}}^{x_{i}}\left[1 / h_{i-1}\right]^{2} d x+\int_{x_{i}}^{x_{i+1}}\left[1 / h_{i}\right]^{2} d x=\frac{1}{h_{i-1}}+\frac{1}{h_{i}}, 
+\end{equation}
+\begin{equation}
+\left\langle\phi_{i}^{\prime}, \phi_{i+1}^{\prime}\right\rangle=\int_{x_{i}}^{x_{i+1}} \phi_{i}^{\prime}(x) \phi_{i+1}^{\prime}(x) d x=\int_{x_{i}}^{x_{i+1}}\left[\frac{-1}{h_{i}}\right]\left[\frac{1}{h_{i}}\right] d x=\frac{-1}{h_{i}} .
+\end{equation}
+\begin{exeforreader}\end{exeforreader}
+\noindent(a) Show that the stiffness matrix A is
+positive definite (i.e., show that for any $n\times 1$ vector $c$, we have
+$c\prime A c \geq 0 $ with equality if and only if $c$ is the zero vector).
+\footnote{
+Some general facts about positive definite matrices are that they are nonsingular and, if symmetric,
+their eigenvalues are all positive. The latter is, in fact, an equivalent definition (see, e.g., Section 8.4 of
+[HoKu-71 ] for proofs and more information on positive definite matrices). In particular, the stiffness
+matrix is nonsingular, so the Rayleigh-Ritz method leads to a unique solution.}\\\\
+(b) Show that in case all grid spaces are equal, (i.e., $h_i = \|\|\mathscr{P}\|\| \text{ for all } i$), the
+stiffness matrix for linear system of the linear Rayleigh-Ritz (FEM) is a constant
+multiple of the coefficient matrix for the finite difference method introduced in
+Section 10.3. How do the linear systems compare?\\\\
+As a general rule for Rayleigh-Ritz methods (and finite element methods for
+PDEs), it is usually a good idea to place more nodes where the (known) coefficient
+functions in the problem undergo the most activity. Adaptive methods can be
+developed in which successive refinements are used to see where to place
+additional nodes. We are ready to give a numerical example of the Rayleigh-Ritz
+method. In order to be able to get a check on errors, the following theorem will be
+useful:
+\begin{theorem}
+(Error Estimate for Rayleigh-Ritz Approximations) 
+\end{theorem}
+\noindent Let $u_{\mathscr{P}}(x)$ denote the (piecewise) linear Rayleigh-Ritz approximation corresponding to a partition $\mathscr{P}$ of $[0,1]$ of the BVP $(24)$ : $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$, where $f(x)$ is a continuous function. The following error estimate holds for each $x, 0 \leq x \leq 1$ :
+\begin{equation}
+\left|u_{\mathscr{P}}(x)-u(x)\right| \leq \frac{\|\mathscr{P}\|^{2}}{2} \max _{0 \leq x \leq 1}|f(x)|
+\end{equation}
+The proof of this theorem involves some nice ideas from analysis; an outline is left to Exercises 18-21 (see also the note preceding Exercise 17). In fact, in this setting it is even true that $u_{\mathscr{P}}\left(x_{i}\right)=u\left(x_{i}\right)$ at each grid point and thus $u_{\mathscr{F}}$ is really the piecewise linear interpolant of $u$ with respect to the partition $\mathscr{T}$; see Exercise $21 .$
+\begin{example}
+Consider the (BVP) (24) $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$ with
+\footnote{ We use the notation of the "sign function" (whose MATLAB counterpart has the same name): sign(x) $=1$, if $x>0,0$, if $x=0$, and $-1$, if $x<0$.}
+$$
+\begin{aligned}
+f(x)=\sin \left[\operatorname{sign}(x-.5) \exp \left(\frac{1}{4|x-.5|^{1.05}+.3}\right)\right]. \\
+& \exp \left(\frac{1}{4|x-.5|^{1.2}+.2}-100(x-.5)^{2}\right).
+\end{aligned}
+$$
+\end{example}
+\begin{enumerate}[label=(\alph*),align=left]
+\item Use the Rayleigh-Ritz method with $n=50$ equally spaced interior grid values to solve this BVP and plot the resulting approximation.
+\item Solve the problem again with the Rayleigh-Ritz method and $n=50$ interior grid values, but this time deploy a higher concentration of grid points where the inhomogeneity $f(x)$ is more oscillatory.
+\item Use Theorem $10.6$ to find a (uniform) grid size that will guarantee that the Rayleigh-Ritz solution will be visually (without zooms) identical to the exact solution and compare both solutions of (a) and (b) with this more accurate solution.
+\end{enumerate}
+SOLUTION: Since the BVP (24) is rather specialized, we will not bother writing
+here an M-file to perform the Rayleigh-Ritz method. Instead, we will go through
+each part directly, using MATLAB whenever convenient.\\\\
+Part (a): Here we have $h_{i}=\|50\mathscr{P}\|=1 / 51$ for each $i$, so that from the calculations above, the stiffness matrix is given by:
+$$
+A=51\left[\begin{array}{ccccc}
+2 & -1 & & & \\
+-1 & 2 & -1 & 0 & \\
+& -1 & 2 & -1 & \\
+& 0 & \ddots & \ddots & -1 \\
+& & & -1 & 2
+\end{array}\right]
+$$
+The entries of the load vector can be computed using MATLAB's integrator \texttt{quad}. The resulting system is then stored and solved using the Thomas algorithm. Note that in the case of equal grid spaces, the hat functions become symmetric and formula (33) for them can be abbreviated as (we set $h=\|\mathscr{P}\|$ )
+$$
+\phi_{i}(x)=\left\{\begin{array}{lr}
+\frac{h-\left|x-x_{i}\right|}{h}=1-\frac{\left|x-x_{i}\right|}{h}, & \text { if } x_{i-1} \leq x \leq x_{i+1}, \\
+0, & \text { otherwise. }
+\end{array}\right.
+$$
+(Verify this!) As the integrals required for the load vector entries are related, a loop will be used to compute them. The integrals will depend on a parameter. One way to compute such parameter-dependent integrals is to declare the parameter variables as global variables.
+$$
+\begin{array}{|l|l|}
+\hline \text { global var } \rightarrow & \begin{array}{l}
+\text { Inside the definition of a function M-file having var as a } \\
+\text { variable, this command declares this variable to be a global } \\
+\text { variable. Recall that by default, all variables appearing in } \\
+\text { an M-file are local variables. Should also be used in the } \\
+\text { command window before invoking such an M-file. }
+\end{array} \\
+\hline
+\end{array}
+$$
+The use of this strategy is demonstrated in the remainder of this example.\\\\
+The coefficients of the load vector are given by: $(1 \leq j \leq 50)$
+$$
+\begin{aligned}
+b_{i}=\left\langle f, \phi_{i}\right\rangle=\int_{x_{i-1}}^{x_{i+1}} f(x) \phi_{i}(x) d x &=\int_{x_{i-1}}^{x_{i+1}}\left[1-\frac{\left|x-x_{i}\right|}{h}\right] f(x) d x \\
+&=\int_{x_{i+1}}\left[1-51\left|x-x_{i}\right|\right] f(x) d x .
+\end{aligned}
+$$
+The integrands depend on the parameter $x_{i}$, so we will first create an M-file for them using $xi$, which we declare as a global variable, to represent $x_{i}$
+\footnote{A syntax note: If, after creating and storing this M-file we were to enter \texttt{frayritz10\_7(24)}, the output would be "[]" (the empty vector), a reasonable answer since we have not yet defined \texttt{xi}. If we first entered a value for \texttt{xi}, say \texttt{xi=2} and reentered the above command, however, we would still get the empty vector as output. It is essential to first declare \texttt{xi} as a global variable in the command window (even though this was already done in the M-file). If this is done, and \texttt{xi=2} is reentered, then entering \texttt{frayritz10\_7(24)} would finally produce an answer (ans \= -4.7321)).}.
+\begin{lstlisting}[numbers=none,frame=none]
+function y = frayritzl0_7(x)
+global xi;
+y=(l-51*abs (x-xi)). *sin(sign(x-.5).*exp(l./(4*abs(x-.5).^1.05+.3)))... .*exp(l./(4*abs(x-.5).^l.2+.2)-100*(x-.5).^2);
+\end{lstlisting}
+The load coefficients can now be created as follows: First declare our global
+variable and create the vector $x$ of grid points. We remind the reader that vector
+indices must be positive integers so $x(1)$ represents $x_0$ and so on.
+\begin{lstlisting}[numbers=none,frame=none]
+>> global xi;
+>> for i=l:52
+	x(i)=(i-l)/51;
+end
+\end{lstlisting}
+With our M-file, the load coefficients are now easily created with the following
+loop. Notice that we have used \texttt{quadl} rather than \texttt{quad}. This former integrator
+works in the same syntax as \texttt{quad}, but uses a refined adaptive technique. It takes
+a bit more time to use but gives more accurate results.
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=2:51
+	xi=x(i);
+	b(i)=quadl('frayritz10_7',x(i-1),x(i+1));
+end
+\end{lstlisting}
+We have kept the indices consistent with those of the vector JC, but consequently
+we have created a vector with one extra component $b(1) = 0$. This component
+must be left out when we go on to solve the linear system. In order to solve the
+linear system, we will use the \texttt{thomas} M-file, which will solve our tridiagonal
+system quite efficiently. We must create the appropriate vectors to meet the
+syntax of this M-file:
+\begin{lstlisting}[numbers=none,frame=none]
+>> d=2*ones(50,1)*51; %diagonal of stiffness matrix A
+>> da=-1*ones(50,1)*51; da(51)=0; %superdiagonal (above)
+>> db=-1*ones(50,1)*51; db(1)=0; %subdiagonal (below)
+>> c=thomas(da,d,db,b(2:51));
+\end{lstlisting}
+As explained earlier, the values of the solution vector $c$ are precisely the values of the numerical Rayleigh-Ritz solution at the interior grid points $x_{1}, x_{2}, \cdots, x_{\text {50}}=$ $(x(24), x(25), \ldots, x(51))$. To plot the entire graph of $c$ versus $x$, we need to augment the vector $c$ to have first and last components which equal zero (from the boundary conditions). With this being done below, the resulting numerical plot is shown in Figure 10.12
+\begin{lstlisting}[numbers=none,frame=none,linewidth=6cm]
+>> c = [0 c 0];
+>> plot(x,c,'b-o')
+\end{lstlisting}
+\begin{figure}[H]
+\vspace{-40pt}
+\includegraphics[width=.6\textwidth,right]{img_1012}
+\caption{Rayleigh-Ritz solution of the BVP in Example 10.7 using 50 equally spaced interior grid points. The grid points/values are shown with (blue) circles.}
+\end{figure}
+Part (b): The right-hand side of the $\mathrm{DE}-u^{\prime \prime}(x)=f(x)$ has the graph shown in Figure 10.13.
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\textwidth]{img_1013}
+\caption{Graph of the right-hand side $f(x)$ of the DE $-u^{\prime \prime}(x)=f(x)$ of Example 10.7.}
+\end{figure}
+\noindent From Figure 10.13, we see that the inhomogeneity $f(x)$ is most oscillatory approximately on the interval $[0.35,0.65]$ and elsewhere is rather tame. With this perspective, it would seem that any grid that is uniformly highly dense would give rise to much wasted computation on the long intervals of inactivity. Motivated by Figure 10.13, we propose the following deployment of the 50 interior grid points.\\\\
+Put 6 in each of the intervals $[0,0.35)$ and $(0.65,1]$, and put the remaining 40 in $[0.35,0.65]$. We stipulate that the grid points in each of these intervals be uniformly spaced but this is by no means necessary (the Rayleigh-Ritz method is totally flexible). The linspace command will make the construction of these grid values particularly straightforward:
+\begin{lstlisting}[numbers=none,frame=none]
+>> x2(l:7)=linspace(0,0.35,7);
+>> x2 (7:46)=linspace(0.35,0.65,40);
+>> x2(46:52)=linspace(0.65,1,7);
+\end{lstlisting}
+Since the grid is no longer uniform, we need to construct a vector for the $h_i$:
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=l:51, h(i)=x2(i+1)-x2(i); end
+\end{lstlisting}
+It is left to construct the load vector $b$. By (33) the coefficients are
+$$
+b_{i}=\left\langle f, \phi_{j}\right\rangle=\int_{x_{i-1}}^{x_{i+1}} f(x) \phi_{i}(x) d x=\int_{x_{i-1}}^{x_{i}} \frac{x-x_{i-1}}{h_{i-1}} f(x) d x+\int_{x_{i}}^{x_{i+1}} \frac{x_{i+1}-x}{h_{i}} f(x) d x
+$$
+Employing the strategy used in part (a), we need here a pair of M-files for the two
+respective integrands:
+\begin{lstlisting}[numbers=none,frame=none]
+function y = frayritzl0_7a(x)
+global xim;
+global him;
+y=(x-xim)./him.*sin(sign(x-.5).*exp(1./(4*abs(x-... .5).^1.05+.3))).*exp(l./(4*abs(x-.5).^1.2+.2)-100*(x-.5).^2);
+function y = frayritzl0_7b(x)
+global xip;
+global hi;
+y=(xip-x),/hi.*sin(sign(x-.5).*exp(l./(4*abs(x-... .5) .^1.05+.3))).*exp(l./(4*abs(x-.5).^l.2+.2)-100*(x-.5).^2);
+\end{lstlisting}
+The load vector is now easily constructed, and the linear tridiagonal system can be
+assembled and solved as before:
+\begin{lstlisting}[numbers=none,frame=none]
+>> global xim him xip hi;
+>> for i=2:51;
+	xip=x2(i+l); xim=x2(i-l); hi=h(i); him=h(i-l);
+	b2(i)=quadl('frayritzl8_la', x(i-l), x(i))+... quadl('frayritzl8_lb f , x(i), x(i+l));
+end
+>> for i=l:51, h(i)=x(i+1)-x(i); end
+>> for i=2:51, d2(i)=l/h(i-1)+l/h(i); end
+>> %main diagonal will be d(¿:51).
+>> for i=2:50, da2(i)=-l/h(i); end
+>> da2(51)=0; %superdiagonal will be da(2:51).
+>> for i=2:50, db2(i)=-l h(i-1); end
+>> %subdiagonal will be db(l:50)
+
+>> c2=thomas(da2(2:51),d2(2:51),db2(1:50),b2(2:51));
+\end{lstlisting}
+The commands needed to plot this solution are just as in part (a), and those
+commands produce the plot shown in Figure 10.14(a).
+Part (c): From Figure $10.12$, we see that the amplitude of the solution is roughly 6e-3. Theorem 10.6 gives maximum bound for the error to be $\frac{\left\|\mathscr{P}\right\|^{2}}{2} \max _{0 \leq x \leq 1}|f(x)|$. Setting this expression to be $6 \mathrm{e}-3 / 100$ (so the maximum error will be less than about $1 / 100$ of the amplitude), using 150 for $\max _{0 \leq x \leq 1}|f(x)|$ (from Figure $10.13$ ), and solving for $\|\mathscr{P}\|$ gives roughly $1 \mathrm{e}-4$, so that if we use 10,000 interior grid points, the Rayleigh-Ritz solution should have the desired accuracy. The construction and plotting of this solution is done just as in part (a), except that instances of 50 or 51 , etc. should be changed to 10,000 or 10,001 , etc. The resulting graph is compared with the two obtained in parts (a) and $(b)$ in Figure $10.14 .$
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\textwidth]{img_1014}
+\caption{(a) (left) Rayleigh-Ritz solution obtained for Example 10.7(b) shown with
+diamonds, along with the exact solution in black. The grid used is nonuniform with more
+grid points (diamonds) deployed in the areas where the inhomogeneity is most active, (b)
+(right) Zoomed-in comparison of the Rayleigh-Ritz solutions in part (a) (circles) and part
+(b) (diamonds) with the exact solution (smooth curve) of Example 10.7. Note the surprising
+fact that the Rayleigh-Ritz solutions are exactly equal to the solution at the respective grid
+points, and hence the Rayleigh-Ritz solutions turn out simply to be the piecewise linear
+interpolants of the actual solution with respect to the associated grids (see Exercise 21 for a
+proof). This theorem will no longer hold in higher dimensions or even for more
+complicated single-variable BVPs.}
+\end{figure}
+We now turn to the \textbf{Galerkin method}
+\footnote{Like the works of Rayleigh and Ritz, the work of Russian engineer/mathematician Boris
+Grigorievich Galerkin (1871-1945) was motivated by physical problems. It is fair to characterize
+Galerkin as an applied mathematician of the purest sense. He worked many years as an engineer before
+his first publication at the relatively late age of 38 on longitudinal curvature. The paper was a
+significant extension of work of Euler and it was applied in the construction of bridges and building
+frames. His continued interest in structural mechanics led him to the discovery in 1915 of his most
+notable contribution to mathematics, what is known today as the Galerkin method. He subsequently
+took on some academic posts in St. Petersburg, which was the de facto mathematical capital of Russia
+at the time. His interests in consulting with industry and in the relevant mathematics continued until
+his death. In 1937 he published a pivotal treatise on thin elastic plates.} 
+for approximating the solution of the BVP (24). In the piecewise linear setting with the finite-dimensional space $\mathcal{A}(\mathscr{P})$ in place of the space $\mathcal{A}$ of all admissible functions, this method solves the discrete analogue of the Principle of Virtual Work (31):
+\begin{equation}
+\text{Find} u \in \mathcal{A}(\mathscr{P}) \text{satisfying} \left\langle u^{\prime}, v^{\prime}\right\rangle=\langle f, v\rangle \text{for all} v \in \mathcal{A}(\mathscr{P}).
+\end{equation}
+In light of the bilinearity of the inner product, it is enough to check (41) for the function $v$ running through the $n$ (basis) functions: $\left\{\phi_{k}\right\}_{k=1}^{n}$. The discrete problem is thus to determine the coefficients $\left(c_{1}, c_{2}, \cdots, c_{n}\right) \in \mathbb{R}^{n}$ of the function \\$u=\sum_{j=1}^{n} c_{j} \phi_{j} \in \mathcal{A}(\mathscr{P})$ such that $\left\langle\left(\sum c_{i} \phi_{i}\right)^{\prime}, \phi_{k}^{\prime}\right\rangle=\left\langle f, \phi_{k}\right\rangle(1 \leq k \leq n)$.\\\\
+Using bilinearity, these equations become $\sum_{i=1}^{n} c_{j}\left\langle\phi_{j}^{\prime}, \phi_{k}^{\prime}\right\rangle=\left\langle f, \phi_{k}\right\rangle$, which is precisely (36). Thus, for the (BVP) (24), the Rayleigh-Ritz and Galerkin methods coincide, and this is true for any choice of basis functions (not necessarily the piecewise linear basis functions). The next exercise for the reader will use a set of basis functions that does not depend on any particular partition, but rather comes from the so-called eigenfunctions of the BVP.\footnote{
+For the BVP $-u^{\prime \prime}=f(x), u(0)=u(1)=0$, the associated \textbf{eigenfunctions} are nontrivial solutions of the BVP $-u^{\prime \prime}=\lambda u, u(0)=u(1)=0$ for some $\lambda>0$. It can be shown that the totality of these eigenfunctions is as follows: $u_{k}(x)=\sin (k \pi x), k=1,2, \cdots$ (see Exercise 24). The eigenfunctions are pairwise orthogonal: $\left\langle u_{k}, u_{\ell}\right\rangle=\delta_{k \ell} / 2$ (where $\delta_{k \ell}$ denotes the Kronecker delta equaling 1 if the indices are equal, otherwise equaling 0), as are their derivatives (Exercise 24). Moreover, the eigenfunctions have the remarkable property that any function $u$ satisfying the same boundary conditions and satisfying reasonable regularity assumptions (say if $u \in \mathcal{A}$ ) can be expressed as an infinite series of these eigenfunctions: $u(x)=\sum_{k=1}^{\infty} c_{k} u_{k}(x)$. In particular, solutions of such inhomogeneous BVPs have such eigenfunction expansions. Such eigenfunction expansion theory of ODE BVPs falls under the name of Sturm-Liouville theory. The analog for PDE BVPs is the theory of Fourier series. Both of these analytical techniques are covered extensively in many theoretically or analytically oriented textbooks. For references we cite [Str-92] and [Sni-99]. All of these properties make finite subsets of these eigenfunctions seem like very reasonable candidates for Rayleigh-Ritz and Galerkin methods; these types of Rayleigh-Ritz methods are often referred to as spectral methods.}
+\begin{exeforreader}\end{exeforreader}
+Apply the Galerkin method to re-solve the BVP of Example $10.7$ using the following 50 basis functions: $\varphi_{k}(x)=\sin (k \pi x), k=1,2, \cdots, 50$. Compare the accuracy with that obtained in part (a) of Example 10.7.\\\\
+For general BVPs, the Rayleigh-Ritz and Galerkin methods often, but not always, coincide. For this reason the nomenclature sometimes refers to the "RayleighRitz-Galerkin method." Both methods have been developed for a great many BVPs. The formulation of the Rayleigh-Ritz method in general is a bit more involved since it entails the determination of the appropriate functional for the analogue of Theorem $10.5$ to be valid. Such problems usually fall under the classical area of the \textit{calculus of variations}. We now present a brief outline for the Rayleigh-Ritz method for solving the following more general BVP whose DE will be a prototype for the elliptic PDE problems we shall contemplate Chapter 13. All of what follows in this outline can backed up theoretically with techniques similar to those used earlier to deal with the simpler problem (24); some of the details will be left to the exercises.
+\begin{equation}
+\text{(BVP)} \left\{\begin{array}{l}-\left(p(x) u^{\prime}(x)\right)^{\prime}+q(x) u(x)=f(x), \quad 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.
+\end{equation}
+Different boundary conditions and more general equations can be dealt with using modified functionals. The next exercise for the reader, however, shows how BVPs with general Dirichlet BC's can be reduced to (42) using a simple change of
+variables. The exercises will examine some further modifications.
+\begin{exeforreader}\end{exeforreader}
+\begin{enumerate}[label=(\alph*),align=left]
+\item Show that the following BVP,
+\begin{subequations}
+\begin{equation}
+(\mathrm{BVP})\left\{\begin{array}{l}-\left(p(x) w^{\prime}(x)\right)^{\prime}+q(x) w(x)=f(x), \quad 0<x<1 \\ w(0)=\alpha, w(1)=\beta\end{array}\right.
+\end{equation}
+can be reduced to the form (42) by making the following change of variables/ function:
+$$
+u(x)=w(x)-(1-x) \alpha-\beta x
+$$
+\item Show that the following BVP,
+\begin{equation}
+(\mathrm{BVP})\left\{\begin{array}{l}-\left(p(t) w^{\prime}(t)\right)^{\prime}+q(t) w(t)=f(t), a<t<b \\ w(a)=\alpha, w(b)=\beta\end{array}\right.
+\end{equation}
+can be reduced to $(42 a)$ by making the following change of variables/function:
+$$
+x=(t-a) /(b-a) \text {. }
+$$
+\end{subequations}
+\end{enumerate}
+The analogue for Theorem 10.5 (for the Rayleigh-Ritz formulation) is the
+following theorem whose complete proof can be found in Section 7.2 in [Sch-73].
+\begin{theorem}
+(Rayleigh-Ritz Principle for a One-Dimensional BVP
+\end{theorem}
+In the BVP (42):
+$$
+\left\{\begin{array}{l}
+-\left(p(x) u^{\prime}(x)\right)^{\prime}+q(x) u(x)=f(x), 0<x<1 \\
+u(0)=0, u(1)=0
+\end{array}\right.
+$$
+suppose that the (known) functions $p(x), q(x)$ and $f(x)$ are continuous and additionally that $p(x)$ is differentiable on the open interval $I=[0,1]$
+\footnote{
+Actually, the theorem still works under weaker conditions stated in [Sch-73]. The most natural
+setting for the Rayleigh-Ritz method is in the context of Sobolev functions. This topic is rather
+advanced, however, so we fix our ideas on the classical formulation. The interested reader may also
+consult the references [StFi-73] and [AxBa-84] for more sophisticated treatments on the subject.}. Also assume that $p(x)>0$ and $q(x) \geq 0$ throughout $I$. Under these assumptions, the BVP has a unique solution which coincides with the unique minimizer of the functional
+\begin{equation}
+F(v)=\int_{0}^{1}\left[p(x)\left(v^{\prime}(x)\right)^{2}+q(x)(v(x))^{2}-2 f(x) v(x)\right] d x,
+\end{equation}
+over the set of admissible functions\\\\
+$\mathcal{A}=\left\{v:[0,1] \rightarrow \mathbb{R}: v(x)\right.$ is continuous, $v^{\prime}(x)$ is piecewise continuous and bounded, and $v(0)=0, v(1)=0\}$.
+We remind the reader that without these hypotheses, the BVP (42), in general,
+may have no solution—see Exercise 12 of Section 10.2 or Exercise 24 of this
+section.\\\\
+If we use spaces $\mathcal{A}(\mathscr{P})$ of admissible functions spanned by the hat-functions determined by a partition $\mathscr{P}$ of $[0,1]$, the Rayleigh-Ritz method seeks to minimize the functional $F$ evaluated at a typical element $v(x)=\sum_{i=1}^{n} c_{i} \phi_{i}(x)$ of $\mathcal{A}(\mathscr{D})$ (see (32)). A similar computation to what was given above (Exercise 12) will show that if we substitute this function into $(43)$ and set each of the partial derivatives (with respect to the parameters $\left.c_{i}(1 \leq i \leq n)\right)$ equal to zero, we obtain the $n \times n$ linear system
+$$
+A c=b \text {, }
+$$
+where the $n \times n$ \textbf{stiffness matrix} $A=\left[a_{i j}\right]$ has coefficients given by:
+\begin{equation}
+a_{i j}=\int_{0}^{1}\left[p(x) \phi_{i}^{\prime}(x) \phi_{j}^{\prime}(x)+q(x) \phi_{i}(x) \phi_{j}(x)\right] d x
+\end{equation}
+and the $n \times 1$ \textbf{load vector} $b$ has entries given by:
+\begin{equation}
+b_{j}=\int_{0}^{1}\left[f(x) \phi_{j}(x)\right] d x
+\end{equation}
+As before, the stiffness matrix is clearly a tridiagonal symmetric matrix that can be shown to be positive definite. Thus there will be a unique solution of the linear system and so the method will always produce Rayleigh-Ritz approximations. There is also an error estimate analogous to Theorem $10.6$ which states roughly that $\left|u_{g}(x)-u(x)\right| \leq C\left\|\mathscr{P}\right\|^{2} \max _{0 \leq x \leq 1}|f(x)|$. Thus, we get the same type of error estimate (proportional to $\|\mathscr{P}\|^{2}$ ) as we had in the simpler introductory BVP. The proportionality constant $C$ will of course depend on the data $p(x)$ and $q(x)$, but not on $u(x)$ or $f(x)$ (see [StFi-73] for details). The tridiagonal coefficients of the stiffness matrix in (44) can be simplified, using (33), as was done previously, to obtain (cf. with (38), (39)):
+\begin{equation}
+\begin{aligned}
+&\begin{aligned}
+&a_{i i}=\frac{1}{h_{i-1}^{2}} \int_{x_{i-1}}^{x_{i}} p(x) d x+\frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}} p(x) d x \\
+&\quad+\frac{1}{h_{i-1}^{2}} \int_{x_{i-1}}^{x_{i}}\left(x-x_{i-1}\right)^{2} q(x) d x+\frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2} q(x) d x, \text { for } 1 \leq i \leq n
+\end{aligned}
+\end{aligned}
+\end{equation}
+\begin{equation}
+a_{i, i+1}=\frac{-1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}} p(x) d x+\frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)\left(x-x_{i}\right) q(x) d x, \quad \text { for } 1 \leq i<n
+\end{equation}
+Evaluation of the integrals in (44) through (47) can be a time-consuming process in cases of fine partitions. In such cases where the coefficient functions $p, q$, and $f$ are not too wildly behaved, it is a good idea to replace each of these functions by their piecewise linear approximation (piecewise linear splines) in the integrals. By Exercise 13(b), the local errors of such approximations are $O\left(h_{i}^{2}\right)$ on each of the corresponding intervals, provided that the function is $\mathscr{C}^{2}$, and this in turn implies $O\left(h_{i}^{3}\right)$ estimates for each of the integrals. We do one such approximation for the fourth integral in (46); the rest are done in a similar fashion and are left as Exercise 13(a). The piecewise linear approximation $Q(x)$ to $q(x)$ relative to the partition $\mathscr{P}$ of $[0,1]$ can be expressed quite simply using the hat functions as follows:
+$$
+Q(x)=q\left(x_{i}\right) \phi_{i}(x)+q\left(x_{i+1}\right) \phi_{i+1}(x), \quad x \in\left[x_{i}, x_{i+1}\right] .
+$$
+Replacing this approximation for $q(x)$ in the last integral of $(46)$ leads us to the following estimate:
+$$
+\begin{aligned}
+\frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2} q(x) d x \\
+& \approx \frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2}\left[q\left(x_{i}\right) \phi_{i}(x)+q\left(x_{i+1}\right) \phi_{i+1}(x)\right] d x \\
+&=\frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2}\left[q\left(x_{i}\right) \frac{x_{i+1}-x}{h_{i}}+q\left(x_{i+1}\right) \frac{x-x_{i}}{h_{i}}\right] d x \\
+&=\frac{q\left(x_{i}\right)^{x_{i+1}}}{h_{i}^{3}} \int_{x_{i}}\left(x_{i+1}-x\right)^{3} d x+\frac{q\left(x_{i+1}\right)}{h_{i}^{3}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2}\left(x-x_{i}\right) d x .
+\end{aligned}
+$$
+The two latter integrals are easily evaluated explicitly, for example:
+$$
+\begin{gathered}
+\int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2}\left(x-x_{i}\right) d x \underset{\substack{\text { Subst. } \\
+u=x_{i+1}-x}}{=} \int_{h_{i}}^{0} u^{2}\left(h_{i}-u\right)(-d u)=\int_{h_{i}}^{0}\left[u^{3}-h_{i} u^{2}\right] d u \\
+=\left[\frac{u^{4}}{4}-h_{i} \frac{u^{3}}{3}\right]_{h_{i}}^{0}=\frac{h_{i}^{4}}{12} .
+\end{gathered}
+$$
+In a similar fashion we find that $\int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{3} d x=\frac{h^{4}_{i}}{4}$. Putting these into the above estimate gives us that:
+$$
+\frac{1}{h_{i}^{2}} \int_{x_{i}}^{x_{i+1}}\left(x_{i+1}-x\right)^{2} q(x) d x \approx \frac{h_{i}}{12}\left[3 q\left(x_{i}\right)+q\left(x_{i+1}\right)\right] .
+$$
+Similar treatments for the remaining integrals appearing in (46) through (47) (see Exercise $13(\mathrm{a})$ ) result in the following estimates:
+
+\begin{equation}
+\begin{aligned}
+a_{i i} \approx \frac{1}{2 h_{i-1}}\left[p\left(x_{i-1}\right)\right.&\left.+p\left(x_{i}\right)\right]+\frac{1}{2 h_{i}}\left[p\left(x_{i}\right)+p\left(x_{i+1}\right)\right] \\
+&+\frac{h_{i}}{12}\left[q\left(x_{i-1}\right)+3 q\left(x_{i}\right)\right]+\frac{h_{i}}{12}\left[3 q\left(x_{i}\right)+q\left(x_{i+1}\right)\right]
+\end{aligned}
+\end{equation}
+for $1 \leq i \leq n$, and
+\begin{equation}
+a_{i, i+1} \approx-\frac{1}{2 h_{i}}\left[p\left(x_{i}\right)+p\left(x_{i+1}\right)\right]+\frac{h_{i}}{12}\left[q\left(x_{i}\right)+q\left(x_{i+1}\right)\right]
+\end{equation}
+for $1 \leq i<n$. In the same fashion, the load vector coefficients are estimated as follows:
+\begin{equation}
+b_{j} \approx \frac{h_{j-1}}{6}\left[f\left(x_{j-1}\right)+2 f\left(x_{j}\right)\right]+\frac{h_{j}}{6}\left[2 f\left(x_{j}\right)+f\left(x_{j+1}\right)\right],
+\end{equation}
+for $1 \leq j \leq n$.\\\\
+Our next example will compare performance speed and accuracy of both of the above implementations of the Rayleigh-Ritz method for a specific BVP. It is possible to solve this BVP explicitly, so we will be able to make accurate estimates for the error. The explicit solution, however, is quite a mess. It can be derived using standard methods in differential equations (undetermined coefficients). To avoid having to even write it down, we use MATLAB's Symbolic Toolbox to compute the explicit solution but suppress its output.
+\begin{example}
+Consider the following problem:\\
+\end{example}
+$$\text{(BVP)} \left\{\begin{array}{l}-u^{\prime \prime}(x)+6 u(x)=e^{10 x} \cos (12 x) \ \ \ 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$$
+\begin{enumerate}[label=(\alph*),align=left]
+\item Use the Rayleigh-Ritz method with $n=500$ equally spaced interior grid values to solve this BVP and plot the resulting approximation. Keep a record of the computing time it takes to determine the load vector and stiffness matrix coefficients.
+\item Repeat part (a), this time invoking the approximations (48) thru (50) for the integrals appearing in the Rayleigh-Ritz method.
+\item Compare both solutions of (a) and (b) with the exact solution as obtained using MATLAB's Symbolic Toolbox.
+\end{enumerate}
+SOLUTION: The BVP given indeed fits the template of $(42)$ with $p(x)=1$, $q(x)=6$, and $f(x)=e^{10 x} \cos (12 x)$.\\\\
+
+\noindent Part (a): Here we have $h_{i}=\|\mathscr{P}\|=1 / 501$ for each $i$, so we must compute the tridiagonal entries of the $501 \times 501$ stiffness matrix along with the 501 load coefficients using (45)-(47). The computations are done in a similar fashion to
+how the load vector coefficients were done in Example 10.7. Of the $1+4+2=7$ integrals appearing in (45) through (47), $1+2+1=4$ of them will need the "global variable" strategy in conjunction with MATLAB's numerical integrator \texttt{quadl}. The remaining three integrals have constant integrand $(p(x)=1)$ and so will be done directly. For (45) we use the fact that since the spacing is uniform, we have $\phi_{i}(x)=1-\left|x-x_{i}\right| /\|\mathscr{P}\|=1-501\left|x-x_{i}\right|$ for $x_{i-1} \leq x \leq x_{i+1}$. Actually, because $p(x)$ and $q(x)$ are constant functions for this problem, the approximations (48) and (49) are indeed exact. Nonetheless, we will proceed to use the quadl integrator for these integrals so as to give a good impression of the extra expense in bringing in a more sophisticated tool. For the global variables $x_{i-1}, x_{i}, x_{i+1}$ we will use the MATLAB notation: \texttt{xim, xi, xip} ( $\mathrm{p}$ for plus, $m$ for minus). The four needed M-files are as follows.
+\begin{lstlisting}[numbers=none,frame=none]
+function y = frayritzl0_81oad(x)
+global xi;
+y=(l-501*abs(xi-x)).*exp(10*x).*cos(12*x);
+
+function y = frayritzl0_8stiff1(x)
+global xim;
+y=(x-xim).^2*6;
+
+function y = frayritzl0_8stiff2(x)
+global xip;
+y=(x-xip).^2*6;
+
+function y = frayritzl0_8stiff3(x)
+global xi xip;
+y=(xip-x).*(x-xi)*6
+\end{lstlisting}
+Note that all of the intervals of integration have length $h=\|\mathscr{P}\|=1 / 501$, so that each of the integrals in (46) and (47) with integrand $p$ equals (since $p(x)=1)$ $\|\mathscr{P}\|=1 / 501$. With these M-files stored, the following loop will use (45) thru (47) to construct the needed coefficients:
+\begin{lstlisting}[numbers=none,frame=none]
+>> x=linspace(0,1,502); h=l/501; global xi xim xip;
+>> tic, for i=2:501
+xi=x(i); xim=x(i-l); xip=x(i+l);
+b(i)=quadl('frayritzl0_81oad',xim,xip);
+d(i)=2/h+l/h^2*quadl('frayritzlO_8stiffl,/xim/xi)...
++l/h^2*quadl('frayritzl0_8stiff2', xi, xip) 
+%d(2:501) is diagonal of stiffness matrix
+da(i)=-l/h+l/h"2*quadl('frayritzl0_8stiff3',xi,xip);
+%da(2:501) is superdiagonal of stiffness matrix (above),
+%once we set da(501)=0 (after loop).
+end, toc
+\end{lstlisting}
+$\rightarrow$ elapsed\_time $=4.0360$(seconds)
+\begin{lstlisting}[numbers=none,frame=none]
+>> db(3:501)=da(2:500);
+>> db(2)=0; da(501)=0;
+>> %db is subdiagonal of stiffness matrix (below)
+\end{lstlisting}
+As usual, we needed to properly format the sub/superdiagonals for input into the
+Thomas algorithm, which we apply next.
+\begin{lstlisting}[numbers=none,frame=none]
+>> cl=thomas(da(2:501),d(2:501),db(2:501),b(2:501));
+cl=[0 cl 0] ;
+plot(x,cl)
+\end{lstlisting}
+The resulting plot, which as we will see turns out to be visually indistinguishable
+from that of the exact solution, is shown in Figure 10.15.
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\textwidth]{img_1015}
+\caption{Plot of the solution of the BVP of Example 10.8.}
+\end{figure}
+Part (b): Using the estimates (48) through (50), it will be quite a simple (and
+quick) task to collect the needed coefficients. This can be accomplished with the
+following loop:
+\begin{lstlisting}[numbers=none,frame=none]
+>> p=ones(502,1); q=6*p; x=linspace(0,1,502); f=exp(10*x).*cos(12*x);
+>> h=l/501; %uniform step size
+
+>> tic, for i=2:501
+d(i)=l/(2*h)*(p(i-l)+2*p(i)+p(i+l))+h/12*(q(i-l)+6*q(i)+q(i+1) ;
+%d(2:501) is diagonal of stiffness matrix
+da(i)=-l/(2*h)*(p(i)+p(i+l))+h/12*(q(i)+q(i+l));
+da(501)=0;
+%da(2:501) is superdiagonal od stiffnes matrix (above)
+db(i)=-l/(2*h)*(p(i-l)+p(i))+h/12*(q(i-l)+q(i));
+db(2)=0;
+%db(2:501) is subdiagonal of stiffness matrix (below)
+b(i)=h/6*(f(i-l)+4*f(i)+f(i+1)) ;
+% b(2:501) is load vector
+end, toc
+\end{lstlisting}
+$\rightarrow$ elapsed\_time $=0.0500$(seconds)
+\begin{lstlisting}[numbers=none,frame=none]
+>> c2=thomas(da(2:501),d(2:501),db(2:501),b(2:501));
+>> c2=[0 c2 0] ;
+>> plot(x,c2)
+\end{lstlisting}
+The resulting plot is visually indistinguishable from the one in part (a), shown in
+Figure 10.15.\\\\
+Part (c): The BVP is rather special in that an explicit solution can be written
+down. Labeling the symbolic solution as \texttt{yexact} and suppressing the long
+output, we can create it in a MATLAB session (provided the symbolic toolbox or
+student edition is being used) with the following command.
+\begin{lstlisting}[numbers=none,frame=none]
+>> yexact=dsolve('-D2y+6*y=exp(10*t)*cos(12*t)', 'y(0)=0', 'y(l)=0');
+\end{lstlisting}
+We next create two vectors for the appropriate time values and corresponding
+values of the exact solution. We will need to use the \texttt{double} command along
+with the subs commands introduced earlier to convert the symbolic numbers to
+floating point format. The data is then plotted and the result is shown in Figure
+10.15.
+\begin{lstlisting}[numbers=none,frame=none]
+>> t=linspace(0,1,502);
+>> Yexact=subs(yexact,t);
+>> plot(t,Yexact)
+\end{lstlisting}
+With the variables from parts (a) and (b) still remaining in our workspace, we can
+easily obtain plots of the errors of the numerical solutions in those parts with the
+following commands. The two plots are shown in Figure 10.16.
+\begin{lstlisting}[numbers=none,frame=none]
+>> plot(x,abs(c1-Yexact))
+>> plot(x,abs(c2-Yexact))
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\textwidth]{img_1016}
+\caption{Plots for the errors of the two numerical solutions obtained in parts (a) (left) and (b) (right) of Example 10.8.}
+\end{figure}
+\begin{exeforreader}\end{exeforreader}
+\begin{enumerate}[label=(\alph*),align=left]
+\item Write an M-file called \texttt{rayritz} having the following input/output variables: \texttt{[x,u]=rayritz(p,q,f,n)}. The program will implement the piecewise linear Rayleigh-Ritz method with (48) through $(50)$ to solve the BVP $(42)$ :
+$$
+\left\{\begin{array}{l}
+-\left(p(x) u^{\prime}(x)\right)^{\prime}+q(x) u(x)=f(x), 0<x<1 \\
+u(0)=0, u(1)=0
+\end{array}\right.
+$$
+The first three inputs \texttt{p, q}, and \texttt{f} can represent the coefficient functions in the DE of (42), and the last input variable \texttt{n} denotes the number of interior grid points to use. A uniform grid is assumed. The output variables will be the domain and range vectors for the numerical solution.
+\item Starting with $n=99$ interior grid points $(h=1 / 100)$, use this program to get a numerical solution $y 1$ of the BVP in Example $10.8$, then use 199 grid points $(h=$ $1 / 200)$, getting a corresponding solution $y 2$, and find the maximum absolute difference of the computed solutions on the common domain values. Now cut the gap in half again with $n=399$, and get a corresponding solution $y 3$ and look at the maximum absolute difference with the vector $y 2$ at common domain points. Continue this process until the maximum absolute difference is less than $5 \times 10^{-5}$. Now (if you have access to the Symbolic Toolbox) compute the actual maximum error of this final solution compared to the exact solution in Example 10.8.
+\end{enumerate}
+The Rayleigh-Ritz approximations we have obtained were all piecewise
+continuous but not differentiable. The versatility of the Rayleigh-Ritz method
+allows us, in fact, to use any sets of linearly independent functions as basis
+functions. The catch is that the resulting stiffness matrix should be reasonably
+well conditioned. Some different sets of basis functions will be examined in the
+exercises; see Exercise 6 for a problematic situation. The hat basis functions we
+used resulted in numerical approximations that were piecewise continuous but not
+differentiable. This lack of differentiability can be overcome by the use of more
+elaborate basis functions. One popular scheme is to use cubic splines for the
+basis functions; a typical one is shown in Figure 10.17.
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\textwidth]{img_1017}
+\caption{ A cubic spline basis function. Unlike the piecewise linear hat functions
+of Figure 10.11, such basis functions are typically nonzero at three node points.}
+\end{figure}
+Each cubic spline basis function will have two continuous derivatives and thus so
+will the numerical approximations (since they are linear combinations of basis
+functions). The price we will need to pay for this extra smoothness in the
+numerical solutions is that the resulting stiffness matrix will typically have seven
+nonzero diagonals, rather than three, and the coefficients will be more complicated
+to compute. We proceed to outline an implementation of such cubic spline basis
+functions in the Rayleigh-Ritz method.\\\\
+We restrict to the case of uniform grids and begin by defining the basic cubic
+spline function from which all other spline basis functions can be defined. This
+basic spline, which we denote by $B S(x)$, will be defined using the five nodes: 
+$x_{0}=-2, x_{1}=-1, x_{2}=0, x_{3}=1$, and $x_{4}=2$ by the following requirements:
+\begin{enumerate}
+\item On each interval $\left[x_{i}, x_{i+1}\right](i=0,1,2,3), B S(x)$ will be a polynomial of degree at most three.
+\item $B S(x), B S^{\prime}(x)$, and $B S^{\prime \prime}(x)$ are each continuous at the node interfaces $x=$ $x_{1}, x_{2}, x_{3}$.
+\item $B S(\pm 2)=0, B S(0)=1$ (interpolation requirements).
+\item $B S^{\prime}(x)$, and $B S^{\prime \prime}(x)$ both equal zero at the endpoint nodes $x=x_{0}, x_{4}$.
+\end{enumerate}
+\begin{exeforreader}\end{exeforreader}
+(a) Show that the conditions (i) through (iv) above uniquely determine the function $B S(x)$ to be an even function $(B S(-x)=B S(x))$ in $\mathscr{C}^{2}(\mathbb{R})$ and specified by the following formula:
+\begin{equation}
+B S(x)= \begin{cases}{\left[(2-x)^{3}-4(1-x)^{3}\right] / 4,} & \text { if } x \in[0,1], \\ (2-x)^{3} / 4, & \text { if } x \in(1,2], \\ 0, & \text { if } x>2, \\ B S(-x), & \text { if } x<0 .\end{cases}
+\end{equation}
+(b) Get MATLAB to plot this function.
+Using the basic spline function $B S(x)$, we can define our basis $\left\{\phi_{i}(x)\right\}_{i=1}^{n}$ functions for the BVP (42) on $[0,1]$ corresponding to a uniform grid $0=x_{0}<x_{1}<\cdots<x_{n}<x_{n+1}=1$ with mesh size $h=x_{i+1}-x_{i}=1 /(n+1)$. These functions are specified by the formulas below:
+\begin{equation}
+\phi_{i}(x)= \begin{cases}B S\left(\frac{x-h}{h}\right)-B S\left(\frac{x+h}{h}\right), & \text { if } i=1 \\ B S\left(\frac{x-i h}{h}\right), & \text { if } i=2,3, \cdots, n-1 \\ B S\left(\frac{x-n h}{h}\right)-B S\left(\frac{x-(n+2) h}{h}\right), & \text { if } i=n .\end{cases}
+\end{equation}
+\begin{exeforreader}\end{exeforreader}
+(a) Show that the basis functions $\left\{\phi_{i}(x)\right\}_{i=1}^{n}$, as specified in (52), form a linearly independent set of functions. Also, show that on each interval $\left(x_{i}, x_{i+1}\right), \phi_{i}$ is a polynomial of degree at most three and that $\phi_{i}, \phi_{i}^{\prime}, \phi_{i}^{\prime \prime}$ are continuous at the endpoints $x_{i}, x_{i+1}$. Show that $\phi_{i}\left(x_{i}\right)=1$, $\phi_{i}\left(x_{j}\right)=0$ if $|i-j| \geq 2$ or $j=0$ if $i=1$, or $j=n+1$ if $i=n$, and $\phi_{i}(x)=0$ if there is such an $x_{j}$ that lies between $x_{i}$ and $x$.\\
+(b) Using the value $n=5$, get MATLAB to plot each of the five corresponding hat functions.\\
+In order to implement these basis functions in the method, we will need to
+compute their derivatives. By the chain rule, these can be easily computed in
+terms of BS'(x), which by simple computation is as specified below:
+\begin{equation}
+B S^{\prime}(x)= \begin{cases}\frac{3}{4}\left[4(1-x)^{2}-(2-x)^{2}\right], & \text { if } x \in[0,1], \\ -\frac{3}{4}(2-x)^{2}, & \text { if } x \in(1,2], \\ 0, & \text { if } x>2, \\ -B S^{\prime}(-x), & \text { if } x<0 .\end{cases}
+\end{equation}
+Each of the "BS( $\bullet$ " expressions in (52) will have, by the chain rule, derivative equal to $B S^{\prime}(\bullet) / h$. Note also that since $\phi_{i}(x)$ and $\phi_{i}^{\prime}(x)$ equal zero outside the interval $\left[x_{i-2}, x_{i+2}\right]$, it follows that the stiffness matrix entries $a_{i j}=\int_{0}^{1}\left[p(x) \phi_{i}^{\prime}(x) \phi_{j}^{\prime}(x)+q(x) \phi_{i}(x) \phi_{j}(x)\right] d x \quad$ (from (44)) will be zero if $|i-j|>3$, and from this it follows that the stiffness matrix will be a banded matrix with (at most) seven bands. With these observations, it is a simple matter to incorporate the cubic spline Rayleigh-Ritz method into a MATLAB program. Examples will be left to the exercises. We close this section with a result on errors of the cubic spline Rayleigh-Ritz method, which shows it is often worth the extra work required over the basic piecewise linear scheme.
+\begin{theorem}
+(Errors in Cubic Spline Rayleigh-Ritz Approximations)
+\end{theorem}
+Suppose that the exact solution of the BVP (42)
+$$
+\left\{\begin{array}{l}
+-\left(p(x) u^{\prime}(x)\right)^{\prime}+q(x) u(x)=f(x), 0<x<1 \\
+u(0)=0, u(1)=0
+\end{array}\right.
+$$
+is $\mathscr{C}^{4}([0,1])$ and the data $p(x), q(x)$, and $f(x)$ satisfy the assumptions of Theorem 10.7. If $u_{\mathscr{P}}$ is the cubic spline Rayleigh-Ritz approximation for this problem corresponding to a partition $\mathscr{P}$ of $[0,1]$, then we have the following error estimate:
+\begin{equation}
+\left|u_{\mathscr{P}}(x)-u(x)\right| \leq C\|\mathscr{P}\|^{3} \max _{0 \leq x \leq 1}\left|u^{(4)}(x)\right| \text { for each } x \text { in }[0,1]
+\end{equation}
+For a proof of this theorem we refer to Section $7.5$ of [StBu-92]. The key point is that the error estimate is proportional to $\|\mathscr{P}\|^{3}$, which is superior to the $\|\mathscr{P}\|^{2}$ estimates for the piecewise linear Rayleigh-Ritz method and for the finite difference method.\\
+\rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+	\item For each of the following BVPs, perform the following tasks.
+	\begin{enumerate}[label=(\roman*),align=left]
+		\item Use the piecewise linear Rayleigh-Ritz method with $n = 50$ equally spaced grid values to
+		solve the BVP numerically and plot the results.
+		\item Repeat part (i) with $n = 200$ equally spaced grid points.
+		\item Repeat part (i) with $n = 500$ equally spaced grid points.
+	\end{enumerate}
+	In each part, first perform all integrals directly, and then repeat using the approximations
+	(48)-(50) as needed. Compare performance times. When it is possible to compute the exact
+	solution using the symbolic toolbox, or if one is given, plot the errors of each approximation
+	obtained.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $(D E) u^{\prime \prime}=e^{8 x-[2(x-1)]^{2}} \cos \left(e^{8 x}\right)(B C) u(0)=u(1)=0$
+		\item $(D E)\left(e^{-3 x} u^{\prime}\right)^{\prime}-e^{-3 x} u=3 \pi \cos (\pi x),(B C) u(0)=u(1)=0 ; u_{\text {exact }}(x)=e^{3 x} \cos (\pi x)$
+		\item $(D E)\left(2 u^{\prime}\right)^{\prime}+12 u=x^{3},(B C) u(0)=u(1)=0 ; u_{\text {exact }}(x)=\left(x^{3}-x\right) / 12$
+	\end{enumerate}
+	\item Repeat the instructions of Exercise 1 for each of the following BVPs:
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $(D E) u^{\prime \prime}=\cos (2 x)+\sin (16 x) / 8,(B C) u(0)=u(1)=0$
+		\item $(D E)\left(\left(1+x^{2}\right) u^{\prime}\right)^{\prime}=2,(B C) u(0)=u(1)=0 ; u_{\text {exact }}(x)=\ln \left(x^{2}+1\right)$
+		\item $\left\{\begin{array}{l}(D E)-u^{\prime \prime}+400 u=-400 \cos ^{2}(\pi x)-2 \pi^{2} \cos (2 \pi x) \\ (B C) u(0)=u(1)=0\end{array}\right.$
+	\end{enumerate}
+	$u_{\text {exact }}(x)=e^{20 x} /\left(e^{20}+1\right)+e^{-20 x} /\left(e^{-20}+1\right)-\cos ^{2}(\pi x)$
+	\item Repeat each part of Exercise 1 for each of the BVPs given, but this time choose the indicated
+	number of interior nodes randomly, using the \texttt{rand} function.
+	\item Repeat each part of Exercise 2 for each of the BVPs given, but this time choose the indicated
+	number of nodes according to the properties of the coefficient and right-hand-side data.
+	\item For each of the BVPs given below, use the piecewise linear Rayleigh-Ritz method in
+	conjunction with the method of Exercise for the Reader 10.15 to numerically solve the BVP
+	according to each of the following node deployments:
+	\begin{enumerate}[label=(\roman*),align=left]
+		\item Use $n = 50$ equally spaced interior nodes. Repeat with each of $n = 200$ and $n = 500$.
+		\item Use $n = 250$ randomly chosen interior nodes. Repeat with each of $n = 200$ and $n = 500$.
+		\item Use $n = 250$ nodes deployed (without equal spaces) in a way that seems reasonable from
+		given data. Repeat with each of $n = 200$ and $n = 500$.
+	\end{enumerate}
+	Whenever possible, graph the errors of each of these approximations.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item The beam-deflection problem of Example 10.3.
+		\item The BVP of Exercise 3(a) of Section 10.2.
+		\item The BVP of Exercise 3(c) of Section 10.2.
+	\end{enumerate}
+	\item \textit{(A Problematic Choice of Basis Functions)} Consider applying the Rayleigh-Ritz method to our model problem (24) $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$ using the following bases: $\left\{\phi_{i}(x)\right\}_{i=1}^{n}$ where $\phi_{i}(x)=x^{i}(1-x)$.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Use the Rayleigh-Ritz method with this basis and $n = 50$ to re-solve the (BVP) (24) of
+		Example 10.7. How does the solution compare with the "exact" solution found in part (c) ofthat
+		example?
+		\item Try to repeat using $n = 500$ basis functions. What happens?
+		\item Show that $\langle\phi_{i}^{\prime}, \phi_{j}^{\prime}\rangle=\frac{(i+1)(j+1)}{i+j+1}+\frac{(i+2)(j+2)}{i+j+3}-\frac{(i+1)(j+2)+(i+2)(j+1)}{i+j+2}$, for any $i, j$ $>0$.
+		\item Make a plot of the condition numbers (use cond (A)) of the $n \times n$ stiffness matrix $A$ as a function of $n$ as $n$ ranges from 2 to 100 . Recall (Chapter 7 ) that large condition numbers make linear systems difficult to solve.
+		\item How would matters change if we instead used $\phi_{i}(x)=x^{i}$ as our basis functions?
+	\end{enumerate}
+	\item Repeat each part of Exercise 2 for each of the BVPs given, but this time adapt the Rayleigh-Ritz method using the basis functions $\varphi_{k}(x)=\sin (k \pi x), k=1,2, \cdots, n$ of Exercise for the Reader $10.14 .$
+	\item Consider once again the (BVP) $\left\{\begin{array}{l}-u^{\prime \prime}(x)+6 u(x)=e^{10 x} \cos (12 x) \quad 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$ of the Example $10.8$.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Use the cubic spline Rayleigh-Ritz method with $n = 500$ equally spaced interior grid values
+		to solve this BVP and plot the resulting approximation. Keep a record of the computing time it
+		takes to determine the load vector and stiffness matrix coefficients.
+		\item Graph the error of the numerical solution by using the exact solution as in the last example.
+	\end{enumerate}
+	\item Repeat each part of Exercise 2 for each of the BVPs given, but this time use the cubic spline
+	Rayleigh-Ritz method. Compare the results (and errors, when possible) with the numerical
+	solutions obtained in Exercise 2.
+	\item \textit{(Natural Boundary Conditions)} This exercise will show how to develop the Galerkin method
+	for BVPs with non-Dirichlet boundary conditions on the following model problem:
+	$$
+	\left\{\begin{array}{l}
+	-u^{\prime \prime}(x)=f(x), 0<x<1 \\
+	u(0)=0, u^{\prime}(1)=0
+	\end{array} .\right.
+	$$
+	For this problem we use the following for our admissible functions:
+	$$
+	\mathcal{A}_{1}=\{v:[0,1] \rightarrow \mathbb{R}: v(x) \text { is continuous, }
+	$$
+	$v^{\prime}(x)$ is piecewise continuous and bounded, and $\left.v(0)=0\right\}$.
+	Notice the only difference with this and the class (28) of the model problem (24) considered in
+	the text is that this class has one less requirement: the condition $v(l) = 0$ is no longer essential.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Use the DE and integrate by parts (as in step 3 of the proof of Theorem 10.5) to show that any solution of the BVP satisfies the corresponding PVW: $\left\langle u^{\prime}, v^{\prime}\right\rangle=\langle f, v\rangle$ for all $v \in \mathcal{A}$ converse is also true and so the PVW is equivalent to the BVP just as in Theorem 10.5. This gives rise to a Galerkin method for numerically solving the BVP, given any basis of a finitedimensional subspace of $A$. The fact that no boundary condition is required at $x=1$ for admissible functions in this method has motivated the terminology of a \textbf{natural boundary condition} at $x=1$ as opposed to an \textbf{essential boundary condition} like the one at $x=0$. It is quite surprising that even though the natural boundary conditions force no conditions on the admissible functions, the solution of the PVW will automatically satisfy them.
+		\item (Piecewise Linear Galerkin Method) Given a partition $\mathscr{P}$ of $[0,1]$, we let \\$$\mathscr{A}_{1}(\mathscr{P})=\left\{v:[0,1] \rightarrow \mathbb{R}: v(x)\right. \text{ is continuous on } [0,1], \text{ linear on each } I_{i} \text{ and } \left.v(0)=0\right\}.$$\\
+		The hat functions $\phi_{i}(x)(1 \leq i \leq n)$ need one more function to be added to form a basis of $\mathscr{A}_{1}(\mathscr{P})$. The function $\phi_{n+1}(x) \in \mathscr{A}_{1}(\mathscr{P})$ defined by $\phi_{n+1}\left(x_{j}\right)=0,(j=0,1, \cdots, n)$ and $\phi_{n+1}(1)=1$ will do the job. By substituting a linear combination of these $\sum_{i=1}^{n+1} c_{i} \phi_{i}(x)$ into the PVW, set up a linear system for the resulting Galerkin method.
+		\item Apply the method using $n=50$ equally spaced interior nodes to the BVP in case $f(x)=e^{2 x} \cos (\pi x)$. Compute the error by comparing with the exact solution (obtainable with the symbolic toolbox).
+		\item Repeat part (c) with $n=200$.
+		\item What can be said in general about the stiffness matrix for this method (e.g., is it invertible, symmetric, positive definite)?
+	\end{enumerate}
+	\item (Natural Boundary Conditions)Parts (a) through (c): Go through each part of Exercise 10 for the BVP $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u^{\prime}(0)=0, u(1)=0\end{array}\right.$, making changes where needed.\\
+	(f) What happens if we try to develop a similar method when both boundary conditions are natural: $u^{\prime}(0)=0, u^{\prime}(1)=0$ ?
+	\item Complete the justification of the approximations (48) through (50).
+	\item Suppose that $b-a=h$ and that $p(x)$ is a function on $[a, b]$ whose second derivative is continuous on $[a, b]$ (i.e., $p(x)$ is in the space $\left.\mathscr{C}^{2}([a, b])\right)$. Let $p_{\ell}(x)$ be the linear function which agrees with $p(x)$ at $x=a$ and $x=b$. Show that for any $x$ in $[a, b]$, we have $\left|p_{\ell}(x)-p(x)\right|=O\left(h^{2}\right)$. Next use this to show that $\left|\int_{a}^{b} p_{\ell}(x)-p(x) d x\right|=O\left(h^{3}\right)$\\
+	\textbf{Suggestion}: For Part (b), use the mean value theorem from calculus to find a number $c$ in $[a, b]$ for which $p^{\prime}(c)=p_{\ell}^{\prime}(c)$. Next use Taylor's theorem to write $p(x)=p_{\ell}(x)+p^{\prime \prime}\left(z_{x}\right)(x-c)^{2} / 2$ for any $x$ in $[a, b]$, where $z_{x}$ is an number between $x$ and $c$. From this we get that $\left|p(x)-p_{\ell}(x)\right| \leq \max _{a \leq z \leq b}\left|p^{\prime \prime }(z)\right|(x-c)^{2} / 2$ and the assertions readily follow.
+	\item Derive the Galerkin method for the BVP $(41):\left\{\begin{array}{l}-\left(p(x) u^{\prime}(x)\right)^{\prime}+q(x) u(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$ by mimicking step 3 of the proof of Theorem 10.5. Does the method agree with the Rayleigh-Ritz method?
+	\item Suppose that $g(x)$ is a continuous function on $[0,1]$ that satisfies $\int_{0}^{1} g(x) v(x) d x=0$ for every $v \in \mathcal{A}$. Prove that $g(x) \equiv 0$ by providing more details to the following outline.\\
+	\textit{Sketch of Proof}: Suppose that $g\left(x_{0}\right)>0$ for some $x_{0} \in(0,1)$. Then by continuity, $g(x)>0$ for all $x$ in some interval $\left(x_{0}-h, x_{0}+h\right)$. Let $v(x)$ be a hat function with $v\left(x_{0}\right)=1$, $v\left(x_{0} \pm h\right)=0$. Show that $\int_{0}^{1} g(x) v(x) d x>0$ and this hat function is admissible. This contradiction shows that we cannot have such an $x_{0} \in(0,1)$. Conclude similarly that there is no $x_{0} \in(0,1)$ for which $g\left(x_{0}\right)<0$.
+	\item The proof of Theorem $10.5$ made use of one external theorem stating the existence of a solution of the (BVP) (24). In this exercise, you are to follow an outline to prove that part (c) of this theorem implies part (a) by using only the assumption that $u^{\prime \prime}(x)$ exists and is piecewise continuous and bounded whenever $u(x)$ is a solution of (PVW).\\\\
+	Write (PVW) in the form $\int_{0}^{1} u^{\prime}(x) v^{\prime}(x) d x=\int_{0}^{1} f(x) v(x) d x \quad(v \in \mathcal{A})$. Fix a function $v \in \mathcal{A}$ integrate this by parts to obtain $\int_{0}^{1}\left[u^{\prime \prime}(x)+f(x)\right] v(x) d x=0$. Now use Exercise 16 to show the differential equation (24) must hold.
+\end{enumerate}
+NOTE: Much error analysis for Rayleigh-Ritz methods depends on certain integral inequalities. A
+prototypical inequality of this sort is the so-called \textbf{Cauchy-Bunyakowski-Schwarz (CBS)} inequality,
+which reads as follows:
+\begin{equation}
+|\langle u, v\rangle| \leq|\langle u, u\rangle|^{1 / 2}|\langle v, v\rangle|^{1 / 2} \text {, }
+\end{equation}
+valid for any functions $u, v$ for which the inner product (25) is defined. In integral form (see (25)) the CBS inequality becomes:
+$$
+\left|\int_{0}^{1} u(x) v(x) d x\right| \leq\left(\int_{0}^{1} u(x)^{2} d x\right)^{1 / 2}\left(\int_{0}^{1} v(x)^{2} d x\right)^{1 / 2} .
+\footnote{
+The CBS inequality is a good example of an important mathematical result whose history is often
+subject to political bias. Cauchy was the first to discover a discrete version (for sums) of the inequality.
+Bunykowski was the first to discover, in 1859, the integral version of the CBS inequality as written
+above. Schwarz generalized Bunykowski's result some 25 years later to general inner products.
+Subsequent mathematical literature from each of the three countries usually attributes any version
+(from sums to general inner products) of the CBS inequality solely to their mathematical contributor.
+Thus, in French literature it is usually called Cauchy's inequality, etc. All three of these individuals
+were eminent mathematical figures in their respective countries. Cauchy began work in 1810 as a civil
+engineer, but his passion for mathematics kept him trying hard to land positions in mathematics. After
+numerous attempts he finally got one five years later. Cauchy's output was amazing—his complete
+works spanned over practically all areas of mathematics and filled 27 volumes. His textbooks were
+used for many years in most French universities. Despite his keen mathematical abilities, however, his
+strong religious positions and often criticism for his contemporaries made it difficult for him to retain
+desirable positions. Bunyakowski actually earned his doctorate under Cauchy in Paris in 1825. He
+then went to St. Petersburg where he spent most of his mathematical career. Schwarz originally
+entered what is now known as the Technical University of Berlin with the intention of earning a degree
+in chemistry. This school had the top German mathematics department at the time and the lessons of
+his mathematics teachers (including the famous analyst Karl Weierstrass (1815-1897)) led him to
+switch his major and eventually earn a doctorate in mathematics. Schwarz had a remarkable potential
+in blending analytical and geometrical methods that led him to discover many important results. After
+he took over Weierstrass's professorial position in 1892, however, he had already begun shifting his
+focus away from research being his main priority and his output decreased to a less remarkable level.
+At about this time, the main mathematics institute in Germany shifted from Berlin to Göttingen.}$$
+
+\begin{multicols}{3}
+\begin{figure}[H]
+	\ContinuedFloat*
+	\centering
+	\includegraphics[width=0.32\textwidth]{img_1018a}
+	\caption{\label{first}Augustin Louis Cauchy (1789-1857), French mathematician}
+\end{figure}
+\columnbreak
+\begin{figure}[H]
+	\centering
+	\ContinuedFloat
+	\includegraphics[width=0.32\textwidth]{img_1018b}
+	\caption{\label{second}Viktor Yakovlevich Bunyakowsky (1804-1889), Russian mathematician. }
+\end{figure}
+\columnbreak
+\begin{figure}[H]
+	\centering
+	\ContinuedFloat
+	\includegraphics[width=0.32\textwidth]{img_1018c}
+	\caption{\label{third}Hermann Amandus Schwarz (1843-1921), German mathematician.}
+\end{figure}
+\end{multicols}
+\noindent In manipulations with such integrals, it is often convenient to introduce the norm notation: $\|u\|=|\langle u, u\rangle|^{1 / 2}=\left(\int_{0}^{1} u(x)^{2} d x\right)^{1 / 2}$. Using this notation the Cauchy-Bunyakowski-Schwarz inequality takes on the more elegant form:
+$$
+|\langle u, v\rangle| \leq\|u\|\|v\| .
+$$
+For a further discussion of such concepts and, in particular, a proof of the Cauchy-BunyakowskiSchwarz inequality, we refer the reader to any good book on analysis, for example [Ros-96] or [Rud64]. The next few exercises will give examples of such uses of the CBS inequality.
+\begin{enumerate}[resume]
+	\item Show that the function norm defined above satisfies the three vector norm axioms (see Chapter 7, equations (36A-C)). For simplicity, assume, in your proofs, that all functions are continuous on $[0,1]$.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $\|u\| \geq 0,\|u\|=0$ if and only if $u(x)=0$ for all $x$ in $[0,1]$.
+		\item $\|c u\|=|c| \| u \mid$, for any scalar $c$.
+		\item $\|u+v\| \leq\|u\|+\|v\|$ (triangle inequality).
+	\end{enumerate}
+	\textbf{Suggestions}: For an idea for part (a), see Exercise 15. For part (c) use the CBS inequality.\\
+	\textbf{Note}: If we allow more general functions, such as piecewise continuous functions in some $\mathcal{A ( \mathscr{P} )}$, then we have to change the condition in part (a) to $u(x)=0$ for all $x$ in $[0,1]$ except for a possible finite set of exceptions.
+	\item \textit{(Rayleigh-Ritz Approximations Have Errors of Minimum Internal Elastic Energy)} Recall that the internal elastic energy of an (admissible) function $v$ was defined to be $(1 / 2)\left\langle v^{\prime}, v^{\prime}\right\rangle=$ $(1 / 2) \int_{0}^{1}\left(v^{\prime}(x)\right)^{2} d x$. Follow the outline below to prove the following useful and interesting error estimate which shows that among all admissible (piecewise linear) admissible functions, the Rayleigh-Ritz approximation to the solution of the BVP (24) $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$ is the best possible approximation if errors are measured by internal elastic energies. That is, if $u(x)$ is the solution of $(24)$ and $u_{\mathscr{P}}(x)$ is the (piecewise linear) Rayleigh-Ritz approximation, both corresponding to a partition $\mathscr{P}$ of $[0,1]$, then we have:
+	\begin{equation}
+		\left\|\left(u-u_{\mathscr{P}}\right)^{\prime}\right\| \leq \|(u-v)^{\prime} \text { for all } v \in \mathcal{A}\left(\mathscr{P}\right) \text {. }
+	\end{equation}
+	\begin{enumerate}[label=(\alph*),align=left]
+			\item Show that $\left\langle\left(u-u_{g}\right)^{\prime}, v\right\rangle=0$ for any $v \in \mathcal{A}(\mathscr{P})$ by using the principle of virtual work..
+			\item For any $v \in \mathcal{A}(\mathscr{P})$, note that $w \equiv u_{\mathscr{P}}-v \in \mathcal{A}(\mathscr{P})$. Use (55) to write
+			$$
+				\left\langle\left(u-u_{\mathscr{P}}\right)^{\prime},\left(u-u_{\mathscr{P}}\right)^{\prime}\right\rangle=\left\langle\left(u-u_{\mathscr{P}}\right)^{\prime},(u-v)^{\prime}\right\rangle .
+			$$
+			\item Next, use the CBS inequality to obtain (56).
+	\end{enumerate}
+	\item \textit{(Comparison of Solution with Linear Interpolant)}
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Let $\bar{u}_{\mathscr{P}} \in \mathcal{A}(\mathscr{P})$ be the (piecewise) \textbf{linear interpolant} of the solution $u$ of (24), i.e., $v\left(x_{i}\right)=u\left(x_{i}\right)$ at each partition point (and $\bar{u}_{\mathscr{P}}$ is linear between partition points). Let $x$ be any number in $[0,1]$ that lies between two partition points of $\mathscr{P}: x_{j}<x<x_{j+1}$. Use the mean value theorem from calculus to show why we can write
+		$$
+			\bar{u}_{\mathscr{P}}(x)=u(c)+(x-c) u^{\prime}(x) \text { for some fixed number } c, x_{j}<c<x_{j+1} \text {. }
+		$$
+		(So $c$ depends only on $j$, but not on the particular value of $x$.)
+		\item In the notation of part (a) use Taylor's theorem and only the assumption that $u$ has a continuous second derivative to show that for any $x, x_{j}<x<x_{j+1}$, we have
+		$$
+			\left|u(x)-\bar{u}_{\mathscr{P}}(x)\right| \leq \frac{h_{j}^{2}}{2} \max _{x_{j}<x<x_{j+1}}\left|u^{\prime \prime}(x)\right| .
+		$$
+		Next use the differential equation of $(24)$ to translate this estimate to the form
+		$$
+		\left|u(x)-\bar{u}_{\mathscr{P}}(x)\right| \leq \frac{\|\mathscr{P}\|^{2}}{2} \max _{x_{j}<x<x_{j+1}}|f(x)|,
+		$$
+		and that this is valid for all $x$ in $[0,1]$.
+		\item By applying a similar analysis as done in parts (a) and (b) except now on the derivatives of the above two functions, obtain the following estimate for all $x$ in $[0,1]$ (except the partition points at which $\bar{u}_{\mathscr{P}}^{\prime}(x)$ may not exist):
+		$$
+			\left|u^{\prime}(x)-\bar{u}_{\mathscr{P}}^{\prime}(x)\right| \leq\|\mathscr{P}\| \max _{0 \leq x \leq 1}|f(x)| .
+		$$
+	\end{enumerate}
+	\item \textit{(Error Estimate for Rayleigh-Ritz Approximation)} This exercise will provide an outline for using the estimates of the preceding exercises to obtain an estimate for the error of the RayleighRitz approximation. We will show that if $u_{\mathscr{P}}(x)$ is the Rayleigh-Ritz approximation corresponding to a partition $\mathscr{P}$ of $[0,1]$ of the BVP (24): $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$, where $f(x)$ is a continuous function, then we have the following error estimate valid for all $x, 0 \leq x \leq 1:\left|u_{\mathscr{P}}(x)-u(x)\right| \leq\left\|\mathscr{P}\right\| \max _{0 \leq x \leq 1}|f(x)|$.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Use (54) with $v$ taken to be the linear interpolant $\tilde{u}_{g p}$ of Exercise 19, and then use the results of Exercise 19 to justify the following string of inequalities:
+		$$
+			\begin{aligned}
+			\left\|\left(u-u_{\mathscr{P}}\right)^{\prime}\right\| & \leq\left\|\left(u-\tilde{u}_{\mathscr{P}}\right)^{\prime}\right\|=\left(\int_{0}^{1}\left[\left(u-\tilde{u}_{\mathscr{P}}\right)^{\prime}(x)\right]^{2} d x\right)^{1 / 2} \\
+			& \leq\left(\int_{0}^{1}\left[\left\|\mathscr{P}\right\| \max _{0 \leq x \leq 1} \mid f(x)\right]^{2} d x\right)^{1 / 2} \leq\left\|\mathscr{P}\right\| \max _{0 \leq x \leq 1}|f(x)|
+			\end{aligned}
+		$$
+		\item Since $u_{\mathscr{P}}(0)=u(0)=0$, we can write $u(x)-u_{\mathscr{P}}(x)=\int_{0}^{x}\left(u-u_{\mathscr{P}}\right)^{\prime}(x) d x$. Use this and the CBS inequality to justify the following string of inequalities, thereby completing the proof of Theorem 10.6.
+		$$
+			\left | u(x)-u_{\mathscr{P}}(x) \right |\leq \left\langle\left(u-\tilde{u}_{\mathscr{P}}\right)^{\prime}, 1\right\rangle \leq \left \| (u-\tilde{u}_{\mathscr{P}})^\prime  \right \| \cdot \left \| 1 \right \|
+			\leq \left\|\mathscr{P}\right\| \max _{0 \leq x \leq 1}|f(x)|
+		$$
+	\end{enumerate}
+	\item \textit{(Refined Error Estimate for Rayleigh-Ritz Approximation Using Green's Functions)} In this exercise we will show that when the Rayleigh-Ritz method is to solve the BVP (24): $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$, where $f(x)$ is a continuous function for some partition 5 of $[0,1]$, then the Rayleigh-Ritz solution $u_{\mathscr{P}}$ actually coincides with the linear interpolant $\tilde{u}_{\mathscr{P}}$ of Exercise 19. From this it will follow from the estimate of part (b) of Exercise 19 that the estimate of Theorem $10.6$ is valid. The key is the introduction of so-called \textbf{Green's functions} for the BVP. For each interior node $x_{i}$ of $\mathscr{P}$ the following Green's function:
+	$$
+		G_{i}(x)= \begin{cases}\left(1-x_{i}\right) x, & \text { for } 0 \leq x \leq x_{i} \\ x_{i}(1-x), & \text { for } x_{i} \leq x \leq 1\end{cases}
+	$$
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item Show that $G_{i}(x) \in \mathcal{A}\left(\mathscr{P}\right)$ and that for any $v \in \mathcal{A}$, we have: $\left\langle v^{\prime}, G_{i}^{\prime}\right\rangle=v\left(x_{i}\right)$.
+		\item Take $v=u-u_{\mathscr{P}}$ in part (a) and apply a result from one of the preceding exercises to show that $v\left(x_{i}\right)=0$ and hence $u=u_{\mathscr{P}}$, as desired.
+	\end{enumerate}
+	\item Show directly that the BVP (24) $\left\{\begin{array}{l}-u^{\prime \prime}(x)=f(x), 0<x<1 \\ u(0)=0, u(1)=0\end{array}\right.$ has a unique solution.\\
+	\textbf{Suggestion:} Integrate the DE once to get $u^{\prime}(x)=\int_{0}^{x}-f(t) d t$ and once more to get $u(x)=\int_{0}^{x} \int_{0}^{t}-f(s) d s d t+C$
+	\item Using the direct approach to solving the BVP (24) suggested in the preceding exercise, set up
+	and execute a MATLAB code for solving the BVP in Example 10.7 once again. Arrange your
+	parameters so that the total error of your numerical solution is no more than $10^4$.\\
+	\textbf{Suggestion}: You may wish to try some different approaches using MATLAB's built-in
+	integrator in conjunction with Simpson's rule or the trapezoidal rule (see any standard calculus
+	textbook or [BuFa-01]) and perhaps even the Symbolic Toolbox if you have access to it.
+	\item 
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Verify that the general solution of the DE $-u^{\prime \prime}=\lambda u$ for $\lambda>0$ is given by $u=C \cos (\sqrt{\lambda} x)+D \sin (\sqrt{\lambda} x)$ for arbitrary constants $C$ and $D$.
+	\item Show that if we also require the boundary conditions $u(0)=u(1)=0$, then the resulting BVP will only have nontrivial solutions if $\lambda=(k \pi)^{2}, k=1,2, \cdots$ and these (eigenfunctions) are $u_{k}(x)=\sin (k \pi x)$.
+	\item Prove the orthogonality relations for the eigenfunctions: $\left\langle u_{k}, u_{\ell}\right\rangle=\delta_{k \ell} / 2$, where $\delta_{k \ell}$ denotes the Kronecker delta.
+	\item Prove the following orthogonality relations for the derivatives of the eigenfunctions: $\left(u_{k}^{\prime}, u_{i}^{\prime}\right)=k \ell \pi^{2} \delta_{kl} / 2$.
+	\end{enumerate}
+\end{enumerate}
+	
+	
+	
+\clearpage
+\end{document} 

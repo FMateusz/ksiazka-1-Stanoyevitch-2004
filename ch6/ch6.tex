@@ -1,0 +1,1729 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\setcounter{equation}{0}
+
+
+
+\chapter[Rootfinding]{Rootfinding}
+\label{chap:6}
+
+\section{A BRIEF ACCOUNT OF THE HISTORY OF ROOTFINDING}
+\label{sec:6_1}
+
+\noindent The mathematical problems and applications of solving equations can be found in
+the oldest mathematical documents that are known to exist. The Rhind
+Mathematical Papyrus, named after Scotsman A. H. Rhind (1833-1863), who
+purchased it in a Nile resort town in 1858, was copied in 1650 B.C. from an
+original that was about 200 years older. It is about 13 inches high and 18 feet
+long, and it currently rests in a museum in England. This Papyrus contains 84
+problems and solutions; many of them linear equations of the form (in modern
+algebra notation): $ax + b = 0$. It is fortunate that the mild Egyptian climate has so
+well preserved this document. A typical problem in this papyrus runs as follows:
+"A heap and its 1/7 part become 19. What is the heap?" In modern notation, this
+problem amounts to solving the equation $x + (1/7)x = 19$, and is easily solved by
+basic algebra. The arithmetic during these times was not very well developed and
+algebra was not yet discovered, so the Egyptians solved this equation with an
+intricate procedure where they made an initial guess, corrected it and used some
+complicated arithmetic to arrive at the answer of 16 5/8. The exact origin and
+dates of the methods in this work are not well documented and it is even possible
+that many of these methods may have been handed down by Imhotep, who
+supervised the construction of the pyramids around 3000 B.C.
+
+Algebra derives from the Latin translation of the Arabic word, al-jabry which
+means "restoring" as it refers to manipulating equations by performing the same
+operation on both sides. One of the earliest known algebra texts was written by
+the Islamic mathematician Al-Khwarizmi (c. 780-850), and in this book the
+quadratic equation $ax^2 + bx + c = 0$ is solved. The Islamic mathematicians did not
+deal with negative numbers so they had to separate the equation into 6 cases. This
+important work was translated into Latin, which was the language of scholars and
+universities in all of the western world during this era. After algebra came into
+common use in the western world, mathematicians set their sights on solving the
+next natural equation to look at: the general \textbf{cubic} equation $ax^3 + bx^2 + ex + d = 0$.
+The solution came quite a bit later in the Renaissance era in sixteenth
+century and the history after this point gets quite interesting.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_1}
+	\caption{Niccolo Fontana ("Tartaglia") (1491-1557), Italian mathematician. }
+	\label{fig:fig_6_1}
+\end{figure}
+
+The Italian mathematician Niccolo Fontana (better known by his nickname
+Tartaglia; see Figure \ref{fig:fig_6_1}) was the first to find the solution of the general cubic
+equation. It is quite a complicated formula and this is why it is rarely seen in
+textbooks. A few years later, Tartaglia's contemporary, Girolamo Cardano
+\footnote{When Tartaglia was only 12 years old, he was nearly killed by French soldiers invading his town. He
+	suffered a massive sword cut to his jaw and palate and was left for dead. He managed to survive, but
+	he always wore a beard to hide the disfiguring scar left by his attackers; also his speech was impaired
+	by the sword injury and he developed a very noticeable stutter. (His nickname Tartaglia means
+	stammerer.) He taught mathematics in Venice and became famous in 1535 when he demonstrated
+	publicly his ability of solving cubics, although he did not release his "secret formula/ 1 Other Italian
+	mathematicians had publicly stated that such a solution was impossible. The more famous Cardano,
+	located in Milan, was intrigued by Tartaglia's discovery and tried to get the latter to share it with him.
+	At first Tartaglia refused but after Cardano tempted Tartaglia with his connections to the governor,
+	Tartalgia finally acquiesced, but he made Cardano promise never to reveal the formula to anyone and
+	never to even write it down, except in code (so no one could find it after he died). Tartaglia presented
+	his solution to Cardano as a poem, again, so there would be no written record. With his newly
+	acquired knowledge, Cardano was eventually able to solve the general quartic.}
+(sometimes the English translation
+"Cardan" is used; see Figure \ref{fig:fig_6_2}), had
+obtained an even more complicated
+formula (involving radicals of the
+coefficients) for the solution of the
+general \textbf{quartic} equation $ax^4 + bx^3 + ex^2 + dx + e = 0$.
+With each extra degree of the polynomial equations
+solved thus far, the general solution
+was getting inordinately more complicated, and it became apparent
+that a general formula for the solution
+of an «th-degree polynomial equation would be very
+unlikely and that the best mathematics could hope for was to
+keep working at obtaining general solutions to higher-order
+polynomials at one-degree increments.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_2}
+	\caption{Girolamo Cardano (1501-1576), Italian mathematician.}
+	\label{fig:fig_6_2}
+\end{figure}
+
+
+Three centuries later in 1821, a brilliant, young yet short-lived Norwegian
+mathematician named Niels Henrik Abel (Figure \ref{fig:fig_6_3}) believed he had solved the
+general \textbf{quintic} ($5^{th}$-degree polynomial) equation, and submitted his work to the
+Royal Society of Copenhagen for publication. The editor contacted Abel to ask
+for a numerical example. In his efforts to construct examples, Abel found that his
+method was flawed, but in doing so he was able to prove that no formula could
+possibly exist (in terms of radicals and algebraic combinations of the coefficients)
+for the solution of a general quintic. Such nonexistence results are very deep and
+this one had ended generations of efforts in this area of rootfinding.
+\footnote{Abel lived during a very difficult era in Norway and despite his mathematical wizardry, he was never
+	able to obtain a permanent mathematics professorship. His short life was marked with constant
+	poverty. When he proved his impossibility result for the quintic, he published it immediately on his
+	own but in order to save printing costs, he trimmed down his proof to very bare details and as such it
+	was difficult to read and did not give him the recognition that he was due. He later became close
+	friends with the eminent German mathematician and publisher Leopold Crelle, who recognized Abel's
+	genius and published much of his work. Crelle had even found a suitable professorship for Abel in
+	Berlin, but the good news came too late; Abel had died from tuberculosis shortly before Crelle's letter arrived.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_3}
+	\caption{Niels Henrik Abel (1802-1829), Norwegian mathematician.}
+	\label{fig:fig_6_3}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_4}
+	\caption[Evariste Galois (1811-1832), French mathematician.]{Evariste Galois \footnotemark (1811-1832), French mathematician.}
+	\label{fig:fig_6_4}
+\end{figure}
+\footnotetext{Galois was born to a politically active family in a time of much political unrest in France. His father
+	was mayor in a city near Paris who had committed suicide in 1829 after a local priest had forged the
+	former's name on some libelous public documents. This loss affected Galois considerably and he
+	became quite a political activist. His mathematics teachers from high school through university were
+	astounded by his talent, but he was expelled from his university for publicly criticizing the director of
+	the university for having locked the students inside to prevent them from joining some political riots.
+	He joined a conservative National Guard that was accused of plotting to overthrow the government.
+	His political activities caused him to get sent to prison twice, the second term for a period of six
+	months. While in prison, he apparently fell in love with Stephanie-Felice du Motel, a prison official's
+	daughter. Soon after he got out from prison he was challenged to a duel, the object of which had to do
+	with Stephanie. In this duel he perished. The night before the duel, he wrote out all of his main
+	mathematical discoveries and passed them on to a friend. It was only after this work was posthumously
+	published that Galois's deep achievements were discovered. There is some speculation that Galois's
+	fatal duel was set up to remove him from the political landscape.}
+
+At roughly the same time, across the continent in France, another
+young mathematician, Evariste
+Galois (Figure \ref{fig:fig_6_4}), had worked on
+the same problems. Galois's life
+was also tragically cut short, and
+his brilliant and deep mathematical
+achievements were not recognized
+or even published until after his
+death. Galois invented a whole
+new area in mathematical group
+theory and he was able to use his  development to
+show the impossibility of having a general
+formula (involving radicals and the
+four basic mathematical operations)
+for solving the general polynomial equation of degree 5 or more and, furthermore,
+he obtained results that developed special conditions on polynomial equations
+under which such formulas could exist.
+
+
+The work of Abel and Galois had a considerable impact on the development of
+mathematics and consequences and applications of their theories are still being
+realized today in the twentyfirst century. Many consequences have evolved from
+their theories, some resolving the impossibility of several geometric constructions
+that the Greeks had worked hard at for many years.
+
+
+Among the first notable consequences of the nonexistence results of Abel and
+Galois was that pure mathematics would no longer be adequate as a reliable means
+for rootfinding, and the need for numerical methods became manifest. In the
+sections that follow we will introduce some iterative methods for finding a root of
+an equation $f(x) = 0$ that is known to exist.In each, a sequence of
+approximations $x_n$ is constructed that, under appropriate hypotheses, will
+"converge" to an actual root r. Convergence here simply means that the error
+$| r-x_n |$ goes to zero as n gets large. The speed of convergence will depend on the
+particular method being used and possibly also on certain properties of the
+function $f(x)$ .
+
+
+\section[THE BISECTION METHOD]{THE BISECTION METHOD}
+\label{sec:6_2}
+
+\noindent This method, illustrated in Figure \ref{fig:fig_6_5}, is very easy to understand and write a code
+for; it has the following basic assumptions:
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_5}
+	\caption{Illustration of the bisection
+		method. The points $x_n$ are the midpoints
+		of the intervals $I_n$ that get halved in
+		length at each iteration.}
+	\label{fig:fig_6_5}
+\end{figure}
+
+\textbf{ASSUMPTIONS}: $f(x)$is continuous
+on $[a,b], f(a), f(b)$
+have opposite signs, and we are given an error $tolerance = tol > 0$.
+
+Because of the assumptions, the
+intermediate value theorem
+from calculus tells us that $f(x)$ has at least
+one root (meaning a solution of the
+equation $f(x) = 0 $) within the interval
+$[a,b]$. The method will iteratively
+construct a sequence xn that converges
+to a root r and will stop when it can be
+guaranteed that $| r - x_n | < tol$.
+
+The philosophy of the method can be paraphrased as "divide and conquer."
+In English, the algorithm works as follows:
+We start with $x_1 = (a+b)/2$ being the midpoint of the
+interval $[a,b]\equiv [a_1,b_1] \equiv I_1$. We test $f(x)$. If it equals zero,
+we stop since we have found the exact root. If $f(x_1)$ is not zero,
+then it will have opposite signs either with $f(a)$ or with  $f(b)$.
+In the former case we next look at the interval $[a,b_1] \equiv [a_2,b_2] \equiv I_2$
+that now must contain a root of $f(x)$; in the latter case a
+root will be in $[x_1,b] \equiv [a_2,b_2] \equiv I_2$. The new
+interval $I_2$ has length equal to half of that of the original interval.
+Our next approximation is the new midpoint $x_2 = (a_2 + b_2)/2$. As before,
+either $x_2$ will be an exact root or we continue to approximate a root in $I_3$ that
+will be in either the left half or right half of $I_2$. Note that at each iteration,
+the approximation $x_n$ lies in the interval $I_{n+1}$, which also contains an actual root.
+From this it follows that:
+\begin{equation}\label{equation:6_1}
+	error = |x_n - r| \le length(I_{n+1}) = \frac{length(I_1)}{2^n}=\frac{b-a}{2^n}
+\end{equation}
+
+We wish to write a MATLAB M-file that will perform this bisection method for us.
+We will call our function \mycode{bisect('function', a, b, tol)}. This one has four input variables.
+The first one is an actual mathematical function (with the generic name \mycode{function}) for which a root is sought.
+The second two variables, a and b, denote the endpoints of an interval at which the function has opposite signs,
+and the last variable tol denotes the maximum tolerated error. The program should cause the iterations to stop
+after the error gets below this tolerance (the estimate (\ref{equation:6_1}) will be useful here). Before attempting to write
+the MATLAB M-file, it is always recommended that we work some simple examples
+by hand. The results will later be used to check our program after we write it.
+
+\begin{Example}
+	Consider the function $f(x) = x^5-9x^2-x+7$
+	\begin{enumerate}[label=(\alph*)]
+		\item Show that $f(x)$ has a root on the interval [1,2].
+		\item Use the bisection method to approximate this root with an $error<0.01$.
+		\item How many iterations would we need to use in the bisection method to guarantee an $error < 0.00001$?
+	\end{enumerate}
+\end{Example}
+
+\noindent SOLUTION: Part (a): Since $f(x)$ is a polynomial, it is continuous everywhere.
+Since $f(1) = 1 - 9 - 1 + 7 = -2 < 0$, and $f(2) = 32 -36 -2 + 7 = 1 > 0$, it follows
+from the intermediate value theorem that $f(x)$ must have a root in the interval $[1,2]$.
+
+\noindent Part (b): Using(1),we can determine the number of iterations required to achieve an
+error guaranteed to be less than the desired upper bound $0.01 = 1/100$. Since $b-a = 1$,
+the right side of(1) is $1/2^{n}$, and clearly $n = 7$ is the first value of n for which
+this is less than $1/100$. $(1/2^7 = 1/128.)$ By the error estimate (1), this
+means we will need to do 7 iterations. At each step, we will need to evaluate
+the function $f(x)$ at the new approximation value $x_n$. If we cmputed these
+iterations directly on MATLAB, we would need to enter the formula only once, and make
+use of MATLAB's editing features.	 Another way to deal with functions on MATLAB would
+be to simply store the mathematical function as an M-file. But this latter approach is
+not so suitable for situations like this where the function gets used only for a
+particular example. We now show a way to enter a function temporarily into a MATLAB
+session as a so-called "inline" function:
+\begin{center}
+	\begin{tabularx}{\linewidth}{ |X|X| }
+		\hline
+		\mycode{<fun\_name>=inline('<math expressions>')} $\rightarrow$                     & Causes a mathematical function to be defined
+		(temporarily, only for the current MATLAB session), the name will be <fun\_nam>, the formula
+		will be given by \mycode{<mathexpression>} and the input variables determined by
+		MATLAB when it scans the expression.                                                                                               \\
+		\hline
+		\mycode{<fun\_name>=inline('<math expression>', 'x1,'x2', ..., 'xn')} $\rightarrow$ & Works as above but specifies input variables
+		to be xl, x2, ..., xn in the same order.                                                                                           \\
+		\hline
+	\end{tabularx}
+\end{center}
+
+We enter our function now as an inline function, giving it the convenient and generic name "f."\\
+\mycode{
+	>> f = inline('$x^5-9*x^2-x+7'$) \ $\rightarrow f= Inline function: f(x) = x^5-9*x^2-x+7$
+}
+
+We may now work with this function in MATLAB just as with other built-in mathematical
+functions or stored M-file mathematical functions. Its definition will be good
+for as long as we are in the MATLAB session in which we created this inline function.
+For example, to evaluate $f(2)$ we can now just type: \\
+\mycode{>> f(2) \ $\rightarrow$1}
+
+For future reference, in writing programs containing mathematical functions as
+variables, it is better to use the following equivalent (but slightly longer) method: \\
+\mycode{>> feval(f,2) \ $\rightarrow$1}
+\begin{center}
+	\begin{tabularx}{\linewidth}{ |X|X| }
+		\hline
+		\mycode{feval(<funct>, a1,a2,...,an)} $\rightarrow$ & Return the value of the stored or inline function
+		funct(x1,x2, ..., xn) of n variables at the values x1=a1, x2=a2, ... , xn=an.                           \\
+		\hline
+	\end{tabularx}
+\end{center}
+
+
+Let's now use MATLAB to perform the bisection method:\\
+\mycode{
+>>a1=1; b1=2;x1=(a1+b1)/2, f(x1) \% \	[a1,b1]=[a,b] and x1 (first \\
+>>\% approximation) is the midpoint. We need to test f(x1).\\
+$\rightarrow$x1=1.7500, ans =-5.8994 (n=2 approximation and value of function at first approximation)\\
+>> a2=x1; b2=b1; x2=(a2+b2)/2, f(x2) \%the bisected interval [a2,b2]\\
+>> \% is always chosen to be the one where function changes sign.\\
+$\rightarrow$x2=1.7500, ans =-5.8994 (n=2 approximation and value of function)\\
+\\
+>> a3=x2; b3=b1; x3=(a3+b3)/2, f(x3)\, $\rightarrow$x3=1.8750, ans =-3.3413\\
+\\
+>> a4=x3; b4=b3; x4=(a4+b4)/2, f(x4)\, $\rightarrow$x4 = 1.9375, ans =-1.4198 \\
+\\
+>> a5=x4; b5=b4; x5=(a5+b5)/2, f(x5)\, $\rightarrow$x5 = 1.9688, ans = -0.2756\\
+\\
+>> a6=x5; b6=b5; x6=(a6+b6)/2, f(x6)\, $\rightarrow$x6=1.9844, ans=0.3453 (n=6 approximation and corresponding y-coordinate)\\
+\\
+>>a7=a6; b7=x6; x7=(a7+b7)/2, f(x7) \, $\rightarrow$x7=1.9766, ans=0.0307\\
+}\\
+The above computations certainly beg to be automated by a loop and this will be
+done soon in a program.
+\\
+Part (c): Let's use a MATLAB loop to find out how many iterations are required
+to guarantee an error < 0.00001:\\
+\mycode{
+	>> n=l; while 1/2\^(n)>=0.00001\\
+	n=n+l;\\
+	end\\
+	>> n $\rightarrow$ n=17
+}
+
+\begin{ExerciseForTheReader}
+	In the example above we found an approximation (x7) to a root of $f(x)$ that was accurate with an error less than
+	0.01. For the actual root $x = r$, we of course have $f( x ) = 0$, but $f(x7)$ = 0.0307.
+	Thus the error of the y-coordinate is over three times as great as that for the
+	jc-coordinate. Use calculus to explain this discrepancy.
+\end{ExerciseForTheReader}
+
+\begin{ExerciseForTheReader}
+	Consider the function $$f(x) = cos(x)-x$$
+	\begin{enumerate}[label=(\alph*)]
+		\item Show that $f(x)$ has exactly one root on the $[0,\pi/2]$.
+		\item Use the bisection method to approximate this root with an $error<0.01$.
+		\item How many iterations would we need to use in the bisection method to guarantee an $error < 10^{-12}$?
+	\end{enumerate}
+\end{ExerciseForTheReader}
+
+With the experience of the last example behind us, we should now be ready to
+write our program for the bisection method. In it we will make use of the
+following built-in MATLAB functions.
+\begin{center}
+	\begin{tabularx}{\linewidth}{ |X|X| }
+		\hline
+		\begin{center} sign(x)  $\rightarrow$\end{center} & \[ = (the \ sign\ of\ the\ real\ number\ x) = \left\{ \begin{array}{ll}
+				                                                                                                          1  & \mbox{if $x > 0$}; \\
+				                                                                                                          0  & \mbox{if $x = 0$}; \\
+				                                                                                                          -1 & \mbox{if $x < 0$}\end{array} \right. \] \\
+		\hline
+	\end{tabularx}
+\end{center}
+
+Recall that with built-in functions such as quad, some of the input variables
+were made optional with default values being used if the variables are not
+specified in calling the function. In order to build such a feature into a
+function, the following command is useful in writing such an M-file:
+\begin{center}
+	\begin{tabularx}{\linewidth}{ |X|X| }
+		\hline
+		\mycode{nargin} (inside the body of a funtion M-file)$\rightarrow$ & Gives the number of input arguments (that are specified when a
+		function is called).                                                                                                                \\\hline
+	\end{tabularx}
+\end{center}
+
+\begin{Program}
+	An M-file for the bisection method.
+	\begin{lstlisting}[numbers=none]
+	function [root, yval] = bisect(varfun, a, b, tol) 
+	% input variables: varfun, a, b, tol 
+	% output variables: root, yval 
+	% varfun = the string representing a mathematical function (built-in, 
+	% M-file, or inline) of one variable that is assumed to have opposite 
+	% signs at the points x=a, and x=b. The program will perform the 
+	% bisection method to approximate a root of varfun in [a,b] with an 
+	% error < tol. If the tol variable is omitted a default value of 
+	% eps*max(abs(a),abs(b),1)is used. 
+	
+	%we first check to see if there is the needed sign change 
+	ya=feval(varfun,a); yb=feval(varfun,b); 
+	if sign(ya)== sign(yb)
+		error('function end has same sign at endpoints')
+	end
+	
+	%we assign the default tolerance, if none is specified 
+	if nargin < 4 
+		tol=eps*max([abs(a)	abs(b) 1]); 
+	end
+	
+	%we now initialize  the iteration
+	an=a; bn=b; n=0;
+	 
+	%finally we set up a loop to perform the bisections
+	while (b-a)/2^n >= tol 
+		xn=(an + bn)/2;yn=feval(varfun, xn); n=n+1
+		if yn==0 
+			fprintf('numerically exact root')
+			root=xn; yval=yn;
+			return
+		elseif sign(yn)==sign(ya)
+			an=xn; ya=yn;
+		else
+			bn=xn; yb=yn;
+		end
+	end
+	
+	root=xn; yval=yn;
+	\end{lstlisting}
+\end{Program}
+
+We will make some more comments on the program as well as the algorithm, but
+first we show how it would get used in a MATLAB session.
+
+\begin{Example}
+	\begin{enumerate}[label=(\alph*)]
+		\item Use the above bisect program to perform the indicated approximation of parts (b) and (c) of Example 6.1.
+		\item Do the same for the approximation problem of Exercise for the Reader 6.1.
+	\end{enumerate}
+	\begin{Solution}
+		Part (a): We need only run these commands to get the first
+		approximation (with tol = 0.01 ): \footnote{We point out that if the function f were instead stored as a function M-file,
+			the syntax for \mycode{bisect} would change to \mycode{bisect(' f ',...)} or \mycode{bisect(@f,...)}.}\\
+		\mycode{
+			>> f=inline('x\string^5-9*x\string^2-x+7' , 'x'): \\
+			>> bisect(f,1,2,.01) \\
+			$\rightarrow$ ans = 1.9766 (this is exactly what we got in Example 6.1(b))\\
+		}
+		By default, a function M-file with more than one output variable will display
+		only the first one (stored into the temporary name "ans"). To display all of the
+		output variables (so in this case also the y-coordinate), use the following syntax:\\
+		\mycode{
+			>> [ x , y ] = bisect( f , 1,2, .01) \\
+			$\rightarrow$ x =  1.9844, y = 0.0307\\
+		}
+		To obtain the second approximation, we should use more decimals.\\
+		\mycode{
+			>> format long\\
+			>> [x,y]=bisect(f,1,2,0.00001)\\
+			$\rightarrow$ x =1.97579193115234, y= 9.717120432028992e-005\\
+		}
+		Part (b): There is nothing very different needed to do this second example:\\
+		\mycode{
+			>> g=inline('cos(x)-x')\\
+			$\rightarrow$ g = inline function: g(x) = cos(x)-x\\
+			\\
+			>> [x,y]=bisect(g,0,pi/2, 0.01)\\
+			$\rightarrow$ x = 0.74858262448819, y = -0.01592835281578\\
+			\\
+			>> [x,y]=bisect(g,0,pi/2,10 A (-12))\\
+			$\rightarrow$ x = 0.73908513321527, y = -1.888489364887391e-013\\
+		}
+
+		Some additional comments about our program are now in order. Although it may
+		have seemed a bit more difficult to follow this program than Example 6.1, we have
+		considerably economized by overwriting an or bn at each iteration, as well as $xn$
+		and $yn$. There is no need for the function to internally construct vectors of all of
+		the intermediate intervals and approximations if all that we are interested in is the
+		final approximation and perhaps also its $y-coordinate$. We used the
+		\mycode{error('message')} flag command in the program. If it ever were to come up
+		(i.e., only when the corresponding if-branch's condition is met), then the error
+		'message' inside would be printed and the function execution would immediately
+		terminate. The general syntax is as follows:
+		\begin{center}
+			\begin{tabularx}{\linewidth}{ |X|X| }
+				\hline
+				\mycode{error('message')} $\rightarrow$ (inside the body of a function) & Causes the message to display on the command window and
+				the execution of the function to be immediately terminated.                                                                       \\\hline
+			\end{tabularx}
+		\end{center}
+
+		Notice also that we chose the default tolerance to be eps $\cdot$ max($|a|$, $|b|$, 1), where
+		\mycode{eps} is MATLAB's unit roundoff. Recall that the unit roundoff is the maximum
+		relative error arising from approximating a real number by its floating point
+		representative (see Chapter 5). Although the program would still work if we had
+		just used e p s as the default tolerance, in cases where max($|a|$, $|b|$) is much larger
+		than 1, the additional iterations would yield the same floating point approximation
+		as with our chosen default tolerance. In cases where max($|a|$, $|b|$) is much smaller
+		than one, our default tolerance will produce more accurate approximations. As
+		with all function M-flles, after having stored \mycode{bisect}, if we were to type help
+		\mycode{bisect} in the command window, MATLAB would display all of the adjacent
+		block of comment lines that immediately follow the function definition line. It is
+		good practice to include comment lines (as we have) that explain various parts of a
+		program.
+	\end{Solution}
+\end{Example}
+
+\begin{ExerciseForTheReader}
+	In some numerical analysis books, the while loop in the above program \mycode{bisect} is rewritten as follows:
+	\begin{lstlisting}[numbers=none]
+		while (b-a)/2^n >= tol 
+			xn=(an + bn)/2; yn=feval(varfun, xn); n=n + l; 
+			if yn*ya > 0 
+				an=xn; ya=yn; 
+			else
+				bn=xn; yb=yn;
+			end
+		end
+	\end{lstlisting}
+\end{ExerciseForTheReader}
+
+The only difference with the corresponding part in our program is with the
+condition in the if-branch, everything else is identical.\\
+(a) Explain that mathematically, the condition in the if-branch above is equivalent
+to the one in our program (i.e., both always have the same truth values).\\
+(b) In mathematics there is no smallest positive number. As in Chapter 5, numbers
+that are too small in MATLAB will underflow to 0. Depending on the version of
+MATLAB you are using, the smallest positive (distinguishable from 0) number in
+MATLAB is something like 2.225 le-308. Anything smaller than this will be
+converted (underflow) to zero. (To see this enter 10 \string^ (-400)) . Using these
+facts, explain why the for loop in our program is better to use than the above
+modification of it.\\
+(c) Construct a continuous function $f(x)$ with a root at x = 0 so that if we apply
+the bisection program on the interval [-1, 3] with tol = 0.001, the algorithm will
+work as it is supposed to; however, if we apply the (above) modified program the
+output will not be within the tolerance 0.001 of x = 0.
+
+We close this section with some further comments on the bisection method. It is
+the oldest of the methods for rootfinding. It is theoretically guaranteed to work as
+long as the hypotheses are satisfied. Recall the assumptions are that $f(x)$ is
+continuous on [a,b] and that $f(a)$ and $f(b)$ are of opposite signs. In this case it
+is said that the interval [a,b] is a bracket of the function $f(x)$. The bisection
+method unfortunately cannot be used to locate zeros of functions that do not
+possess brackets. For example, the function y = x2 has a zero only at x = 0 but
+otherwise y is always positive so this function has no bracket. Although the
+bisection method converges rather quickly, other methods that we will introduce
+will more often work much faster. For a single rootfinding problem, the difference
+in speed is not much of an issue, but for more complicated or advanced problems
+that require numerous rootfinding "subproblems," it will be more efficient to use
+other methods. A big advantage of the bisection method over other methods we
+will introduce is that the error analysis is so straightforward and we are able to
+determine the number of necessary iterations quite simply before anything else is
+done. The residual of an approximation xn to a root x = r of $f(x)$ is the value
+$f(x_n)$. It is always good practice to examine the residual of approximations to a
+root. Theoretically the residuals should disintegrate to zero as the approximations
+get better and better, so it would be a somewhat awkward situation if your
+approximation to a root had a very large residual. Before beginning any
+rootfinding problem, it is often most helpful to begin with a (computer-generated)
+plot of the function.
+
+\begin{Exercises}
+	\begin{enumerate}
+		\item The function $f(x) - sin(x)$ has a root at $x = π$.
+		      Find a bracket for this root and use the
+		      bisection method with $tol = 10^{12}$ to obtain an approximation of $\pi$ that is accurate to 12
+		      decimals. What is the residual?
+		\item The function $ln(x) - 1$ has a root at $x = e$. Find a bracket for this root and use the bisection
+		      method with $tol = 10^{12}$ to obtain an approximation of $e$ that is accurate to 12 decimals. What
+		      is the residual?
+		\item Apply the bisection method to find a root of the equation $x^6 + 6x^2 + 2x = 20$ in the interval [0,2]
+		      with tolerance $10^7$.
+		\item Apply the bisection method to find a root of the equation $x^9 + 6x^2 + 2x = 3$ in the interval [-2,-1]
+		      with tolerance $10^7$.
+		\item Use the bisection method to approximate the smallest positive root of the equation $tan(x) = x$
+		      with error < $10^{10}$.
+		\item Use the bisection method to approximate the smallest positive root of the equation
+		      $e^{2x} = sin(x) + l$ with error < $10^{10}$.
+		\item (Math Finance) It can be shown\footnote{
+			      See, for example, Chapter 3 and Appendix B of [BaZiBy-02] for detailed explanations and
+			      derivations of these and other math finance formulas.} that if equal monthly deposits of PMT dollars are made into
+		      an annuity (interest-bearing account) that pays $100r\%$ annual interest compounded monthly,
+		      then the value $A(t)$ of the account after t years will be given by the formula
+		      $$A(t) = PMT \frac{(1+r/12)^{12t}-1}{r/12}$$
+		      Suppose Mr. Jones is 30 years old and can afford monthly payments of \$350.00 into such an
+		      annuity. Mr. Jones would like to plan to be able to retire at age 65 with a \$1 million nest egg.
+		      Use the bisection method to find the minimum interest rate (= lOOr \%) Mr. Jones will need to
+		      shop for in order to reach his retirement goal.
+		\item (Math Finance) It can be shown that to pay off a 30-year house mortgage for an initial loan of
+		      PV dollars with equal monthly payments of PMT dollars and a fixed annual interest rate of
+		      100r\% compounded monthly, the following equation must hold:
+		      $$PV = PMT \frac{1-(1+r/12)^{-360}}{r/12}$$
+		      (For a 15-year mortgage, change 360 to 180.) Suppose the Bradys wish to buy a house that
+		      costs \$140,000. They can afford monthly payments of \$1,100 to pay off the mortgage. What
+		      kind of interest rate 100r\% would they need to be able to afford this house with a 30-year
+		      mortgage? How about with a 15-year mortgage? If they went with a 30-year mortgage, how
+		      much interest would the Bradys need to pay throughout the course of the loan?
+		\item Modify the \mycode{bisect} program in the text to create a new one, \mycode{bisectvv} (stands for: bisection
+		      algorithm, vector version), that has the same input variables as \mycode{bisect} , but the output variables
+		      will now be two vectors x and y that contain all of the successive approximations
+		      ( $x = [x_1, x_2, \dots, x_n ]$) and the corresponding residuals ( $y = [f(x_1), f(x_n), \dots, f(x_n)]$).
+		      Run this program to redo Exercise 3, print only every fourth component,
+		      $x_1, y_1, x_5, y_5, x_9, y_9, \dots$ and also the very last components, $x_n, y_n$ .
+		\item Modify the \mycode{bisect} program in the text to create a new one, \mycode{bisectte} (stands for: bisection
+		      algorithm, tell everything), that has the same input variables as \mycode{bisect} , but this one has no
+		      output variables. Instead, it will output at each of the iterations the following phrase: "Iteration
+		      $n=< k >$, $approximation = < xn >$, $residual = < yn >$, "where the values of k, $xn$, and $yn$ at
+		      each iteration will be the actual numbers. $< k >$ should be an integer and the other two should be
+		      floating point numbers. Apply your algorithm to the function $f(x) = 5x^3 - 8x^2 + 2$ with
+		      bracket [1,2] and tolerance = 0.002.
+		\item Apply the \mycode{bisect} program to $f(x) = tan(x)$ with tol = 0.0001 to each of the following sets of
+		      intervals. In each case, is the output (final approximation) within the tolerance of a root?
+		      Carefully explain what happens in each case.
+		      (a) [a,b] = [5,7], (b) [a,b] = [4,7], (c) [a,b] = [4,5].
+		\item In applying the bisection method to a function $f(x)$
+		      using a bracket [a, b] on which $f(x)$ is
+		      known to have exactly one root r, is it possible that $x_2$ is a better approximation to r than
+		      $x_5$? (This means $|x_2 - r| < |x_5 - r|$.)
+		      If no, explain why not; if yes, supply a specific
+		      counterexample.
+	\end{enumerate}
+\end{Exercises}
+
+\section{NEWTON'S METHOD}
+\label{sec:6_3}
+\noindent Under most conditions, when Newton's method works, it converges very quickly,
+much faster indeed than the bisection method. It is at the foundation of all
+contemporary state-of-the-art rootfinding programs. The error analysis, however,
+is quite a bit more awkward than with the bisection method and this will be
+relegated to Section 6.5. Here we examine various situations in which Newton's
+method performs outstandingly, where it can fail, and in which it performs poorly.
+
+\noindent \textbf{ASSUMPTIONS:} $f(x)$ is a differentiable function that has a root $x = r$ which
+we wish to accurately approximate. We would like the approximation to be
+accurate to MATLAB's machine precision of about 15 significant digits.
+
+The idea of the method will be to repeatedly use tangent lines of the function
+situated at successive approximations to "shoot at" the next approximation. More
+precisely, the next approximation will equal the jc-intercept of the tangent line to
+the graph of the function taken at the point on the graph corresponding to the
+current approximation to the root. See Figure \ref{fig:fig_6_6} for an illustration of Newton's
+method. We begin with an initial approximation JC 0 that was perhaps obtained
+from a plot. It is straightforward to obtain a recursion formula for the next
+approximation $x_{n+l}$ in terms of the current approximation $x_n$ . The tangent line to
+the graph of $y = f(x)$ at x = xn is given by the first-order Taylor polynomial
+centered at $x = x_n$, which has equation (see equation (3) of Chapter 2):
+$y = f(x_n) + f'(x_n)(x - x_n)$. The next approximation is the jc-intercept of this line
+and is obtained by setting $y = 0$ and solving for x. Doing this gives us the
+recursion formula:
+\begin{equation}\label{equation:6_2}
+	x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+\end{equation}
+where it is required that $f'(x_n) \neq 0$.
+It is quite a simple task to write a
+MATLAB program for Newton's
+method, but following the usual
+practice, we will begin working
+through an example "by hand".
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_6}
+	\label{fig:fig_6_6}
+	\caption{Illustration of Newton's
+		method.To go from the initial
+		approximation (or guess) $x_0$ to the next
+		approximation $x_1$, , we simply take the $x_1$,
+		to be the x-intercept of the tangent line to
+		the graph of $y = f(x)$ at the point
+		$(x_0, f(x_0))$. This procedure gets iterated to obtain successive approximations.}
+\end{figure}
+
+\begin{Example}
+	Use Newton's method to approximate $\sqrt[4]{2}$ by performing five
+	iterations on the function $f(x) = x^4 - 2$ using initial guess x = 1.5. (Note that
+		[1, 2] is clearly a bracket for the desired root.)
+\end{Example}
+
+\noindent SOLUTION: Since $f'(x) = 4x^3$, the recursion formula (\ref{equation:6_2}) becomes:
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} = x_n - \frac{x_n^4 - 2}{4x_n^3}$$
+
+Let's now get MATLAB to find the first five iterations along with the residuals
+and the errors. For convenient display, we store this data in a 5x3 matrix with
+the first column containing the approximations, the second the residuals, and the
+third the errors.\\
+\mycode{
+>>  x(l)=1.5; \%initialize, remember zero can't be an index\\
+>>  for n=l:5\\
+x(n+l)=x(n)-(x(n)\string^4-2)/(4*x(n)\string^3);\\
+A(n, :) = [ x(n+l)  (x(n+1)\string^4-2)  abs(x(n+1)-2\string^(1/4)));\\
+end\\
+}
+To be able to see how well the approximation went, it is best to use a different
+format (from the default format short) when we display the matrix A.\\
+\mycode{
+	>> format long e\\
+	>> A\\
+}
+We display this matrix in Table \ref{table:6_1}.
+
+\begin{Table}
+	The successive approximations, residuals, and errors resulting from applying
+	Newton's method to $f(x) = x^4 - 2$ with initial approximation $x_0 = 1.5$.\\
+	\begin{center}
+		\begin{tabular}{ |c|c|c|c| }
+			\hline
+			n & $x-n$                & $f(x_n)$             & Error = $|r - x_n|$  \\
+			\hline
+			1 & 1.2731481481481e+000 & 6.2733693232248e-001 & 8.3941033145427e-002 \\
+			\hline
+			2 & 1.1971498203523e+000 & 5.3969634451728e-002 & 7.9427053495620e-003 \\
+			\hline
+			3 & 1.1892858119092e+000 & 5.2946012602728e-004 & 7.8696906514741e-005 \\
+			\hline
+			4 & 1.1892071228136e+000 & 5.2545275686100e-008 & 7.8109019252537e-009 \\
+			\hline
+			5 & 1.1892071150027e+000 & 1.3322676295502e-015 & 2.2204460492503e-016 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{Table}
+
+
+Table \ref{table:6_1} shows quite clearly just how fast the errors are disintegrating to zero.
+As we mentioned, if the conditions are right, Newton's method will converge
+extremely quickly. We will give some clarifications and precise limitations of this
+comment, but let us first write an M-file for Newton's method.
+
+\begin{Program}
+	An M-file for Newton's method \footnote{
+		When one needs to use an apostrophe in a string argument of an \mycode{fprintf} statement, the correct
+		syntax is to use a double apostrophe. For example, \mycode{fprintf('Newton's')}  would produce an
+		error message but \mycode{fprintf(Newton''s)} would produce $\rightarrow$ Newton's.
+	}
+	\begin{lstlisting}[numbers=none]
+	function [root , yval] = newton(varfun, dvarfun, xO, tol, nmax)
+	% input variables : varfun, dvarfun, xO, tol, nmax
+	% output variables : root , yval
+	% varfun = the stringrepresenting a mathematical function ( built-in,
+	% M-file, orinline) and dvarfun = the stringrepresenting the
+	% derivative, xO = the initial approx. The program will perform
+	% Newton's method t o approximate a root of varfun near x=x0 until
+	% either successive approximations differ by less than tol or nmax
+	% iterations have been completed, whichever comes first. If the tol
+	% and nmax variables are omitted, default values of
+	% eps*max(abs(a), abs(b), 1) and 30 are used.
+	% we assign the default tolerance and maximum number of iterations if
+	% none arespecified
+	if nargin < 4
+		tol=eps*max([abs(a) abs(b) 1]); nmax=30;
+	end
+
+	%we now initialize the iteration
+	xn=x0;
+
+	%finally we set up a loop to perform the approximations
+	for n=l:nmax
+		yn=feval(varfun, x n ) ; ypn =feval(dvarfun, xn);
+		if yn == 0
+			fprintf('Exact root found\r')
+			root - xn; yval = 0;
+			return
+		end
+		if ypn == 0
+			error('Zero derivative encountered, Newton''s method failed, try changing x0')
+		end
+		xnew=xn-yn/ypn;
+		if abs(xnew-xn)<tol
+			fprintf('Newton''s method has converged\r' )
+			root = xnew; yval = feval(varfun, root);
+			return
+		elseif n==nmax
+			fprintf('Maximum number of iterations reac hed\r')
+			root = xnew; yval = feval(varfun, root);
+			return
+		end
+		xn=xnew;
+	end
+	\end{lstlisting}
+\end{Program}
+
+\begin{Example}
+	(a) Use the above newton program to find a root of the
+	equation of Example 6.3 (again using $x_0$ = 1.5).\\
+	(b) Next use the program to approximate $e$ by finding a root of the equation
+	$ln(x) - 1 = 0$. Check the error of this latter approximation.
+\end{Example}
+\begin{Solution}
+	Part (a): We temporarily construct some inline ftmctions. Take
+	careful note of the syntax.\\
+	\mycode{
+	>> f = inline('x\string^4-2') $\rightarrow$ f=inline function: f(x)=x\string^4-2\\
+	>> fp = inline('4*x\string^3') $\rightarrow$ f=inline function: f(x)=4*x\string^3\\
+	>> format long\\
+	>> newton(f, fp, 1.5)\\
+	$\rightarrow$ Newtons method has converged $\rightarrow$ ans = 1.18920711500272\\
+	\\
+	>> [x,y)=newton(f,fp,1.5) \%to see also to see the y-value\\
+	$\rightarrow$ Newtons method has converged\\
+	$\rightarrow$ x =1.18920711500272, y = -2.220446049250313e-016\\
+	}
+	Part (b):
+	\mycode{
+		>> f=inline('log(x)-l'); fp=inline('1/x');\\
+		>> [x, y]=newton(f,fp,3)\\
+		$\rightarrow$ Newtons method has converged $\rightarrow$ x = 2.71828182845905, y = 0\\
+		>> abs((exp(1) -x)) $\rightarrow$ ans = 4.440892098500626e-016\\
+	}
+	We see that the results of part (a) nicely coincide with the final results of the
+	previous example.
+\end{Solution}
+
+\begin{ExerciseForTheReader}
+	In part (b) of Example \ref{example:6_4}, show using
+	calculus that the y-coordinate corresponding to the approximation of the root e
+	found is about as far from zero as the x-coordinate is from the root. Explain how
+	floating point arithmetic caused this y-coordinate to be outputted as zero, rather
+	than something like $10^{-17}$. (Refer to Chapter \ref{chap:5} for details about floating point
+	arithmetic.)
+\end{ExerciseForTheReader}
+
+We next look into some pathologies that can cause
+Newton's method to fail. Later, in Section \ref{sec:6_5}, we will give some
+theorems that will give some guaranteed error estimates with
+Newton's method, provided certain hypotheses are satisfied.
+The first obvious problem (for which we built an error message
+into our program) is if at any approximation $x_n$ we have
+$f'(x_n) = 0$ - Unless the function at hand is highly oscillatory near
+the root, such a problem can often be solved simply by trying
+to reapply Newton's method with a different initial value $x_0$
+(perhaps after examining a more careful plot); see Figure \ref{fig:fig_6_7}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_7}
+	\caption{
+		A zero derivative encountered in
+		Newton's method.
+		Here $x_2$ is undefined.
+		Possible remedy: Use a different initial value $x_0$.}
+	\label{fig:fig_6_7}
+\end{figure}
+
+A less obvious problem that can
+occur in Newton's method is
+\textbf{cycling}. Cycling is said to occur
+when the sequence of xns gets
+caught in an infinite loop by
+continuing to run through the
+same set of fixed values.
+
+We have illustrated the cycling
+phenomenon with a cycle having
+just two values. It is possible for
+such a "Newton cycle" to have any number of values.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_8}
+	\caption{
+		A cycling phenomenon
+		encountered in Newton's method. Possible
+		remedy: Take initial approximation closer to
+		actual root.}
+	\label{fig:fig_6_8}
+\end{figure}
+
+\begin{ExerciseForTheReader}
+	(a) Construct explicitly a polynomial $y = p(x)$
+	with an initial approximation $x_0$ to a root such that Newton's method
+	will cause cycling.\\
+	(b) Draw a picture of a situation where Newton's method enters into a cycle
+	having exactly four values (rather than just two as in Figure \ref{fig:fig_6_8}).
+\end{ExerciseForTheReader}
+
+Another serious problem with Newton's method is that the approximations can
+actually sometimes continue to move away from a root. An illustration is
+provided by Figure \ref{fig:fig_6_8} if we move $x_0$ to be a bit farther to the left. This is
+another reason why it is always recommended to examine residuals when using
+Newton's method. In the next example we will use a single function to exhibit all
+three phenomena in Newton's method: convergence, cycling, and divergence.
+
+\begin{Example}
+	Consider the function $f(x) = arctan(x)$, which has a single root
+	at $x = 0$. The graph is actually similar in appearance (although horizontally
+	shifted) to that of Figure \ref{fig:fig_6_8}. Show that there exists a number a > 0 such that if
+	we apply Newton's method to find the root $x = 0$ (a purely academic exercise
+	since we know the root) with initial approximation $x_0 > 0$, the following will happen:
+	\begin{enumerate}[label=(\roman*)]
+		\item If $x_0 < a$, then $x_n \rightarrow 0$ (convergence to the root, as desired).
+		\item If $x_0 = a$, then xn will cycle back and forth between $a$ and $-a$.
+		\item  If $x_0 > a$, then $| x_n | \rightarrow \infty$ (the approximations actually move farther and farther away from the root).
+	\end{enumerate}
+	Next apply the bisection program to approximate this critical value $x = a$ and give
+	some examples of each of (i) and (iii) using the Newton method program.
+	\begin{Solution}
+		Since $f'(x) = \frac{1}{1+x^2}$, Newton's recursion formula (\ref{equation:6_2}) becomes:
+		$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} = x_n - (1+x_n^2)arctan(x_n) = g(x_n)$$
+		(The function $g(x)$ is defined by the above formula.) Since $g(x)$ is an odd
+		function (ie.,$g(-x) = -g(x)$), we see that we will enter into a cycle (with two
+		numbers) exactly when $(x_1 =)g(x_0) = -x_0$. (Because then$ x_2 = g(x_1,) = g(-x_0)
+			= -(-x_0) = x_0$ , and so on.) Thus, Newton cycles can be found by looking for the
+		positive roots of $g(x) + x = 0$. Notice that $(g(x) + x)' = 1 - 2xarctan(x)$ so that
+		the function in parentheses increases (from its initial value of 0 at x = 0) until x
+		reaches a certain positive value (the root of $1-2xarctan(x) = 0$ ) and after this
+		value of $x$ it is strictly decreasing and will eventually become zero (at some value
+		$x = a$ ) and after this will be negative. Again, since $g(x)$ is an odd function, we
+		can summarize as follows: (i) for $0 < | x | < a, | g(x) | < | x |$, (ii) $g(\pm a) = \pm a$,
+		and (iii) for $| x | > a, | g(x) | > | x |$. Once $x$ is situated in any of these three
+		ranges, $g(x)$ will thus be in the same range and by the noted properties of $g(x)$
+		and of $g(x)$ + $x$ we can conclude the assertions of convergence, cycling, and
+		divergence to infinity as $x_0$ lies in one of these ranges. We now provide some
+		numerical data that will demonstrate each of these phenomena.
+
+		First, since $g(a) = -a$, we may approximate $x = a$ quite quickly by using the
+		bisection method to find the positive root of the function $h(x) = g(x) + x$. We
+		must be careful not to pick up the root $x = 0$ of this function.\\
+		\mycode{
+			>> h = inline('2*x-(1+x\string^2)*atan(x)');\\
+			>> h(0.5), h(5) \%will show a bracket to the unique positive root\\
+			$\rightarrow$ ans = 0.4204, ans =-25.7084\\
+			\\
+			>> format long\\
+			>> a=bisect(h,.5,5) $\rightarrow$ a=1.39174520027073\\
+		}
+
+		To make things more clear in this example, we use a modification of the
+		\mycode{newton} algorithm, called \mycode{newtonsh}, that works the same as newton, except
+		the output will be a matrix of all of the successive approximations $x_n$ and the
+		corresponding y-values. (Modifying our \mycode{newton} program to get \mycode{newtonsh} is
+		straightforward and is left to the reader.)\\
+		mycode{
+				>> format long e\\
+				>> B=newtonsh(f,fp,1)\\
+				$\rightarrow$ Newton's method has converged\\
+				(We display the matrix B in Table \ref{table:6_2})
+			}
+		\begin{Table}
+			The result of applying Newton 's method to the function $f(x) = arctan(x)$
+			with $x_0 = I < a$ (critical value). Very fast convergence to the root $x = 0$.
+			\begin{center}
+				\begin{tabular}{ |c|c|c| }
+					\hline
+					n & $x-n$                   & $f(x_n)$                \\
+					\hline
+					1 & -5.707963267948966e-001 & -5.186693692550166e-001 \\
+					\hline
+					2 & 1.168599039989131e-001  & 1.163322651138959e-001  \\
+					\hline
+					3 & -1.061022117044716e-003 & -1.061021718890093e-003 \\
+					\hline
+					4 & 7.963096044106416e-010  & 7.963096044106416e-010  \\
+					\hline
+					5 & 0                       & 0                       \\
+					\hline
+					6 & 0                       & 0                       \\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{Table}
+		\mycode{
+			>> B=newtonsh(f, fp, a) $\rightarrow$ Maximum number of iterations reached (see Table \ref{table:6_3})\\
+		}
+		\begin{Table}
+			The result of applying Newton 's method to the function $f(x) = arctan(x)$
+			with $x_0 = I < a$ (critical value). Very fast convergence to the root $x = 0$.
+			\begin{center}
+				\begin{tabular}{ |c|c|c| }
+					\hline
+					n     & $x-n$                   & $f(x_n)$                \\
+					\hline
+					1     & -1.391745200270735e+000 & -9.477471335169905e-001 \\
+					\hline
+					2     & 1.168599039989131e-001  & 9.477471335169905e-001  \\
+					\hline
+					\dots & \dots                   & \dots                   \\
+					\hline
+					28    & 1.391745200270735e+000  & 9.477471335169905e-001  \\
+					\hline
+					29    & -1.391745200270735e+000 & -9.477471335169905e-001 \\
+					\hline
+					30    & 1.391745200270735e+000  & 9.477471335169905e-001  \\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{Table}
+		\mycode{
+			>> B=newtonsh(f,fp,1.5)\\
+			$\rightarrow$??? Error using ==> newtonsh\\
+			$\rightarrow$zero derivative encountered, Newton's method failed, try changing xO\\
+		}
+		We have got our own error flag. We know that the derivative $1/(1 + x^2)$ of
+		$arctan(x)$ is never zero. What happened here is that the approximations xn were
+		getting so large, so quickly (in absolute value) that the derivatives underflowed to
+		zero. To get some output, we redo the above command with a cap on the number
+		of iterations; the results are displayed in Table \ref{table:6_4}.\\
+		\mycode{
+			>> B=newtonsh(f,fp,1.5,0.001,9)\\
+			$\rightarrow$ Maximum number of iterations reached  $\rightarrow$ B=\\
+		}
+		\begin{Table}
+			The result of applying Newton's method to the function $f(x) = arctan(x)$
+			with $x_0 = 1.5 > a$ (critical value). The successive approximations alternate between positive
+			and negative values and their absolute values diverge very quickly to infinity. The
+			corresponding y-values will, of course, alternate between tending to $\pm \pi/2$, the limits of
+			$f(x) = arctan(x) as x \rightarrow \pm \infty$.
+			\begin{center}
+				\begin{tabular}{ |c|c|c| }
+					\hline
+					n & $x-n$                   & $f(x_n)$                \\
+					\hline
+					1 & -1.694079600553820e+000 & -1.037546359137891e+000 \\
+					\hline
+					2 & 2.321126961438388e+000  & 1.164002042421975e+000  \\
+					\hline
+					3 & -5.114087836777514e+000 & -1.377694528702752e+000 \\
+					\hline
+					4 & 3.229568391421002e+001  & 1.539842326908012e+000  \\
+					\hline
+					5 & -1.575316950821204e+003 & -1.570161533990085e+000 \\
+					\hline
+					6 & 3.894976007760884e+006  & 1.570796070053906e+000  \\
+					\hline
+					7 & -2.383028897355213e+013 & -1 570796326794855e+000 \\
+					\hline
+					8 & 8.920280161123818e+026  & 1.570796326794897e+000  \\
+					\hline
+					9 & -1.249904599365711e+054 & -1.570796326794897e+000 \\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{Table}
+	\end{Solution}
+\end{Example}
+
+
+In all of the examples given so far, when Newton's method
+converged to a root, it did so very quickly. The main reason for this
+is that each of the roots being approximated was a simple root.
+Geometrically this means that the graph of the differentiable
+function was not tangent to the x-axis at this root. Thus a root
+$x = r$ is a simple root of $f(x)$ provided that ( $f(r) = 0$ and)
+$f'(r) \neq 0$. A root r that is not simple is called a multiple root
+of \textbf{order M} $(M > 1) if f(r) = f'(r) = f''(r) = \dots  f^{M-1}(r) = 0$
+but $f^{(M)(r)} \neq 0$ (see Figure \ref{fig:fig_6_9}).
+These definitions were given for polynomials in
+Exercises \ref{exercises:6_2} Multiple roots of order 2 are sometimes called double roots,
+order-3 roots are triple roots, and so on. If $x = r$ is an order-M root of $f(x)$ it
+can be showh that $f(x) = (x - r)^M h(x)$ for some continuous function $h(x)$ (see Exercise 13).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\linewidth]{fig_6_9}
+	\caption{
+		Illustration of the two types of roots a function can have. Newton's method
+		performs much more effectively in approximating simple roots.}
+	\label{fig:fig_6_9}
+\end{figure}
+
+\begin{Example}
+	How many iterations will it take for Newton's method to
+	approximate the multiple root $x = 0$ of the function $f(x) = x^{21}$ using an initial
+	approximation of $x = 1$ if we want an error < 0.01? How about if we want an
+	error < 0.001?
+	\begin{Solution}
+		We omit the MATLAB commands, but summarize the results. If
+		we first try to run newton (or better a variant of it that displays some additional
+		output variables), with a tolerance of 0.01, and a maximum number of iterations =
+		50, we will get the message that the method converged. It did so after a whopping
+		33 iterations and the final value of root = 0.184 (which is not within the desired
+		error tolerance) and a (microscopically small) yval = 1.9842e-015. The reason the
+		program gave us the convergence message is because the adjacent root
+		approximations differed by less than the 0.01 tolerance. To get the root to be less
+		than 0.01 we would actually need about 90 iterations!
+		And to get to an
+		approximation with a 0.001 tolerated error, we would need to go through 135
+		iterations. This is a pathetic rate of convergence; even the (usually slower)
+		bisection method would only take 7 iterations for such a small tolerance (why?).
+	\end{Solution}
+\end{Example}
+
+\begin{Exercises}
+	\begin{enumerate}
+		\item For each of the functions shown below, find Newton's recursion formula (\ref{equation:6_2}).
+		      Next, using the value of JC 0 that is given, find each of $x_1$, $x_2$, $x_3$ .
+		      \begin{enumerate}
+			      \item $f(x) = x^3 - 2x + 5; x_0 = -3$
+			      \item $f(x) = e^x - 2cos(x); x_0 = 1$
+			      \item $f(x) = xe^{-x}; x_0 = 0.5$
+			      \item $f(x) = ln(x^4) - cos(x); x_0 = 1$
+		      \end{enumerate}
+		\item For each of the functions shown below, find Newton's recursion formula (\ref{equation:6_2}). Next, using the
+		      value of $x_0$ that is given, find each of $x_1$, $x_2$, $x_3$.
+		      \begin{enumerate}
+			      \item $f(x) = x^3 - 15x + 24; x_0 = -3$
+			      \item $f(x) = e^x - 2e^{-x}; x_0 = 1$
+			      \item $f(x) = ln(x); x_0 = 0.5$
+			      \item $f(x) = sec(x)-2e^{x^2}; x_0 = 1$
+		      \end{enumerate}
+		\item Use Newton's method to find the smallest positive root of each equation to 12 digits of accuracy.
+		      Indicate the number of iterations used.
+		      \begin{enumerate}
+			      \item $tan(x)=x$
+			      \item $xcos(x)=1$
+			      \item $4x^2 = e^{x/2} -2$
+			      \item $(1+x)ln(1+x^2) = cos(\sqrt{x})$
+		      \end{enumerate}
+		      \textbf{Suggestion:} You may wish to modify our newton program so as to have it display another
+		      output variable that gives the number of iterations.
+		\item Use Newton's method to find the smallest positive root of each equation to 12 digits of accuracy.
+		      Indicate the number of iterations used.
+		      \begin{enumerate}
+			      \item $e^{-x}=x$
+			      \item $e^x - x^8 = ln(1+2^x)$
+			      \item $x^4-2x^3+x^2-5x+2=0$
+			      \item $e^x = x^{\pi}$
+		      \end{enumerate}
+		\item For the functions given in each of parts (a) through (d) of Exercise 1, use the Newton's method
+		      program to find all roots with an error at most $10^{10}$.
+		\item For the functions given in each of parts (a) through (c) of Exercise 2, use the Newton's method
+		      program to find all roots with an error at most $10^{10}$ . For part (d) find only the two smallest
+		      positive roots.
+		\item Use Newton's method to find all roots of the polynomial $x^4-5x^2+2$ with each being accurate
+		      to about 15 decimal places (MATLAB's precision limit). What is the multiplicity of each of
+		      these roots?
+		\item Use Newton's method to find all roots of the polynomial $x^6 -4x^4 -12x^2 +2$ with each being
+		      accurate to about 15 decimal places (MATLAB's precision limit). What is the multiplicity of
+		      each of these roots?
+		\item (Finance-Retirement Plans) Suppose a worker puts in PW dollars at the end of each year into a
+		      401(k) (supplemental retirement plan) annuity and does this for NW years (working years).
+		      When the worker retires, he would like to withdraw from the annuity a sum of PR dollars at the
+		      end of each year for NR years (retirement years). The annuity pays 100r\% annual interest
+		      compounded annually on the account balance. If the annuity is set up so that at the end of the
+		      NR years, the account balance is zero, then the following equation must hold:
+		      $$PW[(1+r)^{NW}-1] = PR[1-(1-r)^{-NR}]$$
+		      (see [BaZiBy-02]). The problem is for the worker to decide on what interest rate is needed to
+		      fund this retirement scheme. (Of course, other interesting questions arise that involve solving
+		      for different parameters, but any of the other variables can be solved for explicitly.) Use
+		      Newton's method to solve the problem for each of the following parameters:
+		      \begin{enumerate}
+			      \item PW = 2,000, PR = 10,000, NW = 35, NR = 25
+			      \item PW = 5,000, PR = 20,000, NW = 35, NR = 25
+			      \item PW = 5,000, PR = 80,000, NW = 35, NR = 25
+			      \item PW = 5,000, PR = 20,000, NW = 25, NR = 25
+		      \end{enumerate}
+		\item For which values of the initial approximation $x_0$ will Newton's method converge to the root $x=1$ of $f(x)=sin^2(x)$?
+		\item For which values of the initial approximation $x_0$ will Newton's method converge to the root $x=0$ of $f(x)=sin^2(x)$?
+		\item For (approximately) which values of the initial approximation $x_0 > 0$ will Newton's method converge to the root of
+		      \begin{enumerate}
+			      \item $f(x) = ln(x)$
+			      \item $f(x) = x^3$
+			      \item $f(x) = \sqrt[3]{x}$
+			      \item $f(x) = e^x -1$
+		      \end{enumerate}
+		\item \label{ex:6_3_13}The following algorithm for calculating the square root of a number $A > 0$ actually was around
+		      for many years before Newton's method: $$x_{n+1} = \frac{1}{2} \left({x_n + \frac{A}{x_n}}\right)$$
+		      \begin{enumerate}
+			      \item  Run through five iterations of it to calculate $\sqrt{10}$ starting with $x_0 = 3$. What is the error?
+			      \item Show that this algorithm can be derived from Newton's method.
+		      \end{enumerate}
+		\item Consider each of the following two schemes for approximating $\pi$:
+		      SCHEME 1: Apply Newton's method to $f(x) = cos(x)+1$ with initial approximation $x_0 = 3$.
+		      SCHEME 2: Apply Newton's method to $f(x) = sin(x)$ with initial approximation $x_0 = 3$.
+		      Discuss the similarities and differences of each of these two schemes. In particular, explain how
+		      accurate a result each scheme could yield (working on MATLAB's precision). Finally use one
+		      of these two schemes to approximate π with the greatest possible accuracy (using MATLAB).
+		\item Prove that if $f(x)$ has a root $x = r$ of multiplicity M then we can write:
+		      $f(x)=(x-r)^M h(x)$  for some continuous function $h(x)$\\
+		      \textbf{Suggestion:} Try using L'Hopital's rule.
+	\end{enumerate}
+\end{Exercises}
+
+\section{THE SECANT METHOD} \label{sec:6_4}
+\noindent When conditions are ripe, Newton's method works very
+nicely and efficiently. Unlike the bisection method, however, it
+requires computations of the derivative in addition to the
+function. Geometrically, the derivative was needed to obtain
+the tangent line at the current approximation xn (more pre-
+cisely at $(x_n,f(x_n))$) whose x-intercept was then taken as the
+next approximation $x_{n+1}$. If instead of this tangent line, we
+use the secant line obtained using the current as well as the
+previous approximation (i.e., the line passing through the points
+$(x_n, f(x_n))$ and $(x_{n-1}, f(x_{n-1}))$) and take the next
+approximation $x_{n+1}$, to be the x-intercept of this line, we get the
+so-called \textbf{secant method}; see Figure \ref{fig:fig_6_10}. Many of the problems that plagued
+Newton's method can also cause problems for the secant method. In cases where
+it is inconvenient or expensive to compute derivatives, the secant method is a good
+replacement for Newton's method. Under certain hypotheses (which were hinted
+at in the last section) the secant method will converge much faster than the
+bisection method, although not quite as fast as Newton's method. We will make
+these comments precise in the next section.
+\begin{figure}[h]
+	\centering
+	\includegraphics{fig_6_10}
+	\caption{
+		Illustration of the secant method.
+		Current approximation xn and previous approximation $x_n$ are used to obtain a secant line
+		through the graph of $y = f(x)$. The x-intercept
+		of this line will be the next approximation $x_{n+1}$.}
+	\label{fig:fig_6_10}
+\end{figure}
+
+To derive the recursion formula for the secant method we first note that since the
+three points $(x_{n-1},f(x_{n-1})), (x_n,f(x_n))$ and $(x_{n+1},0)$ all lie on the same (secant)
+line, we may equate slopes:
+$$\frac{0-f(x_n)}{x_{n+1}-x_n} = \frac{f(x_n) - f(x_{n-1})}{x_n - x_{n-1}}$$
+Solving this equation for xn+l yields the desired recursion formula:
+\begin{equation} \label{equation:6_3}
+	x_{n+1} = x_n - f(x_n) \cdot \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}
+\end{equation}
+Another way to obtain (\ref{equation:6_3}) is to replace $f(x_n)$ in Newton's method (\ref{equation:6_3}) with the
+difference quotient approximation $(f(x_n) - f(x_{n-1})) / (x_n - x_{n-1} )$.
+\begin{Example}
+	We will recompute $\sqrt[4]{2}$ by running through five iterations of the
+	secant method on the function $f(x) = x^4 - 2$ using initial approximations $x_0 = 1.5$
+	and $x = 1$. Recall in the previous section we had done an analogous computation
+	with Newton's method.
+	\begin{Solution}
+		We can immediately get MATLAB to find the first five iterations
+		along with the residuals and the errors. For convenient display, we store this data
+		in a 5x3 matrix with the first column containing the approximations, the second
+		the residuals, and the third the errors.\\
+		\mycode{
+		x(1)=1.5; x(2)=1; \% initialize, recall zero cannot be an index\\
+		>> for n=2:6\\
+		x(n+l)=x(n)-f(x(n))*(x(n)-x(n-l))/(f(x(n))-f(x(n-1)));\\
+		A(n-1, :) = [ x(n+l) (x(n+1)\string^4-2) abs(x(n+1)-2\string^(1/4))];\\
+		end\\
+		>> A\\
+		}
+		Again we display the matrix in tabular form (now in format long).
+		\begin{Table}
+			The successive approximations, residuals, and errors resulting from applying
+			the secant method to $f(x) = x^4 - 2$ with initial approximation $x_0 = 1.5$.
+			\begin{center}
+				\begin{tabular}{ |c|c|c|c| }
+					\hline
+					n & $x-n$            & $f(x_n)$          & Error = $|r - x_n|$ \\
+					\hline
+					2 & 1.12307692307692 & -0.40911783200868 & 0.06613019192580    \\
+					\hline
+					3 & 1.20829351390874 & 0.13152179071884  & 0.019086396906013   \\
+					\hline
+					4 & 1.18756281243219 & -0.01103858431975 & 0.00164430257053    \\
+					\hline
+					5 & 1.18916801020327 & -0.00026305171011 & 0.00003910479945    \\
+					\hline
+					6 & 1.18920719620308 & 0.00000054624878  & 0.00000008120036    \\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{Table}
+		Compare the results in Table \ref{table:6_5} with those of Table \ref{table:6_1}, which documented
+		Newton's method for the same problem.
+	\end{Solution}
+\end{Example}
+
+\begin{ExerciseForTheReader}
+	(a) Write a MATLAB M-file called \mycode{}{secant} that has the following input variables: \mycode{varfun}, the string representing a
+	mathematical function, xO and xl, the (different) initial approximations, \mycode{tol}, the
+	tolerance, \mycode{nmax}, the maximum number of iterations; and output variables: \mycode{root},
+	\mycode{yval}, = varfun(root), and \mycode{niter}, the number of iterations used. The program
+	should perform the secant method to approximate the root of \mycode{varfun(x)} near
+	xO, xl until either successive approximations differ by less than \mycode{tol} or \mycode{nmax}
+	iterations have been completed. If the \mycode{tol} and \mycode{nmax} variables are omitted,
+	default values of \mycode{100*eps*max(abs(xO), abs(xl), 1)} and 50 are used.
+	(b) Run your program on the rootfinding problem of Example \ref{example:6_4}. Give the
+	resulting approximation, the residual, the number of iterations used, and the actual
+	(exact) error. Use x0 = 2 and xl = 1.5.
+\end{ExerciseForTheReader}
+
+The secant method uses the current and immediately previous approximations to
+get a secant line and then shoots the line into the x-axis for the next approximation.
+A related idea would be to use the current as well as the past two approximations
+to construct a second-order equation (in general a parabola) and then take as the
+next approximation the root of this parabola that is closest to the current
+approximation. This idea is the basis for Muller's method, which is further
+developed in the exercises of this section. We point out that Muller's method in
+general will converge a bit quicker than the secant method but not quite as quickly
+as Newton's method. These facts will be made more precise in the next section.
+
+\begin{Exercises}
+	\begin{enumerate}
+		\item For each of the functions shown below, find the secant method recursion formula (\ref{equation:6_3}).
+		      Next, using the values of $x_0$ and $x_1$, that are given, find each of $x_2$ , $x_3$, $x_4$.
+		      \begin{enumerate}
+			      \item $f(x) = x^3 - 2x+5; x_0 = -3, x_1 = -2$
+			      \item $f(x) = e^x - 2cos(x); x_0 = 1, x_1 = 2$
+			      \item $f(x) = xe^{-x}; x_0 = 0.5, x_1 = 1.5$
+			      \item $f(x) = ln(x^4) - cos(x); x_0 =1, x_1 = 1.5$
+		      \end{enumerate}
+		\item For each of the functions shown below, find the secant method recursion formula (\ref{equation:6_3}).
+		      Next, using the values of $x_0$ and $x_1$, that are given, find each of $x_2$ , $x_3$, $x_4$.
+		      \begin{enumerate}
+			      \item $f(x) = x^3 - 15x^2 + 24; x_0 = -3, x_1 = -4$
+			      \item $f(x) = e^x - 2e^{-x} + 5; x_0 = 1, x_1 = 2$
+			      \item $f(x) = ln(x); x_0 = 0.5, x_1 = 2$
+			      \item $f(x) = sec(x)-2e^{x^2}; x_0 =1, x_1 = 1.5$
+		      \end{enumerate}
+		\item Use the secant method to find the smallest positive root of each equation to 12 decimals of
+		      accuracy. Indicate the number of iterations used.
+		      \begin{enumerate}
+			      \item $tan(x) = x$
+			      \item $xcos(x)=1$
+			      \item $4x^2 = e^{x/2}-2$
+			      \item $(1+x)ln(1+x^2) = cos(\sqrt{x})$
+		      \end{enumerate}
+		      \textbf{Suggestion:} You may wish to modify your \mycode{secant} program so as to have it display another
+		      output variable that gives the number of iterations.
+		\item Use the secant method to find the smallest positive root of each equation to 12 decimals of
+		      accuracy. Indicate the number of iterations used.
+		      \begin{enumerate}
+			      \item $e^{-x} = x$
+			      \item $e^{x} - x^8 = ln(1+2^x)$
+			      \item $x^4 -2x^3 +x^2 -5x +2 = 0$
+			      \item $e^x = x^{\pi}$
+		      \end{enumerate}
+		\item For which values of the initial approximation $x_0$ will the secant method converge to the root
+		      $x=1$ of $f(x) = x^2-1$?
+		\item For which values of the initial approximation $x_0$ will the secant method converge to the root
+		      $x=0$ of $f(x) = sin^2(x)$?
+		\item For (approximately) which values of the initial approximation $x_0 > 0$ will the secant method
+		      converge to the root of
+		      \begin{enumerate}
+			      \item $f(x) = ln(x)$
+			      \item $f(x) = x^3$
+			      \item $f(x) = \sqrt[3]{x}$
+			      \item $f(x) = e^x -1$
+		      \end{enumerate}
+		      NOTE: The next three exercises develop Muller's method, which was briefly described at the end of
+		      this section. It will be convenient to introduce the following notation for \textbf{divided differences} for a
+		      continuous function $f(x)$ and distinct points $x_1$, $x_2$, $x_3$:
+		      $$f[x_1,x_2] \equiv \frac{f(x_2) - f(x_1)}{x_2 - x_1}, f[x_1, x_2, x_3] \equiv \frac{f[x_2, x_3] - f[x_1,x_2]}{x_3 - x_1}$$
+		\item Suppose that $f(x)$ is a continuous function and $x_0,x_1,x_2$ second order polynomial
+		      $$p(x) = f(x_2)+(x-x_2)f[x_2,x_1]+(x-x_2)(x-x_1)f[x_2,x_1,x_0]$$
+		      is the unique polynomial of degree at most two that passes through the three points: $(x_i, f(x_i))$ for $i = 0,1,2$.
+		      \textbf{Suggestion:}  Since $p(x)$ has degree at most two, you need only check that$ p(x_i) = f(x_i)$
+		      for $i = 0,1,2$. Indeed, if $q(x)$ were another such polynomial then $D(x) \equiv p(x)-q(x)$
+		      would be a polynomial of at most second degree with three roots and this would force $D(x) \equiv 0$ and so $p(x) \equiv (x)$.
+		\item (a) Show that the polynomial $p(x)$ of Exercise 8 can be rewritten in the following form:
+		      $$p(x) = f(x_2) +B(x-x_2) + f[x_2,x_1,x_0](x-x_2)^2$$ where $$B=f[x_2,x_1]+(x_2-x_1)f[x_2,x_1,x_0] = f[x_2,x_1] + f[x_2,x_0] - f[x_0,x_1]$$
+		      (b) Next, using the quadratic formula show that the roots of $p(x)$ are given by (first thinking of it as a polynomial in the variable $x - x_2$):
+		      $$x-x_2 = \frac{-B \pm \sqrt{B^2 - 4f(x_2)f[x_2,x_1,x_0]}}{2f[x_2,x_1,x_0]}$$ and then show that we can rewrite this as:
+		      $$x = x_2 - \frac{2f(x_2)}{B \pm \sqrt{B^2 - 4f(x_2)f[x_2,x_1,x_0]}}.$$
+		\item Given the first three approximations for a root of a continuous function $f(x): x_0, x_1, x_2$,
+		      Muller's method will take the next one, $x_3$ , to be that solution in Exercise 9 that is closest
+		      to $x_2$ (the most current approximation). It then continues the process, replacing $x_0$, $x_1$, $x_2$ by
+		      $x_1$, $x_2$, $x_3$ to construct the next approximation, $x_4$.
+		      \begin{enumerate}
+			      \item Show that the latter formula in Exercise 9 is less susceptible to floating point errors than the first one.
+			      \item Write an M-file, call it \mycode{muller}, that will perform Muller's method to find a root. The
+			            syntax should be the same as that of the \mycode{secant} program in Exercise for the Reader 6.6, except
+			            that this one will need three initial approximations in the input rather than 2.
+			      \item Run your program through six iterations using the function $f(x) = x^4 - 2$ and initial
+			            approximations $x_0=l, x_1=1.5, x_2=1.25$ and compare the results and errors with the
+			            corresponding ones in Example \ref{example:6_7} where the secant method was used.
+		      \end{enumerate}
+		\item Redo Exercise 3 parts (a) through (d), this time using Muller's method as explained in Exercise 10.
+		\item Redo Exercise 4 parts (a) through (d), this time using Muller's method as explained in Exercise 10.
+	\end{enumerate}
+\end{Exercises}
+
+\section{ERROR ANALYSIS AND COMPARISON OF ROOTFINDING METHODS} \label{sec:6_5}
+
+\noindent We will shortly show how to accelerate Newton's method in the troublesome
+cases of multiple roots. This will require us to get into some error analysis. Since
+some of the details of this section are a bit advanced, we recommend that readers
+who have not had a course in mathematical analysis simply skim over the section
+and pass over the technical comments.\footnote{ Readers who wish to get more comfortable
+	with the notions of mathematical analysis may wish to consult either of the excellent texts [Ros-96] or [Rud-64].}
+
+The following definition gives us a way to quantify various rates of convergence of rootfinding schemes.
+
+\noindent \textbf{Definition:} Suppose that a sequence $(x_n)$ converges to a real number r. We say
+that the convergence is of order a (where $a \geq 1$) provided that for some positive
+number $A$, the following inequality will eventually be true:
+\begin{equation} \label{equation:6_4}
+	|r-x_{n+1}| \leq A|r-x_n|^a.
+\end{equation}
+For $a = 1$, we need to stipulate $A < 1$ (why?). The word "eventually" here means
+"for all values of n that are sufficiently large." It is convenient notation to let
+$e_n = |r-x_n|$ = the error of the nth approximation, which allows us to rewrite (\ref{equation:6_4})
+in the compact form: $e_{n+1} \leq Ae_n^{\alpha}$. For a given sequence with a certain order of
+convergence, different values of $A$ are certainly possible (indeed, if (\ref{equation:6_4}) holds for
+some number $A$ it will hold also for any bigger number being substituted for $A$). It
+is even possible that (\ref{equation:6_4}) may hold for all positive numbers $A$ (of course, smaller
+values of A may require larger starting values of n for validity). In case the
+greatest lower bound $\hat{A}$ of all such numbers $A$ is positive (i.e., (\ref{equation:6_4}) will eventually
+hold for any number $A > \hat{A}$ but not for numbers $A < \hat{A}$ ), then we say that $\hat{A}$ is
+the asymptotic error constant of the sequence. In particular, this means there
+will always be arbitrarily large values of $n$, for which the error of the (n + l)st
+term is essentially proportional to the ath power of that of the nth term and the
+proportionality constant is approximately $\hat{A}$:
+\begin{equation} \label{equation:6_5}
+	|r-x_{n+1}| \approx \hat{A}|r-x_n|^a \quad \textrm{or} \quad e_{n+1} \approx \hat{A}e_n^a \textrm{.}
+\end{equation}
+The word "essentially" here means that we can get the ratios $e_{n+1} / e_n^{\alpha}$ as close to
+$\hat{A}$ as desired. In the notation of mathematical analysis, we can paraphrase the
+definition of $\hat{A}$ by the formula: $$\hat{A} \equiv lim sup_{n \rightarrow \infty} e_{n+1} / e_n^{\alpha}$$
+provided that this $limsup$ is positive. In the remaining case that this greatest lower
+bound of the numbers $A$ is zero, the asymptotic error constant is undefined
+(making $\hat{A} = 0$ may seem reasonable but it is not a good idea since it would make
+(5) fail), but we say that we have \textbf{hyperconvergence of order $\alpha$}.
+
+When $\alpha - 1$, we say there is linear convergence and when $\alpha = 2$ we say there
+is \textbf{quadratic convergence}. In general, higher values of $\alpha$ result in speedier
+convergences and for a given $\alpha$; smaller values of $A$ result in faster
+convergences. As an example, suppose $e_n = 0.001 = 1/1000$. In case $\alpha = 1$ and
+$\hat{A} = 112$ we have (approximately and for arbitrarily large indices n) $e_{n+l} \approx 0.0005
+	= 1/2000$, while if $A = 1/4$, $e_{n_1} \approx 0.00025 = 1/4000$. If $\alpha = 2$ even for $A = 1$ we
+would have $e_{n+1} \approx (0.001)^2 =0.000001$ and for $A = 1/4$, $e_{n+1} \approx (1/4)(0.001)^2 =
+	0.00000025$.
+
+\begin{ExerciseForTheReader}
+	This exercise will give the reader a feel for the various rates of convergence.
+	\begin{enumerate}[label=(\alph*)]
+		\item Find (if possible) the highest order of convergence of each of the following
+		      sequences that have limit equal to zero. For each find also the asymptotic error
+		      constant whenever it is defined or whether there is hyper convergence for this
+		      order
+		      \begin{enumerate}[label=(\roman*)]
+			      \item $e_n = 1/(n+1)$
+			      \item $e_n = e^{-n}$
+			      \item $e_n = 10^{-3^n/2^n}$
+			      \item $e_n = 10^{-2^n}$
+			      \item $e_n = 2^{-2^n-n}$
+		      \end{enumerate}
+		\item Give an example of a sequence of errors $<e_n>$ where the convergence to zero is of order 3.
+	\end{enumerate}
+\end{ExerciseForTheReader}
+
+One point that we want to get across now is that quadratic convergence is
+extremely fast. We will show that under certain hypotheses, the approximations in
+Newton's method will converge quadratically to a root whereas those of the
+bisection method will in general converge only linearly. If we use the secant
+method the convergence will in general be of order $(1 + \sqrt{5}) / 2 = 1.62\dots$. We now
+state these results more precisely in the following theorem.
+
+\begin{Theorem}
+	(Convergence Rates for Rootfinding Programs) Suppose that
+	one of the three methods, bisection, Newton's, or the secant method, is used to
+	produce a sequence $<x_n>$ that converges to a root r of a continuous function $f(x)$.
+	\begin{enumerate}[label=PART \Alph*:]
+		\item If the bisection method is used, the convergence is essentially linear
+		      with constant $1/2$. This means that there exist positive numbers $e'_n \geq e_n = | x_n - r |$
+		      that (eventually) satisfy $e'_{n+1} \leq (1/2)e'_n$.
+		\item  If Newton's method is used and the root $r$ is a simple root and if
+		      $f''(x)$ is continuous near the root $x = r$, then the convergence is quadratic with
+		      asymptotic error constant $|f''(r)/(2f'(r))|$, except when $f''(r)$ is zero, in which
+		      case we have hyperquadratic convergence. But if the root $x = r$ is a multiple root
+		      of order $M$, then the convergence is only linear with asymptotic error constant $A = (M-1)/M$.
+		\item If the secant method is used and if again $f''(x)$ is continuous near the
+		      root $x = r$ and the root is simple, then the convergence will be of order $(1+\sqrt{5})/2 = 1.62\dots$.
+	\end{enumerate}
+	Furthermore, the bisection method will always converge as long as the initial
+	approximation $x_0$ is taken to be within a bracket of $x = r$. Also, under the
+	additional hypothesis that $f''(x)$ is continuous near the root $x = r$, both Newton's
+	and the secant method will always converge to $x = r$, as long as the initial
+	approximation(s) are sufficiently close to $x = r$.\\
+	\\
+	REMARKS: This theorem has a lot of practical use. We essentially already knew
+	what is mentioned about the bisection method. But for Newton's and the secant
+	method, the last statement tells us that as long as we start our approximations
+	"sufficiently close" to a root $x = r$ that we are seeking to approximate, the
+	methods will produce sequences of approximations that converge to $x = r$. The
+	"sufficiently close" requirement is admittedly a bit vague, but at least we can keep
+	retrying initial approximations until we get one that will produce a "good"
+	sequence of approximations. The theorem also tells us that once we get any
+	sequence (from Newton's or the secant method) that converges to a root $x = r$, it
+	will be one that converges at the stated orders. Thus, any initial approximation
+	that produces a sequence converging to a root will produce a great sequence of
+	approximations. A similar analysis of Muller's method will show that if it
+	converges to a simple root, it will do so with order 1.84..., a rate quite halfway
+	between that of the secant and Newton's methods. In general, one cannot say that
+	the bisection method satisfies the definition of linear convergence. The reason for
+	this is that it is possible for some xn to be coincidentally very close to the root
+	while $x_{n+l}$ is much farther from it (see Exercise \ref{ex:14}).\\
+	\\
+	\textit{Sketch of Proof of Theorem 6.1:}  A few details of the proof are quite technical so
+	we will reference out parts of the proof to a more advanced text in numerical
+	analysis. But we will give enough of the proof so as to give the reader a good
+	understanding of what is going on. The main ingredient of the proof is Taylor's
+	theorem. We have already seen the importance of Taylor's theorem as a practical
+	tool for approximations; this proof will demonstrate also its power as a theoretical
+	tool. As mentioned in the remarks above, all statements pertaining to the
+	bisection method easily follow from previous developments. The error analysis
+	estimate (1) makes most of these comments transparent. This estimate implies that
+	$e_n = |r-x_n|$ is at most $(b-a)/2^n,$, where $b-a$ is simply the length of the
+	bracket interval [a.b]. Sometimes we might get lucky since $e_n$ could conceivably
+	be a lot smaller, but in general we can only guarantee this upper bound for en. If
+	we set$ e'_n = (b-a)/2^n$, then we easily see that $e'_{n+1} =(1/2)e'_n$ and we obtain the
+	said order of convergence in part A.
+
+	The proofs of parts B and C are more difficult. A good approach is to use
+	Taylor's theorem. Let us first deal with the case of a simple root and first with
+	part B (Newton's method).
+
+	Since $x_n$ converges to $x - r$, Taylor's theorem allows us to write:
+	$$f(r)=f(x_n)+f'(x_n)(r-x_n)+\frac{1}{2}f''(c_n)(r-x_n)^2$$
+	where $c_n$ is a number between $x = r$ and $x = x_n$ (as long as $n$ is large enough
+	for $f''$ to be continuous between the $x = r$ and $x = x_n$).
+
+	The hypotheses imply that $f'(x)$ is nonzero for $x$ near $x = r$. (Reason:
+	$f'( r ) \neq 0$ because $x = r$ is a simple root. Since $f'(x)$(and $f''( x )$ ) are
+	continuous near $x = r$ we also have $f'(x) \neq 0$
+	for $x$ close enough to $x = r$.)
+	Thus we can divide both sides of the previous equation by $f'(x_n)$ and since
+	$f(r) = 0$ (remember $x = r$ is a root of $f(x)$), this leads us to:
+	$$0=\frac{f(x_n)}{f'(x_n)}+r-x_n+\frac{1}{2}\frac{f''(c_n)}{f'(x_n)}(r-x_n)^2$$
+	But from Newton's recursion formula (\ref{equation:6_2}) we see that the first term on the right of
+	this equation is just $x_n - x_{n+1}$ and consequently
+	$$0=x_n-x_{n+1}+r-x_n+\frac{1}{2}\frac{f''(c_n)}{f'(x_n)}(r-x_n)^2$$
+	We cancel the $x_n$s and then can rewrite the equation as
+	$$r-x_{n+1} = \frac{-f''(c_n)}{2f'(x_n)}(r-x_n)^2$$
+	We take absolute values in this equation to get the desired proportionality
+	relationship of errors:
+	\begin{equation}\label{equation:6_6}
+		e_{n+1} = \left|{\frac{f''(c_n)}{2f'(x_n)}}\right|e_n^2
+	\end{equation}
+	Since the functions $f'$ and $f''$ are continuous near $x = r$ and $x_n$ (and hence also
+	$c_n$) converges to r, the statements about the asymptotic error constants or the
+	hyperquadratic convergence now easily follow from (\ref{equation:6_6}).
+
+	Moving on to part C (still in the case of a simple root), a similar argument to the
+	above leads us to the following corresponding proportionality relationship for
+	errors in the secant method (see Section 2.3 of [Atk-89] for the details):
+	\begin{equation}\label{equation:6_7}
+		e_{n+1} \approx e_ne_{n+1}\left|{\frac{f''(r)}{2f'(r)}}\right|
+	\end{equation}
+	It will be an exact inequality if r is replaced by certain numbers near $x = r$ as in
+	(\ref{equation:6_6}). In (\ref{equation:6_7}) we have assumed that $f''(r) \neq 0$. The special case where this second
+	derivative is zero will produce a faster converging sequence, so we deal only with
+	the worse (more general) general case, and the estimates we get here will certainly
+	apply all the more to this special remaining case. From (\ref{equation:6_7}) we can actually deduce
+	the precise order $\alpha > 0$ of convergence. To do this we temporarily define the
+	proportionality ratios $A+n$ by the equations $e_{n+1} = A_ne_n^{\alpha}$ (cf, equation (\ref{equation:6_5})).
+
+	We can now write: $$e_{n+1} = A_n e_n^{\alpha} = A_n(A_{n-1} e_{n-1}^{\alpha})^{\alpha} = A_n A_{n-1}^{\alpha} e_{n-1}^{\alpha^2}$$
+	which gives us that
+	$$\frac{e_{n+1}}{e_n e_{n-1}} = \frac{A_n A_{n-1}^{\alpha} e_{n-1}^{\alpha^2}}
+		{A_{n-1}^{\alpha} e_{n-1}^{\alpha} e_{n-1}} = A_n A_{n-1}^{\alpha-1} e_{n-1}^{\alpha^2 - \alpha -1}$$
+	Now, as $n \rightarrow \infty$, (\ref{equation:6_7}) shows the left side of the above equation tends to some
+	positive number. On the right side, however, since $e_n \rightarrow 0$, assuming that the
+	$A_n$'s do not get too large (see Section 2.3 of [Atk-89] for a justification of this assumption) this forces
+	the exponent $\alpha^2 - \alpha -1 = 0$. This equation has only one
+	positive solution, namely $\alpha = (1 + sqrt{5}) / 2$.
+
+	Next we move on to the case of a multiple root of multiplicity M. We can write
+	$f(x) = (x-r)^M h(x)$ where $h(x)$ is a continuous function with $h(r) \neq 0$. We
+	additionally assume that $h(x)$ is sufficiently differentiate. In particular, we will
+	have $f'(x) = M(x-r)^{M-1}h(x) + (x-r)^M h'(x)$, and so we can rewrite Newton's
+	recursion formula (\ref{equation:6_2}) as:
+	$$x_{n+1} = x_n - \frac{(x_n -r ) h(x_n)}{Mh(x_n)+(x_n-r)h'(x_n)} = g(x_n)$$
+	where $$g(x) = x - \frac{(x-r)h(x)}{Mh(x)+(x-r)h'(x)}$$
+	Since $$g'(x) = 1 - \frac{h(x)}{Mh(x_n)+(x_n-r)h'(x_n)} - (x-r) \left({\frac{h(x)}{Mh(x_n)+(x_n-r)h'(x_n)}}\right)$$
+	we have that $$g'(r) = 1 - \frac{1}{M} = (M-1)/M > 0$$
+	(since $M \geq 2$). Taylor's theorem now gives us that
+	$$x_{n+1} = g(x_n) = g(r)+g'(r)(x_n-r)+g''(c_n)(x_n-r)^2/2 = r+g'(r)(x_n-r)+g''(c_n)(x_n-r)^2/2$$
+	(where $c_n$ is a number between $r$ and $x_n$ ). We can rewrite this as:
+	$$e_{n+1} = [(M-1)/M]e_n+g''(c_n)e_n^2/2$$
+	Since $e_n \rightarrow 0$ (assuming $g"$ is continuous at $x = r$), we can divide both sides of
+	this inequality by en to get the asserted linear convergence. For details on this
+	latter convergence and also for proofs of the actual convergence guarantee (we
+	have only given sketches of the proofs of the rates of convergence assuming the
+	approximations converge to a root), we refer the interested reader to Chapter \ref{chap:2} of [Atk-89]. QED
+
+	From the last part of this proof, it is apparent that in the case we are using
+	Newton's method for a multiple root of order $M > 1$, it would be a better plan to
+	use the modified recursion formula:
+	\begin{equation}\label{equation:6_8}
+		x_{n+1} = x_n - M \frac{f(x_n)}{f'(x_n)}
+	\end{equation}
+	Indeed, the proof above shows that with this modification, when applied to an
+	order- M multiple root, Newton's method will again converge quadratically
+	(Exercise 13). This formula, of course, requires knowledge about M.
+\end{Theorem}
+
+\begin{Example}
+	Modify the Program \ref{program:2}, \mycode{newton}, into a more general one, call
+	it newtonmr that is able to effectively use \ref{equation:6_8} in cases of multiple roots. Have
+	your program run with the function $f(x) = x_{21}$ again with initial approximation
+	$x - 1$, as was done in Example \ref{example:6_6} with the ordinary \mycode{newton} program.
+
+	\begin{Solution}
+		We indicate only the changes needed to be made to \mycode{newton} to get
+		the new program. We will need one new variable (a sixth one), call it \mycode{rootrd} ,
+		that denotes the order of the root being sought after. In the first if-branch of the
+		program \mycode{(if nargin < 4)} we also add the default value \mycode{rootrd =1}. The
+		only other change needed will be to replace the analogue of (2) in the program
+		with that of \ref{equation:6_8}. If we now run this new program, we will find the exact root
+		$x = 0$. In fact, as you can check with \ref{equation:6_8} (or by slightly modifying the program to
+		give as output the number of iterations), it takes only a single iteration. Recall
+		from Example \ref{example:6_6} that if we used the ordinary Newton's method for this function
+		and initial approximation, we would need about 135 iterations to get an
+		approximation (of zero) with error less than 0.001!
+
+		In order to effectively use this modified Newton's method for multiple roots, it is
+		necessary to determine the order of a multiple root. One way to do this would be
+		to compare the graphs of the function at hand near the root r in question, together
+		with graphs of successive derivatives of the function, until it is observed that a
+		certain order derivative no longer has a root at r; see also Exercise 15. The order
+		of this derivative will be the order of the root. MATLAB can compute derivatives
+		(and indefinite integrals) provided that you have the Student Version, or the
+		package you have installed includes the Symbolic Math Toolbox; see Appendix A.
+
+		For polynomials, MATLAB has a built-in function, \mycode{roots}, that will compute all
+		of its roots. Recall that a polynomial of degree n will have exactly n real or
+		complex roots, if we count them according to their multiplicities. Here is the syntax of the \mycode{roots} command:
+		\begin{center}
+			\begin{tabularx}{\linewidth}{ |X|X| }
+				\hline
+				\mycode{roots([an ... a2 a1 a0])} $\rightarrow$ & Computes (numerically) all of the n real and complex roots of the
+				polynomial whose coefficients are given by the inputted vector: $$p(x) = a_nx^n + a_{n-1}x^{n-1} + \dots + a_2x^2 + a_1x + a_0$$ \\
+				\hline
+			\end{tabularx}
+		\end{center}
+	\end{Solution}
+\end{Example}
+
+\begin{Example}
+	Use MATLAB to find all of the roots of the polynomials
+	$$p(x) = x^8 -3x^7 + (9/4)x^6 -3x^5 + (5/2)x^4 +3x^3 +(9/4)x^2 +3x +1,$$
+	$$q(x) = x^6 +2x^5 -6x^4 -10x^3 +13x^2 +12x -12$$
+
+	\begin{Solution}
+		Let us first store the coefficients of each polynomial as a vector:\\
+		\mycode{
+		>> pv=[1 -3 9/4 -3 5/2 3 9/4 3 1]; qv=[1 2 -6 -10 13 12 -12];\\
+		>> roots(pv) \%this single command will get us all of the roots of p(x)\\
+		$\rightarrow$ 2.0000 + 0.0000i\\
+		2.0000 - 0.0000i\\
+		0.0000 + 1.0000i\\
+		0.0000 - 1.0000i\\
+		-0.0000 + 1.0000i\\
+		-0.0000 - 1.0000i\\
+		-0.5000 + 0.0000i\\
+		-0.5000 - 0.0000i
+		}
+
+		Since some of these roots are complex, they are all listed as complex numbers.
+		The distinct roots are $x = 2$, $i - i$, and .5, each of which are double roots. Since
+		$(x +i)(x-i) = x^2 + 1$ these roots allow us to rewrite $p(x)$ in factored form:
+		$p(x) = (x^2 + 1)^2 (x — 2)^2 (x + 0.5)^2$.
+		The roots of $q(x)$ are similarly obtained:\\
+		\mycode{
+			>>roots(qv)\\
+			$\rightarrow$ 1.7321\\
+			-2.0000\\
+			-2.0000\\
+			-1.7321\\
+			1.0000\\
+			1.0000
+		}
+		Since the roots of $q(x)$ are all real, they are written as real numbers. We see that
+		$q(x)$ has two double roots, $x = - 2$ and $x = 1$, and two simple roots that turn out to
+		be $\pm \sqrt{3}$.
+	\end{Solution}
+\end{Example}
+
+\begin{ExerciseForTheReader}
+	\textit{(Another Approach to Multiple Roots withNewton 's Method)}. Suppose that $f(x)$ has multiple roots. Show that the function
+	$f(x)/ f(x)$ has the same roots as $f(x)$, but they are all simple. Thus Newton's
+	method could be applied to the latter function with quadratic convergence to
+	determine each of the roots of $f(x)$. What are some problems that could crop up with this approach?
+\end{ExerciseForTheReader}
+
+\begin{Exercises}
+	\begin{enumerate}
+		\item Find the highest order of convergence (if defined) of each of the following sequences of errors:
+		      \begin{enumerate}
+			      \item $e_n = 1/n^5$
+			      \item $e_n = e^{-n}$
+			      \item $e_n = n^{-n}$
+			      \item $e_n = 2^{-n^2}$
+		      \end{enumerate}
+		\item Find the highest order of convergence (if defined) of each of the following sequences of errors:
+		      \begin{enumerate}
+			      \item $e_n = 1/ln(n)^n$
+			      \item $e_n = 1/exp(exp(n))$
+			      \item $e_n = 1/exp(exp(exp(n)))$
+			      \item $e_n = 1/n!$
+		      \end{enumerate}
+		\item For each of the sequences of Exercise 1 that had a well-defined highest order of convergence,
+		      determine the asymptotic error constant or indicate if there is hyperconvergence.
+		\item For each of the sequences of Exercise 2 that had a well-defined highest order of convergence,
+		      determine the asymptotic error constant or indicate if there is hyperconvergence.
+		\item Using just Newton's method or the improvement (8) of it for multiple roots, determine all (real)
+		      roots of the polynomial $$x^8 +4x^7 -17x^6 -84x^5 +60x^4 +576x^3 +252x^2 -1296x - 1296.$$
+		      Give also the multiplicity of each root and justify these numbers.
+		\item Using just Newton's method or the improvement (8) of it for multiple roots, determine all (real)
+		      roots of the polynomial $x^{10} +x^9 +x^8 -18x^6 -18x^5 - 18x^4 - 81x^2 +81x +81$
+		      Give also the multiplicity of each root and justify these numbers.
+		\item \textit{(Fixed Point iteration)}
+		      \begin{enumerate}
+			      \item Assume that $f(x)$ has a root in [a, b], that $g(x) = x - f(x)$
+			            satisfies $a \leq g(x) \leq b$ for all x in [a, b] and that $|g'(x)| \leq \lambda < l$ for all x in [a, b].
+			            Show that the following simple iteration scheme: $x_{n+1} = g(x_n)$, will produce a sequence that converges to
+			            a root of $f(x)$ in [a, b].
+			      \item Show that $f(x)$ has a unique root in [a, b], provided that all of the hypotheses in part (a)
+			            are satisfied.
+		      \end{enumerate}
+		\item The following algorithm computes the square root of a number $A > 0$:
+		      $$x_{n+1} = \frac{x_n(x_n^2+3A)}{3x_n^2+A}$$
+		      \begin{enumerate}
+			      \item Show that it has order of convergence equal to 3 (assuming $x_0$ has been chosen sufficiently
+			            close to $\sqrt{A}$).
+			      \item Perform three iterations of it to calculate $\sqrt{10}$ starting with $x_0 = 3$. What is the error?
+			      \item Compute the asymptotic error constant.
+		      \end{enumerate}
+		\item Can you devise a scheme for computing cube roots of positive numbers that, like the one in
+		      Exercise 8, has order of convergence equal to 3? If you find one, test it out on $\sqrt[3]{30}$.
+		\item Prove; If $\beta > a$ and we have a sequence that converges with order $\beta$, then the sequence will
+		      also converge with order $\alpha$.
+		\item Is it possible to have quadratic convergence with asymptotic error constant equal to 3? Either
+		      provide an example or explain why not.
+		\item Prove formula (\ref{equation:6_7}) in the proof of Theorem \ref{theorem:6_1}, in case $f''(r) \neq 0$.
+		\item Give a careful explanation of how (\ref{equation:6_8}) gives quadratic convergence in the case of a root of order
+		      $M > 1$, provided that $x_0$ is sufficiently close to the root.\\
+		      \textbf{Suggestion:} Carefully examine the last part of the proof of Theorem \ref{theorem:6_1}.
+		\item \textit{(Nonlinear Convergence of the Bisection Methoc)}
+		      \begin{enumerate}
+			      \item Construct a function $f(x)$ that has a root $r$ in an interval [a, b] and that
+			            satisfies the requirements of the bisection method but such that
+			            $x_n$ does not converge linearly to $r$.
+			      \item  is it possible to have $lim sup_{n \rightarrow \infty} e_{n+1} / e_n = \infty$ with the bisection method for a function that
+			            satisfies the conditions of part (a)?
+		      \end{enumerate}
+		\item \begin{enumerate}
+			      \item Explain how Newton's method could be used to detect the order of a root, and then
+			            formulate and prove a precise result.
+			      \item Use the idea of part (a) to write a MATLAB M-file, \mycode{newtonorddetect}, having a
+			            similar syntax to the \mycode{newton} M-file of Program \ref{program:2}. Your program should first detect the
+			            order of the root, and then use formula (\ref{equation:6_8}) (modified Newton's method) to approximate the root.
+			            Run your program on several examples involving roots of order 1, 2, 3, and compare the number
+			            of iterations used with that of the ordinary Newton's method. In your comparisons, make sure
+			            to count the total number of iterations used by \mycode{newtonorddetect}, both in the detection
+			            process as well as in the final implementation.
+			      \item  Run your program of part (b) on the problem of Example \ref{example:6_8}.
+		      \end{enumerate}
+			  \textbf{Note:} For the last comparisons asked for in part (b), you should modify \mycode{newton} to output the
+			  number of iterations used, and include such an output variable in your \mycode{newtonorddetect} program.
+	\end{enumerate}
+\end{Exercises}	
+	
+	
+	
+	
+\clearpage
+\end{document} 

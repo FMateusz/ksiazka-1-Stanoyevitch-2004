@@ -1,0 +1,1118 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\chapter{Systems of First-Order Differential Equations and Higher-Order Differential Equations}
+\label{chap:chap_9}
+
+\section{NOTATION AND RELATIONS}
+\label{sec:sec_9_1}
+
+\noindent The previous chapter dealt quite extensively with single differential equations of order one. This chapter will extend the treatment to higher-order differential equations and their associated initial value problems, as well as to systems of differential equations. Both concepts are quite natural and have numerous applications, some of which we will introduce in this chapter. In this first section we will show a basic but important method for translating any higher-order differential equation (or any system of higher-order differential equations) into a system of first-order differential equations. In Section $9.2$, we will indicate how all of the methods we introduced in the last chapter for numerically solving firstorder initial value problems extend very naturally to work for systems of firstorder differential equations. There is only one catch, which is that the auxiliary conditions (recall a general $n$ th-order DE will need $n$ auxiliary conditions to determine a unique solution) must all be specified at the same point. Section $9.3$ will present some of the interesting and useful theory and geometric tools for systems of ODE. Higher-order IVPs will be dealt with in Section 9.4. There are other frequently occurring problems where we will have, say, a second-order differential equation with the auxiliary conditions specifying the unknown function at two different (boundary) points. Such problems, called \textbf{boundary value problems}, will be dealt with in the next chapter.\\
+
+Suppose that $x(t)$ and $y(t)$ are unknown functions whose rates of change may depend on each other's values as well as the time $t$. For example, they might represent the populations of two species of animals that live in the same area and compete for resources. Thus a high population of one will in general affect the growth of the other population as well as its own (perhaps logistically, as explained in the last chapter). Thus the only way to model these two populations would be simultaneously with a pair of differential equations. In general we would like to consider first-order systems of the form:
+\begin{equation}\label{eqa1}
+\left\{\begin{array}{l}
+x^{\prime}(t)=f(t, x, y) \\
+y^{\prime}(t)=g(t, x, y)
+\end{array} .\right.
+\end{equation}
+\noindent The initial conditions will in general look like $x(a)=c$ and $y(a)=d$. The existence and uniqueness theory of the last chapter carries over to this setting quite analogously. A solution will exist as long as $f$ and $g$ are continuous functions. It will be unique if $f$ and $g$ satisfy (separately) Lipschitz conditions in each of the variables $x$ and $y$. A precise theorem will be given in Section 9.3. There are also some nice geometric interpretations of such systems in terms of "flows" and we will say more about this later.\\
+
+In general, there can be any number of unknown functions: $x_{1}(t), x_{2}(t), \cdots, x_{n}(t)$, which together with the associated initial conditions will solve the following initial value problem:
+\begin{equation}\label{eqa2}
+\left\{\begin{aligned}
+x_{1}^{\prime}(t)=f_{1}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right), & & x_{1}(a)=c_{1} \\
+x_{2}^{\prime}(t)=f_{2}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right), & & x_{2}(a)=c_{2} \\
+\cdots & & \\
+x_{n}^{\prime}(t)=f_{n}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right), & & x_{n}(a)=c_{n}. \\
+\end{aligned}\right.
+\end{equation}
+Any $n$th-order initial value problem of the form
+
+\begin{equation}\label{eqa3}
+\begin{aligned}
+&y^{(n)}(t)=f\left(t, y, y^{\prime}, y^{n \prime}, \cdots, y^{(n-1)}\right) \\
+&y(a)=c_{1}, y^{\prime}(a)=c_{2}, \cdots, y^{(n-1)}(a)=c_{n}.
+\end{aligned}
+\end{equation}
+
+\noindent can be reformulated as a system of first-order DEs in the form (\ref{eqa2}) as follows. We introduce the functions
+$$
+x_{1}(t)=y(t), x_{2}(t)=y^{\prime}(t), x_{3}(t)=y^{\prime \prime}(t), \cdots, x_{n}(t)=y^{(n-1)}(t),
+$$
+and then make the simple observation that they satisfy the following first-order system:
+
+\begin{equation*}
+\left\{\begin{array}{lcl}
+	x_{1}^{\prime}(t) =x_{2},& & x_{1}(a)=c_{1} \\
+	x_{2}^{\prime}(t) =x_{3},& &x_{2}(a)=c_{2}. \\
+	\cdots & &  \\
+	x_{n}^{\prime}(t)=f(t, x_{1}, x_{2}, \cdots, x_{n}), & & \quad x_{n}(a)=c_{n}\\
+	\end{array} \right.
+\end{equation*}
+
+\noindent After we show how to numerically solve first-order systems such as (\ref{eqa2}), we will then be (in particular) able to numerically solve systems as above that arise from the IVP (\ref{eqa3}), and once this is done we can discard all but $x_{1}(t)=y(t)$ to obtain our desired solution of (\ref{eqa3}).
+\paragraph*{EXAMPLE 9.1:} Express each IVP as a system of first-order IVPs:
+\begin{enumerate}[label=(\alph*)]
+\item $y^{\prime \prime}(t)=\cos \left(t y^{\prime}\right)+4 t^{2}+6 y ; y(0)=2, y^{\prime}(0)=-1$
+\item $\begin{cases}x^{\prime \prime}(t)=6 x^{\prime} x y^{\prime}+t e^{t}, & x(1)=0, x^{\prime}(1)=4 \\ y^{\prime \prime}(t)=t+x+y+x^{\prime}+y^{\prime}, & y(1)=1, y^{\prime}(1)=2\end{cases}$
+\end{enumerate}
+SOLUTION: Part (a): Upon introducing the two functions:
+$$
+x_{1}(t)=y(t), x_{2}(t)=y^{\prime}(t),
+$$
+we obtain the equivalent system
+$$
+\begin{cases}x_{1}^{\prime}(t)=x_{2}, & x_{1}(0)=2 \\ x_{2}^{\prime}(t)=\cos \left(t x_{2}\right)+4 t^{2}+6 x_{1}, & x_{2}(0)=-1\end{cases}
+$$
+Part (b): This one has a system of two second-order DEs, so it will translate to a system of four first-order DEs. Introducing the four functions $x_{1}(t)=x(t), x_{2}(t)=y(t), x_{3}(t)=x^{\prime}(t), x_{4}(t)=y^{\prime}(t)$ leads us to the following equivalent first-order system:
+$$
+\begin{cases}x_{1}^{\prime}(t)=x_{3}, & x_{1}(1)=0 \\ x_{2}^{\prime}(t)=x_{4}, & x_{2}(1)=1 \\ x_{3}^{\prime}(t)=6 x_{3} x_{1} x_{4}+t e^{t}, & x_{3}(1)=4 \\ x_{4}^{\prime}(t)=t+x_{1}+x_{2}+x_{3}+x_{4}, & x_{4}(1)=2 .\end{cases}
+$$
+The system in part (b) of the preceding example looks particularly daunting to attempt to solve explicitly. Indeed even a PhD who specialized in differential equations would not be able to perform this task (not to mention an Einstein). Later we will be able to plug the corresponding first-order system into a modified Runge-Kutta program to produce very satisfactory solutions (graphically or in a table) of the original problem.\\
+
+\noindent EXERCISE FOR THE READER 9.1: Reformulate each of the IVPs below into a new IVP which involves a system of first-order DEs:
+\begin{enumerate}[label=(\alph*)]
+\item $y^{\prime \prime}+y^{\prime \prime}-e^{t} y=\sin (3 t) ; y(0)=1, y^{\prime}(0)=2, y^{\prime \prime}(0)=3$
+\item $\begin{cases}R^{\prime \prime}(x)=R S+\sqrt{x^{2}+1}, & R(10)=4, R^{\prime}(10)=-1 \\ S^{\prime}(x)=R^{\prime} \cos (S), & S(10)=1\end{cases}$
+\end{enumerate}
+
+\indent We close this section by introducing some widely used terminology pertaining to the system (\ref{eqa2}). If the functions $f_{i}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right)(1 \leq i \leq n)$ on the right sides of the DEs in (\ref{eqa3}) do not depend on the $t$-variable (i.e., they each look like $f_{i}\left(x_{1}, x_{2}, \cdots, x_{n}\right)$ with no " $t$ " appearing in their formulas), then the system is called \textbf{autonomous}. The word "autonomous" means self-governing. The interpretation here is that if we have an autonomous system and specify initial conditions, the time $t=a$ at which the initial conditions are specified is irrelevant, as far as the future values of the solution(s) are concerned, since the derivatives are independent of the $t$-variable. When at least one of the DEs does depend on the $t$ variable, the system is termed \textbf{nonautonomous}.
+
+\noindent\rule{480pt}{0.4pt}
+\paragraph*{EXERCISE 9.1: }
+\begin{enumerate}
+\item Reformulate each of the IVPs below into a new IVP involving a system of first-order DEs:
+	\begin{enumerate}[label=(\alph*)]
+	\item $y^{\prime \prime}(t)=t e^{\prime} \cos \left(y y^{\prime}\right), \quad y(0)=1, y^{\prime}(0)=2$
+	\item $y^{\prime \prime}(t)=\frac{2+t y}{1+\left(y^{\prime}\right)^{2}} \quad y(0)=8, y^{\prime}(0)=4$
+	\item $y^{\prime \prime}+\cos (t) y^{\prime}-\tan (t) y=2 t+1, y(1)=1, y^{\prime}(1)=-5$
+	\item $y^{\prime \prime}(t)=\sin ^{2}(y)+\cos ^{2}\left(y^{\prime}\right), \quad y(0)=0, y^{\prime}(0)=1$
+	\end{enumerate}
+\item Reformulate each of the IVPs below into a new IVP involving a system of first-order DEs:
+	\begin{enumerate}[label=(\alph*)]
+	\item $y^{\prime \prime}(t)=t y+y \sin \left(y^{\prime \prime}\right) \quad y(0)=1, y^{\prime}(0)=2, y^{\prime \prime}(0)=-5$
+	\item $y^{\prime \prime \prime}(t)=\frac{7 y+y^{\prime \prime}}{2+\left(y^{\prime}\right)^{2}}, y(0)=0, y^{\prime}(0)=1, y^{\prime \prime}(0)=-2$
+	\item $y^{\prime \prime \prime \prime}+y^{\prime \prime \prime}-t y^{\prime \prime}+\cos (t) y^{\prime}-3 y=\sin (t)$,
+$y(0)=1, y^{\prime}(0)=-5, y^{\prime \prime}(0)=0, y^{\prime \prime \prime}(0)=0$
+	\item $y^{\prime \prime \prime}(t)=\frac{e^{y}+e^{-y^{\prime} y^{*}}}{e^{2 y}-e^{-y^{\prime} y^{\prime}}}, \quad y(0)=0, y^{\prime}(0)=1, y^{\prime \prime}(0)=2$
+	\end{enumerate}
+\item  Reformulate each of the IVPs below into a new IVP involving a system of first-order DEs:
+	\begin{enumerate}[label=(\alph*)]
+	\item $\begin{cases}x^{\prime}(t)=x \cos (y) y^{\prime}, & x(0)=2 \\ y^{\prime \prime}(t)=1+x y, & y(0)=0, y^{\prime}(0)=2\end{cases}$
+	\item $\left\{\begin{array}{l}x^{\prime \prime}(t)=\frac{1+x}{\cos ^{2}\left(y y^{\prime}\right)+2}, \\ y^{\prime \prime}+2 y^{\prime}-3 y=2,\end{array}\right.$
+$x(0)=3, x^{\prime}(0)=-2$ $y(0)=1, y^{\prime}(0)=0$
+	\item $\begin{cases}T^{\prime \prime}(t)=\sqrt{t W+T}, & T(0)=0, T^{\prime}(0)=1 \\ W^{\prime \prime}(t)=W^{\prime}+i T^{\prime}-4 W, & W(0)=0, W^{\prime}(0)=1\end{cases}$
+	\item $\begin{cases}x^{\prime \prime}(t)=x y z, & x(0)=1, x^{\prime}(0)=2 \\ y^{\prime \prime}(t)=x^{\prime} y^{\prime} z^{\prime}, & y(0)=3, y^{\prime}(0)=4 \\ z^{\prime \prime}(t)=x x^{\prime}+y y^{\prime}+z z^{\prime}, & z(0)=5, z^{\prime}(0)=6\end{cases}$\\
+\\
+	\end{enumerate}
+\end{enumerate}
+
+\section{TWO-DIMENSIONAL FIRST-ORDER SYSTEMS}
+\label{sec:sec_9_2}
+
+\noindent Our first example involves functions that represent the populations of two species, one of which (the \textbf{predator}) survives by consuming the other (the \textbf{prey}). This very important application was discovered by the Italian mathematician Vito Volterra
+\footnote{Volterra grew up in a very poor family and his father died when he was only two years old. His interest in mathematics started at a very early age. When he was 13 he worked on the (still unsolved) three-body problem concerning motion of the objects only under the influence of their interacting gravitational forces. He eamed his doctorate at age 22 at the University of Pisa and became a professor there the following year. He did considerable work in the areas of functional analysis and partial differential equations. During the first world war he joined the Air Force and when he returned to civilian life was awarded a professorship in Rome. His biologist colleague Umberto D'Ancona was puzzled at why the percentage of sharks versus food fish went up so quickly during WWI, when fishing went down. This was of economic importance since sharks are not so desirable for consumption, not to mention their effect on tourism. He could not reach any reasonable conclusions with his data so he gave them to Volterra, who came up with a very powerful mathematical model for predator-prey problems. He wrote a seminal text on the subject: Leçons sur la théorie mathématique de la lutte pour la vie (1931). After the war the government in ltaly was becoming unstable and Volterra fought hard in parliament to keep the Facists at bay. In 1922, after the Facists took over Italy and abolished parliament, Volterra refused to swear an oath of allegiance to the new regime, and for this he was forced to vacate his position at the University of Rome. Volterra spent the rest of his life abroad, mostly in Paris and in Spain.\\
+Lotka had independently discovered predator-prey models at about the same time as Volterra, and he also wrote a book on theoretical biology, which expounded on his newly discovered models. At the time, Lotka had immigrated to the United States. Soon after his arrival in America, he left academia and went to work for a New York insurance company (MetLife), which saw potential applications for Lotka's population models.
+}
+in the early twentieth century and independently by the Austrian mathematician and chemist Alfred Lotka. To set up the \textbf{predator-prey model}, we will make the following assumptions:
+
+
+  \begin{minipage}{\linewidth}
+      \begin{minipage}{0.20\linewidth}
+          \begin{figure}[H]
+              \includegraphics[width=\linewidth]{fig_9_1}
+              \caption{This is the first figure}
+              \label{fig:fig_9_1}
+          \end{figure}
+      \end{minipage}
+      \hspace{0.05\linewidth}
+      \begin{minipage}{0.19\linewidth}
+          \begin{figure}[H]
+              \includegraphics[width=\linewidth]{fig_9_2}
+              \caption{This is the second figure}
+              \label{fig:fig_9_2}
+          \end{figure}
+      \end{minipage}
+       \hspace{0.05\linewidth}
+      \begin{minipage}{0.30\linewidth}
+          \paragraph*{ASSUMPTIONS:}The environment has two species, the predator and the prey. The former feeds on the latter and needs it to survive. The prey feeds on a third food source which is readily available. We let:\\\\
+x(t) = predator population at time t, and y(t) = prey population at time t.\\\\
+We assume further that: (i) In the absence of predators, the prey population satisfies:
+          \end{minipage} 
+  \end{minipage}
+
+\noindent $d y / d t=c y(c>0)$ (Malthusian growth).\\
+(ii) In the absence of prey, the predator population satisfies: $d x / d t=-a x(a>0)$ (Malthusian decay).\\
+(iii) With both predators and prey present, the number of encounters per unit time is proportional to $x y$.\\
+\\
+The Malthusian growth assumption in (i) is reasonable if there are predators since they will tend to keep the prey population at bay. If the prey population increases, then the predators will also flourish. A partial justification for assumption (iii) is that if we double the population of either species, then the number of encounters should also double. The roles of predators and prey could be played out by numerous pairs of species such as: foxes and rabbits, wasps and caterpillars, sharks and sea turtles, ladybugs and aphids, etc. The Malthusian growth rates can be determined by isolating a certain number of the species in an enclosed environment and monitoring the population changes per unit time. Similar experiments could be set up to determine exactly how the number of encounters affects the growth rate for the predators and the decay rate for the prey. In general, these assumptions thus lead us to the following system for the "unknown" functions $x(t)$ and $y(t)$, which is the general \textbf{Lotka-Volterra predator-prey model:}
+
+\begin{equation}\label{eqa4}
+\left\{\begin{array}{l}
+x^{\prime}(t)=-a x+b x y \\
+y^{\prime}(t)=c y-d x y
+\end{array} \text { where } a, b, c, d>0,\right.
+\end{equation}
+
+\noindent Before moving to a specific example, we indicate how the numerical methods of the last chapter would change for systems. We present now the analogous program for the Euler method, as it applies to the general IVP resulting from the 2-dimensional system (\ref{eqa1}), and leave the corresponding programs for improved Euler and Runge-Kutta as exercises.
+
+\paragraph*{PROGRAM 9.1:} Euler method for the two-dimensional IVP: $\left\{\begin{array}{l}x^{\prime}(t)=f(t, x, y), \quad x(a)=x_{0} \\ y^{\prime}(t)=g(t, x, y), \quad y(a)=y_{0}\end{array}\right.$
+
+\begin{lstlisting}[numbers=none,frame=single]
+function [t, x, y] = euler2d(f,g,a,b,x0,y0,hstep)
+%input variables: f, g, a, b, x0, y0, hstep
+%output variables: t, x, y
+%f and g are functions of three variables (t,x,y).
+%The program will apply Euler's method to solve the IVP:
+%(DEs): x'=f(t,x,y), y'=g(t,x,y)  (ICs) x(a)=x0
+%will be 3 vectors for t-values, x-values and y-values.
+x(1)=x0; y(1)=y-0;
+t=a:hstep:b;
+[m nmax] = size(t);
+	for n=1:nmax-1 %This will make t have same length as x,y
+	x(n+1)=x(n)+hstep*feval(f,t(n),x(n),y(n));
+	y(n+1)=y(n)+hstep*feval(g,t(n),x(n),y(n));
+end
+\end{lstlisting}
+
+\noindent EXERCISE FOR THE READER 9.2: Write a program \texttt{runkut2d} that extends the Runge-Kutta method to solve the two-dimensional IVP (\ref{eqa2}), so it works in a similar fashion to the above program.
+
+\paragraph*{EXAMPLE 9.2:} Suppose that $t$ is measured in years and that a biologist studying the interactions of sharks and sea turtles in the waters off the Northern Marianas Islands and Guam has found that the shark populations $x(t)$ (in hundreds), and the sea turtle population $y(t)$ (also in hundreds) satisfy the following IVP:
+
+\begin{equation*}
+\left\{\begin{array}{ll}
+x^{\prime}(t)=-x+x y ; & x(0)=0.3 \\
+y^{\prime}(t)=y-x y ; & y(0)=2
+\end{array},\right.
+\end{equation*}
+
+\noindent where $t=0$ corresponds to the year 2000.\\
+(a) Use the Euler method with step size $h=0.1$ to solve the system for $0 \leq t \leq 50$ and plot the simultaneous graphs of $x$ versus $t, y$ versus $t$ and do a parametric plot of $y$ versus $x$.\\
+(b) Do the same as in part (a), except use the Runge-Kutta method.\\
+(c) Based on your results of parts (a) and (b), what do you think happens as $t \rightarrow \infty$ ? Do $x(t)$ and $y(t)$ approach an equilibrium or does one species die out, or what?\\
+
+\noindent SOLUTION: Part (a) is made quite simple with our \texttt{euler2d} program. Although the system is autonomous, the syntax of this program requires ourinputted functions be constructed as functions of the three variables $(t, x, y)$ (in this order).
+
+\begin{lstlisting}[frame=none,numbers=none]
+>> xp=inline('-x+x*y','t','x','y'); yp=inline('y-x*y','t','x','y');
+>> [t,xe,ye]=euler2d(xp, yp, 0, 50, 0.3, 2, 0.01);
+\end{lstlisting}
+
+\noindent We have thus constructed the vectors for the Euler approximation to the solution. The next command below will cause MATLAB to produce a plot (in the same window) of the predator population (hundreds of sharks) $x$ versus $t$ in a red solid curve together with the prey population (hundreds of sea turtles) $y$ versus $t$ in a blue dash-dot curve. The second command will produce the corresponding parametric plot of $y$ versus $x$. The two plots are reproduced in \ref{fig:fig_9_3}.
+
+\begin{lstlisting}[frame=none,numbers=none]
+>> plot(t,xe,'r',t,ye,'b-.'), xlabel('t=time in yea')
+>> plot(xe,ye), xlabel('x=100''s of sharks')
+>> ylabel('y=100''s of sea turtles')
+\end{lstlisting}
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{fig_9_3}
+    \caption{Using Euler's method with step size $h=0.01$ to solve the predator-prey problem of Example $9.2$ for the time range from $t=0$ to $t=50$ years. The first plot gives the approximations of the shark population (in hundreds) $x(t)(=$ solid red graph) along with the approximation for the sea-turtle population (in hundreds) $y(t)(=$ blue dash/dot graph). The second plot gives the parametric plot of $y$ versus $x$.}
+    \label{fig:fig_9_3}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{fig_9_4}
+    \caption{The plots in this figure correspond to those in the previous one (for Example 9.2), except that the Runge-Kutta method is now used (with the same step size).}
+    \label{fig:fig_9_4}
+\end{figure}
+
+\noindent Part (b) is done in the same fashion, making use of the \texttt{runkut2d} algorithm. The plots appear in Figure \ref{fig:fig_9_4} and the code (without the labeling) is as follows:
+\begin{lstlisting}[frame=none,numbers=none]
+>> [t,xrk,yrk]=runkut2d(xp, yp, 0, 50, 0.3, 2, 0.01);
+>> plot(t,xrk,'r' ,t,yrk, 'b-.')
+>> plot(xrk,yrk)
+\end{lstlisting}
+
+\noindent Part (c): The two methods give different plots only because Euler's method has introduced errors which have hidden the fact that the two populations are periodic functions. Even more importantly, note that in the Euler plots, successive peaks increase and successive valleys decrease for both populations. Once a population gets too low (below a fertile pair of mates or a single pregnant female), the population will soon fail to exist (extinction) so if we just looked at the Euler approximations, we might be misled to conclude that the populations will both eventually become extinct-a shockingly false conclusion! Parametric plots (the second ones) are great ways to test periodicity of functions. The $x y$-plane for such a system of DEs is called the \textbf{phase-plane} of the system. Solution curves of the system which are graphed in the phase-plane are called \textbf{orbits}. Many qualitative properties of the system can be gleaned from carefully examining the phase-plane and we will discuss these matters in the next section. Looking at the more accurate graphs of Figure \ref{fig:fig_9_4}, we see that both populations of predator and prey are periodic with cycles lasting about seven years. As the sea turtle population increases to its maximum, the shark population starts also to increase, so much so that eventually the sea turtle population begins to decrease. With the prey population decreasing, the predators no longer have enough food to continue to increase and after a while their population tops out and starts to decrease. This continues indefinitely with the peaks (valleys) of predatators lagging a bit after the corresponding peaks (valleys) for the prey.\\
+\\
+\indent Note further that if we set both right sides of the DEs in Example $9.2$ equal to zero, we get (from the first) either $x=0$ or $y=1$ and (from the second) either $y=0$ or $x=1$. Thus there are two \textbf{equilibrium solutions} for the system, $x=0, y=0$ and $x=1, y=1$ which are constant solutions of the DE system. Only the second is interesting. Note that the phase-plane plot of the example loops around the equilibrium point, albeit in a rather peculiar way. It turns out that if we had started out with other initial conditions (which are off the phase-plane loop of the example but still with both $x, y>0$ ), we would get other similarly shaped phase-plane curves which loop around the equilibrium point, no matter how close (or far) we start from the equilibrium point. Because of this the equilibrium solution is called a \textbf{vortex} (or a \textbf{center}). There are other possibilities for behavior of solutions near an equilibrium point. We will present a more detailed analysis of the phase-plane in the next section. For the Lotka-Volterra predator-prey model (\ref{eqa4}), it turns out that all solutions are periodic. This will be partially confirmed in the exercise for the reader below; see also Exercise 9 for the general case. Another interesting fact about the (periodic) solutions of the Lotka-Volterra model is that the average value of each (predator or prey) population over a cycle will always equal the corresponding equilibrium values; see Exercise $10.$\\
+\\
+\noindent EXERCISE FOR THE READER 9.3: Use MATLAB to produce a simultaneous plot of 20 different orbits in the phase-plane of the system of DEs in Example 9.2. Take your 20 different initial conditions so that some are very near the equilibrium point and some are rather far from it, but make sure the graphs are distinguishable from each other. Also, indicate for each of these orbits whether the flow is clockwise or counterclockwise.\\
+\\
+\noindent EXERCISE FOR THE READER 9.4: If we include in the model of Example $9.2$ the effect of fishing, we will see that a reduction in fishing actually will tend to reduce the food fish (prey) population and increase the shark (predator) population. (This is the phenomenon that truly puzzled D'Ancona.)\footnote{In Example 9.2, the prey is actually an endangered species so such fishing would not be legal (or humane). We use the data from the example for comparison only. The phenomena will remain true for any such predator-prey system, when both the predators and prey are removed at a constant rate (by hunting, fishing, etc.). For this exercise, we temporarily replace the sea turtle prey with some food fish species (say marlin).}
+The amount of fishing will yield a proportional decrease in the amounts of both populations. The proportionality constant $f$ will depend, for example, on the number of fishing boats deployed, types and numbers of nets used, etc. Incorporating this constant into the model of Example 9.2, gives the modified model.
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=-(1+f) x+x y \\
+y^{\prime}(t)=(1-f) y-x y
+\end{array}\right.
+$$
+(a) Explain why the "fishing constant" $f$ in this model must be less than $1 .$\\
+(b) Find the (only) equilibrium solution of this new system having both positive components. If $f$ is reduced, what in turn happens to the equilibrium values of food fish and sharks?\\
+
+\noindent We next turn our attention to another important model of ODE systems related to epidemiology and the spread of diseases. The models are known collectively as \textbf{SIR models}\footnote{The first mathematical model for epidemiology dates back to 1760, when Swiss mathematician Daniel Bernoulli (1700-1782) investigated the effect of inoculating people with the smallpox virus to prevent the spread of the disease. The first SIR model was invented in 1927 by Kermack and McKendrick [KeMc-27], who sought to model the numbers of infected patients observed in epidemics such as the plague (London 1665-1666, Bombay 1906) and cholera (London 1865). This basic model still remains quite accurate and appropriate for analyzing numerous epidemics that spread rapidly. Subsequent modifications have been developed to accurately model different sorts of diseases and can include additional relevant aspects such as passive (inherited) immunity, vertical transmission, disease vectors, age structure, social and sexual mixing groups, vaccination, quarantine, and spacial spread, to name a few. For a recent, well-written and informative survey on the subject we cite the survey article of Heathcote [Hea-00].} and we will explain the acronym shortly.\\
+
+\paragraph*{ASSUMPTIONS:} The model studies the spread of an infectious disease within a population of $N$ subjects (humans are a good example). The subjects are separated into three classes: the \textbf{susceptibles} $S$, which do not have but can catch the disease; the \textbf{infectives} $I$, which have the disease and can pass it on to susceptibles; and the \textbf{removed} R, who have had the disease and have either recovered with immunity, have been isolated (quarantined), or have died.
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig_9_5}
+    \caption{Illustration of the SIR-model for the spread of an infectious disease. The population is stratified into three subgroups and the transitions between groups are indicated with solid arrows. With the additional dotted arrow we get the SIRS model, where members of the removed class can again become susceptibles.}
+    \label{fig:fig_9_5}
+\end{figure}
+
+\noindent In particular, the removed class cannot pass the disease on to anyone in the susceptible class. Also note that since everyone (including the dead) is accounted for we have
+\begin{equation}\label{eqa5}
+S+I+R=N \text {. }
+\end{equation}
+We let $S(t), I(t), R(t)$ denote the populations of each of the three classes at time $t$. The rate of transfer from susceptibles to infectives is governed by the constant $r$, which measures the \textbf{infectivity} of a disease and has units $[1 /$ time $]$. The quantity $1 / a$ represents the average time length of the infectious period. Thus the most dangerous diseases have a large value of $r$ (very contagious) and a small value for $a$ (people remain contagious for a long time). The deadly Ebola virus, which has had some isolated outbreaks in Africa starting in the 1990 s, turned out not to be a major epidemic since it has only a very short infectious period. Another characteristic that can make a disease more dangerous is when infectives are contagious before showing overt symptoms, and so can pass the disease on to other unsuspecting susceptibles. HIV/AIDS is an example of such a disease. Once these parameters are understood for a disease, the effects of various control methods, such as vaccinations, quarantines, etc., can be added into the basic SIR model and appropriate public health courses of action can be prepared. The SIR model is represented by the following system:
+\begin{equation}\label{eqa6}
+\left\{\begin{array}{l}
+S^{\prime}(t)=-r I S \\
+I^{\prime}(t)=r I S-a I \\
+R^{\prime}(t)=a I
+\end{array}\right.
+\end{equation}
+In light of (\ref{eqa5}), $ R=N-S-I$ so we need only consider the first two equations of (\ref{eqa6}).
+
+\paragraph*{EXAMPLE 9.3:} In 1978, a flu outbreak in a boys' boarding school in England was documented in the \textit{British Medical Journal} and the article gave the following data for the best-fit SIR model. There were $N=763$ boys at the school and of these 512 were confined to bed during the outbreak, which lasted a bit over two weeks. $I(0)=I$ (only one initial infectious boy started the epidemic) and so $S(0)=$ $N-1=762$. The infectivity was $r=2.18 \times 10^{-3} /$ day and $a=0.44036$ (so the infectivity period lasts for $1 / a$ or about $2 \frac{1}{4}$ days).
+\begin{enumerate}[label=(\alph*), topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,labelsep=1ex]
+\item Use the Runge-Kutta method to solve this SIR model from $t=0$ to $t=14$ days and in the same window, get MATLAB to plot both graphs of $S(t)$ and $I(t)$.
+\item Get MATLAB to produce a single phase-plane plot $(I$ versus $S$ ) of the 30 solutions to the above SIR model for this flu outbreak using each of the following initial conditions: $I(0)=1$ (the one of part $(\mathrm{a})), I(0)=11, I(0)=31$, $\ldots, I(0)=601$. Indicate any similarities and differences of these 30 orbits.\\
+\end{enumerate}
+
+\noindent Part (a): After creating inline functions for the right sides of the first two DEs in (\ref{eqa6}) (as functions of $(t, S, T)$ ), we perform the Runge-Kutta method and get MATLAB to produce the plots of $S$ versus $t$ (in black) and $I$ versus $t$ (in red). The plot is shown in Figure \ref{fig:fig_9_6}.
+\begin{lstlisting}[frame=none,numbers=none]
+>> dS=inline('-2.18e-3*I*S', 't','S','I');
+>> dI=inline('2.18e-3*I*S-.44036*I', 't','S','I');
+>> [t,S,I]=runkut2d(dS,dI,0,14,762,1,0.01);
+>> plot(t,S,'k',t,I,'r'), xlabel('t = Time in days')
+\end{lstlisting}
+
+\newpage
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig_9_6}
+    \caption{Plots for the sustibles and infectious puplis in the English boarding school flu outbreak of Example 9.3. Note how quickly the flu spread and in particular that only about 20 or so students (out of 763 ) appeared to have escaped this flu.}
+    \label{fig:fig_9_6}
+\end{figure}
+
+\noindent The model's results agree quite favorably with the actual results of this epidemic as documented in the British journal.
+
+\noindent Part (b): The following simple for loop will allow us to obtain the desired phase portrait.
+\begin{lstlisting}[frame=none,numbers=none]
+>> hold on
+>> for i=1:20:601
+		I0=i,   S0=762-i;
+		[t,S,I]=runkut2d(dS,dI,0,14,SO,I0,0.01);
+		plot(S,I)
+end
+>> xlabel('S'), ylabel('I')
+\end{lstlisting}
+
+\noindent There are quite a lot of computations needed here so we intentionally left off the semicolon at the end of the \texttt{IO} line within the for loop. This allowed viewing the progression of the loop, which may take a few minutes, depending on the speed of your computer. The result is shown in Figure \ref{fig:fig_9_7}, where the line $S+N=763$ has been added, as well as a vertical line at which each orbit reaches its maximum $I$ value.\\
+\\
+\indent By examination of the first DE of the SIR model (\ref{eqa6}), we see that $S$ will continue to decrease until either $S$ or $I$ reaches 0 . The second DE of (\ref{eqa6}), when written as $d I / d t=I(r S-a)$, shows that $I$ will increase as long as $S>a / r$ and begin decreasing after $S<a / r$. The reciprocal of important parameter $\rho=a / r$ is called the \textbf{contact rate} of the disease. If $S(0)$ starts off larger than $\rho$, then $I$ will increase and there is an \textbf{epidemic}, while if $S(0)$ starts off smaller than $\rho$, then $I$ will only decrease and there is no epidemic.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig_9_7}
+    \caption{Phase portrait for the flu-epidemic model of Example 9.3. All initial conditions start on the diagonal solid line $S+I=N$ (flows emanate from this line). The vertical dashed line is at $S=a / r$ and this is where the values of $I$ reach their maximum. Flow direction arrowheads were also added.}
+    \label{fig:fig_9_7}
+\end{figure}
+
+\noindent Another important parameter which takes also the size of the population into consideration is the so-called \textbf{reproduction rate} of the disease, given by:
+$$
+R_{0}=\frac{r S(0)}{a} .
+$$
+This quantity can be viewed as the number of new infections transmitted to the suseptible population per single infected individual per unit time. If more than one new disease transmission occurs per infected individual in a unit of time $\left(R_{0}>1\right)$, then it is clear that we have an epidemic. Another interesting consequence of this model is that the epidemic will evenually end because of a lack of infectives (rather than a lack of susceptibles).\\
+
+\noindent EXERCISE FOR THE READER 9.5: (a) Starting with equation (\ref{eqa6}), show that in cases when $S(0)>\rho$, the maximum value reached by $I$ is given by $N-\rho+\rho \ln (\rho / S(0))$.\\
+(b) From the first DE of (\ref{eqa6}), $S(t)$ is a decreasing function of $t$ so that $S(\infty) \equiv \lim _{t \rightarrow \infty} S(t)$ exists as some number in the interval $0 \leq S \leq N$. Using the SIR DEs (6) show that $S(\infty)>0$.\\
+(c) Show that $S(\infty)$ is the smallest positive root of the equation: $S(0) \exp [-(N-x) / \rho]=x$ and then use Newton's method to compute $S(\infty)$ for the flu epidemic of Example 9.3. Compare your answer to the value $S(14)=$ $22.0862$ of susceptibles after 14 days from the numerical solution.\\
+\textbf{Suggestion:} For parts (b) and (c) use (\ref{eqa6}) to deduce that $d S / d R=-S / \rho$ and use this to write $S$ as a function of $R$.\\
+
+\noindent EXAMPLE 9.4: \textit{(SIRS Model)} We modify the SIR model (\ref{eqa6}) to include the feature of temporary immunity. This will cause members of the recovered class to go back to the susceptible class at a rate $b R$ (so $1 / b$ will be the average time that the disease-imparted immunity lasts). The SIRS model is thus represented by the system:
+\begin{equation}\label{eqa7}
+\left\{\begin{array}{l}
+S^{\prime}(t)=-r I S+b R \\
+I^{\prime}(t)=r I S-a I \\
+R^{\prime}(t)=a I-b R
+\end{array} .\right.
+\end{equation}
+Once again, from (\ref{eqa5}) we have $R=N-S-I$ so we need only solve the system resulting from the first two DEs of (\ref{eqa7}).\\
+(a) Produce a phase portrait of about 20 well distributed orbits for $I$ versus $S$ of the SIRS model (\ref{eqa7}) using the following parameters: $N=10,000$ (a small-sized city), $r$ $=2 \times 10^{-4} / \mathrm{yr}^{-}$(on average for every 5000 encounters of a susceptible with an infective there will be one new infection each year), $a=4$ (average infection lasts for $1 / 4$ year $=3$ months), and $b=.25$ (immunity lasts for 4 years after contracting). Create the plots over a 20 -year period using the Runge-Kutta method with step size $=0.01$.\\
+(b) Change the parameter $a$ to be 1 (so now the infection lasts for a year rather than three months), but keep all other parameters the same. Create a phase portrait containing 5 well-distributed orbits over an 80 -year period using the Runge-Kutta method with step size $=0.01$. Compare this phase portrait with that of part (a) and interpret in terms of epidemiology.\\
+
+\noindent SOLUTION: Part (a): We let the initial number of infectives range from 0 to 10,000 in increments of 500 . We used the following commands to create the plot in Figure \ref{fig:fig_9_8}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig_9_8}
+    \caption{Orbits for the SIRS disease model of Example 9.4, part (a). Flow directions are indicated with the added arrowheads. Each initial condition emanates from the diagonal line $S+I=N$ (shown). Note that regardless of the initial conditions (even if the whole population starts off infected), the disease eventually burns itself out as the infective population converges to zero.}
+    \label{fig:fig_9_8}
+\end{figure}
+
+\begin{lstlisting}[frame=none,numbers=none]
+>> dS=inline('-2e-4*I*S+.25*(1e4-S-I)', 't', 'S', 'I');
+>> dI=inlineC'2e-4*I*S-4*I','f,'S', 'I');
+>> hold on
+>> for k=0:500:10000	
+[t,S,I]=runkut2d(dS,dI,0,20,10000-k,k,0.01); 
+plot(S,I)
+end
+\end{lstlisting}
+
+\noindent Part (b): We obtain orbits corresponding to initial infective populations from 10,000 down to 2000 in increments of 2000 . The changes in the MATLAB commands are obvious and minor, so we omit them. The resulting phase portrait is given in Figure \ref{fig:fig_9_9}.\\
+
+Notice the drastic difference in the long-term outcomes of the two very similar diseases on the same population model. The first disease eventually becomes extinct, regardless of the initial conditions, while the latter will linger on forever. Thus in order to eradicate the latter disease it would be necessary for public health officials to use supplementary measures. It is interesting to ask whether there is some borderline value for the parameter $a$ at which the situation of the disease undergoes such a radical change. Indeed there is! In the next section we will show how to predict behaviors such as these, and in particular, for this problem we will be able to find this critical value of $a$. In part $(b)$, notice that the orbits all spiral to the point $(S, I)=(5000,1000)$. Notice also that this point makes the right sides in the first two DEs of (\ref{eqa7}) equal to zero so that this point is actually an equilibrium solution.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig_9_9}
+    \caption{ Orbits for the SIRS disease model of Example 9.4, part (b). Flow directions are indicated with the added arrowheads. Each initial condition emanates from the diagonal line $S+I=N$, which is shown on the left figure. Note that here the disease continues to exist. The orbits spiral to an equilibrium point (which is the same for all initial conditions). The figure plot on the right is a magnification of 100 times (note scales).\\}
+    \label{fig:fig_9_9}
+\end{figure}
+
+\newpage
+\noindent\rule{480pt}{0.4pt}
+\paragraph*{EXERCISE 9.2: }
+\begin{enumerate}
+\item Each of the following systems has an equilibrium solution at $(x, y)=(0,0)($ and no others). For each of them, using the Runge-Kutta method, use MATLAB to create a representative phase portrait of the system near this equilibrium solution. Plot enough orbits so that your final plot really shows what is going on. Also, add flow directions on your orbits. Finally, from your phase portrait, can you determine whether all initial conditions which are close enough to $(0,0)$ result in solutions which always converge to $(0,0)$ ?
+
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+
+        \item[(a)] $\left\{\begin{array}{l}x^{\prime}(t)=-x \\ y^{\prime}(t)=-y\end{array}\right.$
+        \item[(c)] $\left\{\begin{array}{l}x^{\prime}(t)=y \\ y^{\prime}(t)=-x+y\end{array}\right.$
+        \item[(e)] $\left\{\begin{array}{l}x^{\prime}(t)=-y \\ y^{\prime}(t)=x\end{array}\right.$
+        
+        \item[(b)] $\left\{\begin{array}{l}x^{\prime}(t)=2 x \\ y^{\prime}(t)=2 y\end{array}\right.$
+        \item[(d)] $\left\{\begin{array}{l}x^{\prime}(t)=-y \\ y^{\prime}(t)=x-y\end{array}\right.$
+        \item[(f)] $\left\{\begin{array}{l}x^{\prime}(t)=x-2 y \\ y^{\prime}(t)=x-y\end{array}\right.$
+    \end{enumerate}
+    \end{multicols}
+	
+\textbf{Suggestion:} Be careful of the fact that sometimes (depending on the particular system and initial conditions) the flow will be away from the equilibrium point, and other times the flow will be toward the equilibrium point. Thus a "good" set of initial conditions to use will vary with each problem (both in number and locations). It is best to experiment first with a few single flows before setting up a time-consuming loop to plot a bunch of them.
+\item Repeat all parts of Exercise 1 for the following linear systems:
+
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+
+        \item[(a)] $\left\{\begin{array}{l}x^{\prime}(t)=-2 x+y \\ y^{\prime}(t)=x-2 y\end{array}\right.$
+        \item[(c)] $\left\{\begin{array}{l}x^{\prime}(t)=-y \\ y^{\prime}(t)=-x\end{array}\right.$
+        \item[(e)] $\left\{\begin{array}{l}x^{\prime}(t)=y+x^{2} \\ y^{\prime}(t)=-x+y\end{array}\right.$
+        
+        \item[(b)] $\left\{\begin{array}{l}x^{\prime}(t)=2 x \\ y^{\prime}(t)=4 y\end{array}\right.$
+		\item[(d)] $\left\{\begin{array}{l}x^{\prime}(t)=x-y \\ y^{\prime}(t)=-x\end{array}\right.$
+		\item[(f)]$\left\{\begin{array}{l}x^{\prime}(t)=x^{2}-y \\ y^{\prime}(t)=x y-x\end{array}\right.$
+    \end{enumerate}
+\end{multicols}
+
+\item Write a program called \texttt{impeu12d} which performs the same task (with the same input and output variables) as the program \texttt{euler2d} (Program 9.1) but with the improved Euler algorithm. Use it to redo Example $9.2$ (sharks/sea turtles) and compare the results with those obtained in that Example.
+\item \textit{(Agriculture)} For many plants and crops, parasites can pose serious threats to yields and plant health. The aphid is one such pest. It has a benign predator, the ladybug. In a certain farm community, we let $x(t)$ denote the population of ladybugs, in thousands, and $y(t)$ be the aphid population, also in thousands. Experimental data on growth and interaction of these two species show that they satisfy the following system of differential equations:
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=-2 x+0.5 x y \\
+y^{\prime}(t)=8 y-20 x y
+\end{array}\right.
+$$
+    \begin{enumerate}[label=(\alph*)]
+\item At time $t=0$ ( $t$ is measured in months), the initial populations are $x(0)=0.2, y(0)=6.6$. Use the Runge-Kutta method with step size $h=0.01$ to solve this system with these initial conditions for $0 \leq t \leq 120$ (i.e., for the subsequent 10 years, find the future ladybug and aphid populations). Plot the graph of $y$ vs. $x$.
+\item Same problem as (a) but with initial conditions $x(0)=0.5, y(0)=5.0$. And then $x(0)=0.1$, $y(0)=12.4$. Draw separate $y$ vs. $x$ graphs for each and then draw a single plot, which contains all three graphs together. Do you notice anything? As time goes on, in which direction does $(x(t)$, $y(t))$ move along the curves? (Clockwise or counterclockwise?)
+\item Find the equilibrium populations $x_{E}$ (for ladybugs) and $y_{E}$ (for aphids) which, when used as initial conditions $x(0)=x_{E}$, and $y(0)=y_{E}$, give the positive (equilibrium) solutions = $x(t)=x_{E}$, and $y(t)=y_{E}$ (for all $t \geq 0$ ).
+\item Suppose an insecticide is used which kills the same proportion $=2.5$ of each of the two species per month. Thus the system now becomes:
+
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=-4.5 x+0.5 x y \\
+y^{\prime}(t)=5.5 y-20 x y
+\end{array}\right.
+$$
+Repeat the tasks of part (b) for this new system.
+\item Find the new equilibrium populations. How do they compare with those in (c) (without the insecticide)? What are your conclusions?
+
+\end{enumerate}
+\end{enumerate}
+NOTE: The next four exercises deal with a model which is a variation of the SIR model for the spread of sexually transmitted diseases (STDs). In this model we consider 6 classes, 3 each for (promiscuous) males and females. The classes $S_{M}, I_{M}$ and $R_{M}$ denote the susceptible males, infectious males, and removed males, and $S_{F}, I_{F}$, and $R_{F}$ denote the corresponding classes of females. The model is illustrated by the diagram:
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{fig_9_a}
+    \label{fig:fig_9_a}
+\end{figure}
+
+
+\noindent Several STDs (such as gonorrhea) do not impart immunity after an infection, so that in the above model there would be no removed classes (for males or females). In this case the model simplifies to yield the following system of differential equations:
+
+\begin{equation}\label{eqa8}
+\begin{cases}S_{M}^{\prime}(t)=-r S_{M} I_{F}+a I_{M}, & S_{F}^{\prime}(t)=-s S_{F} I_{M}+b I_{F} \\ I_{M}^{\prime}(t)=r S_{M} I_{F}-a I_{M}, & I_{F}^{\prime}(t)=s S_{F} I_{M}-b I_{F}\end{cases}
+\end{equation}
+\noindent where the parameters $a, b, r$, and $s$ are positive numbers. Letting $N_{M}$ and $N_{F}$ denote the total number of (promiscuous) males and females respectively, we get that
+\begin{equation}\label{eqa9}
+S_{M}+I_{M}=N_{M}, \text { and } S_{F}+I_{F}=N_{F},
+\end{equation}
+\noindent and from this we can reduce the fourth-order system above to a second-order one, either in $S_{M}$ and $S_{F}$ or in $I_{M}$ and $I_{F}$. For example, in the latter two variables we get the system:
+\begin{equation}\label{eqa10}
+\left\{\begin{array}{l}
+I_{M}^{\prime}(t)=r I_{F}\left(N_{M}-I_{M}\right)-a I_{M} \\
+I_{F}^{\prime}(t)=s I_{M}\left(N_{F}-I_{F}\right)-b I_{F}
+\end{array}\right.
+\end{equation}
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Using populations $N_{M}=N_{F}=50,000,000$ and the initial conditions $I_{M}(0)=10,000$ and $I_{F}(0)=2000$ of a certain STD having $a=b=1$ (infections last one year on average) $r=$ $1.960 \times 10^{-8}$ and $s=2.254 \times 10^{-8}$, do the following:
+    \begin{enumerate}[label=(\alph*),topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\item Using the Runge-Kutta method with step size $h=0.01$, obtain graphs of $I_{M}(t)$ and $I_{F}(t)$ as functions of time from $t=0$ to $t=500$ years. What seems to be the eventual outcome of the disease?
+\item Obtain a selection of about 20 orbits of the same system with a good selection of initial conditions. What general comments can you make about the disease from your phase portrait?
+\item Can you tell from the information given here whether the males or the females are more promiscuous in this particular model? Justify your answer.
+	\end{enumerate}
+\item Repeat parts (a) and (b) of the preceding exercise with the same DE model (\ref{eqa10}), but the following changes in the parameters: $N_{M}=5,000,000, N_{F}=4,000,000, a=b=0.5$ (so now infections last two years), $r=5.680 \times 10^{-6}$ and $s=4.878 \times 10^{-6}$. Also, (c) can you tell if the males in this model are more or less promiscuous than those of the other model?
+\item (a) How would the model (\ref{eqa10}) above change if we were to add in the feature of the removed class, letting $c$ denote the rate that infective males are removed and $d$ denote the rate that infective females are removed, and with the additional assumption that once a male or female is removed, they will not become susceptible again?\\
+(b) Using the values $c=0.08$ and $d=0.05$ in this resulting model, along with the data of Exercise 5 , redo part (a) of that exercise.\\
+(c) Do part (b) of Exercise 5 using this new model.\\
+(d) Can you think of some reasons why there might be a difference in the removal rate $c$ for men and $d$ for women?
+\item Redo all parts of Exercise 7 using the same values for $c$ and $d$ given there, but now for the data in Exercise 6. (If you have already done parts (a) and (d) you can of course skip them here.)
+\item Show that the orbits of the Lotka-Volterra predator-prey model (\ref{eqa4}) can all be expressed in the form $\frac{x^{c} y^{a}}{e^{d x} e^{b y}}=C$, where $C$ is some constant.\\
+\textbf{Suggestion:} The separation of variables method can be used here. Use (\ref{eqa4}) to write:\\
+$\frac{d y}{d x}=\frac{y(c-d x)}{x(-a+b y)} \Rightarrow \frac{(-a+b y)}{y} \frac{d y}{d x}=\frac{c-d x}{x}$, and then integrate. Take care not to confuse the $d$ in the differential with the constant $d$ in (\ref{eqa4}).\\
+\textbf{Note:} This closed form solution can be used to show that each of the orbits are closed curves in the phase-plane (see [Bra-93], Lemma 1 on p. 443 for a proof) and hence all orbits of (\ref{eqa4}) are periodic.
+\item Suppose that $P$ is the period of some pair $x(t), y(t)$ of solutions to the Lotka-Volterra predatorprey model (\ref{eqa4}):
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=-a x+b x y \\
+y^{\prime}(t)=c y-d x y
+\end{array} .\right.
+$$
+(a) Show that the only equilibrium solution of (\ref{eqa4}), which has both populations being positive, is $x \leqq c / d, y \equiv a / b$.\\
+(b) Show that the average values of $x(t)$ and $y(t)$ over any complete cycle are precisely $a / b$ and cld respectively, i.e.,
+$$
+\frac{1}{P} \int_{0}^{P} x(t) d t=c / d \text {, and } \frac{1}{P} \int_{0}^{P} y(t) d t=a / b .
+$$
+\textbf{Suggestion:} For part (b), to show the first one, take the first equation in \ref{eqa4}, divide it by $x$ and integrate both sides over the interval $[0, P]$. Observe that the integrand on the left is the derivative of $\ln (x(t))$.
+\item Does the SIRS model of part (a) in the Example $9.4$ have equilibrium solutions? If yes, how would you interpret them in terms of the setting of the problem?\\
+
+\end{enumerate}
+
+\section{PHASE-PLANE ANALYSIS FOR AUTONOMOUS FIRST-ORDER SYSTEMS}
+
+\noindent The last section provided us with a few glimpses of the multitude of possibilities that exist for phase-plane portraits for a given two-dimensional system. In this section we would like to try to make some general comments on how to analyze and predict properties of phase portraits for a given two-dimensional system of first-order autonomous DEs in the vicinity of an isolated equilibrium solution. Since the system is assumed to be autonomous, we will be able to ignore the independent variable $t$ as far as predicting orbits. We begin with an example dealing with another population model, this one being for two species that compete with each other for the same food and resources but otherwise do not prey on one another. One might think of them as two different types of reef fish that feed on the same (limited) coral species or perhaps two types of squirrels that feed on the same acorns and nuts. For simplicity, in this example we will assume that the populations of the two species will grow logistically so that their populations will be limited by their own carrying capacities, but also by the total number of individuals of both species. The following system gives a simplified version of this model where both species have been treated equally:
+\begin{equation}\label{eqa11}
+\left\{\begin{array}{l}
+x^{\prime}(t)=x-x^{2}-r x y \\
+y^{\prime}(t)=y-y^{2}-r x y 	
+\end{array} .\right.
+\end{equation}
+\noindent The model has been scaled to leave only one parameter $r>0$ as adjustable. Much can be said about the orbits without actually (numerically) solving this system. There turn out to be two different cases depending on whether $r>1$ or $r<1$.\\
+
+\indent We deal first with the special case $r=2$, which will represent the first case. We should think of the system (\ref{eqa11}) as setting up a flow in the $(x, y)$-phase-plane. If we start with any initial condition $(x(0), y(0))$ and view it in the phase-plane, it will lie on an orbit and, as time progresses, the point will be carried along the orbit with directions and speeds determined by the DEs in (\ref{eqa11}). We would like to see what is happening to the orbit as $t$ gets large $(t \rightarrow \infty)$. That is, if we start with certain numbers for each population, what eventually happens? Do the two species establish a peaceful coexistence or does one die out? We will soon see. For a specific example, let's suppose species $x$ had a population of 520 , or $x(0)=0.52$ (in thousands) at time zero and species $y$ had an initial population of 500 , or $y(0)=$ $0.5$ (also in thousands). From (11) (using $r=2$ ), this means that initially $x^{\prime}(0)=-.2704(0)$ and $y^{\prime}(0)=-.27$, so both populations are initially decreasing, $x$ 's a bit faster than $y$ 's. Thus, initially the orbit will move downward and to the left from the initial condition. To see what happens in the future, it is helpful to identify the so-called \textbf{nullclines}, which are the curves in the phase-plane on which either $x^{\prime}=0$ or $y^{\prime}=0$. Since $x^{\prime}(t)=x(1-x-2 y)$ and $y^{\prime}(t)=y(1-y-2 x)$, we see that the $x$-\textbf{nullclines} are $x=0$ and $y=1 / 2(1-x)$ and the $y$-\textbf{nullclines} are $y=0$ and $y=1-2 x$. At any point where an $x$-nullcline intersects a $y$-nullcline, we have an \textbf{equilibrium solution} (since if we start our initial conditions at such a point, we have both $x^{\prime}$ and $y^{\prime}=0$, so the orbit stays put). Thus, we have equilibrium solutions: $(x, y)=(0,0),(x, y)=(0,1),(x, y)=(1,0)$, and $(x, y)=(1 / 3,1 / 3)$.\\
+
+\indent The sign of either $x^{\prime}$ or $y^{\prime}$ can only change across a nullcline, so we can test $x^{\prime}$ and $y^{\prime}$ in each region determined by the nullclines and draw an appropriate arrow (or arrows) there to indicate the rough direction of flow (left or right, up or down). On the $x$-nullclines, the arrows will be vertical (either up or down) and on the $y$ nullclines the arrows will be horizontal (either left or right). The directions of these vertical and horizontal arrows can be determined by examining those in the adjacent regions. In this way, we produce the phase-plane diagram in Figure \ref{fig:fig_9_9} for our system. One such computation was already done, so the figure below can be obtained by only three more such computations.
+
+      \begin{minipage}{0.50\linewidth}
+          \begin{figure}[H]
+              \includegraphics[width=\linewidth]{fig_9_10}
+              \label{fig:fig_9_10}
+          \end{figure}
+      \end{minipage}
+      \hspace{0.05\linewidth}
+      \begin{minipage}{0.40\linewidth}
+          \captionof{figure}{Phase-plane diagram for the system (\ref{eqa11}) using r = 2. The directions of flow are indicated by arrows. In the regions between nullclines, the arrows are meant to only indicate whether the flow is left or right and up or down. The equilibrium solutions are indicated with open circles.}
+          \end{minipage} 
+
+
+From this phase diagram, we can now look to see what can happen to the orbit with initial condition $(x(0), y(0))=(.52, .5)$. Initially the orbit moves down and left. Either it will directly approach the equilibrium point $(1 / 3$, $1 / 3)$ or it will veer above or below. If it veers above, it will cross the nullcline $y=$ $1-2 x$ into the upper triangular region. Once in this region the flow changes to upward (and still to the left). Also, it could never cross back over $y=1-2 x$ back into the original region it started (since the horizontal arrows on this nullcline move to the left). By the same token, it could never cross the nullcline $y=1 / 2(1-$ $x$ ) into the lower-left region. If the orbit ever did make it to the vertical $x$-nullcline $x=0$, then it would have to stay on it and move vertically upward (actually, the orbit could never touch this line; see Exercise 7). In all cases, the orbit will tend to approach the equilibrium solution $(0,1)$. If the orbit initally veers off below the equilibrium point, then, as with the last possibility, we could show that the orbit would eventually approach the equilibrium point $(1,0)$.
+
+\paragraph*{EXAMPLE 9.5:} Using the above phase-plane diagram as a guide for choosing initial conditions, get MATLAB to create a plot of about 20 orbits for the system (\ref{eqa6}) with $r=2$ that well represent the behavior of orbits near the equilibrium solution $(1 / 3,1 / 3)$.\\
+
+\noindent SOLUTION: The initial conditions should all be located in the upper right and lower-left regions of the phase-plane diagram in Figure \ref{fig:fig_9_10}. The orbits of initial conditions located in either of the two triangular regions will move away from the given equilibrium solution. Two nice spreads of such initial conditions could be taken on the parallel lines: $x+y=1$ and $x+y=1 / 3$. We create vectors for points $x 1, y 1$, first on the top line (nicely spread around the central point $(1 / 2,1 / 2)$, then vectors $x 2, y 2$ for points on the bottom line, then put them together to form single vectors $x 0, y 0$. Next, we set up an appropriate for loop to run through RungeKutta with time interval $0 \leq t \leq 20$ and step size $h=0.01$ to plot the corresponding orbits. The following chain of commands will accomplish all of this; the result is shown in the left plot in Figure \ref{fig:fig_9_11}.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig_9_11}
+    \caption{ Phase portraits for the system $\left\{\begin{array}{l}x^{\prime}(t)=x-x^{2}-2 x y \\ y^{\prime}(t)=y-y^{2}-2 x y\end{array}\right.$ of Example $9.5$ near the equilibrium solution $(x(t), y(t)) \equiv(1 / 3,1 / 3)$, which is indicated by a circle. Flow directions have been inserted in the left portrait. The right portrait contains additional orbits. This equilibrium solution is unstable since initial conditions can be specified arbitrarily close to it and their orbits will move away from it as time goes on.}
+    \label{fig:fig_9_11}
+\end{figure}
+\newpage
+\begin{lstlisting}[frame=none,numbers=none,mathescape]
+>> dx=inline(' x-x^2-2*x*y', 't', 'x', 'y');
+>> dy=inline('y-y^2-2*x*y', 't', 'x', 'y');
+>> hold on
+>> x1=[(1/4):(1/20):(3/4)]; y1=1-x1;
+>> x2=[(1/12) : (1/60) : (3/12)]; y2=l/3-x2;
+>> x0=[x1 x2]; y0=[y1 y2];
+>> size(x0)
+$\rightarrow$ 22
+>> for k=1:22
+(t,x,y]=runkut2d(dx,dy,0,20,x0(k),y0(k),0.01);
+plot(x,y);
+end
+\end{lstlisting}
+
+\noindent The system (\ref{eqa11}) has radically different phase portraits near its central equilibrium solution, depending on whether the parameter $r$ is chosen to be 2 or $1 / 2$. Similar phase portraits arise in the ranges $0<r<1$ and $1<r$. Recasting the results in terms of the original model, we get the following very different possible outcomes: If $r>1$ (from Figure \ref{fig:fig_9_11}) we see that if the initial populations do not start off exactly equal then eventually the species with the smaller initial population will become extinct.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\textwidth]{fig_9_12}
+    \caption{ Phase portrait for the system $\left\{\begin{array}{l}x^{\prime}(t)=x-x^{2}-x y / 2 \\ y^{\prime}(t)=y-y^{2}-x y / 2\end{array}\right.$ of Example $9.5$ near the equilibrium solution $(x(t), y(t)) \equiv(2 / 3,2 / 3)$, which is indicated by the circle. Flow directions have been inserted. This equilibrium solution is stable since any solution obtained with an initial condition close to $(2 / 3,2 / 3)$ will approach this equilibrium as time goes on.}
+    \label{fig:fig_9_12}
+\end{figure}
+
+\noindent EXERCISE FOR THE READER 9.6: Consider the system $\left\{\begin{array}{l}x^{\prime}(t)=x-x^{2}-x y / 2 \\ y^{\prime}(t)=y-y^{2}-x y / 2\end{array}\right.$ which results from (\ref{eqa11}) by using $r=1 / 2$ instead of $r=2$ (so in this variation of the population model, the growth of one species has less effect on the growth of the other than in the first example considered).
+
+\begin{enumerate}[label=(\alph*),topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\item Draw by hand a phase $x y$-plane diagram which includes (only for $x \geq 0, y \geq 0$ ) all equilibrium solutions, $x$ - and $y$-nullclines along with exact flow directions on the nullclines, and approximate flow directions in the regions between nullclines. 
+\item Use MATLAB to create a phase portrait of orbits near the equilibrium solution $(x(t), y(t)) \equiv(2 / 3,2 / 3)$. The portrait should resemble the one in Figure \ref{fig:fig_9_12}.\\
+\end{enumerate}
+
+\noindent Only in the rare case where they start off being equal will both populations survive and tend toward the central equilibrium solution. If $r<1$ (from Figure \ref{fig:fig_9_12}) we see that as long as the initial populations start off close enough to the central equilibrium solution, then in the future the populations will always tend to the equilibrium solution.
+
+\paragraph{Definition:} An equilibrium solution $(x(t), y(t)) \equiv\left(x_{0}, y_{0}\right)$ of an autonomous system $\left\{\begin{array}{l}x^{\prime}(t)=f(x, y) \\ y^{\prime}(t)=g(x, y)\end{array}\right.$ is said to be \textbf{stable} if any solution resulting from initial conditions that are sufficiently near $\left(x_{0}, y_{0}\right)$ will always approach this equilibrium solution as $t \rightarrow \infty$. If this is not the case, then the equilibrium solution is called \textbf{unstable}.\\
+
+\indent The two cases of (\ref{eqa11}) provide examples of stable and unstable equilibria. We point out that for an unstable equilibrium, we do not require that all (sufficiently near) initial conditions will result in solutions which do not converge to the equilibrium. What is required for an unstable equilibrium is that there will always exist initial conditions sufficiently near the equilibrium point whose solutions do not converge to the equilibrium. Also, the solutions need not move away from the equilibrium, just not converge to it. For example, the "vortex" equilibrium solutions of the Lotka-Volterra predator-prey model (\ref{eqa4}) are unstable (orbits with initial conditions close to the equilibrium continue to loop around it without converging to it).\\
+
+\indent Before moving on to discuss stability, we give an existence and uniqueness theorem for two-dimensional systems using some of the language we have already developed. The Lipschitz condition extends in the obvious way to a function of more variables. For example a function $f(t, x, y)$ is said to satisfy a \textbf{Lipschitz condition with constant L} in the variable $x$ on the set $R: a \leq t \leq b, c \leq x \leq d$, $e \leq y \leq f$ if we have:
+$$
+\left|f\left(t, x_{1}, y\right)-f\left(t, x_{2}, y\right)\right| \leq L\left|x_{1}-x_{2}\right|
+$$
+\noindent whenever the two points being evaluated on the left lie in the set $R$. We can now state the existence and uniqueness theorem.
+
+\indent \paragraph*{THEOREM 9.1:} \textit{(Existence and Uniqueness for Two-Dimensional Systems)} Given the initial value problem:
+$$
+\begin{cases}x^{\prime}(t)=f(t, x, y), & x(a)=x_{0} \\ y^{\prime}(t)=g(t, x, y), & y(a)=y_{0}\end{cases}
+$$
+\noindent where the functions $f$ and $g$ are assumed to be continuous near the point $\left(a, x_{0}, y_{0}\right)$, then there will be a solution to this IVP which gives rise to an orbit. The solution will continue to exist for as long as the $t$-variable and the orbit stay in sets on which the functions $f$ and $g$ are continuous. Furthermore, if the functions $f$ and $g$ both satisfy a Lipschitz condition in both the $x$ - and $y$-variables in a region $R$ containing $\left(a, x_{0}, y_{0}\right)$, then the solution of the IVP will be unique for as long as $(t, x(t), y(t))$ remains in $R$.\\
+
+\noindent For a proof of this result we refer the reader to [Am-78], [Hur-90], or [HiSm-97]. We remark that, in particular, if the functions $f$ and $g$ have first-order partial derivatives in $x$ and $y$ which are continuous in some region, then the Lipschitz conditions will automatically hold within any set of form $a \leq t \leq b, c \leq x \leq d$, $e \leq y \leq f$ that lies inside of this region and consequently solutions will exist and be unique for as long as their times and orbits remain in this region.\\
+
+\indent We now move on to a general discussion of the behavior of a general autonomous system:
+\begin{equation}\label{eqa12}
+\left\{\begin{array}{l}
+x^{\prime}(t)=f(x, y) \\
+y^{\prime}(t)=g(x, y)
+\end{array}\right.
+\end{equation}
+\noindent in the neighborhood of an equilibrium solution. For convenience, we assume that the equilibrium solution is at $(x, y)=(0,0)$. (This can always be achieved via translation of coordinates.) We need to assume that the equilibrium solution is \textbf{isolated}. This means that within some circle centered at $(0,0)$ in the phase-plane there are no other equilibrium solutions. We assume that the functions $f$ and $g$ have continuous first partial derivatives in $x$ and $y$ near $(0,0)$ (so in particular they will locally satisfy the required Lipschitz conditions to guarantee that unique orbits always exist when initial conditions are specified near the equilibrium solution). Because of the assumptions on the partial derivatives, we can use Taylor's theorem twice (alternatively, readers familiar with Taylor's theorem in several variables need only use this latter theorem once) to obtain the following linear approximation for $f(x, y)$ near $(0,0)$ :
+$$
+f(x, y) \approx[f(0, y)]+x f_{x}(\alpha, y) \approx\left[f(0,0)+y f_{y}(0, \beta)\right]+x f_{x}(\alpha, y)
+$$
+\noindent Since $f(0,0)=0$ (our equilibrium solution) and since the partials $f_{x}$ and $f_{y}$ are continuous at $(0,0)$, the above leads us to the final linear approximation:
+$$
+f(x, y) \approx x f_{x}(0,0)+y f_{y}(0,0) \equiv a x+b y,
+$$
+\noindent where we have defined $a=f_{x}(0,0)$ and $b=f_{y}(0,0)$. In the same fashion, the linear approximation of $g(x, y)$ (near $(x, y)=(0,0))$ is $c x+d y$ where $c=g_{x}(0,0)$ and $d=g_{y}(0,0)$. From our work and experience with Taylor's theorem we know that these linear approximations work quite well near $(x, y)=(0,0)$. Thus if instead of $(12)$, we look at the associated \textbf{linearization} (near $(x, y)=(0,0)$ ):
+\begin{equation}\label{eqa13}
+\left\{\begin{array}{l}
+x^{\prime}(t)=a x+b y \\
+y^{\prime}(t)=c x+d y
+\end{array} \quad \text { or } \quad\left[\begin{array}{l}
+x^{\prime}(t) \\
+y^{\prime}(t)
+\end{array}\right]=\left[\begin{array}{ll}
+a & b \\
+c & d
+\end{array}\right]\left[\begin{array}{l}
+x \\
+y
+\end{array}\right]\right.
+\end{equation}
+it would seem plausible that the phase portrait of (\ref{eqa13}) near the equilibrium might have some similarities to the corresponding one for the nonlinear system (\ref{eqa12}). The interesting and useful connection which we will now explain was discovered by the famous French mathematician Henri Poincaré.\footnote{Henri Poincare is often called the last of the universal mathematicians. He contributed significantly to all of the major areas of mathematics. The subject has become too vast to imagine any more universal mathematicians. As a student, Poincaré excelled in all of his academic subjects and won a nationwide mathematics competition while in high school. He became a member of the French Academy of Sciences at the very young age of 32 . For most of his career he was a chaired professor at la Sorbonne and each year he taught a different subject. His lectures were so full of insights and deep in their scope that his students who took the notes helped to formally write up his celebrated lectures, which became significant volumes in contemporary research. His eyesight was poor but he had an extremely sharp mind and was able to visualize many complicated mathematical ideas. His mind was always at work; once he even described a major mathematical breakthrough that he had the moment he was stepping onto a crowded bus in Paris. Throughout his life he won many prizes, both for his mathematical work and also for his literary works that he produced later in his life (such as La Science et L'Hypotèse) to help the general public understand how scientists think. Other prominent members of society belonged to the Poincare family. His cousin Raymond Poincare was the Prime Minister for several terms and President of the Republic from 1913 to 1920 . Another cousin, Lucien Poincaré, was a high-ranking administrator at a prominent French university.
+}
+
+\noindent\begin{minipage}{0.35\textwidth}% adapt widths of minipages to your needs
+\includegraphics[width=\linewidth]{fig_9_13}
+\label{fig:fig_9_13}
+\captionof{figure}{Henri Poincaré (1854-1912), French mathematician}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.60\textwidth}
+From the matrix of partial derivatives in (\ref{eqa13}) we will be able to get a lot of information about the phase-portrait of the original system near the equilibrium solution, so we give it a special name. It is called the \textbf{Jacobian matrix} of the system (\ref{eqa12}) (evaluated at the equilibrium solution in question). For convenience we introduce the following notations for this matrix:
+$$
+A=J(f, g)=J(f, g)_{(0,0)}=\left[\begin{array}{ll}
+f_{x} & f_{y} \\
+g_{x} & g_{y}
+\end{array}\right]_{(0,0)}
+=\left[\begin{array}{ll}
+a & b \\
+c & d
+\end{array}\right] \text {. }
+$$
+If we introduce the vector notation
+$$
+X(t)=\left[\begin{array}{l}
+x(t) \\
+y(t)
+\end{array}\right] \text { and } X^{\prime}(t)=\left[\begin{array}{c}
+x^{\prime}(t) \\
+y^{\prime}(t)
+\end{array}\right] \text {, then the }
+$$
+linearization (\ref{eqa13}) can be written in matrix form as:\\
+
+\end{minipage}
+
+\begin{equation}\label{eqa14}
+X^{\prime}(t)=A X
+\end{equation}
+As with our original system, we assume that the equilibrium solution $(0,0)$ for the linear system is also isolated.\\
+
+\noindent EXERCISE FOR THE READER 9.7: Explain why $(0,0)$ is an isolated equilibrium solution of (\ref{eqa14}) if and only if $\operatorname{det}(A) \neq 0$.\\
+
+\indent 	Our next theorem gives the complete story of the solution to (\ref{eqa14}) with any initial conditions. Recall that the trace of a matrix is the sum of its diagonal entries: $\operatorname{tr}\left(\left[\begin{array}{ll}a & b \\ c & d\end{array}\right]\right)=a+d$. We also define the discriminant of the linearization (\ref{eqa14}) to be $\Delta=\operatorname{tr}(A)^{2} / 4-\operatorname{det}(A)$.\\
+
+\paragraph*{THEOREM 9.2:} The unique solution of (\ref{eqa14}) satisfying the initial condition $X(0)=X_{0}=\left[\begin{array}{l}x_{0} \\ y_{0}\end{array}\right]$ is given by the following formulas which involve the vector
+$
+A_{0}=\left[\begin{array}{l}
+\frac{1}{2}(a-d) x_{0}+b y_{0} \\
+c x_{0}+\frac{1}{2}(d-a) y_{0}
+\end{array}\right]:
+$\\
+Case 1: $\Delta>0: \quad X(t)=\frac{e^{t r(A) t / 2}}{2}\left[e^{\sqrt{\Delta}}\left(X_{0}+A_{0} / \sqrt{\Delta}\right)+e^{-\sqrt{\Delta}}\left(X_{0}-A_{0} / \sqrt{\Delta}\right)\right] .$\\
+Case 2: $\Delta=0: \quad X(t)=e^{t r(1) t / 2}\left(X_{0}+t A_{0}\right)$\\
+Case 3: $\Delta<0: \quad X(t)=\frac{e^{t r(1) t / 2}}{2}\left[\cos (t \sqrt{|\Delta|}) X_{0}+\sin (t \sqrt{|\Delta|}) A_{0} / \sqrt{\Delta}\right] .$\\
+
+\noindent Some details of the proof of this theorem can be found in the exercises. Actually, it is not hard (just tedious) to verify that in each of the three cases, the vector function in the theorem does indeed solve the indicated IVP. There are many good books on differential equations that provide a more complete development of the solution of (\ref{eqa14}) (see, for example, [Arn-78], [HiSm-97], and [Hur-90]). Since our concern will be mostly with stability and the nature of the phase-plane near a critical point, we simply summarize the situation. The nature of the phase diagram depends only on the values of $\operatorname{det}(A)$ and $\operatorname{tr}(A)$, as summarized in the Figure \ref{fig:fig_9_14} and explained in the caption below it. What is remarkable is that near an equilibrium solution the phase portrait for the nonlinear system (\ref{eqa12}) will look very much the same as that for its linearization in the most important cases (although the pictures for nonlinear systems will be distorted from the linearizations). We make this precise in the following theorem, the proof of which is referred to [Hur90]. (Some of the phase-plane terminology of this theorem is from Figure \ref{fig:fig_9_9})
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig_9_14}
+    \caption{Summary of how the trace and determinant of $A$ determine the character of the phase portrait of the linear system $X^{\prime}(t)=A X$ near an isolated equilibrium solution. In the degenerate case where $\operatorname{det}(A)=\operatorname{tr}(A)^{2} / 4$ there will be different varieties of nodes. For a nonlinear system $\left\{\begin{array}{l}x^{\prime}(t)=f(x, y) \\ y^{\prime}(t)=g(x, y)\end{array}\right.$ with an isolated equilibrium solution at $(\alpha, \beta)$, and having a nonsingular Jacobian matrix $A=\left[\begin{array}{ll}f_{x} & f_{y} \\ g_{x} & g_{y}\end{array}\right]_{(\alpha, \beta)}$ corresponding phase portraits near $(\alpha, \beta)$ will be those indicated above, except possibly in the degenerate cases $\operatorname{tr}(A)=0$ or $\operatorname{det}(A)=\operatorname{tr}(A)^{2} / 4$}
+    \label{fig:fig_9_14}
+\end{figure}
+
+\paragraph*{THEOREM 9.3:} Suppose that the functions $f$ and $g$ of the system $\left\{\begin{array}{l}x^{\prime}(t)=f(x, y) \\ y^{\prime}(t)=g(x, y)\end{array}\right.$ have continuous first-order partial derivatives near an isolated equilibrium solution $(x(t), y(t))=(\alpha, \beta)$ (so $f(\alpha, \beta)=g(\alpha, \beta)=0)$. Let $A$ be the corresponding Jacobian matrix $\left[\begin{array}{ll}f_{x} & f_{y} \\ g_{x} & g_{y}\end{array}\right]_{(\alpha, \beta)}$ and assume that $\operatorname{det}(A) \neq 0$.\\
+(a) If $\operatorname{det}(A)<0$, then $(\alpha, \beta)$ is a saddle point (always unstable).\\
+(b) If $0<\operatorname{det}(A)<\operatorname{tr}(A)^{2} / 4$, then $(\alpha, \beta)$ is a node, stable if $\operatorname{tr}(A)<0$, unstable if $\operatorname{tr}(A)>0$.\\
+(c) If $\operatorname{tr}(A)^{2} / 4<\operatorname{det}(A)$, then $(\alpha, \beta)$ is a spiral, stable if $\operatorname{tr}(A)<0$, unstable if $\operatorname{tr}(A)$ $>0$.\\
+(d) (Borderline Cases) If $\operatorname{det}(A)=\operatorname{tr}(A)^{2} / 4$, then $(\alpha, \beta)$ is either a node or a spiral, stable if $\operatorname{tr}(A)<0$, unstable if $\operatorname{tr}(A)>0$. If $\operatorname{det}(A)>0$ and $\operatorname{tr}(A)=0$, then $(\alpha, \beta)$ is either a vortex or a spiral.\\
+
+\noindent It turns out that without the hypothesis $\operatorname{det}(A) \neq 0$, there can still be isolated equilibrium solutions $(\alpha, \beta)$ and the behavior of the phase-plane near such a degenerate equilibrium solution can lead to a great variety of new phase-plane behaviors near $(\alpha, \beta)$. Some examples are examined in the exercises. As a consequence of Theorem 9.3, we obtain the following simple stability criterion.\\
+
+\paragraph*{COROLLARY 9.4:} \textit{(Stability Criterion)} Under the hypotheses of Theorem 9.3, the equilibrium solution $(x(t), y(t))=(\alpha, \beta)$ is stable if and only if $\operatorname{det}(A)>0$ and $\operatorname{tr}(A)<0$\\
+
+\indent The previous theorem allows us to get a lot of useful qualitative information about the phase-plane's character (near an isolated equilibrium solution) without actually doing any numerical calculations of orbits.
+
+\paragraph*{EXAMPLE 9.6:} For the system (\ref{eqa11}) $\left\{\begin{array}{l}x^{\prime}(t)=x-x^{2}-r x y \\ y^{\prime}(t)=y-y^{2}-r x y\end{array}\right.$ (where $r$ can be any positive number), determine all isolated equilibrium solutions $(x(t), y(t))=$ $(\alpha, \beta)$. For each determine whether it is stable and also the nature of the phaseplane near $(\alpha, \beta)$.\\
+
+\noindent SOLUTION: As we did earlier in this section, we find the $x$-nullclines of the system by setting $x^{\prime}=f(x, y)=0$, i.e., $0=x(1-x-r y)$. This gives the two $x$ nullclines: $x=0$ and $y=(1-x) / r$. In the same fashion we set $g(x, y)=0$ to get the two $y$-nullclines: $y=0$ and $y=1-r x$. The equilibrium solutions are where an $x$ nullcline meets a $y$-nullcline. This gives the following isolated equilibrium solutions:\\
+
+\noindent (i) $(0,0)$, and if $r \neq 1$, (ii) $(1,0)$, (iii) $(0,1)$, and (solving the two sloped lines) (iv) $(1 /(r+1), 1 /(r+1))$. The Jacobian matrix for the system is
+$$
+\left[\begin{array}{ll}
+f_{x} & f_{y} \\
+g_{x} & g_{y}
+\end{array}\right]=\left[\begin{array}{cc}
+1-2 x-r y & -r x \\
+-r y & 1-2 y-r x
+\end{array}\right],
+$$
+which has the following trace and determinants for each of the listed equilibrium solutions:\\
+(i) trace $=2$, det $=1$, so by Theorem $9.3(0,0)$ is an unstable node or spiral. It cannot be a spiral since the $y$-axis is an $x$-nullcline (a spiral orbit about $(0,0)$ could never cross the $y$-axis-see Figure \ref{fig:fig_9_10} if you need convincing; see also Exercise 6).\\
+For the other three points to be isolated, we now assume $r \neq 1$.\\
+(ii) trace $=-r$, det $=r-1$, so by Theorem $9.3(1,0)$ is an unstable saddle point if $r$ $<1$. If $r>1$, note that $\operatorname{tr}(A)^{2} / 4-\operatorname{det}(A)=r^{2} / 4-r+1=(1-r / 2)^{2}>0$ so $\operatorname{det}(A)$ $<\operatorname{tr}(A)^{2} / 4$ and by the theorem we have a stable node (viz. Figure \ref{fig:fig_9_11} and Figure \ref{fig:fig_9_12}).\\
+(iii) $(0,1)$ has the same data and properties as $(1,0)$ (by symmetry of the system).\\
+(iv) Here trace $=-2 /(r+1)$, det $=(1-r) /(1+r)$, so again by the theorem we have that $(1 /(r+1), 1 /(r+1))$ is a saddle point if $r>1$ (cf. Figure (\ref{fig:fig_9_11})) and a stable node if $r<1$ (cf. Figure \ref{fig:fig_9_12} ). The reader is encouraged to sketch phase planes for $r<1$, and $r>1$.\\
+
+\noindent EXERCISE FOR THE READER 9.8: (a) For the SIRS model (\ref{eqa7}) of part (a) of Example $9.4$, hand draw a phase-plane diagram (cf. Figure \ref{fig:fig_9_10}) including all nullclines (labeled), all equilibrium solutions and all flow directions (exact on nullclines and approximate between them) throughout the entire first quadrant of the SI-plane. (b) Use Theorem $9.3$ to analyze the character of the equilibrium solution(s) obtained in part (a). (c) Next, examine what happens to the equilibrium solutions (and their character) when we allow the parameter $a$ to decrease from 4 to zero. In the model, this corresponds to allowing the period of infection of the disease to increase from 3 months (when $a=4$ ) to arbitrarily large periods.\\
+
+\indent We end this section with another famous and interesting theorem. We will present it in a very geometric fashion so we will need to first introduce a couple of concepts relating to the phase-plane of an autonomous system (\ref{eqa12}). We say that an equilibrium solution $(x(t), y(t))=(\alpha, \beta)$ is \textbf{repelling} if any initial condition that is very close to (but not equal to) $(\alpha, \beta)$ results in a solution/orbit of (\ref{eqa12}), which will move further away as time advances. For example, any unstable spiral or node equilibrium solution is repelling. A saddle point is never repelling. $A$ region $R$ in the phase-plane of the system (\ref{eqa12}) is said to be a \textbf{basin of attraction}, provided that every orbit that enters $R$ will never leave $R$ at a later time. One handy way to confirm that a region is a basin of attraction would be to check that on the edges of $R$ the orbit flow directions never point outside of $R$. For example from Figure (\ref{fig:fig_9_10}), we can see that each of the two triangular regions between nullclines are basins of attraction. In the phase-plane a \textbf{closed orbit }is a loop which corresponds to a pair of periodic solutions $x(t)$ and $y(t)$ (as in the predatorprey problem or any vortex). We are now ready to state our theorem.\\
+
+\noindent \textbf{THEOREM 9.5:} \textit{(The Poincaré-Bendixson\footnote{
+Ivar Bendixson (1861-1935) was a Swedish mathematician who published an articie in 1901 that expounded on some previous work of Poincaré. He was a professor at the University of Stockholm and was quite involved in public service as well. He served many years on the city council. Bendixson eventually became the president of the University of Stockholm.
+} Theorem)} Suppose that $R$ is a basin of attraction for the autonomous system (\ref{eqa12}) $\left\{\begin{array}{l}x^{\prime}(t)=f(x, y) \\ y^{\prime}(t)=g(x, y)\end{array}\right.$ and that inside $R$ there is only one equilibrium solution $(x, y)=(\alpha, \beta)$ which is repelling. Then $\mathrm{R}$ contains a single closed orbit which loops around $(\alpha, \beta)$. Furthermore, any initial condition which is inside $\mathrm{R}$ (not on the edge) and not on this loop or $(\alpha, \beta)$ will produce an orbit which will either spiral outward (if it starts inside) or inward (if it starts outside) toward the unique closed orbit loop.\\
+
+\noindent NOTE: It is permissible in the theorem for the system to have equilibrium solutions on the boundary (edges) of $R$, just not on the inside.\\
+
+\noindent To illustrate this theorem, we consider the system $\left\{\begin{array}{l}x^{\prime}(t)=2 x(1-x / 4) / 3-x y /(1+x) \\ y^{\prime}(t)=y(1-y / x) / 20\end{array}\right.$, which has only one equilibrium solution $(1,1)$ which is repelling, inside the basin of attraction $R=\{0<x<4,0<y<4\}$ (the details are left to Exercise for the Reader 9.9). The Poincaré-Bendixson theorem implies the existence of a unique periodic solution (closed orbit) to which all other orbits in $R$ will eventually spiral. We can get a good idea of what this closed orbit looks like by picking a couple of initial conditions and running, say Runge-Kutta, for a long enough time period so that the orbits we get spiral out (or in) to the loop. The results of such a computation are illustrated in Figure \ref{fig:fig_9_15}.\\
+
+\noindent EXERCISE FOR THE READER 9.9: Consider the system
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=\frac{2}{3} x(1-x / 4)-x y /(1+x) \\
+y^{\prime}(t)=s y(1-y / x)
+\end{array}\right.
+$$
+
+\noindent\begin{minipage}{0.3\textwidth}% adapt widths of minipages to your needs
+where $s>0$ is a parameter.\\
+(a) Hand draw a phase portrait in the region $x \geq 0$, $y \geq 0$.\\
+(b) For which values of $s$ can we determine whether the equilibrium solution $(x, y)=$ $(1,1)$ is repelling?\\
+(c) Show that the region $R=$ $\{0<x<4,0<y<4\}$ is a basin of attraction.
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.65\textwidth}
+\includegraphics[width=\linewidth]{fig_9_15}
+\label{fig:fig_9_15}
+\end{minipage}
+\captionof{figure}{Illustration of the Poincaré-Bendixson theorem for the system $\left\{\begin{array}{l}x^{\prime}(t)=2 x(1-x / 4) / 3-x y /(1+x) \\ y^{\prime}(t)=y(1-y / x) / 20\end{array}\right.$ with basin of attraction $R=\{0<x<4,0<y<4\}$
+containing the unique equilibrium solution $(1,1)$ which is attracting. The equilibrium solution is located at the center of the circle shown. The outside orbit arose from the initial condition $(1,2)$ with a time interval $[0,200]$; the inside orbit arose from the initial condition $(1.25,1)$ with a time interval of $[0,150]$.} 
+
+\noindent\rule{480pt}{0.4pt}
+\paragraph*{EXERCISE 9.3: }
+\begin{enumerate}
+
+\item For each of parts (a) through ( $f$ ) of Exercise 1 of Section 9.2, do the following: (i) hand draw a phase-plane diagram (cf. Figure \ref{fig:fig_9_10}) including all nullclines (labeled), all equilibrium solutions, and all flow directions (exact on nullclines and approximate between them) throughout the entire $x y$-plane. (ii) Find the Jacobian matrix evaluated at each critical point and use either the classification in Figure \ref{fig:fig_9_14}) (linear case) or Theorem $9.3$ (nonlinear case) to describe the type of each equilibrium solution as best as possible (e.g., stable node, vortex, etc.)
+\item Perform the two tasks of the preceding exercise, this time to each of parts (a) through (f) of Exercise 2 of Section 9.2.
+\item Each of the autonomous systems below has an isolated equilibrium solution $(x(t), y(t))=(0,0)$. For each one do the following: (i) Apply Theorem $9.3$ to the systems at the equilibrium solution $(x(t), y(t))=(0,0)$. What are the conclusions?\\
+(ii) Use MATLAB to create a plot of about 20 orbits near the equilibrium solution $(0,0)$ chosen so that the behavior of all orbits near this equilibrium solution are well represented. After examination of these plots, can you say more (than was said in (ii)) about the nature of the behavior of the phase-plane near $(0,0)$ ? Add flow-direction arrows to your MATLAB-generated plot.
+
+
+\begin{multicols}{2}
+    \begin{enumerate}[label=(\alph*)]
+
+        \item[(a)] $\left\{\begin{array}{l}x^{\prime}(t)=x+x^{2}+y^{2} \\ y^{\prime}(t)=y-x y\end{array}\right.$
+         \item[(c)] $\left\{\begin{array}{l}x^{\prime}(t)=-x-y-3 x^{2} y \\ y^{\prime}(t)=y \sin x-2 x-4 y\end{array}\right.$
+         \item[(e)] $\left\{\begin{array}{l}x^{\prime}(t)=y \\ y^{\prime}(t)=\left(1-x^{2}\right) y-x\end{array}\right.$
+         
+        \item[(b)] $\left\{\begin{array}{l}x^{\prime}(t)=(1+x) \sin y \\ y^{\prime}(t)=1-x-\cos y\end{array}\right.$
+        \item[(d)] $\left\{\begin{array}{l}x^{\prime}(t)=y \\ y^{\prime}(t)=2\left(x^{2}-1\right) y-x\end{array}\right.$
+        \item[(f)] $\left\{\begin{array}{l}x^{\prime}(t)=\cos x-e^{y-x} \\ y^{\prime}(t)=\sin (x-2 y)\end{array}\right.$
+    \end{enumerate}
+   \end{multicols}
+
+\item Consider each of the two nonlinear systems: $(A)\left\{\begin{array}{l}x^{\prime}(t)=-y-x^{2} \\ y^{\prime}(t)=x\end{array}\right.$ and
+(B) $\left\{\begin{array}{l}x^{\prime}(t)=-y-x^{3} \\ y^{\prime}(t)=x\end{array}\right.$.
+\begin{enumerate}[label=(\alph*),topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\item Hand draw phase-plane diagrams (cf. Figure \ref{fig:fig_9_10}) for each of these two systems including all nullclines (labeled), all equilibrium solutions, and all flow directions (exact on nullclines and approximate between them) throughout the entire $x y$-plane.
+\item Apply Theorem $9.3$ to each of these systems at the equilibrium solution $(x(t) y(t))=(0,0)$. What are the conclusions?
+\item For each of the two systems, use MATLAB to create a plot of about 20 orbits near the equilibrium solution $(0,0)$ chosen, so that the behavior of all orbits near this equilibrium solution are well represented. After examination of these plots, can you say more (than was said in part (b)) about the nature of the behavior of the phase-plane near $(0,0)$ ?
+\end{enumerate}
+\item Here we will be working with the following nonlinear system: $\left\{\begin{array}{l}x^{\prime}(t)=2 x y \\ y^{\prime}(t)=y^{2}-x^{2}\end{array}\right.$.\\
+\begin{enumerate}[label=(\alph*),topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\item Hand draw a phase-plane diagram (cf. Figure \ref{fig:fig_9_10}) for the system including all nullclines (labeled), all equilibrium solutions, and all flow directions (exact on nullclines and approximate between them) throughout the entire $x y$-plane.
+\item Use MATLAB to create a plot of about 20 orbits near the equilibrium solution $(0,0)$ chosen so that the behavior of all orbits near this equilibrium solution are well represented. After examination of these plots, add in flow direction arrows and describe the orbit behavior in the phase-plane near $(0,0)$. Is the equilibrium solution stable? Why or why not?
+\end{enumerate}
+\item Repeat both parts of Exercise 5, this time for the nonlinear system:
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=x^{3}-2 x y^{2} \\
+y^{\prime}(t)=2 x^{2} y-y^{3}
+\end{array}\right.
+$$
+\item (a) Explain why an orbit can never cross a vertical $x$-nullcline or a horizontal $y$-nullcline (in an area where the necessary Lipschitz conditions for Theorem $9.1$ apply).\\
+(b) Using the existence and uniqueness Theorem 9.1, further explain why an orbit cannot merge into such a nulicline, without totally being contained in it.
+\item If an autonomous system satisfies the assumptions of Theorem $9.3$ at the equilibrium solution $(\alpha, \beta)$, is it possible to give conditions involving the trace and determinant of the Jacobian matrix to ensure that $(\alpha, \beta)$ is repelling?
+\item For the system $\left\{\begin{array}{l}x^{\prime}(t)=-y+x\left(1-x^{2}-y^{2}\right) \\ y^{\prime}(t)=x+y\left(1-x^{2}-y^{2}\right)\end{array}\right.$,
+(a) show that $(0,0)$ is a repelling equilibrium solution and (b) find a basin of attraction for it. (c) Next, use MATLAB to plot a few orbits starting at points within this basin of attraction for long enough time intervals so that they nicely indicate the closed loop (periodic solution) guaranteed by the Poincaré-Bendixson theorem.
+\item Show that the system $\left\{\begin{array}{l}x^{\prime}(t)=3 x-y-x \exp \left(x^{2}+y^{2}\right) \\ y^{\prime}(t)=x+3 y-y \exp \left(x^{2}+y^{2}\right)\end{array}\right.$ possesses a periodic solution and then get MATLAB to help find out approximately how (in the phase-plane) the corresponding orbit will look.
+\item The single vector/matrix differential equation \ref{eqa14} $X^{\prime}(t)=A X$ looks a lot like the Malthusian model from the last chapter. Recall that an eigenvalue of the matrix $A$ is a root $\lambda$ of the characteristic equation $\operatorname{det}\left[\begin{array}{cc}a-\lambda & b \\ c & d-\lambda\end{array}\right]=0$ and each eigenvalue will have an associated (nonzero) eigenvector $v=\left[\begin{array}{l}v_{1} \\ v_{2}\end{array}\right]$ which satisfies $A v=\lambda v$. From eigenvalues and eigenvectors we can obtain solutions of \ref{eqa11} as follows.\\
+(a) Suppose that $\lambda$ is an eigenvalue of the matrix $A$ with an associated nonzero eigenvector $v$. Show that the vector function $X(t)=e^{\lambda t} v$ is a solution of the DE \ref{eqa14}.\\
+(b) Suppose that $\lambda$ and $\mu$ are two different eigenvalues of $A$ with associated nonzero eigenvectors $v$ and $w$, respectively. Show that for any constants $C$ and $D$, the vector function $X(t)=C e^{\lambda_{t}} v+D e^{\mu t} w$ is also a solution of $X^{\prime}(t)=A X .$\\
+(c) Show that the characteristic equation can be rewritten in the form $\lambda^{2}-\operatorname{tr}(A) \lambda+\operatorname{det}(A)=0$ where $\operatorname{tr}(A)=a+d$ is the trace of $A$, and $\operatorname{det}(A)=a d-b c$ is the determinant of $A$.
+\item Carefully use Theorem $9.2$ to geometrically interpret the solutions of a linear system in each of the cases indicated in Figure \ref{fig:fig_9_14}. Explain both how and why the generic pictures given are accurate, as well as why the flow directions are as indicated.
+\item (a) With the aid of Theorem 9.3, discuss what changes (if any) on the parameters $a$ and $b$ would result in the STD model of Exercise 5 of the last section having a vortex equilibrium point (with positive populations).\\
+(b) Repeat part (a), this time analyzing the effect of changes on the parameters $r$ and $s$ on producing a vortex.
+\item Reformulate Theorem $9.3$ in the language of eigenvalues and positive definite matrices (see Chapter 7).
+\end{enumerate}
+
+\section{GENERAL FIRST-ORDER SYSTEMS AND HIGHER-ORDER DIFFERENTIAL EQUATIONS}
+\label{sec:sec_9_4}
+
+\noindent All of the ODE numerical methods that we learned in the last chapter can be extended to first-order systems with any number of unknown functions. Indeed, following along the lines of the last section, we could, for example, easily build MATLAB programs called \textit{runkut3d}, \textit{runkut4d}, etc., that can deal with $3-$ dimensional systems, 4-dimensional systems and so on. Because of MATLAB's vector/matrix capabilities, however, we can build single programs that will perform any particular numerical scheme and be able to apply it to a system with any number of unknowns. We do this now for the Runge-Kutta method. This program looks quite similar to the runkut program of Chapter 8 . The main difference is that the functions consisting of the right sides of the DEs are now stored as a single vector-valued function. Also, the solution values of the $n$ functions $x_{1}, x_{2}, \cdots, x_{n}$ obtained from the method will be stored in a matrix with $n$ columns. The first column will have the stored values of $x_{1}$, the second column will have those of $x_{2}$, and so on.\\
+
+\paragraph*{PROGRAM 9.2:} Runge-Kutta method for the system \ref{eqa2}
+\begin{equation*}
+\left\{\begin{array}{lcl}
+	x_{1}^{\prime}(t)=f_{1}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right),& & x_{1}(a)=c_{1} \\
+	x_{2}^{\prime}(t)=f_{2}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right),& &x_{2}(a)=c_{2} \\
+	\qquad \cdots & &  \\
+	x_{n}^{\prime}(t)=f_{n}\left(t, x_{1}, x_{2}, \cdots, x_{n}\right), & & x_{n}(a)=c_{n}\\
+	\end{array} \right.
+\end{equation*}
+
+\begin{lstlisting}[numbers=none,frame=single]
+function [t, X] = rksys(vectorf,a,b,vecx,hstep)
+%input variables: vectorf, a, b, vecx, hstep
+%output variables: t, X
+%Uses Runge-Kutta method to solve IVP of system of first-order ODE:
+%x1'-f1, x2'-f2, ..., xn'-fn where vectorf is the vector valued
+%function of x1, x2, ..., xn which has components f1, f2, ..., fn.
+%The initial conditions x1(a)=x10, x2(a)=x20, ...xn(a)=xn0 are
+%is nstep. The output consists of the time vector t and a
+%corresponding matrix X which has n columns, one for each of the funcitions x1, x2, ..., xn.
+X(1,:)=vecx;
+t=a:hstep:b;
+[m nmax]=size(t);
+for n=1:(nmax-1);
+	kl=feval(vectorf,t(n),X(n,:));
+	k2=feval(vectorf,t(n)+.5*hstep,X(n,:)+.5*hstep*k1);
+	k3=feval(vectorf,t(n)+.5*hstep,X(n,:)+.5*hstep*k2);
+	k4=feval(vectorf,t(n)+hstep,X(n,:)+hstep*k3); 						X(n+1,:)=X(n,:)+1/6*hstep*(k1+2*k2+2*k3+k4);
+end
+\end{lstlisting}
+\noindent Thus solving such first-order IVPs numerically has no new procedural difficulties, and MATLAB's vector capabilities have made writing a simple and elegant universal program quite possible. The vector valued function vectorf could be stored either as an M-file or an inline function, and the usual syntax rules apply.\\
+	
+\indent The existence and uniqueness theorem (Theorem 9.1) extends almost verbatim to higher-dimensional systems. Also there is an analogous theory for linear systems $X^{\prime}=\mathrm{AX}$, but because of the greater number of dimensions the results will depend not just on the two quantities (cf. Theorem $9.2$ and Figure \ref{fig:fig_9_14} of the last section) but, in general, on the eigenvalues of the coefficient matrix. See, for example, [Hur-90] or [HiSm-97] for a development of the linear theory. There is one stark difference, however, with nonlinear systems in two dimensions versus in higher dimensions. Unlike for two-dimensional nonlinear systems that model quite closely their linearizations near equilibrium solutions (Theorem 9.3), the behavior of nonlinear higher-dimensional systems can be \textbf{truly} chaotic in the vicinity of equilibrium points! Orbits can remain bounded near equilibrium points but wind around in different types of loops that are, for all practical purposes, unpredictable. Also, even small differences in initial conditions can lead to solutions, which differ greatly! We will see this type of phenomenon in our next example, which has the name of the \textbf{Lorenz Strange Attractor.}\footnote{
+This system was named after its discoverer, Edward $\mathrm{N}$. Lorenz (1917-), a meteorologist and professor at MIT. It is noteworthy that his system is very simple and it arose as a model for weather prediction. He did this work in the early $1960 \mathrm{~s}$ and because of the lack of fully integrated and powerful computing tools, he had to work with reams of numerical output and very clumsy strip-chart plots to analyze his model. The orbits are extremely chaotic and unpredictable (see Figure \ref{fig:fig_9_16}) and the model is very sensitive to slight differences in initial conditions (see Figure \ref{fig:fig_9_16}). Such behavior is why phenomena such as weather are so difficult to predict, even for a rather short period. In his seminal paper of 1963, Lorenz commented on the sensitivity of the model to slight perturbations in initial conditions such as how a butterfly flapping its wings in Beijing could affect the weather thousands of miles away some days later.
+
+} The example results from a three-dimensional atmospheric weather model, and thus has a three-dimensional phase-plane. It will turn out to be more convenient and useful to look at twodimensional projections and this is done in our next example.\\
+
+\paragraph*{EXAMPLE 9.7:} \textit{(The Lorenz Strange Attractor)} The Lorenz system is given by:
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=-s x+s y \\
+y^{\prime}(t)=-x z+r x-y . \\
+z^{\prime}(t)=x y-b z
+\end{array}\right.
+$$
+\noindent Using the parameters $\mathrm{b}=8 / 3, s=10, r=28$ and the initial conditions $x(0)=-8$, $y(0)=8$, and $z(0)=27$, (a) apply the Runge-Kutta method using step size $h=0.01$ to solve the system for $0 \leq t \leq 50$ and then plot each of the projections $z$ vs. $x, y$ vs. $x$, and $y$ vs. $z$.\\
+(b) Perturb the initial conditions slightly to $x(0)=-8.02, y(0)=7.98$ (and same $z(0)$ ), solve the new system with the same method, and plot the original $x$ minus the new $x$ versus $t$ on the whole time interval.\\
+
+\noindent SOLUTION: Part (a): To begin, we need to construct a vector-valued function for the (right sides of the) Lorenz system. Since M-files are more convenient for such functions, we will construct this one as an M-file called lorenz.
+\begin{lstlisting}[numbers=none, frame=none]
+function xp=lorenz(t,xv)
+x=xv(1); y=xv(2); z=xv(3);
+xp(1)=-10*x*+10*y;  xp(2)=-x*z + 28*x-y;  xp(3)=x*y-8/3*z; 
+\end{lstlisting}
+
+\noindent Note that here the first, second, and third components of the MATLAB vectors $x$ and $x p$ correspond to $x, y$, and $z$ respectively in the Lorenz system.
+\begin{lstlisting}[numbers=none,frame=single]
+>> [t,X]=rksys('lorenz',0,50/[-8 8 27],0.01);
+>> x=X(:,1); y=X(:,2); z=X(:,3); %back to original notation
+>> plot(x,z)
+>> plot(x,y)
+>> plot(y,z), plot(t,x), plot(t,y), plot(t,z)
+\end{lstlisting}
+\newpage
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig_9_16}
+    \caption{Views of the Lorenz Strange Attractor (Example 9.7) meteorological model. The single orbit shown (various 2-dimensional views of it) is often referred to as the "butterfly" graph. It is extremely chaotic. In fact, mathematicians conjecture that for any given sequence of positive integers: say $13,2,6,22,18,256,3$, there will be a time when this particular orbit will make 13 loops on the left wing of the butterfly, followed by 2 loops on the right wing, then 6 on the left again, and so on.}
+    \label{fig:fig_9_16}
+\end{figure}
+
+\noindent Part (b):
+\begin{lstlisting}[numbers=none,frame=none]
+>> [t,X2]=rksys('lorenz',0,50, (-8.02 7.98 27],0.01);
+>> x2=X2(:,1);
+>> plot(t,x2-x) %plot shown in Figure 9.17
+\end{lstlisting}
+
+\noindent\begin{minipage}{0.4\textwidth}
+\captionof{figure}{Graph of the difference of two $(\dot{x}$-coordinates of solutions of the Lorenz model whose initial conditions differ by only about $0.25 \%$. Notice that there seems to be reasonable agreement for only about 3 units of time (days?) or so and after this the difference becomes as chaotic as the functions themselves. This is part of the reason that weather forecasts are usually only given for 3 or so days in advance (and they are never guaranteed).}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.55\textwidth}
+\includegraphics[width=\linewidth]{fig_9_17}
+\label{fig:fig_9_17}
+\end{minipage}
+
+\noindent\begin{minipage}{0.65\textwidth}
+\paragraph*{EXAMPLE 9.8: }\textit{(The Pendulum)} Figure \ref{fig:fig_9_18} shows a diagram of a pendulum. The pendulum consists of a rod of length $L$ that is connected to a hinge which is free to move back and forth in one direction. We assume the free end of the rod has a weight of mass $m$ attached to it and that the mass of the rod is negligible in comparison. We also assume the hinge is frictionless. The position of the pendulum is recorded by the angle $\theta$ that the rod makes with the vertical. The resultant gravitational force on the weight pulls in the direction opposite but tangent to the displacement (see figure). The other component of the gravitational force is canceled off by the rod. The velocity of the mass $m$ equals the rate of change of the arclength $s=L \theta$ that it displaces (see Figure \ref{fig:fig_9_18} from its equilibrium position, so the acceleration of the mass is the second derivative of this quantity. Newton's Second Law, $F=m a$, now gives us that 
+
+\begin{equation}\label{eqa15}
+-m g \sin \theta=m L \theta^{\prime \prime}(t) \Rightarrow L \theta^{\prime \prime}(t)+g \sin \theta=0
+\end{equation}
+	which we refer to as the \textbf{pendulum model.}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.3\textwidth}
+\includegraphics[width=\linewidth]{fig_9_18}
+\label{fig:fig_9_18}
+\end{minipage}
+\begin{flushright}\captionof{figure}{Illustration of a pendulum for Example 9.8.}\end{flushright}
+
+\begin{enumerate}[label=(\alph*),topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\item Numerically solve the pendulum model \ref{eqa15} with the initial conditions $\theta(0)=\pi / 6, \theta^{\prime}(0)=0$ (physically, this corresponds to the pendulum being held up at this angle and released at time $t=0$ ) and the following parameters: $L=1.5$ feet, $m=200 \mathrm{~g}$. Use the Runge-Kutta method with step size $h=0.1$ and solve for the time interval $0 \leq t \leq 15$ [seconds] $=1 / 4$ minute. Note that the mass, although specified, does not enter into the DE and thus the motion of the pendulum is independent of the mass.
+\item The pendulum model \ref{eqa15} is nonlinear and cannot be solved explicitly. It is customary in standard courses in differential equations to linearize the model by replacing $\sin \theta$ by $\theta$ (its first-order Taylor polynomial), which is accurate for small values of $\theta$. Solve this latter linearization also with the Runge-Kutta method (same step size and same time range and initial conditions) and plot it together with the graph in part (a) (use different plot color/styles).\\
+\end{enumerate}
+
+SOLUTION: Part (a): Introducing the new function $z(t)=\theta^{\prime}(t)$, we can express the given IVP for the pendulum as: $\left\{\begin{array}{ll}\theta^{\prime}(t)=z, & \theta(0)=\pi / 6 \\ z^{\prime}(t)=-(g / L) \sin \theta, & z(0)=0\end{array}\right.$.\\
+
+\indent 	Using $g=32.1740 \mathrm{ft} / \mathrm{sec}^{2}$ and putting in $L=1.5 \mathrm{ft}$., we can now turn the problem over to MATLAB and use our \texttt{runkut2d} program.
+\begin{lstlisting}[numbers=none, frame=none]
+>> dth=inline('z','t', 'th' ,'z');
+>> dz=inline('-32.174/1.5*sin(th)','t','th','z');
+>> [t,th,z]=runkut2d(dth,dz,0,15, pi/6, 0, 0.01);
+>> plot(t,th);
+\end{lstlisting}
+
+\noindent The details for part (b) are similar and are left as an exercise. The resulting simultaneous plot is shown in Figure \ref{fig:fig_9_19}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig_9_19}
+    \caption{Graphs of the first 15 seconds of motion of the two pendulum models in Example 9.8. The left-lagging graph is the ideal pendulum model and the second one is that of its linearization. Notice that the ideal pendulum starts to lag behind the linearized model of it. Both appear (and actually are) periodic.}
+    \label{fig:fig_9_19}
+\end{figure}
+
+\noindent EXERCISE FOR THE READER 9.11: (a) Fill in the remaining details in the pendulum example necessary to obtain the second plot as shown in Figure \ref{fig:fig_9_19}. (b) It turns out that both pendulum models give rise to periodic motions. Can you prove this?\\
+
+\indent Newton used his calculus invention to explicitly solve the \textbf{two-body problem} where he analyzed the orbit of a single planet around the Sun. Subsequently, scientists turned to the natural next step up in difficulty: the \textbf{three-body problem} of the motion of objects subject only to the mutual forces of gravity. Much work has gone into this problem and it actually translates to an 18-dimensional firstorder system! As one would expect, the problem is not explicitly solvable. In the next example, we will look at a certain restricted version of the three-body problem in which one of the objects has negligible mass (and hence negligible gravitational pull) compared with the other two. These hypotheses would be reasonable, for example, if we were tracking the motion of a space station or satellite relative to the Earth and Moon. If we set up a "rotating" coordinate system which keeps the Earth and Moon fixed and leaves the third object moving in a plane, we bring down the number of dimensions to 4 . It can be shown using Newton's law of gravitation that these assumptions lead us to the following system for the position $(x(t), y(t))$ of the (relatively low mass) object at time $t$ :
+\begin{equation}\label{eqa16}
+\left\{\begin{array}{l}
+x^{\prime \prime}(t)=2 y^{\prime}+x-\frac{x_{e}\left(x+x_{m}\right)}{d_{m}^{3}}-\frac{x_{m}\left(x-x_{e}\right)}{d_{e}^{3}} \\
+y^{\prime \prime}(t)=-2 x^{\prime}+y-\frac{x_{e} y}{d_{m}^{3}}-\frac{x_{m} y}{d_{e}^{3}}
+\end{array}\right.
+\end{equation}
+\noindent In this coordinate system, the Moon is fixed at $\left(-x_{m}, 0\right)=(-1 / 82.45,0)$ and the Earth is fixed at $\left(x_{e}, 0\right)=\left(1-x_{m}, 0\right)$, also, $d_{m}$ and $d_{e}$ denote the distances from $(x, y)$ to the Moon and the Earth, respectively. The units in these equations have also been made large to keep the equations clean. Time is measured in years and one unit of distance equals the mean distance from the Earth to the Moon, about $380,000 \mathrm{~km}$. Even in this very restricted three-body model, it is not possible to explicitly obtain the solutions. Nevertheless, it is of great practical importance, to NASA or any business wishing to send out a satellite, to be able to find initial conditions which will result in periodic orbits (otherwise, the space object could drift into outer space to be gone forever!). One set of initial conditions that will work out into a periodic orbit is the following: \footnote{
+This data was computed on a supercomputer; see Chapter 6 of [ShAlPr-97].
+
+}
+\begin{equation}\label{eqa17}
+\left\{\begin{array}{l}
+x(0)=1.2, x^{\prime}(0)=0 \\
+y(0)=0, y^{\prime}(0)=-1.04935750983032
+\end{array}\right.\\
+\end{equation}
+
+\noindent Such initial conditions could be realized by bringing the space object to the required position and then directing appropriate thrusts to get the needed initial velocity.\\
+
+\paragraph*{EXAMPLE 9.9:} \textit{(Orbit of a Space Station)} In the restricted three-body problem presented by the IVP \ref{eqa16} and \ref{eqa17}, (a) plot the orbit and (b) estimate its period.\\
+
+SOLUTION: Part (a): At first, we do not know how large a time range to solve the IVP for, so it is good to do a few experiments first using Runge-Kutta with smaller step sizes until it looks like we have found a sufficiently large time range to include a complete period of the orbit. A few experiments show, however, that even with step size $h=0.01$ we would get a very (misleading) nonperiodic orbit (try this!). As it turns out, the step size $h=0.001$ works very well here and 10 years of time will suffice for a complete orbit. In order to apply Runge-Kutta, we first convert the system \ref{(15)} into a four-dimensional system of first-order DEs. Introducing the new functions $z(t)=x^{\prime}(t)$, and $w(t)=y^{\prime}(t)$, we can rewrite the IVP \ref{(16)}, \ref{(17)} as:
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=z, \quad x(0)=1.2 \\
+z^{\prime}(t)=2 w+x-\frac{x_{e}\left(x+x_{m}\right)}{\left[\left(x+x_{m}\right)^{2}+y^{2}\right]^{3 / 2}}-\frac{x_{m}\left(x-x_{e}\right)}{\left[\left(x-x_{e}\right)^{2}+y^{2}\right]^{3 / 2}}, z(0)=0 \\
+y^{\prime}(t)=w, \quad y(0)=0 \\
+w^{\prime}(t)=-2 z+y-\frac{x_{e} y}{\left[\left(x+x_{m}\right)^{2}+y^{2}\right]^{3 / 2}}-\frac{x_{m} y}{\left[\left(x-x_{e}\right)^{2}+y^{2}\right]^{3 / 2}} \\
+w(0)=-1.049357509830312
+\end{array}\right.
+$$
+We will apply our \texttt{rksys} program to solve this, but we will need first to create a vector-valued function for the right side of this system. Denoting this $M$-file as \texttt{threebod}, the code is as follows:
+
+\begin{lstlisting}[numbers=none, frame=none]
+function xp=threebod(t,xv)
+x=xv(1); z=xv(2); y=xv(3); w=xv(4);
+xm=1/82.45; xe=1-xm; dm=((x+m)^2+y^2)^(1/2); de=((x-xe)^2+y^2)^(1/2);
+xp(1)=z;
+xp(2)=2*w+x-xe*(x+xm)/dm^3-xm*(x-xe)/de^3;
+xp(3)=w;
+xp(4)=-2*z+y-xe*y/dm^3-xm*y/de^3;
+
+[t,X]=rksys('threebod',0,10,[1.2 0 0 -1.049357509830312],0.001);
+
+>> x=X(:,l); y=X(:,3);
+>> plot(x,y)
+>> hold on
+>> xm=1/82.45; xe=1-xm;
+>> plot(-xm,0,'rp') %will plot a red pentacle at moon's location
+>> plot(xe,0,'go') %will plot a green 'o' at earth's location
+\end{lstlisting}
+
+\noindent The resulting plot appears in Figure 9.20.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig_9_20}
+    \caption{The orbit of the space station of Example 9.9. Each unit represents the mean distance from the Earth to the Moon. The Earth is represented by the circle on the right and the Moon by the pentacle in the center. It takes about $6.192$ years for the orbit to make a complete cycle.}
+    \label{fig:fig_9_20}
+\end{figure}
+
+\noindent Part (b): One must be a bit careful here due to the errors that arise. Although the graph looks periodic, we cannot just set up a loop to see how long it takes $x(n)$ and $y(n)$ to reach their initial values exactly (since they never will). To get an idea of how we should look at coordinates, we evaluate (in \texttt{format long})\\
+
+\begin{lstlisting}[numbers=none, frame=none]
+>> x(2)=l.19999907969626 (extremely close to x(1) = 1.2)
+>> y(2) -0.00104935675196 (more than 0.001 off from initial y(1) = 0).
+\end{lstlisting}
+
+\noindent We focus our attention on the $y$-coordinate, but we weed out all situations where $x$ is far away from $1.2$ (so the only way $y$ can get small here is if $(x, y)$ is near the initial point). This search can be done as follows:\\
+
+
+\begin{lstlisting}[numbers=none, frame=none, mathescape]
+>> n=2; %initialize
+>> while x(n) < 1.19|abs(y(n))>.001
+n=n+1
+end
+>> n
+$\rightarrow$n = 6193
+>> t(6193)
+$\rightarrow$6.19200000000000
+\end{lstlisting}
+
+\noindent As a further check, we look at the locations of $(x, y)$ at nearby times:
+
+\begin{lstlisting}[numbers=none, frame=none, mathescape]
+>> for k=n-2:n+2
+[t(k) x(k) y(k)]
+end
+\end{lstlisting}
+$\rightarrow$\\
+$6.19000000000000 \quad 1.19966512247978   \quad 0.00274177862485$\\
+$6.19100000000000 \quad 1.19966754186654   \quad 0.00169277717629$\\
+$6.19200000000000 \quad 1.19966811983163   \quad 0.00064377132264$\\
+$6.19300000000000 \quad 1.19966685634965   \quad -0.00040523438093$\\
+$6.19400000000000 \quad 1.19966375141712   \quad -0.00145423537902$\\
+
+
+\noindent Our analysis thus estimates the period of orbit to be about $6.192$ years. This is as accurate as our step size (so as accurate as we could have hoped). Indeed, to greater precision, the actual orbit turns out to be about $6.192169331$ years.\\
+
+\noindent\rule{480pt}{0.4pt}
+\paragraph*{EXERCISE 9.4: }
+\begin{enumerate}
+
+\item Each of the following IVPs is given along with a solution $y=f(t)$. For each do the following: (i) Express the IVP as a system of first-order DEs. (ii) Apply the Runge-Kutta method to solve the IVP first with step size $h=0.2$, then with $h=0.1$ and finally with $h=0.01$. (iii) Verify that $f(t)$ solves the original IVP and then compare the Runge-Kutta solutions you obtained in (ii) with $f(t)$, in cases where the graphs are indistinguishable, plot the errors.
+\begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)-4 y^{\prime}+4 y=2 e^{2 t} \\ y(0)=0, y^{\prime}(0)=0\end{array}, 0 \leq t \leq 2 \quad f(t)=t^{2} e^{2 t}\right.$
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)+3 y^{\prime \prime}+3 y^{\prime}+y=e^{-t} \\ y(0)=0, y^{\prime}(0)=0, y^{\prime \prime}(0)=0\end{array}, \quad 0 \leq t \leq 2, f(t)=t^{3} e^{-t} / 6\right.$
+\item $\left\{\begin{array}{l}t^{3} y^{\prime \prime}+5 t^{2} y^{\prime \prime}+2 t y^{\prime}-2 y=t^{4} \\ y(0)=y^{\prime}(0)=y^{\prime \prime}(0)=y^{\prime \prime}(0)=0\end{array}, \quad 0 \leq t \leq 6, f(t)=t^{4} / 90\right.$
+\item $\left\{\begin{array}{l}y^{\prime \prime}-5 y^{\prime \prime}+8 y^{\prime}-4 y=0 \\ y(0)=1, y^{\prime}(0)=4, y^{\prime \prime}(0)=0\end{array}, 0 \leq t \leq 5, f(t)=13 e^{2 t}-10 t e^{2 t}-12 e^{t}\right.$\\
+\end{enumerate}
+\item Repeat each part of Exercise 1 for the following IVPs:
+\begin{enumerate}[label=(\alph*)]
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)+\left(y^{\prime}\right)^{2}=0 \\ y(0)=0, y^{\prime}(0)=1 / e\end{array}, 1 \leq t \leq 10 \quad f(t)=\ln (x+e)-1\right.$
+\item $\left\{\begin{array}{l}y^{\prime \prime}(t)=2 y^{3}+2 y \\ y(0)=-, y^{\prime}(0)=-2\end{array}, 0 \leq t \leq 2, f(t)=-\tan (t+\pi / 2)\right.$
+\item $\left\{\begin{array}{l}t^{3} y^{\prime \prime}+t^{2} y^{\prime \prime}-2 t y^{\prime}+2 y=\left(24-6 t^{2}\right) / t^{2} \\ y(1)=-1, y^{\prime}(1)=5, y^{\prime \prime}(1)=-12\end{array}, 1 \leq t \leq 16,\right.$,
+$f(t)=\frac{-2}{t^{2}}+\frac{1}{t}-3+4 t-t^{2}$
+\item $\left\{\begin{array}{l}y^{\prime \prime}=\sqrt{y} \\ y(2)=1 / 9, y^{\prime}(0)=2 / 9^{\prime}\end{array} \quad 0 \leq t \leq 5, f(t)=\frac{t^{4}}{144}\right.$\\
+\end{enumerate}
+\item MATLAB's built-in DE solver \texttt{ode45} , which was introduced in Section $8.4$ for single ODEs, is also able to handle systems of first-order ODE. The syntax is a bit different than that of our function rksys. In this exercise, you will be repeating for each of the IVPs in Exercise 1, the following similar tasks using the \texttt{ode45} program in place of the Runge-Kutta program. By experimenting with the help menu (and with what was said in Section 8.4), figure out how to use the program to solve the resulting first-order system using \texttt{ode45} in the default setting. Plot the error of this approximation versus the given exact solution. Next, determine how to use the "options" to refine the accuracy to decrease the maximum error by at least $50 \%$ Repeat once again, this time decreasing the maximum error at least another $75 \%$ (from the already decreased error).
+\item Repeat Exercise 3 for each of the parts of Exercise 2 .
+\item Another well-known chaotic attractor is the so-called Rossler\footnote{
+This model was discovered in 1976 by German Otto Rossler (1940- ) in his efforts to more fully understand the Lorenz strange attractor. His model introduces a spiral type of chaos which combines a two-variable oscillator $(x$ and $y$ ) with a switching-type subsystem ( $z$ ) so that $x$ and $y$ switch $z$ and, conversely, the flow of $x$ and $y$ depends on the switching state of $z$ (positive or negative). To better understand how this model is working, the reader is advised to fix $z$ at some different values and for each of these, hand draw an $x y$-phase-plane. Dr. Rossler appears to be quite a universal scientist; he has held professorships (at various institutes in different countries) in departments of Mathematics, Chemical Engineering, Nonlinear Studies, and Theoretical Biochemistry.
+} band represented by the system:
+$$
+\left\{\begin{array}{l}
+x^{\prime}(t)=-y-z \\
+y^{\prime}(t)=x+a y \\
+z^{\prime}(t)=b+z(x-c)
+\end{array}\right.
+$$
+(a) Using the parameters $a=0.2, b=0.2, c=5.7$ (which Rossler used), initial conditions $x(0)=$ $0, y(0)=-6.78$ and $z(0)=0.02$, and the Runge-Kutta method with step size $h=0.01$ on the time interval $[0,250]$, obtain graphs of $y$ vs. $x, z$ vs. $x, z$ vs. $y$, and each of $x, y, z$ vs. $t$.\\
+(b) Perturb slightly the initial condition $y(0)$ to equal $-6.8$ and solve the resulting system in the same way with the Runge-Kutta method (keeping all else the same). Plot the differences of the $x$ 's, $y$ 's, and $z$ 's (old and new) versus $t$. You need only do these three plots. Based on your graphs, about how long do the two different solutions seem to agree?
+\item  (a) Re-solve the Rossler band model of Exercise 5, first with the Runge-Kutta method with step size $h=0.1$ and then by successively halving the step size. Repeat this process for 6 iterations and plot the differences of successive $x$-coordinates versus $t$ (so there will be a total of five plots). Based on your plots, over how large a time range does each approximation seem to be good?\\
+(b) MATLAB's built-in ODE solver \texttt{ode45} also works for systems (see Exercise 3). Try to use it repeatedly by successively increasing the accuracy (using the "options") to obtain a solution as accurate as the final one in part (a). What is the size of the \texttt{ode45} solution vector compared with the final one in part (a)?\\
+\textbf{Suggestion:} To check the accuracy of the \texttt{ode45} solutions with that in part (a), it would be awkward to plot the differences (since the $t$-vectors in \texttt{ode45} solutions are not uniformly spaced), so you should simply plot the two functions (in different colors) in the same window and visually check how long they agree.
+\item In this exercise you are to experiment with one of the parameters in the Rossler band model of Exercise 5 . Keeping everything else (Runge-Kutta, step size, $b, c$, initial conditions, and time range) the same as in part (a), let the parameter a run from $-0.4$ to $0.6$ in increments of $0.2$ and record the $y$ vs. $x$ plots (only these) of the different plots. Any comments on how things are changing? (You may wish to look at some additional plots for intermediate values of the parameter $a$.)
+\item (a) Write a MATLAB program called \texttt{eulersys} which has the same syntax, input, and output variables as the program \texttt{rksys} in Program 9.2, except that the Euler method is used in place of the Runge-Kutta method.\\
+(b) Repeat part (a) of Exercise 6 but replacing the Runge-Kutta method with the Euler method and using your program \texttt{eulersys}.
+\item (a) Write a MATLAB program called \texttt{ieulsys} which has the same syntax, input, and output variables as the program \texttt{rksys} in Program 9.2, except that the improved Euler method is used in place of the Runge-Kutta method.\\
+(b) Repeat part (a) of Exercise 6 but replacing the Runge-Kutta method with the improved Euler method and using your program \texttt{ieulsys}.
+\item \textit{(Physics Pendulum)} (a) Suppose that we wanted to build a pendulum which had a period equal to exactly one second. How long would we need to make $L$ for this pendulum? Determine $L$ to an accuracy so as to make the period accurate to within an error of $0.001$ to exactly one second given that the initial conditions are $\theta(0)=\pi / 4, \theta^{\prime}(0)=0$.
+\begin{enumerate}[label=(\alph*),topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+\item Repeat part (a) but now for a period of exactly 10 seconds.
+\item Repeat part (a) this time using the linearized \textit{pendulum model}.
+\item Repeat part (b) this time using the linearized \textit{pendulum model}.
+\end{enumerate}
+\textbf{Note:} Pendula are the basis for the grandfather clock. Friction and air resistance are minimized but there is a very light "kicker" mechanism which keeps them going with constant amplitude. These clocks are adjusted via a small screw near the weight end of the rod which can make slight variations in the length of the rod.
+\item (Physics Pendulum) In Exercise 10, what happens to the answers in parts (a) and (b) if we changed the initial position $\theta(0)$ to be some other positive number in the range 0 through $\pi / 2$ (exclusive)? Explain, and give some numerical evidence of your conclusions.
+\item (Physics-Damped Pendulum) If we modify the \ref{eqa15} for the pendulum (with rod length $L$ ) to include damping (which could include such forces as air resistance on the bob and friction at the hinge mechanism), the damping force would equal $F=-c \theta^{\prime}$ (proportional to speed and oppositely directed).\\
+(a) Using Newton's Second Law $F=m a$, show that the DE for the damped pendulum becomes: $L \theta^{\prime \prime}(t)+(c / m) \theta^{\prime}+g \sin \theta=0$.\\
+(b) For a large pendulum with $L=20 \mathrm{f}$, damping constant $c=60$ (programmed to have $m$ measured in kg.), and $m=10 \mathrm{~kg}$., use the Runge-Kutta method with $h=0.01$ to graph $\theta$ versus $t$ from $t=0$ to $t=30$ seconds. Can you determine whether successive time intervals between when $\theta=0$ are equal?\\
+(c) Solve and graph the corresponding linearized problem obtained by replacing $\sin \theta$ by $\theta$ in the above DE, but keeping all else the same. Graph the solutions to (a) and (b) together. Can you determine whether successive time intervals between when $\theta=0$ are equal?
+\item (a) Hand draw the $\theta-\theta^{\prime}$ phase-plane for the pendulum DE \ref{eqa15}. What are the equilibrium points? Are any of them stable?\\
+(b) Repeat part (a) for the damped pendulum DE of the preceding exercise.\\
+
+\textbf{Suggestion:} You will of course first need to rewrite the second-order DE as a system of firstorder DEs and then proceed as in Section 9.3.
+\item In the 1920s, the Dutch physicist van der Pol\footnote{
+Balthasar van der Pol $(1889-1959)$ first introduced his namesake equation as a model for "negative resistance in vacuum tube circuits." For different values of the parameter $\mu$, the equation has numerous applications to electric circuits, and for a wide range of values for $\mu$ and initial conditions, the solutions very quickly spiral to periodic ones so as to appear "eventually periodic." Think of how electricity moves after you tum on a light switch.
+} introduced the following DE, now referred to as the \textbf{van der Pol equation}, to model electrical phenomena:
+$$
+x^{\prime \prime}(t)+\mu\left(x^{2}-1\right) x^{\prime}+x=0
+$$
+where the parameter $\mu$ is assumed positive for physical reasons.\\
+(a) Express the van der Pol DE as a system of first-order DEs.\\
+(b) Get MATLAB to plot about 10 different orbits from an assortment of initial conditions in the square region: $-10 \leq x, x^{\prime} \leq 10$ in the $x-x^{\prime}$ phase-plane for the case $\mu=1$.\\
+(c) Repeat part (b) this time for the value $\mu=1 / 2$ and $\mu=2$, and then for $\mu=1 / 8$ and $\mu=8$. Any comments on the differences in phase-planes (say between the last two values of $\mu$ )?
+
+\item (a) What does Theorem $9.3$ have to say about the phase-plane of (the two-dimensional firstorder system corresponding to) the van der Pol equation (Exercise 14 near the equilibrium solution $x(t)=0\left(\operatorname{or}\left(x(t), x^{\prime}(t)\right)=(0,0)\right.$ in the $x x^{\prime}$ phase-plane)? How does your answer depend on the value of the positive parameter $\mu$ ?\\
+(b) For $\mu=5$, find a basin of attraction for the equilibrium solution $x(t)=0\left(\right.$ or $\left(x(t), x^{\prime}(t)\right)=$ $(0,0)$ in the $x x^{\prime}$ phase-plane) of the van der Pol equation, and then apply the Poincaré-Bendixson theorem to prove that this equation has a periodic solution.\\
+(c) For which other positive values of the parameter $\mu$ can you extend your proof of part (b) to prove the existence of a periodic solution to the van der Pol equation?
+
+\end{enumerate}
+
+
+	
+	
+	
+	
+\clearpage
+\end{document} 

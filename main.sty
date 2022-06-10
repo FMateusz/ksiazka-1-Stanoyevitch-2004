@@ -1,0 +1,285 @@
+\NeedsTeXFormat{LaTeX2e} \ProvidesPackage{main}[2015/07/01 package <main>]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% %
+%%% % weiiszablon.sty
+%%% %
+%%% % Plik stylu dla pracy dyplomowej 
+%%% % Wydziału Elektrotechniki i Informatyki
+%%% % Politechniki Rzeszowskiej
+%%% %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[utf8]{inputenc} 			% kodowanie 
+\usepackage[T1]{fontenc} 				% czcionka Timnes New Roman
+\usepackage{courier} 					% czcionka courier
+\usepackage{mathptmx} 					% pakiet wymagany do czcionki Times New Roman
+\usepackage{graphicx} 					% pakiet graficzny
+\usepackage{enumitem} 					% spis treści i listy
+\usepackage{indentfirst} 				% aktywne pierwsze wcięcie w akapicie (domyślnie nie jest)
+\usepackage{etoolbox} 					% pakiet umożliwiający edycję domyślnych komend
+\usepackage{amsmath,amsthm,amssymb} 	% pakiet matematyczny
+\usepackage{color} 						% podstawowe kolory
+\usepackage{listings}  
+\usepackage{bm}							% dla pogrubionych i pochylonych czcionek w środowisku matematycznym
+\usepackage[compact]{titlesec}			%zmiana czcionki i odstępów w tytułach rozdziałów
+% Z main.tex
+\usepackage{hyperref}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathdots}
+\usepackage[svgnames,table,xcdraw]{xcolor}
+\usepackage{gettitlestring}
+\usepackage{subfiles}  
+\usepackage{caption}
+\usepackage{float} 
+\usepackage{titlesec}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%osoba 1
+
+%\usepackage{lastpage}
+\usepackage{graphics}
+\usepackage{blindtext}
+\usepackage[labelfont=bf]{caption}
+\usepackage[export]{adjustbox}
+\usepackage{fontawesome5}
+\usepackage{wrapfig}
+\usepackage{tablefootnote}
+\usepackage{moreverb}
+\usepackage[normalem]{ulem}
+\usepackage{booktabs}
+
+%osoba 2
+\usepackage{tabularx} % tablica ktora dynamicznie sie rozszerza
+\usepackage{gensymb} % symbol stopni \degree{}
+\usepackage{textcomp}
+\usepackage{blkarray} %do macierzy z opisami kolumn/wierszy
+
+
+
+\newcounter{Example}[chapter]
+\newcounter{ExerciseForTheReader}[chapter]
+\newcounter{Program}[chapter]
+\newcounter{Exercises}[chapter]
+\newcounter{Table}[chapter]
+\newcounter{Solution}[chapter]
+\newcounter{Theorem}[chapter]
+
+\newenvironment{Example}[1][]{\refstepcounter{Example}\par\medskip
+\noindent\textbf{EXAMPLE~\thechapter.\theExample: #1 \label{example:\thechapter_\theExample}} \rmfamily}{\medskip}
+
+\newenvironment{ExerciseForTheReader}[1][]{\refstepcounter{ExerciseForTheReader}\par\medskip
+\noindent\textnormal{EXERCISE FOR THE READER~\thechapter.\theExerciseForTheReader: #1 \label{exreader:\thechapter_\theExerciseForTheReader}} \rmfamily}{\medskip}
+
+\newenvironment{Program}[1][]{\refstepcounter{Program}\par\medskip
+\noindent\textbf{PROGRAM~\thechapter.\theProgram: #1 \label{program:\thechapter_\theProgram}} \rmfamily}{\medskip}
+
+\newenvironment{Exercises}[1][]{\refstepcounter{Exercises}\par\medskip
+\noindent\textbf{\noindent\rule{\textwidth}{1pt} EXERCISES~\thechapter.\theExercises:\\ #1 \label{exercises:\thechapter_\theExercises}} \rmfamily}{\medskip}
+
+\newenvironment{Table}[1][]{\refstepcounter{Table}\par\medskip
+\noindent\textbf{TABLE~\thechapter.\theTable: #1 \label{table:\thechapter_\theTable}} \rmfamily}{\medskip}
+
+\newenvironment{Solution}[1][]{\refstepcounter{Solution}\par\medskip
+\noindent\textnormal{SOLUTION:} \rmfamily}{\medskip}
+
+\newenvironment{Theorem}[1][]{\refstepcounter{Theorem}\par\medskip
+\noindent\textbf{THEOREM~\thechapter.\theTheorem: #1 \label{theorem:\thechapter_\theTheorem}} \rmfamily}{\medskip}	
+
+
+%osoba 3
+\usepackage{sidecap}
+\usepackage{tasks}
+\usepackage{array}
+\usepackage{siunitx} 
+
+\usepackage{setspace}
+\usepackage{amsfonts}
+\usepackage{polski}
+\usepackage{subfiles}    
+\usepackage{graphicx}    
+\usepackage{float}      
+\usepackage{arydshln}
+\usepackage{mathtools}
+%osoba 4
+\usepackage{multicol}
+%osoba 5
+\usepackage{multicol}
+\restylefloat{figure}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{tcolorbox} % odznaczyłem 09.06
+%\usepackage[rightcaption]{sidecap}
+
+\newenvironment{example}    % this is the environment name for the input
+  {\renewcommand{\qedsymbol}{$\blacksquare$}%
+   \pushQED{\qed}\begin{exm}}
+  {\popQED\end{exm}}
+
+\newenvironment{summary}    % this is the environment name for the input
+  {\renewcommand{\qedsymbol}{$\blacksquare$}%
+   \pushQED{\qed}\begin{smr}}
+  {\popQED\end{smr}}
+  
+
+%chapter 19
+\usepackage{boldline,makecell}
+\newtheorem{theorem}{\textbf{THEOREM}}
+\numberwithin{theorem}{chapter}
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{lemma}{\textbf{LEMMA}}
+\numberwithin{lemma}{chapter}
+\newtheorem{exeforreader}{\textbf{EXERCISE FOR THE READER}}
+\numberwithin{exeforreader}{chapter}
+\newtheorem{exercises}{\textbf{EXERCISES}}
+\numberwithin{exercises}{chapter}
+\newtheorem{program}{\textbf{PROGRAM}}
+\numberwithin{program}{chapter}
+\theoremstyle{plain}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{exm}{\textbf{Example}}
+
+%%%%%
+%osoba 8
+\usepackage{tabto}
+
+
+%%%%%
+
+
+%\newcommand*{\blankpage}{%
+%\vspace*{\fill}
+%{\centering This page intentionally left blank.\par}
+%\vspace{\fill}}
+%\makeatletter
+%\renewcommand*{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else
+%\blankpage
+%\thispagestyle{empty}
+%\newpage
+%\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+%\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\faSearchPluss}{\reflectbox{\faSearchPlus}}
+\newcommand{\faSearchMinuss}{\reflectbox{\faSearchMinus}}
+%\counterwithin{figure}{chapter}
+%\captionsetup{labelfont=bf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=1cm,includefoot=false,includehead=false,footskip=1.16cm]{geometry} 	% wymiary strony
+
+% rozmiar czcionki numeru strony
+\renewcommand*{\thepage}{\footnotesize\arabic{page}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%224,244,255 RGB dla listningow w ksiazce\\ 224/255 =0.878 .....
+
+\definecolor{backgroundforlst}{rgb}{0.878,0.957,1.0}
+\lstdefinestyle{lstownstyle}{
+    backgroundcolor=\color{backgroundforlst},   
+    basicstyle=\linespread{1.2}\ttfamily\footnotesize, %\linespread{x.x} - interlinia
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                                     
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    columns=fullflexible,
+    aboveskip=1.5em,
+    belowskip=1.5em
+}
+
+\lstset{style=lstownstyle}
+%fragmenty kodu zrodlowego w tekscie
+\newcommand{\mycode}[1]{\textbf{\texttt{#1}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength\parindent{1.25cm}		% wcięcie 1.25 cm
+\newlength\mylen
+\setlength\mylen{\parindent}
+
+
+
+\titleformat{\section}
+  {\normalfont\scshape\fontsize{16pt}{16pt}\bfseries}
+  {\makebox[\mylen][l]{\thesection.}}
+  {0pt}
+  {}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{14pt}{14pt}\bfseries}
+  {\makebox[\mylen][l]{\thesubsection.}}
+  {0pt}
+  {}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12pt}{12pt}\bfseries}
+  {\makebox[\mylen][l]{\thesubsubsection.}}
+  {0pt}
+  {}
+
+\titlespacing*{\section}{0pt}{*0}{14pt} %zmiana odstępów po tytułach rozdziałów
+\titlespacing*{\subsection}{0pt}{14pt}{12pt}
+\titlespacing*{\subsubsection}{0pt}{12pt}{0pt}
+
+
+
+% komenda dla pustej strony
+\newcommand\blankpage{ 
+	\null
+	\thispagestyle{empty}
+	\newpage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheoremstyle{summary}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {1em}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {:}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+\newtheoremstyle{overview}
+  {\topsep}   % ABOVESPACE
+  {\topsep}   % BELOWSPACE
+  {\itshape}  % BODYFONT
+  {1em}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {:}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% strona koncowa pracy
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\endinput

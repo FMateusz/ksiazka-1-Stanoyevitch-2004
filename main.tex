@@ -1,0 +1,82 @@
+\documentclass[8pt,twoside]{book}
+
+\usepackage{main}
+
+\usepackage{titlesec}
+%\titleformat{\chapter}[hang] 
+%{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{1em}{}
+%\renewcommand{\chaptername}{} % eliminate Chapter in divisional heading
+
+
+\usepackage{chngcntr}
+\counterwithout{equation}{chapter} %licznik numeru rownan
+%\counterwithout{Equation}{chapter} %licznik numeru rownan
+\counterwithin*{equation}{chapter}
+\counterwithout{figure}{chapter}   %licznik numeru zdjec
+
+
+%  begin     mybox
+%\usepackage[framemethod=default]{mdframed}
+%\newmdenv[innerlinewidth=0.5pt, roundcorner=4pt,linecolor=black,innerleftmargin=6pt,innerrightmargin=6pt,innertopmargin=6pt,innerbottommargin=6pt]{mybox}
+
+%\usepackage[many]{tcolorbox}    
+	
+%\newtcolorbox{mybox}{
+   % boxrule = 0.9pt,
+  %  rounded corners,
+  %  arc = 10pt   % zaokraglenie
+%}
+
+
+\UseRawInputEncoding
+ %o - osoba
+\graphicspath{{./figi/o1/} 
+{./figi/o3/} 
+{./figi/o4/chapter_8} 
+{./figi/o4/chapter_9} 
+{./figi/o4/chapter_10a} 
+{./figi/o5/chapter_10b} 
+{./figi/o5/chapter_11} 
+{./figi/o2/}
+{./figi/o6/}
+{./figi/o7/}
+{./figi/o8/}
+}
+
+\begin{document}
+    \tableofcontents
+    \addcontentsline{toc}{section}{Contents}
+	%\listoffigures  % problem w chapter 7
+	   
+    \clearpage
+    
+    
+ \part{Introduction to MATLAB and Numerical Preliminaries}
+  %osoba 1
+    \subfile{ch1/ch1}%ok 
+    \subfile{ch2/ch2}%ok
+    \subfile{ch3/ch3}%ok
+    \subfile{ch4/ch4}%ok
+    \subfile{ch5/ch5}%ok
+    
+  %osoba 2
+	\subfile{ch6/ch6} %ok
+ 
+  %osoba 4
+	\subfile{ch7/ch7} %ok 
+\part{Ordinary Differential Equations}
+	\subfile{ch8/ch8} %ok
+	\subfile{ch9/ch9} %ok
+	\subfile{ch10/ch10} %ok
+\part{Partial Differential Equations}
+  %osoba 5
+	\subfile{ch11/ch11} %ok
+  %osoba6
+  	\subfile{ch12/ch12} %ok
+  %osoba 7 , 8
+	\subfile{ch13/ch13}%-
+	\subfile{ch14/ch14}%-
+	%\subfile{ch15/ch15}%-
+
+
+\end{document}

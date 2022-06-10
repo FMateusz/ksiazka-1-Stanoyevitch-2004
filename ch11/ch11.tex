@@ -1,0 +1,1969 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+
+
+
+\chapter{Introduction to Partial Differential Equations}
+\label{chap:chap_11}
+\section{THREE-DIMENSIONAL GRAPHICS WITH MATLAB}
+
+\noindent As mentioned in Chapter 8 , \textbf{partial differential equations (PDEs)} are differential equations where the unknown function (solution) is a function of several variables (and so the derivatives will be partial derivatives). The subject of PDEs is probably the most vast branch of mathematics and we will be focusing mostly on PDEs with two independent variables. There are two main reasons for this restriction. First, many of the key aspects of the theory and numerical methods in partial differential equations are well represented in PDEs having two independent variables. Second, once we obtain (numerical) solutions of such PDE, they will be functions of two variables and we will be able to graph them using MATLAB's three-dimensional capabilities. Graphs are not feasible if there are more than two independent variables, as such graphs would require at least four dimensions. Most of our PDEs will arise from physical models, and it will be convenient to use two different sets of independent variables: either $x$ (space) and $t$ (time) or $x$ and $y$ (two space variables). The solutions of such PDEs will be functions of two variables: $z=f(x, t)$ or $z=f(x, y)$, and often the best way to understand such a function is by a graph. Such a graph will require three dimensions and it is customary to have the dependent variable's axis be vertical (just like for functions of one variable), so the two independent variables will have their axes span a twodimensional plane that must protrude out of the paper (or screen) on which it is graphed. The graph of such a function will be a surface in the three-dimensional $x y z$-plane.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{img_111}
+	\caption{Mesh net graph of a function $f(x,y)$ of two variables.}
+\end{figure}
+\noindent In Figure 11.1, we have graphed a surface $z=f(x, y)$ with a mesh type of graph where images of equally spaced parallel lines of the form $x=c$ and $y=d$ under the function $f(x, y)$ are shown. In MATLAB, there are numerous ways of plotting and viewing the graph of a function of two variables. As with two-dimensional plots, the axis range can be specified. But to help with the third dimension, there are also other useful features such as viewing perspective (from where should we view the surface?), lighting, shading, and mesh grid lines. Color ranges can be used to vary with the height of the dependent variable. Often it is necessary to experiment with different versions of the same graph to find the best rendition of it for a particular purpose. The simplest way to understand how MATLAB does a plot of a function $z=f(x, y)$ is to consider the so-called mesh grid plots. These look a lot like the one in Figure 11.1, except only the points which are actually plotted are the grid points where one of the equally spaced horizontal lines $x=c$ meets a corresponding vertical line $y=d$-see Figure 11.2. Once the values of $f(x, y)$ are computed at these grid points, adjacent plotted points are connected by straight line segments.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{img_112}
+	\caption{When MATLAB plots a function $z=f(x, y)$ of two variables, it will evaluate the function only for grid points $(x, y)$ (the solid dots). Resolution can be improved by refining the grids (on both $x$-and $y$-axes). MATLAB has a function that will build the matrices of grid points from the corresponding vectors $x=\left(x_{1}, x_{2}, \cdots x_{n}\right)$ and $y=\left(y_{1}, y_{2}, \cdots y_{m}\right)$.}
+\end{figure}
+\noindent As with all things numerical in MATLAB, three-dimensional plots in MATLAB will be obtained from appropriate matrices. Once the $x$ and $y$ vectors (determining $x$ - and $y$-coordinates of grid points) have been entered, we need to construct matrices $X$ and $Y$ of all of the $x$ - and $y$-coordinates for the grid points. If $x$ has $n$ elements and $y$ has $m$ elements then $X$ and $Y$ will be of size $n \times m$. MATLAB has a convenient function \texttt{meshgrid} that will construct these meshed matrices for us.
+$$
+\begin{array}{|c|l|}
+\hline[X, Y]=\text { meshgrid }(x, y)  \rightarrow & \begin{array}{l}
+\text { For input vectors } x=\left(x_{1}, x_{2}, \cdots x_{n}\right) \text { and } y=\left(y_{1}, y_{2}, \cdots y_{m}\right), \\
+\text { meshgrid outputs two matrices } X \text { and } Y \text { each of size } n \times m, \text { which } \\
+\text { will be the corresponding } x \text { - and } y \text {-coordinates of all the points in the } \\
+\text { grid determined by the vectors } x \text { and } y .
+\end{array} \\
+\hline
+\end{array}
+$$
+\noindent The next example will help us to understand how \texttt{meshgrid} is used to obtain plots of functions $z=f(x, y)$ in MATLAB. Since the three-dimensional plot functions and their options are best explained and illustrated by examples, we use the next example as a venue for illustrating several ways to plot surfaces and change the graphs. Help menus will introduce other options and features.
+\begin{example}\end{example}
+\begin{enumerate}[label=(\alph*),align=left]
+\item Starting with the vectors $x=y=(-3,-2, \ldots, 2,3)$, use meshgrid to create two corresponding matrices of grid points for these vectors and then obtain a meshgrid plot of the surface
+$$
+z=f(x, y)=\frac{3}{1+x^{2}+y^{2}}-\frac{10}{4+(x+1.5)^{2}+y^{2}}
+$$
+\item Use vectors with 50 equally spaced elements over the same $x$-and $y$-ranges to obtain finer plots of this function and display plots used by several different MATLAB plotting tools.
+\end{enumerate}
+SOLUTION: Part (a): Here are the MATLAB commands.
+\begin{lstlisting}[numbers=none,frame=none]
+>> x=-3:3; %x-values of grid
+>> y=x;    %y-values of grid
+>> [X, Y]=meshgrid(x,y) %creates matrices of grid point coordinate
+\end{lstlisting}
+\includegraphics[scale=1]{img_xy}\\
+\noindent Corresponding entries in these grid matrices pair to give us $(x, y)$ grid coordinates. The matrices are constructed in a way that MATLAB's plotting functions will be able to interpret, associate corresponding $z$-coordinates, and produce the plots.
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z=3./(1+X.^2+Y.^2)-10./(4+(X+1.5).^2+Y.^2); %construct
+>> %corresponding matrix Z of z-coordinates for grid points
+>> mesh(X,Y,Z) %produces the desired mesh grid plot.
+\end{lstlisting}
+\noindent The plot is shown in Figure 11.3 on the left.\\\\
+\noindent Part (b): We refine the $x$ - and $y$-values of the grid, reconstruct the meshgrid matrices and the corresponding $Z$-matrix, and then use \texttt{mesh} to get the higherresolution plot on the right of Figure 11.3.
+\begin{lstlisting}[numbers=none,frame=none]
+>> x=linspace(-3,3,50); y=x;
+>> [X,Y]=meshgrid(x,y);
+>> Z=3./(1+X.^2+Y.^2)-10./(4+(X+1.5).^2+Y.^2);
+>> mesh(X,Y,Z)
+\end{lstlisting}
+CAUTION: If you just type mesh (Z) you will get the same surface graph; however, the numbers on the $x$-and $y$-axes will be the vector indices (so in this case will range from 1 to 50 ). It is, however, acceptable to use the original vectors $x$ and $y$ : \texttt{mesh} $(x, y, z)$, rather than the mesh matrices for $x$ and $y$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{img_113}
+	\caption{Two MATLAB meshgrid plots of the function\\\\
+	$z=\frac{3}{1+x^{2}+y^{2}}-\frac{10}{4+(x+1.5)^{2}+y^{2}}$\\\\
+	over the square $-3 \leq x, y \leq 3$. The first used only seven $x$ - and $y$-grid coordinates, while the second used 50 . The main plotting command was mesh $(X, Y, Z)$; see Example II.I. We point out some defaults in these plots: Colors are used with red for the highest $y$-values and blue for the lowest, this will come in handy for temperature plots. Also from our perspective, hidden parts of the mesh are not visible, and grid lines are shown.radar chart\protect\footnotemark ~}
+	\end{figure}
+\footnotetext{To remove the grid lines simply enter \texttt{grid off}.}
+\noindent \textbf{TABLE 11.1}\\
+Catalogue of several other useful plotting commands. In each we assume
+that \texttt{x,y,X,Y}, and \texttt{Z} have already been constructed as in Example 11.1.\\
+
+\begin{tabular}{|p{2cm}|p{6cm}|p{7cm}|}
+\hline \centering{MATLAB Plotting Function} & \centering{ Syntax and Options } & \multicolumn{1}{|c|}{Resulting Graph}\\
+\hline  \texttt{mesh ->} (mesh plot with underlying contour lines) & 
+\begin{lstlisting}[numbers=none,frame=none]
+>> meshc(X,Y,Z)
+>> axis('off')
+%supresses axes (and grids)
+\end{lstlisting} & 
+\vspace{-5pt} \includegraphics[width=.5\textwidth]{img_tb1} \\
+\hline \texttt{surf ->} (surface plot = 1 mesh plot with squares between mesh lines filled in) &
+\begin{lstlisting}[numbers=none,frame=none]
+>> surf(X,Y,Z)
+>> grid off %leaves axes in but takes out all the extra grid lines; note that unlike with mesh plots, the mesh lines are now all black.
+>> xlabel('x-axis'), ylabel('y-axis'), zlabel('z-axis') %labels work like in 2dim. plots.
+\end{lstlisting}&
+\vspace{-5pt} \includegraphics[width=.4\textwidth]{img_tb2} \\
+\hline \texttt{waterfall ->} (surface plot using only y-grid lines; these are extended over edges of plot) & 
+\begin{lstlisting}[numbers=none,frame=none]
+>> waterfall(X,Y,Z)
+>> hidden off %%allows to see through all parts of surface
+>> colormap([0 0 0]) %changes plot to black. In general the input vector [r g b] of  'colormap' has r measuring intensity of red, g intensity of green and b intenstity of blue. All are numbers between 0 and 1.
+\end{lstlisting}&
+\vspace{-5pt} \includegraphics[width=.4\textwidth]{img_tb3} \\
+\hline \texttt{contour ->} (two-dimensional contour plot for surface) & 
+\begin{lstlisting}[numbers=none,frame=none]
+>> c=contour(x,y,Z,12);
+%we can specify the number of contour lines we want (here 12). Setting "c=" to this commands allow us to label contours with their z-values
+>>clabel(c,'manual')
+%allows us to manually choose which contours to label using the mouse.
+\end{lstlisting}&
+\vspace{-5pt} \includegraphics[width=.4\textwidth]{img_tb4}\\
+\hline
+\end{tabular}
+\\Other plotting commands include \texttt{surfc(x,y,z)} (plots like surf and adds contour lines), \texttt{surfl(x,y,Z,lvec)} (surface plot with lighting; light source located at the vector \texttt{lvec}), and \texttt{contour3(x,y,z,n)} (plots threedimensional contour plots, the positive integer $n$ is number of contour levels drawn). More can be learned about using these commands and their associated options by experimenting and reading on-line help menus. You can get a good general summary of MATLAB's 3D graphing tools (including some useful preprogrammed colormaps) by entering \texttt{help graph3d}\\\\
+Once a three-dimensional plot has been created, it is often useful to view it from different perspectives. This can be accomplished using the \texttt{view} command:
+$$
+\begin{array}{|l|l|l|}
+\hline \text { view (azimuth,elevation) }\rightarrow & \begin{array}{l}
+\text { Resets viewing angles for three-dimensional plots. \textbf{The azimuth} } \\
+\text {\textbf{ angle} } \alpha \text { and the \textbf{elevation angle} } \varepsilon \text { are measured as shown below } \\
+\text { in Figure } 11.4 \text {. These angles are measured in degrees. The default } \\
+\text { values are } \alpha=-37.5 \text { and } \varepsilon=30 \protect\footnotemark ~.
+\end{array} \\
+\hline
+\end{array}
+$$
+\footnotetext{The "3D Rotate" button on the MATLAB graphics window can be also used to change the viewing perspective.}
+
+\begin{SCfigure}[][h]
+\caption{ Measurement of the azimuth angle $\alpha$ and the elevation angle $\varepsilon$ for use of the MATLAB command \texttt{view(azimuth, elevation)} to change perspectives on three-dimensional plots.}
+\includegraphics[scale=1]{img_114}
+\end{SCfigure}
+\begin{exeforreader}
+\end{exeforreader}
+\begin{enumerate}[label=(\alph*),align=left]
+\item Plot the function $z=\sin x \sin y \exp \left(-\sqrt{x^{2}+y^{2}} / 4\right)$ over the set $-5 \leq x, y \leq 5$ using 30 grid values for each of $x$ and $y$ and the \texttt{surf} command. Add labels to each of the three axes and set the grid off. Obtain views from three additional and significantly different viewing angles. Redo these plots with \texttt{mesh}.
+\item Repeat part (a) for the "mountain pass function" $z=\sin (y+\cos x)$.
+\end{enumerate}
+MATLAB's three-dimensional graphics capabilities are quite vast and we will not
+even begin to talk about things like lighting and graphs of other types of surfaces
+(manifolds), as such a thorough treatment will not be needed for what we will be
+doing with PDEs. In closing this section, we mention two more useful plotting
+commands, although they are more relevant for our past work on three-
+dimensional orbits rather than for our subsequent work on PDEs.
+$$
+\begin{array}{|l|l|l|}
+\hline \text { plot } 3(x, y, z) \rightarrow & \begin{array}{l}
+\text { Plots the curve in three-dimensional space stored by the vectors } x, y \text {, and } z \text {. } \\
+\end{array} \\
+\hline
+\end{array}
+$$
+
+$$
+\begin{array}{|l|l|l|}
+\hline \text { comet } 3(x, y, z) \rightarrow & \begin{array}{l}
+\text { Plots the curve in three-dimensional space stored by the vectors } x, y, \text { and } z \text { in } \\
+\text { an animated fashion from start to finish. Final result is same as plot } 3 .
+\end{array} \\
+\hline
+\end{array}
+$$
+\noindent This command allows us to plot orbits for three-dimensional first-order systems of
+ordinary differential equation which were dealt with in the last chapter or any
+three-dimensional parametric equations. We give an example of the latter.
+\begin{example}\end{example}
+Use both the \texttt{plot3} and \texttt{comet3} commands to plot the following decaying oscillating helix:
+$$
+\left\{\begin{array}{l}
+x(t)=e^{-t / 4} \cos (4 t) \\
+y(t)=e^{-t / 4} \sin (4 t) \quad \text { on the interval } 0 \leq t \leq 6 \pi \\
+z(t)=\sin (t / 2)+1
+\end{array}\right.
+$$
+Next, use the \texttt{view} command to get a view from the top (i.e., the $x y$-plane projection of the curve).\\\\
+SOLUTION:\\
+\begin{lstlisting}[numbers=none,frame=none]
+>> t=0:.005:6*pi;
+>> x=exp(-t/4).*cos(4*t); y=exp(-t/4).*sin(4*t); z=sin(t/2)+1;
+>> comet3(x,y,z)
+>> plot3(x,y,z)
+>> xlabel('x'), ylabel('y'), zlabel('z')
+>> view(0,90)
+\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{img_115}
+	\caption{On the left, a three-dimensional plot of the oscillating decaying helix of
+	Example 11.2; the right shows the top view of this decaying helix, which turns out to be just
+	a spiral.}
+\end{figure}
+\rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+	\item (i) Using the mesh plotting tool and also using 50 grid values for both $x$ - and $y$-coordinates, plot each of the following functions $z=f(x, y)$ over the indicated region. Use the \texttt{colormap[0 0 0]} so the display will be in black/white, and turn off the grid. Experiment with the three additional view settings: $[0,90],[90,-45],[135,45]$. (ii) Repeat these plots using 500 grid values for the $x$-and $y$-coordinates.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $z=x^{2}+y^{2},\quad-5 \leq x, y \leq 5$
+		\item $z=4 x /\left(x^{2}+y^{2}+1\right),\quad  -4 \leq x, y \leq 4$
+		\item $z=\frac{x y\left(y^{2}-x^{2}\right)}{x^{2}+y^{2}},\quad  -3 \leq x \leq 3$
+		\item $z=\exp \left(-x^{2} / 2\right)+\exp \left(-2 y^{2}\right),\quad  -3 \leq x, y \leq 3$
+	\end{enumerate}
+	\item (i) Using the surfc plotting tool and also using 50 grid values for both $x$ - and $y$-coordinat plot each of the following functions $z=f(x, y)$ over the indicated region. Turn off the ax Experiment with the three additional view settings: $[135-45],[135,0],[135,25]$. Repeat these plots using 500 grid values for the $x$ - and $y$-coordinates.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $z=\sin x \sin y,\quad  -2 \pi \leq x, y \leq 2 \pi$
+		\item $z=\sin x y,\quad  -2 \pi \leq x, y \leq 2 \pi$
+		\item $z=\cos x \cos y \exp \left(-\sqrt{x^{2}+y^{2}} / 4\right), \quad-2 \pi \leq x, y \leq 2 \pi$
+		\item $z=1 /[1+\sqrt{|y-\sin x|}+\sqrt{|x+\sin y|}], \quad-16 \leq x, y \leq 16$
+	\end{enumerate}
+	\item (i) Using the waterfall plotting tool with the colormap$[127/255 | 212 / 255]$ ("aquamarine") and with 50 grid values for both $x$-and $y$-coordinates, plot each of the following functions $z=$ $f(x, y)$ over the indicated region. Turn off the grid and hidden defaults, and label the $x-, y-$, and $z-$ axes as such. Experiment with the three additional view settings: $[0,30],[0,60],[0,90]$. (ii) Repeat these plots using 500 grid values for the $x$ - and $y$-coordinates.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $z=20-2 x^{2}-3 y^{2},\quad -2 \leq x, y \leq 2$
+		\item $z=x^{2}-y^{2},\quad  -2.5 \leq x, y \leq 2.5$
+		\item $z=\sin \sqrt{x^{2}+y^{2}}, \quad-2 \pi \leq x, y \leq 2 \pi$
+		\item $z=\cos (x+y) \cos (3 x-y)+\cos (x-y) \sin (x+3 y) \exp \left(-\left[x^{2}+y^{2}\right] / 8\right),\quad -\pi \leq x, y \leq \pi$
+	\end{enumerate}
+	\item Redo tasks (i) and (ii) for each part (a) through (d) of Exercise 3 using the \texttt{contour3} plotting tool, but this time use the default colormap.
+\end{enumerate}
+NOTE: For analyzing three-dimensional graphics it is often useful to change the axes range of an existing plot (so to focus in on a particular portion). The \texttt{axis} command for two-dimensional plots extends naturally to this setting:
+$$
+\begin{array}{|l|l|l|}
+\hline \texttt { axis ([xmin xmax ymin ymax zmin zmax])} \rightarrow & \begin{array}{l}
+\text { Restricts a given plot to the range defined by }  \\
+x \min \leq x \leq x \max , y \min \leq y \leq y \max , z \min \leq z \leq z \max .
+\end{array} \\
+\hline
+\end{array}
+$$
+\begin{enumerate}[resume]
+	\item Obtaining first a good (or several good) surface plots of the function $z=-2 y /\left(x^{2}+y^{2}+1\right)$ over the region $-4 \leq x, y \leq 4$ (using a surface plotting tool and settings of your choice), and then making use of the \texttt{axis} and/or \texttt{contour} commands (repeatedly), find the $x$-, $y$ - and $z-$ coordinates of the maximum value of the function on this region. Your answer should be accurate to within a tolerance of $0.01$ in each coordinate. Repeat for the minimum value.
+	\item Obtaining first a good (or several good) surface plots of the function $z=\cos (x+y) \cos (3 x-y)+\cos (x-y) \sin (x+3 y) \exp \left(-\left[x^{2}+y^{2}\right] / 8\right)$, over the region $-\pi \leq x, y \leq \pi$ (using a surface plotting tool and settings of your choice), and then making use of the \texttt{axis} and/or \texttt{contour} commands (repeatedly), find the $x, y$ - and $z$-coordinates of the maximum value of the function on this region. Your answer should be accurate to within a tolerance of $0.001$ in each coordinate.
+	\item Use \texttt{plot3} and \texttt{comet3} to graph each of the following space curves. Experiment with the \texttt{view} command to choose a "nice" view for your printout. Use the option \texttt{axis('equal')} to prevent axis distortion.
+	\begin{enumerate}[label=(\alph*),align=left]
+		\item $x(t)=\frac{\cos t}{\sqrt{1+\sin ^{2} 2 t}}, y(t)=\frac{\sin t}{\sqrt{1+\sin ^{2} 2 t}}, \quad z(t)=\frac{\sin 2 t}{\sqrt{1+\sin ^{2} 2 t}}, 0 \leq t \leq 50$
+		\item $x(t)=\frac{\cos 3 t}{\sqrt{1+\sin ^{2} 2 t}}, y(t)=\frac{\sin 3 t}{\sqrt{1+\sin ^{2} 2 t}}, z(t)=\frac{\sin 2 t}{\sqrt{1+\sin ^{2} 2 t}}, 0 \leq t \leq 50$
+		\item $x(t)=\frac{\cos 11 t}{\sqrt{1+\sin ^{2} 5 t}}, y(t)=\frac{\sin 11 t}{\sqrt{1+\sin ^{2} 5 t}}, z(t)=\frac{\sin 5 t}{\sqrt{1+\sin ^{2} 5 t}}, 0 \leq t \leq 100$
+		\item $x(t)=\frac{\cos (\sqrt{2} t)}{\sqrt{1+\sin ^{2} t}}, y(t)=\frac{\sin (\sqrt{2} t)}{\sqrt{1+\sin ^{2} t}}, z(t)=\frac{\sin t}{\sqrt{1+\sin ^{2} t}}, 0 \leq t \leq 100$
+	\end{enumerate}
+	If you have done each of the above parts, point out some similarities and differences in the above plots. Which are periodic? Do you have any general comments/conjectures to make about parametric equations related to these?
+	\item Use \texttt{plot3} to plot the solution of the Lorenz strange attractor of Example 9.7 in Section 9.4. Experiment with the view command to get one (or more) "nice" plots to include with your printout.
+	\item Redo Exercise 5 of Section 9.4 (the Rossler band), but now plot only the orbits in three dimensions using both \texttt{comet3} and \texttt{plot3}. Experiment with the \texttt{view} command to choose a "nice" view for your printout.
+	\item The following ODE system has a very interesting orbit; an analysis of which is done in the article [Lan-84].
+	$$
+		\begin{cases}x^{\prime}(t)=(z-0.7) x-3.5 y, & x(0)=0.1 \\ y^{\prime}(t)=3.5 x+(z-0.7) y, & y(0)=0.03 \\ z^{\prime}(t)=0.6+z-0.33 z^{3}-\left(x^{2}+y^{2}\right)(1+0.25 z), & z(0)=0.001\end{cases}
+	$$
+	Use the Runge-Kutta method with step size $h=0.01$ and \texttt{plot3} to graph the solution of the above system on the time range $0 \leq t \leq 100$. Repeat with step size $h=0.005$. Use the \texttt{axis(equal)} command to remove any axis scale distortions.
+	\item Often, a three-dimensional surface plot is desired over a different shape than a rectangle, for example, over a circle or over an ellipse. This can be done using one of the surface plotting tools in MATLAB, but one needs to use polar coordinates to create the appropriate meshgrid matrices. For example, suppose that we wanted to plot the paraboloid $z=1-x^{2}-y^{2}$ over the disk $x^{2}+y^{2} \leq 4$. (a) Follow the following outline to create this plot:
+	\begin{enumerate}[label=(\roman*),align=left]
+		\item Create vectors for r and theta:
+		\begin{lstlisting}[numbers=none,frame=none]
+>>r=linspace(0,4,16); theta=linspace(0,2*pi,20);
+		\end{lstlisting}
+		\item Create corresponding mesh matrices $X$ and $Y$ for these polar coordinates:
+		\begin{lstlisting}[numbers=none,frame=none]
+>> X=r'*cos(theta); Y=r'*sin(theta);
+		\end{lstlisting}
+	\end{enumerate}
+	\textbf{Note}: Convince yourself that these will be mesh matrices.\\
+	\textbf{Optional}: To see the meshgrid, type: \begin{lstlisting}[numbers=none,frame=none]
+>>Z=zeros(size(X)); mesh(X,Y,Z)
+	\end{lstlisting}
+	\begin{enumerate}[label=(\roman*),align=left,resume]
+		\item Create the $Z$-matrix and plot as usual:
+		\begin{lstlisting}[numbers=none,frame=none]
+>> Z=1-X.^2-Y.^2; mesh(X,Y,Z)
+		\end{lstlisting}
+		Try some other options (like \texttt{hidden off}) .
+	\end{enumerate}
+	(b) Plot the graph of $z=\sqrt{\cos \left(x^{2}+2 y^{2}\right)}$ over the disk $x^{2}+y^{2} \leq 2$.\\
+	(c) Plot the graph of the paraboloid $z=1-x^{2}-3 y^{2}$ over the ellipse $x^{2}+3 y^{2} \leq 1$.\\
+	(d) Plot the graph of the function in part (d) of Exercise 3 over the disk $(x-\pi / 2)^{2}+(y-\pi / 2)^{2} \leq 1$\\
+\end{enumerate}
+\section{EXAMPLES AND CONCEPTS OF PARTIAL DIFFERENTIAL EQUATIONS}
+We begin our discussion with a natural problem about heat conduction. Consider
+a rod of length $L$ that is insulated on the outer boundary but perhaps not at the
+ends.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{img_116}
+	\caption{A one-dimensional rod of length $L$ that is insulated along its cylindrical surface but not necessarily on the flat edges at $x=0$ and $x=L$.}
+\end{figure}
+For this problem we are interested in the temperature of the rod as a function of the time $t$ and the position $x$ along the $x$-axis. We assume that the rod is very thin so that the temperature is constant for a given time throughout the cross-section. We call this function $u(x, t)$. The basic (and very intuitive) physical principle that we will use here, Fourier's Law, states that heat flows from hot places to cold places at a rate proportional to the temperature gradient. We will make this more precise shortly. The substance that the rod is made out of is relevant for knowing how quickly heat is transferred along the rod. To quantify this, we introduce
+\begin{center}
+	$c=$ the \textbf{specific heat} of the substance of the rod $=$ the heat energy needed to raise 1 unit of mass 1 unit of temperature.
+\end{center}
+The specific heat is a chemical/molecular property of the substance. Many partial differential equations in the natural sciences are based on a conservation principle, and the equation we will derive for $u(x, t)$ will be a good example of this. We let $A$ denote the cross-sectional area of the rod and $\rho$ denote the mass density (= mass per unit volume) of the rod. For values $x=a<x=b$ along the rod, we introduce
+\begin{equation}
+\begin{aligned}
+\text{Q(t)}=Q_{[a, b]}(t)= \text{the heat energy along the rod }=\int_{a}^{b} u(x, t) c \rho A d x.\\
+\text { from } x=a \text { to } x=b
+\end{aligned}
+\end{equation}
+By the conservation of energy, we have
+\begin{equation}
+	\frac{dQ}{dt} = \text{flux term}+\text{source term}
+\end{equation}
+Letting\\\\
+$F(x, t)=$ heat flux function $=$ heat energy passing through cross section at $x$ per unit area per unit time in the positive $x$-direction,\\\\ empirical physical laws imply that
+$$
+F(x, t)=-\kappa \frac{\partial u}{\partial x}(x, t),
+$$
+where $0<\kappa$ is the \textbf{heat conductivity} of the material of the rod. Higher conductivities mean substances are better conductors of heat. For example, the specific heat of copper is about three times that of lead but less than half that of aluminum. We may now write,
+$$
+\begin{aligned}
+\text { flux term } &=-A[F(b, t)-F(a, t)] \\
+&=A\left[\kappa u_{x}(b, t)-\kappa u_{x}(a, t)\right] \\
+&=\int_{a}^{b} A\left[\partial / \partial x\left\{\kappa u_{x}(x, t)\right\}\right] d x
+\end{aligned}
+$$
+where we used the fundamental theorem of calculus to write the last integral. Now, provided that $u$ and $u_{t}$ are continuous we may differentiate (1) under the integral sign (see any book on advanced calculus, e.g., [Rud-64]):
+$$
+\frac{d}{d t}\left(\int_{a}^{b} u(x, t) c \rho A d x\right)=\int_{a}^{b} u_{t}(x, t) c \rho A d x .
+$$
+Combining this with (2) and the above expression for the flux term gives:
+\begin{equation}
+\int_{a}^{b}\left[c \rho u_{t}(x, t)-\partial / \partial x\left\{\kappa u_{x}(x, t)\right\}\right] A d x=\text { source term. }
+\end{equation}
+If there are no internal heat sources within the rod, then the integral in (3) must vanish for any $a, b ; 0 \leq a<b \leq L$. If the integrand is continuous, it follows (from the fundamental theorem of calculus) that the integrand must vanish identically. If $\kappa$ is constant, then this leads us to the PDE:
+$$
+u_{t}=k u_{x x}, \quad u=u(x, t),
+$$
+Where $k=\kappa / c \rho$ is called the \textbf{diffusivity} of the material. This equation is called the one-dimensional \textbf{heat equation} and it is also known as the one-dimensional \textbf{diffusion equation}. The reason for the latter terminology is that it more generally models the spatial $(x)$ and temporal $(t)$ spread of many different phenomena which obey a similar flux principle where higher concentrations spread to neighboring areas of lower concentrations at a rate proportional to the gradient. Indeed the diffusion equation has been used to successfully model spreads of populations from the molecular level (diseases) to larger-scale models of plants and animals and also the spread of other chemicals, gases, and drugs.\\\\
+\begin{equation}
+\int_{a}^{b}\left[c \rho u_{t}(x, t)-\partial / \partial x\left\{\kappa u_{x}(x, t)\right\}\right] A d x=\text { source term. }
+\end{equation}
+If there are no internal heat sources within the rod, then the integral in (3) must vanish for any $a, b ; 0 \leq a<b \leq L$. If the integrand is continuous, it follows (from the fundamental theorem of calculus) that the integrand must vanish identically. If $\kappa$ is constant, then this leads us to the PDE:
+$$
+u_{t}=k u_{x x}, \quad u=u(x, t),
+$$
+Where $k=\kappa / c \rho$ is called the \textbf{diffusivity} of the material. This equation is called the one-dimensional \textbf{heat equation} and it is also known as the one-dimensional \textbf{diffusion equation}. The reason for the latter terminology is that it more generally models the spatial $(x)$ and temporal $(t)$ spread of many different phenomena which obey a similar flux principle where higher concentrations spread to neighboring areas of lower concentrations at a rate proportional to the gradient. Indeed the diffusion equation has been used to successfully model spreads of populations from the molecular level (diseases) to larger-scale models of plants and animals and also the spread of other chemicals, gases, and drugs.
+We will return to the one-dimensional heat equation shortly, but we first give some extensions of it and related PDEs. If the rod in Figure $11.5$ has internal heat sources (e.g., chemical catalysts or electronic components), then we put
+\begin{equation}
+q_{1}(x, t, u)= \text{rate of production of heat energy per unit time per unit volume at position } x.
+\end{equation}
+Note that $q_{1}(x, t, u)>0$ means there is a heat source at cross-section $x$ and $q_{1}(x, t, u)<0$ means there is a heat sink at cross section $x$. This function gives rise to the "source term" in (3) to be $\int_{a}^{b} q_{1}(t, x, u(x, t)) A d x$ and so now (3) can be rewritten as
+$$
+\int_{t}^{b}\left[c \rho u_{t}(x, t)-\partial / \partial x\left\{\kappa u_{x}(x, t)\right\}-q_{1}(x, t, u)\right] A d x=0 .
+$$
+As before, if the integrand is continuous and $\kappa$ is constant, we obtain the following PDE, known as the one-dimensional \textbf{heat equation with source term}
+\begin{equation}
+u_{t}=k u_{x x}+q, \quad u=u(x, t),
+\end{equation}
+where $q=q_{1} / c \rho$. A similar derivation would work also in two or three space dimensions to give us the corresponding two- and three-dimensional heat equations with or without source terms. For example, the \textbf{two-dimensional heat/diffusion equation} looks like:
+\begin{equation}
+\mathrm{u}_{\mathrm{t}}=k\left(u_{x x}+u_{y y}\right), \quad u=u(x, y, t),
+\end{equation}
+and similarly the three-dimensional analogue is
+\begin{equation}
+\mathrm{u}_{\mathrm{t}}=k\left(u_{x x}+u_{y y}+u_{z}\right), \quad u=u(x, y, z, t) .
+\end{equation}
+These PDEs model the spread of heat in a flat plate or a solid three-dimensional region and also population and chemical diffusions. If we are modeling a population that grows according the Malthusian or logistical model and also diffuses, we can model the temporal and spatial population distribution by the diffusion equation with the source term ( $r u$ for Malthusian growth or $r u(1-u / K)$ for logistical growth).\\\\
+The common expression appearing in the right side of each of the heat/diffusion equations $((4),(7)$, and (8)), obtained by adding all of the nonmixed second-order spatial partial derivatives of the function $u$ (or just the second derivative if $u$ has one space variable), is a very important differential operator known as the \textbf{Laplace operator} or the \textbf{Laplacian}, and is denoted $\Delta u$. It is named after the French mathematician Pierre Simon de Laplace.
+\footnote{
+Laplace and Lagrange worked on many of the problems of mechanics introduced by Euler and were among the first mathematicians to successfully develop theories of partial differential equations motivated by solving such celestial problems. Laplace wrote a massive five-volume treatise, \textit{Mécanique Céleste}, which contained a plethora of results. Laplace had unfortunately neglected to credit any of the theory in his work to any other scientists and this created some problems for him. At one point, Napoleon had criticized him for not even having credited God as the creator of the universe in his definitive work (something that was expected to be done in all significant scientific works during this era). Laplace wittily replied with the now-famous retort, "Sir, I had no need for this hypothesis." Actually in his treatise, Laplace systematically developed potential theory which has applications in many other fields apart from mechanics. Ironically, the Laplace equation was actually first introduced by Lagrange, but Laplace went so far with his own extensions that the equation has been named in his honor.\\
+\indent Lagrange grew up and was educated in Turin, Italy and later accepted, by a personal offer from King Frederick the Great, a position at the Berlin Academy (which Euler vacated when he went to Saint Petersburg). After 20 years at this post, Lagrange moved to Paris. In his famous work, \textit{Mécanique Analytique}, Lagrange unified the theory of mechanics in a way that made analysis much easier and "coordinate free." Using this approach he was able to do significant work on the "three-body problem" which won him, in 1764, the Grand Prize of the French Academy of Sciences. Lagrange is also credited for having invented the metric system. After his first wife died, he was remarried at age 56 to a teenage daughter of a friend of his and he became very conscious of his health. He never drank alcohol and became a vegetarian. To honor his scientific accomplishments, Lagrange was buried in the majestic Panthéon (along with literary greats Voltaire, Victor Hugo and Émil Zola) in Paris.
+}
+Using the Laplace operator, all three of the heat equations ((4), (7), and (8)) can be expressed in same appealing form:
+\begin{equation}
+u_{t}=k \Delta u
+\end{equation}
+\begin{multicols}{3}
+\begin{figure}[H]
+	\ContinuedFloat*
+	\centering
+	\includegraphics[width=0.32\textwidth]{img_117a}
+	\caption{\label{first}Pierre Simon de Laplace (1749-1827), French mathematician and astronomer.}
+\end{figure}
+\columnbreak
+\begin{figure}[H]
+	\centering
+	\ContinuedFloat
+	\includegraphics[width=0.32\textwidth]{img_117b}
+	\caption{\label{second}Joseph Louis Lagrange (1736-1813), French/Italian mathematician. }
+\end{figure}
+\columnbreak
+\noindent If we consider \textbf{steady-state} heat distributions, for which time is no longer a relevant independent variable, we get the so-called \textbf{Laplace equation}
+\begin{equation}
+\Delta u=0 \text {, }
+\end{equation}
+which could have any number of space variables. The Laplace equation arises in many applications which, apart from celestial mechanics, include electromagnetism, fluid mechanics, and atomic physics. In fact, the study of the Laplace equation alone is such a fertile area of mathematics that it has its own name, "potential theory," and this field has developed into a major area of mathematics.
+\end{multicols}
+To introduce some concepts, we retum now to the one-dimensional heat equation (4) (or (9)) for the heat distribution on the rod in Figure 11.5. Just like with ordinary differential equations, a PDE will in general have infinitely many solutions. In fact, the variety of solutions for a PDE is usually much greater than that for an ODE, so much so that it is often not feasible to write down the general solution of a PDE explicitly. The next example gives a sample supply of solutions for the one-dimensional heat equation.
+\begin{example}\end{example}
+\noindent Show that each of the following functions $u(x, t)$ solves the heat equation (4) $u_{t}=k u_{x x}$, where $k>0$ is a constant. Here $a$ and $b$ can be any real numbers.\\
+\begin{center}
+\begin{tabular}{l l}
+$\text{(a) } u(x, t)=a x+b$ &
+$\text{(c) } u(x, t)=e^{-k t}\left[a e^{\sqrt{k x}}+b e^{-\sqrt{k} x}\right]$ \\ 
+$\text{(b) } u(x, t)=e^{-k t}[a \cos (\sqrt{k} x)+b \sin (\sqrt{k} x)]$ & 
+$\text{(d) } u(x, t)=\exp \left[-(x-a)^{2} / 4 k t\right] / \sqrt{t}$
+\end{tabular}
+\end{center}
+SOLUTION: Each part is just a computation and comparison of partia derivatives, so we do only part (d) (the most complicated one) and leave the rest a an exercise. Writing $u$ as $\exp \left[-(x-a)^{2} t^{-1} / 4 k\right] \cdot t^{-1 / 2}$, the chain and product rule give that
+$$
+\begin{aligned}
+u_{t}=& \exp \left[-(x-a)^{2} t^{-1} / 4 k\right](x-a)^{2} t^{-2} / 4 k \cdot t^{-1 / 2} \\
+& \quad-\exp \left[-(x-a)^{2} t^{-1} / 4 k\right] \cdot(-1 / 2) t^{-3 / 2} \\
+=& \exp \left[-(x-a)^{2} t^{-1} / 4 k\right] \cdot t^{-3 / 2}\left\{(x-a)^{2} t^{-1} / 4 k+1 / 2\right\}
+\end{aligned}
+$$
+In the same fashion,
+$$
+\begin{aligned}
+u_{x x}=& \partial / \partial x\left\{u_{x}\right\}=\partial / \partial x\left\{\exp \left[-(x-a)^{2} / 4 k t\right] \cdot t^{-1 / 2} \cdot(-2)(x-a) / 4 k t\right\} \\
+=& \exp \left[-(x-a)^{2} / 4 k t\right] \cdot t^{-1 / 2} \cdot 4(x-a)^{2} /(4 k t)^{2} \\
+& \quad+\exp \left[-(x-a)^{2} / 4 k t\right] \cdot t^{-1 / 2} \cdot(-2) / 4 k t \\
+=& \exp \left[-(x-a)^{2} / 4 k t\right] \cdot t^{-3 / 2}\left\{(x-a)^{2} t^{-1} / 4 k^{2}-1 / 2 k\right\}
+\end{aligned}
+$$
+Comparing these two expressions we clearly have $u_{t}=k u_{x x}$ as desired.\\\\
+Another important property of the heat/diffusion equation is that it is \textbf{linear}, as is the Laplace equation. The definition of linear a PDE is similar to that for an ODE; it is tantamount to the requirement that each term involving the unknown function (or one of its partial derivatives) must have only one such appearance of the function to the first power multiplied by some function of the independent variables (i.e., terms like $\sin u, u^{2}, u u_{x}, 4 / u_{x x}$ are not allowed). Since we will mostly be working with second-order PDEs with two independent variables, we write down the most general linear PDE of this form (with independent variables $\boldsymbol{x}$ and $y$ ):
+\begin{equation}
+\begin{aligned}
+a(x, y) u_{x x}+b(x, y) u_{x y} &+c(x, y) u_{y y}+d(x, y) u_{x} \\
+&+e(x, y) u_{y}+f(x, y) u=q(x, y)
+\end{aligned}
+\end{equation}
+Here $u=u(x, y)$ is the unknown function and $a, b, c, d, e, f, q$ are known functions of the independent variables $x$ and $y$. (Of course for the heat/diffusion equation, we would replace $y$ with $t$ ). If the function $q(x, y)$ is zero, then the linear equation (11) is further said to be \textbf{homogeneous}. Linear equations are important because they are often more amenable to numerical methods (recall the similar situation with BVPs of Chapter 10). Also, as we had seen in Chapter 10 for linear homogeneous ODEs, linear homogenous PDEs also satisfy the following \textbf{superposition principle}.
+\begin{theorem}
+(Superposition Principle):\footnote{
+\noindent The sum in this theorem is intended as a finite sum; however, with extra hypotheses the superposition remains true for certain infinite sums. This leads to Fourier series solutions of linear PDEs, which is an important topic in many theoretical PDE courses. Actually solving a PDE problem in terms of Fourier series still leaves the numerical problem of evaluating the (infinite) Fourier series to within a tolerated maximum error. Although this could be worked into MATLAB routines, there are more effective numerical schemes, so we will not go further with this approach.}
+\end{theorem}
+ If $u_{1}, u_{2}, \cdots$ are solutions of a linear homogenous PDE and $c_{1}, c_{2}, \cdots$ are constants, then $c_{1} u_{1}+c_{2} u_{2}+\cdots$ is also a solution of the PDE.\\\\
+\textit{Sketch of Proof}: We outline the proof only for the case of the second-order equation (11) with $q(x, y)=0$ (the proof in the general case is just more writing but uses the same ideas). Furthermore, since the main ideas were already encountered in Section 10.1, we will leave similar parts of this proof as exercises. Let's rewrite the left side of $(11)$ as the operator $L[u]$, thus (11) can be written as $L[u]=0$. The main idea is to show that $L[u]$ is a \textbf{linear operator} in $u$; this means that the following two conditions hold for functions $u_{1}$ and $u_{2}$ which have second partial derivatives (so $L$ can be computed) and for a constant $c_{1}$ :
+\begin{center}
+	(i) $\mathbf{L}\left[u_{1}+u_{2}\right]=\mathbf{L}\left[u_{1}\right]+\mathbf{L}\left[u_{2}\right]$, and \ \ (ii) $\mathrm{L}\left[c_{1} u_{1}\right]=c_{1} \mathbf{L}\left[u_{1}\right]$.
+\end{center}
+We will leave the proofs of (i) and (ii) as exercises. From (i) and (ii) we can easily get the superposition principle; for example for a two-term sum, supposing that $u_{1}$ and $u_{2}$ are solutions of $L[u]=0$, we have,
+$$
+\begin{aligned}
+L\left[c_{1} u_{1}+c_{2} u_{2}\right]=L\left[c_{1} u_{1}\right]+L\left[c_{2} u_{2}\right]=c_{1} L\left[u_{1}\right]+c_{2} L\left[u_{2}\right]=c_{1} 0+c_{2} 0=0\\
+\nwarrow  \quad \quad \quad \quad \quad \quad \quad \nwarrow  \quad \quad \quad \quad  \quad \quad \quad \nwarrow  \quad \quad \quad \quad \quad \\
+\text{by(i)}\quad \quad \quad \quad \quad \quad \text{by(ii)}\quad \quad\text{since } u_{1}, u_{2} \text{ are solutions} 
+\end{aligned}
+$$
+which proves that $c_{1} u_{1}+c_{2} u_{2}$ is also a solution. This proves the superposition principle with two terms. The general case now follows by induction.
+\begin{exeforreader}\end{exeforreader}
+\noindent Prove that the operator $L[u]$ defined by the left side of (11) is a linear operator, i.e., that it satisfies (i) $L\left[u_{1}+u_{2}\right]=\mathbf{L}\left[u_{1}\right]+$ $L\left[u_{2}\right]$, and (ii) $L\left[c_{1} u_{1}\right]=c_{1} L\left[u_{1}\right]$.\\\\
+Second-order PDEs are usually classified into three major types: elliptic, parabolic, and hyperbolic. Many common methods and concepts can be developed for all second-order (even nonlinear) PDEs in one of these three classes and, furthermore, PDEs of different types usually have some significant differences. We give the classification for the second-order linear PDEs of form (11). The classifications are entirely in terms of the coefficients $a, b, c$ of the highest (second) order derivatives of the unknown function $u$ : The PDE (11)
+$$
+a(x, y) u_{x x}+b(x, y) u_{x y}+c(x, y) u_{y y}+d(x, y) u_{x}+e(x, y) u_{y}+f(x, y) u=q(x, y)
+$$
+is said to be \textbf{elliptic} if $b^{2}-4 a c<0$,\\
+\textbf{parabolic} if $b^{2}-4 a c=0$,\\
+and \textbf{hyperbolic} if $b^{2}-4 a c>0$.\\\\
+Generally speaking, elliptic PDEs describe physical processes that are in a steady-state and so do not depend on time, parabolic PDEs describe physical processes (such as diffusion of heat or a gas) which evolve toward a steady-state equilibrium, and hyperbolic PDEs describe time-dependent physical processes (such as motion of waves) which are not tending to settle into a steady-state. These terms are used throughout the subject of PDEs and have formulations for higher-order as well as nonlinear PDEs. The type of a linear PDE is entirely determined by looking at the so-called \textbf{discriminant} of the coefficients, $b^{2}-4 a c$. At each point, $(x, y)$, the PDE (11) will be of exactly one of these three types; however, it is possible for the type to change when $(x, y)$ lies in different regions in the plane.
+\begin{example}\end{example}
+\noindent Show that the one-dimensional heat/diffusion equation $u_{t}=k u_{x x}$ is a parabolic PDE, that Laplace's equation $\Delta u=u_{x x}+u_{y y}=0$ is elliptic, and that the one-dimensional \textbf{wave equation} $u_{tt}=c^{2} u_{x x}$ is hyperbolic.\\\\
+SOLUTION: If we put each of these three equations in the form (11), we see that for the heat/diffusion equation, $a=k, b=c=0$, so $b^{2}-4 a c=0$ and thus it is parabolic. For Laplace's equation $a=c=1, b=0$, thus $b^{2}-4 a c=-4<0$ so it is elliptic. Finally, for the wave equation, $a=1, b=0, c=-1$, so $b^{2}-4 a c=4>0$ and it thus is hyperbolic.\\\\
+We will say more about the wave and hyperbolic equations later. We note that the Tricomi PDE $y u_{x x}+u_{y y}=0$ has $a=y, b=0, c=1$ and so the discriminant $b^{2}-4 a c=-4 y$ shows the Tricomi PDE to be hyperbolic when $y<0$, parabolic when $y=0$, and elliptic when $y>0$.\\\\
+In order to specify a unique solution for a PDE, certain auxiliary conditions must also be specified. The acceptable types of auxiliary conditions that will result in existence and uniqueness theorems are varied and different for each type of PDE. If the type of auxiliary conditions given with a certain PDE will always result in existence and uniqueness of solutions for the PDE problem, we say that the PDE problem is \textbf{well-posed}. If the auxiliary conditions are either too demanding (so no solution will exist-nonexistence) or too lax (so many solutions existnonuniqueness), then we say that the PDE problem is \textbf{ill-posed}. Most problems that arise in applications are well posed. We proceed now to give some auxiliary conditions that will result in well-posed problems for the one-dimensional heat/diffusion equation (with or without source term) and then for the twodimensional Laplace equation.\\\\
+We begin with the heat equation and the model being the temperature of the rod in Figure 11.5. In order to know the temperature function $u(x, t)$ at all times $t \geq 0$ and at all cross sections $x, 0 \leq x \leq L$, we will firstly need to know the temperature distribution on the rod at time $t=0$ (initial temperature distribution): this is the function $u(x, 0)=f(x)$ (a function of one variable). Also, we will need to know what is going on at the ends of the rod. We will call this information the \textbf{boundary conditions (BCs)}. There are a number of acceptable (and physically significant) boundary conditions which give rise (along with the heat PDE and initial temperature distribution) to well-posed problems. Table $11.2$ gives some of the more important ones:\\\\
+\textbf{TABLE 11.2:}
+\noindent Boundary conditions for the one-dimensional heat equation $u_{t}=k u_{x x}$, which, when given along with the initial temperature distribution $u(x, 0)=f(x)$, result in well-posed problems.\\
+
+\begin{center}
+\begin{tabular}{|p{2cm}|p{3cm}|p{7cm}|}
+\hline \centering{Type of BC} & \centering{Mathematical Equations} & \multicolumn{1}{|c|}{Illustration}\\
+\hline  Constant temperatures at the boundary, maintained by temperature reservoirs (heaters/coolers) at each boundary. & 
+$$
+\begin{aligned}
+&u(0, t)=A \\
+&\text { and } \\
+&u(L, t)=B \\
+&\text { for all } \\
+&t\geq0
+\end{aligned}
+$$
+ & 
+\vspace{-5pt} \includegraphics[width=.4\textwidth]{img_tb5} \\
+\hline Insulated boundaries &
+$$
+\begin{aligned}
+&u_{x}(0, t)=0 \\
+&\text{and } u_{x}(L, t)=0 \\
+&\text{for all } t \geq 0
+\end{aligned}
+$$
+&
+Same picture as above, but ends are insulators rather than temperature reservoirs. \\
+\hline Periodic boundary conditions. This is valid, inparticular, when the rod is a loop. & 
+$$
+\begin{aligned}
+&u(0, t)=u(L, t) \\
+&\text{and } u_{x}(0, t) \\
+&=u_{x}(L, t)\text{ for}\\
+&\text{all } t \geq 0
+\end{aligned}
+$$&
+\vspace{-5pt} \includegraphics[width=.4\textwidth]{img_tb6} \\
+\hline
+\end{tabular}
+\end{center}
+To give some acceptable boundary conditions for the two-dimensional Laplace equation we will again refer to the model of $u(x, y)$ being a steady-state temperature distribution (time independent) of some thin plate in the twodimensional $x y$-plane. We will denote the region as $D$ and for simplicity here we let $D$ be the rectangle $D=\{(x, y): \quad 0 \leq x \leq a, 0 \leq y \leq b\}$. The most common boundary conditions that result in a well-posed problem are where the temperatures on the boundary are specified. This type of boundary condition is often called a \textbf{Dirichlet boundary condition} and is illustrated in Figure 11.8. What this means is that if the temperature is steady-state on a plate (does not change with time) and we know the temperature on the edges of the plate, then the temperature will be completely determined at every point inside the plate. This can be proved and is made plausible by physical or thermodynamic principles. Another common problem results from the Laplace equation on a region with the boundary being insulated. For the rectangle of Figure $11.8$, this would correspond to the following boundary conditions: right edge: $u_{x}(a, y)=0$; top edge: $u_{y}(x, b)=0 ;$ left edge: $u_{x}(0, y)=0$; and bottom edge: $u_{y}(x, 0)=0$. Such boundary conditions are often called \textbf{Neumann boundary conditions}. The solutions of such Neumann problems are not unique, since any constant function can be added to a solution to yield a different solution.\\\\
+Look at Figure $11.8$ and convince yourself of why each of these conditions corresponds to zero temperature gradients across the boundary edges. In fact, it is even permissible to stipulate that some parts of the boundary be given Dirichlet conditions and others be given Neumann conditions. Even when the interfaces of the adjacent parts of the boundary have discontinuities (breaks) in the boundary conditions, we will still have a well posed problem. This could correspond, for example, to some parts of the boundary being insulated and others being kept at certain temperatures. Under very general circumstances, the well-posed problems that we have specified to the heat and Laplace equations also give well-posed problems for general parabolic and elliptic equations respectively.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{img_118}
+	\caption{Dirichlet boundary conditions for the two-dimensional Laplace equation $u_{x x}+u_{y y}=0$ are specified on each of the four sides making up the boundary of a rectangular domain in the plane. If the four functions specified on each edge are continuous, then they give a well-posed problem for the Laplace equation.}
+\end{figure}
+\noindent Solutions of the Laplace equation $\Delta u=0$ (in any number of space dimensions) are known as \textbf{harmonic functions}. They include an incredibly vast collection of functions and are the subject of the very fruitful field of \textbf{potential theory}. Many aspects of potential theory have natural extensions to elliptic equations (even for nonlinear PDE). The most complete general reference on this is [GiTr-83], which is quite an advanced textbook. For example, any complex analytic function (the subject of the field of complex variables) will have harmonic functions as its real and imaginary parts. A fundamental result of potential theory is that harmonic functions satisfy the \textbf{maximum principle}, which roughly states that the maximum (or minimum) value of a harmonic function on any given (closed) bounded region in the space variables (like a rectangle) must be attained on the boundary and, furthermore, if the maximum is attained also at a point inside the boundary of the region then the harmonic function has to be a constant. In particular, applied to our steady-state temperature model for the rectangle, this says that the hottest spot on the rectangle must be on one of the edges. Again, this can be corroborated from thermodynamic principles.\\\\
+EXERCISE FOR THE READER 11.3: Which of the following functions harmonic?
+\begin{center}
+\begin{tabular}{l l}
+$\text{(a) } u(x, y, z)=1+x+2 y+3 z$ &
+$\text{(c) } u(x, y)=x^{2}-y^{2}$ \\ 
+$\text{(b) } u(x, y)=x^{2}+y^{2}$ & 
+$\text{(d) } u(x, y)=\log (r),\ r=x^{2}+y^{2}$
+\end{tabular}
+\end{center}
+Since elliptic equations are the best understood and behaved, we will begin our numerical methods for solving PDEs with elliptic equations and this will be done in the next section. In the next chapter, we will give related methods for parabolic and hyperbolic equations and so, in particular, we will hold off until the next chapter to give some general comments about the wave equation and hyperbolic equations.\\
+\rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+	\item For each of the PDEs given below, indicate its order and state whether it is a linear PDE. For those which are second-order linear and have two independent variables, state the type. If the type changes for different values of the independent variables, indicate precisely how the type varies with the independent variables.
+	\begin{center}
+	\begin{tabular}{l l}
+		$\text{(a) } u_{x}+t u_{t}=e^{t}, u=u(x, t)$ &
+		$\text{(c) } u_{x x y y}-u_{z z z z}=0, u=u(x, y, z)$ \\ 
+		$\text{(b) } u_{x x}-2 u_{n}+u_{t x}+t^{2} u_{t}=u, u=u(x, t)$ & 
+		$\text{(d) } \Delta(\Delta u)=0, u=u(x, y)$
+	\end{tabular}
+	\end{center}
+	\textbf{Note}: The operator on the left side of the PDE of (d) is called the \textbf{biharmonic operator} and its solutions are called \textbf{biharmonic functions}.
+	\item Repeat Exercise 1 for each of the following PDEs:
+	\begin{center}
+	\begin{tabular}{l l}
+		$\text{(a) } u_{x}+e^{u}=t, u=u(x, t)$ &
+		$\text{(c) } u_{x x}+u_{x x} u_{y y}=0, u=u(x, y)$ \\ 
+		$\text{(b) } u_{x x}+u_{y y}=u_{z z} /\left(1+t^{2}\right), u=u(x, y, z)$ & 
+		$\text{(d) } u_{x x}=\left(u_{y y}+u_{y}+u\right) \sin x, u=u(x, y)$
+	\end{tabular}
+	\end{center}
+	\item Determine which of the following functions solve the PDE $\Delta u=2 u$ :
+	\begin{center}
+	\begin{tabular}{l l}
+		$\text{(a) } \sin x \cos y$ &
+		$\text{(c) } \exp (\sqrt{3} x) \sin x$ \\ 
+		$\text{(b) } \exp (x+y)$ & 
+		$\text{(d) } \arctan \left(x+y^{2}\right) y$
+	\end{tabular}
+	\end{center}
+	\item Determine which of the following functions solve the wave equation $u_{t}=u_{\mathrm{x}}$:
+	\begin{center}
+	\begin{tabular}{l l}
+		$\text{(a) } x+2 t+3$ &
+		$\text{(c) } \exp (x+2 t)-\exp (2 x-t)$ \\ 
+		$\text{(b) } \exp (x+t)-\exp (x-t)$ & 
+		$\text{(d) } f(x+t), f= \text{any twice differentiable function.}$
+	\end{tabular}
+	\end{center}
+	\item TRUE or FALSE?: If $u(x, y)$ and $v(x, y)$ are harmonic functions, then so is $u(x, y)+v(x, y)$. Either indicate why it is true or give a counterexample if it is false.
+	\item TRUE or FALSE?: If $u(x, y)$ is a harmonic function, then so is $u(x, y)^{2}$. Either indicate why it is true or give a counterexample if it is false.
+	\item The function $u(x, t)=\exp \left[-(x-a)^{2} / 4 t\right] / \sqrt{4 \pi t}$, which is a solution of the one-dimensional heat equation $u_{1}=u_{x x}$ (this was seen in Example $11.3$; here $k=1$ and we are multiplying the function given there by a constant, so it will still satisfy the heat equation), is called the \textbf{fundamental solution} of the heat equation. It corresponds to the solution of the heat problem on a very long rod (mathematically think of an infinite rod) with the initial heat distribution being a very hot heat blast focused all at the section $x=a$. To get some idea of how this temperature distribution changes with time, do the following:\\
+	(a) Using $a=1$, get MATLAB to plot snapshots of the temperature distribution at the following times: $t=0.05, t=.1, t=.2, t=1, t=2, t=10, t=20$. Based on the graphs, what seems to be happening as time advances?\\
+	(b) For each of the above values of $t$, use the MATLAB function quad to integrate the snapshot at time $t$ temperature distribution, which will be a function of $x$ (impossible to integrate explicitly). Each of these integrals is improper (since the $x$-interval is unbounded), but integrate on a large enough interval so that the improper integral will be adequately approximated. What do these integrals seem to be doing? What is your interpretation?
+\end{enumerate}
+NOTE: The problem of a very long rod for heat equation mentioned in the last exercise effectivel removes the issue of the boundaries of the rod. It turns out that this problem is well posed as long as a initial temperature distribution $f(x)=u(x, 0)$ is given which is continuous and decays to zero a $x \rightarrow \infty$. Furthermore, the resulting solution of this problem can be expressed as an integral involvin the fundamental solution as follows:
+$$
+u(x, t)=\int_{-\infty}^{\infty} f(s) \exp \left[-(x-s)^{2} / 4 t\right] / \sqrt{4 \pi t} d s
+$$
+\begin{enumerate}[resume]
+	\item Given the initial temperature distribution $u(x, 0)=f(x)$ on a very long rod where
+	$$
+		f(x)= \begin{cases}1, & \text { if }|x| \leq 1 \\ 2-|x|, & \text { if } 1<|x| \leq 2, \\ 0, & \text { if }|x|>2\end{cases}
+	$$
+	(a) get MATLAB to plot the initial temperature distribution $u(x, 0)$ along with the following temperature distribution profiles $u(x, 0.1), u(x, 0.2), u(x, 1), u(x, 2), u(x, 10)$ all over the $x$-range $-10 \leq x \leq 10$. You can put them all in single plot (with different colors/styles) or use a subplot.\\
+	(b) Get MATLAB to plot a surface plot of the temperature function $u(x, t)$ over the range $-10 \leq x \leq 10,0 \leq t \leq 10$.
+	\text{Suggestion}: Use the integral formula of the above note and make creative use of MATLAB's quad function.
+	\item Repeat both parts of Exercise 8, using instead the function
+	$$
+		f(x)= \begin{cases}5(1-|x+5|), & \text { if }-6 \leq x \leq-4 \\ 10(1-|x-5|), & \text { if } 4 \leq x \leq 6 \\ 0, & \text { otherwise }\end{cases}
+	$$
+	\item In this exercise you will establish a more elaborate version of the superposition principle of Theorem 11.1. Suppose that $L[u]$ denotes the left side of equation (11), i.e.,
+	$$
+		L[u]=a(x, y) u_{x x}+b(x, y) u_{x y}+c(x, y) u_{y y}+d(x, y) u_{x}+e(x, y) u_{y}+f(x, y) u \text {, }
+	$$
+	that $u_{1}=u_{1}(x, y)$ solves the PDE $L[u]=q_{1}(x, y), u_{2}$ solves $L[u]=q_{2}(x, y)$, and so on and suppose that $c_{1}, c_{2}, \cdots$ are constants. Show that the function $c_{1} u_{1}+c_{2} u_{2}+\cdots$ solves the PDE $L[u]=c_{1} q_{1}+c_{2} q_{2}+\cdots$ (where the sums are assumed finite).
+	
+\end{enumerate}
+\section{FINITE DIFFERENCE METHODS FOR ELLIPTIC EQUATIONS}
+\noindent We will be focusing attention mainly on variations of the \textbf{Poisson equation}
+\begin{equation}
+\Delta u=q(x, y), u=u(x, y) \text {. }
+\end{equation}
+This linear elliptic equation specializes to the Laplace equation in case $q=0$. Finite difference methods in general work very nicely for boundary value problems given on domains of "nice" shape, the ideal example being a rectangle. In Chapter 13 we will give a different method, called the finite element method, that works better in oddly shaped domains. The finite difference methods in this section will be based on the following central difference formula for approximating second derivatives:
+\begin{equation}
+f^{\prime \prime}(x)=\frac{f(x+h)-2 f(x)+f(x-h)}{h^{2}}+O\left(h^{2}\right)
+\end{equation}
+We proved this formula (and others like it) in Section $10.4$ using Taylor's theorem (see Lemma 10.3). Recall the "big $O$ " notation means that the error of the approximation is less than a constant times $h^{2}$. The idea of the finite difference method for a rectangular domain can be briefly described as follows. We form a grid of points inside the rectangle, with $N$ equally spaced $x$-coordinates and $M$ equally spaced $y$-coordinates. We replace each of the partial derivatives in the PDE (12) by central difference quotient obtained using (13) where the terms in the quotient come from adjacent grid points. This gives a (very large) linear system of $N \cdot M$ unknowns (being the approximate values of our solution at the grid points). The boundary conditions will be enough to make the linear system well posed. We label the grid points in an efficient manner so as to make the resulting matrix for the linear system a banded matrix. We then use an efficient matrix equation solver (which may take advantage of the special form of the matrix) and solve the linear system to get an approximation of the solution to the BVP. Rather than explain the method more completely in a general fashion, we will introduce it by going through some specific examples involving Dirichlet BCs. The next section will delve into other boundary conditions for elliptic problems. Similar methods can be developed for parabolic and hyperbolic BVPs, but because stability is more often a problem for such BVPs, we put them off until the next chapter.
+\begin{example}\end{example}
+Use the finite difference method with $N=4$ interior grid values on the $x$-axis and $M=9$ interior grid values on the $y$-axis, to solve the following steady-state temperature distribution problem:
+$$
+\begin{cases}(\mathrm{PDE}) & \Delta u=0, \quad u=u(x, y) \quad 0<x<0.5,0<y<1 \\ (\mathrm{BC}) & u(x, 1)=4 \equiv t(x), u(x, 0)=16 x^{2} \equiv b(x) \\ & u(.5, y)=4 \equiv r(y), u(0, y)=4 y \equiv \ell(y)\end{cases}
+$$
+Create a surface plot of the resulting approximation to the solution.\\\\
+SOLUTION: In this problem we are given the temperature reading of all of the edges of a rectangular plate and need to find the temperature at all of the interior points. Figure $11.9$ summarizes graphically the given boundary conditions.\\\\
+Since we will be using $N=4$ grid points equally spaced inside the $x$-interval $[0$, $.5]$, this means that there will be a spacing of $h=(.5-0) /(N+1)=.5 / 5=.1$. Similarly, there will be a spacing of $k=(1-0) /(M+1)=1 / 10=1$ between the $M$ $=9$ grid point inserted inside the $y$-interval $[0,1]$. We label the $x$-grid points as $x_{1}, x_{2}, \cdots, x_{N}$ and for convenience add in the two extra endpoint grid values $x_{0}$ (left endpoint) and $x_{N+1}$ (right endpoint), Thus the $x$-grid values are:
+$$
+x_{0}=0, x_{1}=.1(=h), x_{2}=.2(=2 h), x_{3}=.3(=3 h), x_{4}=.4(=4 h), x_{5}=.5(=5 h)
+$$
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{img_119}
+	\caption{Illustration of the steady-state heat problem of Example 11.5. We are given the temperatures on each of the edges of the gray rectangle and we must solve for the temperatures at all of the points on the inside of the rectangle.}
+\end{figure}
+Doing the same for the $y$-grid values, we get the $11 y$-grid values:
+$$
+y_{0}=0, y_{1}=.1(=k), y_{2}=.2(=2 k), \cdots, x_{10}=1(=10 k) \text {. }
+$$
+Our goal is to approximate the values $u\left(x_{i}, y_{j}\right)$ where both $x_{i}$ and $y_{j}$ are interior grid values (the boundary conditions give these values when either $x_{i}$ or $y_{j}$ is an endpoint grid value). For convenience, we employ the shorthand notation:
+$$
+u_{i, j}=u\left(x_{i}, y_{j}\right) .
+$$
+Because of the equal spacing of the $x$-grid values $\left(h=\right.$ gap between adjacent $x_{i}$ 's), we can use the central difference formula (13) to write:
+\begin{equation}
+u_{x x}\left(x_{i}, y_{j}\right) \approx \frac{u\left(x_{i+1}, y_{j}\right)-2 u\left(x_{i}, y_{j}\right)+u\left(x_{i-1}, y_{j}\right)}{h^{2}}=\frac{u_{i+1, j}-2 u_{i, j}+u_{i-1, j}}{h^{2}}
+\end{equation}
+where $x_{i}$ and $y_{j}$ are allowed to be any interior grid values. Here of course $h^{2}=$ $0.01$, but we wanted to record this formula in general form for future reference. In the same fashion, we obtain the analogous approximation for the second $y$-partial derivatives, valid when $y_{j}$ is any interior grid value:
+\begin{equation}
+u_{y y}\left(x_{i}, y_{j}\right) \approx \frac{u\left(x_{i}, y_{j+1}\right)-2 u\left(x_{i}, y_{j}\right)+u\left(x_{i}, y_{j-1}\right)}{k^{2}}=\frac{u_{i, j+1}-2 u_{i, j}+u_{i, j-1}}{k^{2}} .
+\end{equation}
+If we substitute these approximations into the Laplace PDE $\Delta u=0$ of the example, and multiply through by $h^{2}=k^{2}$, we arrive at the following system of linear equations:
+\begin{equation}
+4 u_{i, j}-u_{i+1, j}-u_{i-1, j}-u_{i, j+1}-u_{i, j-1}=0, \quad(1 \leq i \leq 4,1 \leq j \leq 9),
+\end{equation}
+This is a system of $M \cdot N=4 \cdot 9=36$ equations in 36 unknowns. It is helpful to realize that each of the 36 equations in (16) involves values associated with the cross-shaped part of the grid shown in Figure 11.10, called the \textbf{(computational) stencil} for the finite difference method.
+\begin{SCfigure}[][h]
+\caption{Illustration of the stencil for the linear equation (16)\protect\footnotemark ~  These grid values form a cross centered at the $u_{i, j}$-grid value. Although the central grid value $u_{i, j}$ will be at a point interior to the rectangle, one or two of the other four grid values may be from boundary points.}
+\includegraphics[scale=.75]{img_104}
+\end{SCfigure}
+\footnotetext{This particular stencil is often referred to as the \textit{(standard) five-point stencil for the Laplacian}.}
+At this point the only problem that remains is to solve this large linear system. We will next put it in matrix form, but there are many ways to do this, depending on which order we choose to list the interior grid points (each interior grid point corresponds to one of the unknown 36 variables in our linear system). It is advantageous to number the interior grid points in a way that makes the resulting coefficient matrix look as simple as possible. One rather effective way to do this is to label the grid points in "reading order" starting at the upper left, proceeding right to the end of the first row of interior grid points, then moving down to the next row and continuing. This numbering scheme is illustrated in Figure 11.11. In order to write down a matrix equation for the linear system represented by the equations (16), we introduce the following notation for the variables of the system and the corresponding interior grid points gotten by following the labeling scheme of Figure 11.11:
+\begin{multicols}{2}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{img_1111}
+	\caption{A generic and (as it tums out) very good way to label interior grid points in the finite difference method for solving elliptic PDEs.} 
+	\end{figure}
+\columnbreak
+\begin{equation}
+\begin{array}{r}
+P_{k}=\left(x_{i}, y_{j}\right), \quad U_{k}=u\left(P_{k}\right) \\
+(1 \leq k \leq 36)
+\end{array}
+\end{equation}
+In general, the following relationship exists between the index $k$ and the indices $i$ and $j$ (Exercise 7):
+\begin{equation}
+k=i+N(M-j)
+\end{equation}
+For us, $N=4$ and $M=9$, so this becomes
+$$
+k=i+4(9-j)
+$$
+The reader should now convince himself or herself of this using Figure 11.11. With this indexing scheme, the coefficient matrix $A$ of the linear system,
+$$
+A\left[\begin{array}{c}
+U_{1} \\
+U_{2} \\
+\vdots \\
+U_{35} \\
+U_{36}
+\end{array}\right]=\left[\begin{array}{c}
+c_{1} \\
+c_{2} \\
+\vdots \\
+c_{35} \\
+c_{36}
+\end{array}\right] \text { or } A U=C
+$$
+\end{multicols}
+\noindent will always be diagonally banded with at most $2 N+1$ bands (thus for us in this example, at most 9 bands). To get the matrix $A$ and the numbers $c_{1}, c_{2}, \cdots, c_{36}$ on the right column matrix $C$, we rewrite enough of the 36 equations in (16) to discover the patterns. We do this now, using the new variables $U_{k}$ of $(17)$ for the unknowns (and leave these on the left side) Recall that $u_{i, j}$ is known if either $i=0$ or 5 or $j=0$ or 10 .
+\textbf{TABLE 11.3}: An abbreviated list of the 36 linear equations in the 36 unknowns $U_{1}, U_{2}, \cdots, U_{36}$ arising from the finite difference method for the elliptic PDE of Example 11.5. Each row represents one of the equations (16) using the notation (17) for the unknowns on the left sides of the equation and putting the known (boundary values) on the right side.
+$$
+\begin{array}{|l|l|}
+\hline 
+\text { Interior } 
+\text { vertex }
+& 
+\text { Linear equation } 
+\text { [unknowns] }=[\text { knowns }]
+ \\
+\hline P_{1} & 4 U_{1}-U_{2}-U_{5}=u_{0,9}+u_{1,10} \\
+\hline P_{2} & 4 U_{2}-U_{3}-U_{1}-U_{6}=u_{2,10} \\
+\hline P_{3} & 4 U_{3}-U_{4}-U_{2}-U_{7}=u_{3,10} \\
+\hline P_{4} & 4 U_{4}-U_{3}-U_{8}=u_{5,9}+u_{4,10} \\
+\hline P_{5} & 4 U_{5}-U_{6}-U_{9}-U_{1}=u_{0,8} \\
+\hline P_{6} & 4 U_{6}-U_{7}-U_{5}-U_{10}-U_{2}=0 \\
+\hline P_{7} & 4 U_{7}-U_{8}-U_{6}-U_{11}-U_{3}=0 \\
+\hline P_{8} & 4 U_{8}-U_{7}-U_{12}-U_{4}=u_{5,8} \\
+\hline \vdots & \vdots \\
+\hline P_{33} & 4 U_{33}-U_{34}-U_{29}=u_{0,1}+u_{1,0} \\
+\hline P_{34} & 4 U_{34}-U_{35}-U_{33}-U_{30}=u_{2,0} \\
+\hline P_{35} & 4 U_{35}-U_{36}-U_{34}-U_{31}=u_{3,0} \\
+\hline P_{36} & 4 U_{36}-U_{35}-U_{32}=u_{5,1}+u_{4,0}\\
+\hline
+\end{array}
+$$
+From the above equations we see that $A$ has the following appealing "diagonally banded form":
+$$
+A=\left[\begin{array}{ccccccccccc}
+4 & -1 & 0 & 0 & -1 & 0 & 0 & 0 & \cdots & & \\
+-1 & 4 & -1 & 0 & 0 & -1 & 0 & 0 & \cdots & & \\
+0 & -1 & 4 & -1 & 0 & 0 & -1 & 0 & \cdots & & \\
+0 & 0 & -1 & 4 & 0 & 0 & 0 & -1 & \ddots & & \\
+-1 & 0 & 0 & 0 & 4 & -1 & 0 & 0 & \ddots & & \\
+0 & -1 & 0 & 0 & -1 & 4 & -1 & 0 & \ddots & & \\
+\vdots & & \ddots & \ddots & \ddots & \ddots & \ddots & \ddots & \ddots & & \\
+& & & & & & & & & & \\
+& & & & \ddots & \ddots & \ddots & \ddots & \ddots & \ddots & 0 \\
+& & & & \ddots & -1 & 0 & 0 & -1 & 4 & -1 \\
+& & & & & 0 & -1 & 0 & 0 & -1 & 4
+\end{array}\right],
+$$
+i.e., $A$ has a band of 4 's down the main diagonal, two more diagonals of $-1$ 's which are 4 diagonals above/below the main diagonal, and finally two more diagonal bands, directly above and below the main diagonal, which repeat the pattern $-1,-1,-1,0$ (with the last zero not appearing).\\\\
+For simplicity in describing the entries of $C$, we introduce the following vectors of known boundary values (written in general form, for us, $N=4, M=9$ )
+\begin{equation}
+\begin{aligned}
+&L=\left[\ell\left(y_{0}\right), \ell\left(y_{1}\right), \cdots \ell\left(y_{M+1}\right)\right]=\left[u_{0,0}, u_{0,1}, \cdots, u_{0, M+1}\right] \\
+&R=\left[r\left(y_{0}\right), r\left(y_{1}\right), \cdots r\left(y_{M+1}\right)\right]=\left[u_{N+1,0}, u_{N+1,1}, \cdots, u_{N+1, M+1}\right] \\
+&B=\left[b\left(x_{0}\right), b\left(x_{1}\right), \cdots b\left(x_{N+1}\right)\right]=\left[u_{0,0}, u_{1,0}, \cdots, u_{N+1,0}\right] \\
+&T=\left[t\left(x_{0}\right), t\left(x_{1}\right), \cdots t\left(x_{N+1}\right)\right]=\left[u_{0, M+1}, u_{1, M+1}, \cdots, u_{N+1, M+1}\right] .
+\end{aligned}
+\end{equation}
+By looking once more at the equations in Table $11.3$, and using (19), we arrive at the following expression for (the transpose of) C. Please note, we are starting to use MATLAB's index notation for vectors, so, for example, $L(10)$ will mean the 10th component of the vector $L$ that is $\ell\left(y_{9}\right)$ (since $L(1)=\ell\left(y_{0}\right)$ ).
+$$
+\begin{aligned}
+C^{\prime}=& {[L(10)+T(2), T(3), T(4), R(10)+T(5), L(9), 0,0, R(9), L(8), 0,0, R(8),} \\
+& L(7), 0,0, R(7), L(6), \cdots 0,0, R(6), L(5), 0,0, R(5), L(4), 0,0, R(4) \\
+&L(3), 0,0, R(3), L(2)+B(2), B(3), B(4), R(2)+B(5)]
+\end{aligned}
+$$
+The reader is advised to convince himself or herself that this vector is correct by contemplating Figure 11.11. The column matrix $C$ has a bit more elusive of a pattern. The beginning and end of $C$ are a bit misleading, but the pattern of the middle terms is quite simple. The careful reader will perhaps be able to guess at what the patterns of $A$ and $C$ will look like in the general case (the true test would be to be able to write a MATLAB M-file that is able to do all of the above for a more general problem, not just for this specific example).\\\\
+We are now ready to turn things over to MATLAB. We basically have to get MATLAB to solve the matrix equation $A U=C$ for $U$ and then put the values of $U$ together with the given boundary values to get the approximations for the solution on a meshgrid. Then it will be easy to plot the function. Because of the special form of $A$, we will be able to enter this $36 \times 36$ matrix (all 1296 entries of it) rather quickly if we take advantage of MATLAB's array operations. Let us begin by initially constructing a $36 \times 36$ matrix with 4 's down the main diagonal and then add on the remaining diagonals:
+\begin{lstlisting}[numbers=none,frame=none]
+>> A=4*eye(36);
+\end{lstlisting}
+We now key in the four vectors that represent the nontrivial bands above and below the diagonal (the four bands are 1 and 4 units above and below the main diagonal).\\\\
+Because of its repetitive nature, $a l=$ the vector one unit above the main diagonal is easy to enter:
+\begin{lstlisting}[numbers=none,frame=none]
+>> a1rep=[0 -1 -1 -1];
+>> a1=[-1 -1 -1];
+>> for i=1:8, 1=[a1 a1rep]; end
+\end{lstlisting}
+To check if a vector is the correct size, we can always type the size command:
+\begin{lstlisting}[numbers=none,frame=none]
+>> size(a1); 
+\end{lstlisting}
+\textbf{$\rightarrow$ ans = 1 35}\\\\
+The vectors a4 and b4 (the same) are even more simple:
+\begin{lstlisting}[numbers=none,frame=none]
+>> a4=-1*ones(1,32);
+\end{lstlisting}
+Now that we have the band vectors keyed in, the \texttt{diag} command can easily put them where we want them to be:
+\begin{lstlisting}[numbers=none,frame=none]
+>> A=A+diag(a 1,-1)+diag(a1,1)+diag(a4,-4)+diag(a4,4);
+>> x=0:.1:.5; y=0:.1:1;
+>> L=4*y; B=16*x.*x; %enter left and bottom sdge boundary values
+>> T=4*ones(1,6); % enter top edge boundary values
+>> R=4*ones(1,11); % enter right edge  boundary valuses
+\end{lstlisting}
+Now that the vectors $L, R, T, B$ are keyed in we can enter the vector $C$. Notice that since we want $C$ to be a column vector, we type the transpose symbol after it ( 1 ) that changes it from a $1 \times 36$ row vector to a $36 \times 1$ column vector.
+$$
+\begin{aligned}
+C^{\prime}=& {[L(10)+T(2), T(3), T(4), R(10)+T(5), L(9), 0,0, R(9), L(8), 0,0,} \\
+& R(8), L(7), 0,0, R(7), L(6), \cdots 0,0, R(6), L(5), 0,0, R(5), L(4), 0,0, \\
+&R(4), L(3), 0,0, R(3), L(2)+B(2), B(3), B(4), R(2)+B(5)]
+\end{aligned}
+$$
+\begin{lstlisting}[numbers=none,frame=none]
+>> C=[L(10)+T(2) T(3) T(4) R(10)+T(5) L(9) 0 0  R(9) L(8) 0 0 R(8) ...
+L(7) 0 0 R(7) L(6) 0 0 R(6) L(5) 0 0 R(5) L(4) 0 0 R(4) L(3) 0 0 ...
+R(3) L(2)+B(2) B(3) B(4) R(2)+B(5)]';
+\end{lstlisting}
+The left divide operation will effectively solve our matrix equation:
+\begin{lstlisting}[numbers=none,frame=none]
+>> U=A\C;
+\end{lstlisting}
+In order to get MATLAB to plot our solution, we need to form a matrix $Z$ which is $11 \times 6$ and has all of the computed values for $u$ that we just computed, as well as the boundary values that were given in the problem (and they should be placed in the corresponding spots in the matrix $Z$ to where they are supposed to appear on the grid). We first contruct a $10 \times 5$ matrix $Z$ that contains the just-computed boundary values (given in the vector $U$ ) in their correct places.\\\\
+We start off by forming a matrix $Z$ of zeros of the correct size.
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z=zeros(4,9);
+\end{lstlisting}
+Actually the correct size of the matrix will be $9 \times 4$, but we will soon take a transpose to give it the correct size. There is a useful command in MATLAB for slipping in the entries of a vector $U$ (say of size $1 \times 36$ ) into a matrix a whose dimensions multiply to the size of the vector (say $Z$ ):
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z(:)=U; Z=Z';
+\end{lstlisting}
+The reason we needed to take the transpose of $Z$ (apart from correcting the size of $Z$ ) is because of the order that the entries of $u$ were slipped into $Z$ (top-to-bottom first, rather than left-to-right first). The following example illustrates this:
+\begin{lstlisting}[numbers=none,frame=none]
+>> E=zeros(3,2); v=[1 2 3 4 5 6]; E(:)=v;
+\end{lstlisting}
+$\rightarrow \text{E}=\begin{array}{ll}1 & 4 \\ 2 & 5 \\ 3 & 6\end{array}$\\
+Next, the following commands will put the correct boundary values on the top and bottom of $Z$:
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z=[T(2:5); Z; B(2: 5)];
+\end{lstlisting}
+Note that $\mathrm{Z}$ will now be an $11 \times 4$ matrix; what is left to do is put the left and right boundary values on the left and right sides of $\mathrm{Z}$.\\
+Before we put the left boundary values on, it will be convenient to reverse the order of the vector $L$, which we can easily do by creating a new vector \texttt{Lrev} as follows:
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=1:11, Lrev(i)=L(12-i); end 
+\end{lstlisting}
+For $R$ this need not be done since the components of $R$ are all constants. We can now get the final $11 \times 6$ vector by pasting Lrev to the left of $Z$ and $R$ to the right; this can be achieved in MATLAB with the command:
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z=[Lrev;  Z'; R]';
+\end{lstlisting}
+It is a good idea to check the matrix $Z$ (which should represent the temperatures at the grid points):
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z			4.0000 4.0000 4.0000 4.0000 4.0000 4.0000		
+					3.6000 3.6782 3.7571 3.8371 3.9182 4.0000
+					3.2000 3.3558 3.5131 3.6731 3.8358 4.0000
+					2.8000 3.0317 3.2665 3.5065 3.7517 4.0000
+					2.4000 2.7044 3.0147 3.3347 3.6644 4.0000
+					2.0000 2.3711 2.7533 3.1533 3.5711 4.0000
+					1.6000 2.0268 2.4741 2.9541 3.4668 4.0000
+					1.2000 1.6620 2.1623 2.7223 3.3420 4.0000
+					0.8000 1.2588 1.7907 2.4307 3.1788 4.0000
+					0.4000 0.7825 1.3111 2.0311 2.9425 4.0000
+					   0   0.1600 0.6400 1.4400 2.5600 4.0000
+\end{lstlisting}
+Things look pretty good (cf. Figure 11.9). We can next use the MATLAB command surf, to give us a graph of the surface (for the solution of our heat problem). For a technical reason in the syntax of the surf and other $3$D plotting commands,\footnote{
+Recall from Example $11.1$ that when a meshgrid is set up, the $x$-coordinates are listed in the usual order but the $y$-coordinates go in backwards order. When we use the finite difference method, we are setting up a meshgrid for the $u$-values in the usual order; thus, to get correct results with \texttt{surf}, we need to feed in the $y$-vector in reverse order.
+} we need to use $y r e v$, the reverse vector of $y$, for the $y$-axis vector.
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=1:11, yrev(i)=y(12-i); end
+>> surf(x, yrev, z), xlabel('x'), ylabel('y')
+\end{lstlisting}
+\begin{SCfigure}[][h]
+\caption{Plot of the heat function solution of Example 11.5. MATLAB will kindly color the "hot parts" of the surface red and the "cold parts" blue, as if it knew we were solving a heat equation. This comes from the default \texttt{colormap} setting.}
+\includegraphics[scale=.75]{img_1112}
+\end{SCfigure}
+With the example behind us, we now turn to make some general comments on numerically solving Poisson's equation (12) $\Delta u=q(x, y)$ on a rectangular domain. The general method just needs a few technical adjustments, but the main ideas were all covered in the above example, so we indicate only the few extra changes that might be needed in general and then we comment on writing a MATLAB Mfile to automate this procedure.\\
+
+\noindent In general, the gap between $x$-grid values $(h)$ need not be the same as the gap between $y$-grid values $(k)$. (In the last example we had $h=k=0.1$.) Also the function $q(x, y)$ need not be zero (as in our example). In this general case, letting $q_{i, j}=q\left(x_{i}, y_{j}\right)$, the central difference approximations applied to the differential equation $\Delta u=q(x, y)$ give the linear system:
+$$
+\frac{u_{i+1, j}-2 u_{i, j}+u_{i-1, j}}{h^{2}}+\frac{u_{i, j+1}-2 u_{i, j}+u_{i, j-1}}{k^{2}}=q_{i, j} \text {. }
+$$
+In general the gaps $h$ and $k$ will be small, so to keep the terms from getting too large in this system, we multiply the equation by $h^{2}$ (alternatively $k^{2}$ ) and regroup to obtain (for $1 \leq i \leq M, 1 \leq j \leq N$ )
+\begin{equation}
+2\left(\frac{h^{2}}{k^{2}}+1\right) u_{i, j}-u_{i+1, j}-u_{i-1, j}-\left(\frac{h^{2}}{k^{2}}\right) u_{i, j+1}-\left(\frac{h^{2}}{k^{2}}\right) u_{i, j-1}=-h^{2} q_{i, j}
+\end{equation}
+We point out that when the $x$-mesh size $h$ equals the $y$-mesh size $k,(20)$ simplifies considerably to
+\begin{equation}
+4 u_{i, j}-u_{i+1, j}-u_{i-1, j}-u_{i, j+1}-u_{i, j-1}=-h^{2} q_{i, j}
+\end{equation}
+whose left side is identical with that of (16). Apart from these small differences, the procedure given in the example is very much the same as it would be to solve a general Poisson BVP on rectangle. In the next exercise for the reader, we will test the method out on a problem where the exact solution is known.\\
+
+\noindent EXERCISE FOR THE READER 11.4: (a) Use the finite difference method with $N=4$ interior grid values on the $x$-axis and $M=4$ interior grid values on the $y$-axis, to solve the following steady-state temperature distribution problem:
+$$
+\begin{cases}(\mathrm{PDE}) & \Delta u=\left(4-\pi^{2}\right) e^{-2 y} \sin \pi x, u=u(x, y) \quad 0 \leq x \leq 1,0 \leq y \leq 1 \\ (\mathrm{BC}) & u(x, 1)=e^{-2} \sin \pi x \equiv t(x), u(x, 0)=\sin \pi x \equiv b(x) \\ & u(1, y)=0 \equiv r(y), u(0, y)=0 \equiv \ell(y)\end{cases}
+$$
+Afterwards, graph the resulting approximation to the solution.\\
+(b) Check that $u(x, y)=e^{-2 y} \sin \pi x$ solves the above BVP and thus (since it is well posed) is the unique solution. Compare the values of this exact solution with those of the approximation you obtained in part (a). Among all interior grid points find both the maximum error and the maximum relative error of the numerical solution.\\
+(c) Redo parts (a) and (b), this time doubling $N$ and $M$ to be 8 .\\
+
+\noindent In principle, the method described in this section for solving Poisson's equation works well for grids having up to 500 or so internal grid points. Also, if grid gaps are cut in half, we can compare the approximation with the refined grid with the approximation using the original grid (at the original internal grid points) and this can be repeated until the maximum errors (computed as in part (b) of the preceding exercise for the reader) become less than our tolerance for error so as to get a desired approximation with a confidence measurement. When the number of grid points gets larger than several hundred, the memory and storage of the matrix $A$ starts to become a serious issue and it is better to solve the matrix equation $A U=$ $C$ using different approaches that take advantage of the special form.\\
+
+\noindent The key issue here is that for very large numbers of grid points, the percentage of entries of $A$ which are nonzero is very small (it is less than $5 n / n^{2}=5 / n$ ); recall that such matrices are called sparse. Since our $A$ has such a special form there are specialized algorithms (cf. the Thomas algorithm used Section 10.4) that avoid having to store the whole matrix $A$ in its memory and solve the system much more expediently. For example, if we had 1000 internal grid points, then $A$ would be a matrix with a million entries! But only about 5000 of these would be nonzero and it starts to become a good idea to take advantage of this structure. Most all of the matrices that arise the numerical methods that we develop for PDEs will be sparse. Readers can increase the size of problems that can be solved by utilizing sparse matrix manipulations in MATLAB as well as iterative methods. These topics were covered in Section 7.7. The same ideas work also for three (and higher)dimensional elliptic equations but it is of course a bit more of an abstract problem to visualize the three-dimensional rectangle of internal grid points.\\
+
+\noindent EXERCISE FOR THE READER 11.5: (a) Write a MATLAB function M-file called poissonsol ver having the following syntax:
+\begin{center}
+\texttt{[xgrid, ygrid, zsol] = poissonsolver(g,a,b,c,d,h)}
+\end{center}
+which will solve the Poisson equation $\Delta u=q(x, y)$ on the rectangle $a \leq x \leq b, c \leq y \leq d$ with Dirichlet boundary conditions $u=0$ on the boundary. It should use a common mesh size $h$ and have three output variables, two vectors \texttt{xgrid}, \texttt{ygrid} and a matrix \texttt{Zsol}. More precisely:\\
+
+\noindent Inputs: \texttt{q} (inline or M-file function for $q(x, y)$, may be the zero function), \texttt{a, b, c, d, h}. The step size must divide evenly into both length and width of the rectangle. Outputs: \texttt{xgrid, ygrid, Zsol}. From these outputs you should be able to plug them into \texttt{surf} to get a graph of the numerical solution.\\
+
+\noindent Note, the \texttt{xgrid} vector will look like $[a, a+h$ step, $a+2 h$ step, $\ldots, b]$, and similarly for \texttt{ygrid}.\\
+
+\noindent (b) Run your program to solve the Dirichlet problem $\Delta u=\sin (2 \pi y)\left\{4 \pi^{2}\left(x-x^{3}\right)\right.$ $+6 x\}$ on the unit square: $0 \leq x, y \leq 1$. First do it with a step size $h=0.1$, and then repeat with $h=0.02$. Compare these numerical solutions with the exact solution to this problem given by $u(x, y)=\left(x^{3}-x\right) \sin (2 \pi y)$. Plot surface graphs of the errors.\\
+
+\noindent Finite difference methods are, in general, not so well suited for problems on domains that are not rectilinear. For Dirichlet boundary conditions on elliptic PDEs, however, finite difference methods can sometimes be used if we approximate the domain using a grid of squares. The general idea is illustrated in Figure 11.13.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{img_1113}
+\caption{Approximation of a domain using a rectangular grid. Under certain regularity assumptions the solutions of Dirichlet problems for elliptic PDEs on arbitrary domains (curved) can be approximated by the corresponding solutions on the approximating rectilinear domain (segmented).}
+\end{figure}
+\noindent The details of such a scheme are not particularly difficult, but the creation of a generalcodes would be a laborious task. Such techniques work reasonably well for Dirichet problems\footnote{
+What is required is that the domain be bounded by a finite number of smooth curves, and that the coefficient of the elliptic equation are continuous functions defined in some tube about the boundary. General theorems will then show that as the mesh size gets sufficiently small, the solution of the Dirichlet problem on the approximating domain (as in Figure 11.13) will converge to the actual solution.}
+but not for boundary value problems where the BCs involve other sorts of boundary conditions (eg., Neumann or Robin). The finite element method of Chapter 13 , however, is able to handle all sorts of boundary conditions and domains. Thus, we will forgo a general development, and simply outline this scheme for a particular nonrectangular domain.\\
+
+\noindent \textbf{EXAMPLE 11.6}: Consider the problem of finding the steady-state heat distribution on the right isosceles triangular domain shown in Figure 11.14, with the boundary temperatures as indicated in the figure. Assume the short sidelengths equal one. Use the finite difference method with $h=k=0$. I to solve the problem numerically, and plot the solution.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{img_1114}
+\caption{A finite difference grid for the domain of Example 11.6. The temperature distribution given is discontinuous at the upper and right comers, but these vertices will not enter into the linear system for the finite difference method. The interior nodes are labeled using the "reading order" (10 of 36 are shown).}
+\end{figure}
+
+\noindent SOLUTION: Being able to choose equal step sizes in the $x$ - and $y$-directions helps a lot here since this distributes nodes nicely along the boundary. The number of interior nodes is $1+2+\ldots+8=36$. We label these as $P_{1}, P_{2}, \cdots, P_{36}$ using the "reading order" scheme of the last example, and invoke the analogues of all of the other relevant notations of that example. For the resulting 36 linear equations corresponding to (16), each interior node $P_{k}$ give rises to an equation of the form:
+$$
+4 u_{i, j}-u_{i+1, j}-u_{i-1, j}-u_{i, j+1}-u_{i, j-1}=0,
+$$
+where $P_{k}=\left(x_{i}, y_{j}\right)$ corresponds to $u_{i, j}$, and the known values need to be moved to the right side. By looking at the figure, we see that the right sides of these equations will thus be either 200 (if $k=1,3,6,10,15,21,28,36$ ) or 0 (all other nodes). In Table 11.4, we give a few of the resulting equations in the unknowns $U_{k}=u\left(P_{k}\right)$. Although the coefficient matrix $A$ of the linear system $A U=C$ could be easily entered by (brute) inspection, we choose to construct it instead with the following loop. The loop starts with a $36 \times 36$ diagonal matrix $A$ and then places the -1's in appropriate places. Unlike the brute force construction, this loop easily generalizes to finer grids.
+\begin{lstlisting}[numbers=none,frame=none]
+>> A=diag(4*ones(1,36));
+border =[0 1 3 6 10 15 21 28 36];
+for k=2:length(border)
+	if k>2, pregap=right-1eft+1; end
+	left=border(k-1)+1; right=border(k);
+	if k<length(border)
+		postgap=right-left $+1$;
+	end
+	for i=left:right
+		if i<right %has right neighbor and top neighbor
+			A(i,[i+1	i-pregap])=-1;
+		end
+		if i>left %has left neighbor
+			A(i, i-1)=-1;
+		end
+		if k<length(border) %has bottom neighbor
+			A(i, i+postgap)=-1;
+		end
+	end
+end
+\end{lstlisting}
+\textbf{TABLE 11.4}: An abbreviated list of the 36 linear equations for the finite difference method of Example 11.6.
+$$
+\begin{array}{|c|l|}
+\hline \begin{array}{c}
+\text { Interior } \\
+\text { vertex }
+\end{array} & \multicolumn{1}{|c|}{\text { Linear equation }} \\
+\hline P_{1} & 4 U_{1}-U_{2}=200 \\
+\hline P_{2} & 4 U_{2}-U_{4}-U_{1}-U_{3}=0 \\
+\hline P_{3} & 4 U_{3}-U_{5}-U_{2}=200 \\
+\hline P_{4} & 4 U_{4}-U_{2}-U_{7}-U_{5}=0 \\
+\hline P_{5} & 4 U_{5}-U_{3}-U_{4}-U_{6}-U_{8}=0 \\
+\hline P_{6} & 4 U_{6}-U_{5}-U_{9}=200 \\
+\hline P_{7} & 4 U_{7}-U_{4}-U_{8}-U_{11}=0 \\
+\hline P_{8} & 4 U_{8}-U_{5}-U_{7}-U_{9}-U_{12}=0 \\
+\hline \vdots & \vdots \\
+\hline P_{33} & 4 U_{33}-U_{34}-U_{32}-U_{26}=0 \\
+\hline P_{34} & 4 U_{34}-U_{35}-U_{33}-U_{27}=0 \\
+\hline P_{35} & 4 U_{35}-U_{36}-U_{34}-U_{28}=0 \\
+\hline P_{36} & 4 U_{36}-U_{35}=200 \\
+\hline
+\end{array}
+$$
+\begin{multicols}{2}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{img_1115}
+	\caption{Spy plot of the coefficient matrix $A$ for Example 11.6. The $n z=148$ indicates the number of nonzero entries of the 1296 entries of $A$. We know the diagonal entries all equal 4 and all other nonzero entries equal $-1$. Such spy plots make the general structure of such matrices quite evident.} 
+	\end{figure}
+\columnbreak
+\noindent Since we know the numerical values of all entries of the matrix (diagonal entries $=4$, off diagonal entries $=0$ or $-1$ ), rather than printing the matrix $A$, a more practical way to view it would be using MATLAB's spy function:\\
+$$
+\begin{array}{|c|l|}
+\hline\operatorname{spy}(\mathrm{A}) \rightarrow & \begin{array}{l}
+\text { Produces a graphic indicating the } \\
+\text { placement of the nonzero entries of a } \\
+\text { matrix } A .
+\end{array} \\
+\hline
+\end{array}
+$$\\
+Thus the command spy (A) produces the plot in Figure 11.15.
+\end{multicols}
+\noindent From what was observed above, the right-side vector C can be easily constructed as follows:
+\begin{lstlisting}[numbers=none,frame=none]
+>> C=zeros(36,1);
+>> C(border(2:length(border)))=200;
+\end{lstlisting}
+and the system can be solved:
+\begin{lstlisting}[numbers=none,frame=none]
+>> U=A/C;
+\end{lstlisting}
+We now can use the values of $U$ to fill in the values of a matrix $Z$ of the numerical values of the solution of the boundary value problem. We first form a $64 \times 64$ matrix for the interior grid points, temporarily putting $Z=100$ for the values above the main diagonal.\footnote{
+This is simply a reasonable convention since we need to fill in a whole square matrix of values, even though the present problem only has actual values corresponding to the lower-left triangular part of the matrix.}
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z=100*ones(8) ;
+>> count=l;
+>> for i=l:8
+	gap=border(i+1)-count+1;
+	Z(i,1:gap)=U(count:(count+gap-1))';
+	count=count+gap;
+end
+\end{lstlisting}
+Next we enlarge this matrix to a $11 \times 11$ matrix which contains the given boundary values. As a compromise, we set $Z=50$ at the interfaces of the discontinuous boundary data.
+\begin{lstlisting}[numbers=none,frame=none]
+Z=[100*ones(1,8);100*ones(1,8);Z;zeros(1,8)) ;
+Z=[[50 zeros(1,10)]', Z, [100*ones(1,10) 0 ]', [100*ones(1,10) 50]']
+\end{lstlisting}
+In order to get surface plot on just the triangle, we will redefine the entries of $Z$ that are off the triangle as nan, except for those nodes which are adjacent to two nodes on the slanted side of the triangle. For these latter nodes, take the average of the values at the two neighboring nodes on the slanted edge.
+$$
+\begin{array}{|l|l|}
+\hline \text { nan } \rightarrow & \begin{array}{l}
+\text { When stored as an entry of a matrix or vector, nan (meaning: not a number) will } \\
+\text { produce a hole in any plots of this vector at the corresponding location. This is useful } \\
+\text { for three-dimensional plots over nonrectangular domains. }
+\end{array} \\
+\hline
+\end{array}
+$$
+\begin{lstlisting}[numbers=none,frame=none]
+>> for i=l:ll
+		if i<ll
+			Z(i,i+l)=(Z(i,i)+Z(i+l,i+l))/2 ;
+		end
+		for j=i+2:ll
+			Z(i,j)=nan;
+		end
+end
+\end{lstlisting}
+Let us now check the matrix $Z$:\\
+$\rightarrow$ \textbf{Z}
+\begin{center}
+\begin{tabular}{|r|r|r|r|r|r|r|r|r|r|r|}
+\hline 50 & 75 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN \\
+\hline 0 & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $60.38$ & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $41.52$ & $74.90$ & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $30.81$ & $58.07$ & $80.88$ & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $23.66$ & $45.68$ & $65.44$ & $83.26$ & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $18.14$ & $35.55$ & $51.95$ & $67.61$ & $83.26$ & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $13.36$ & $26.44$ & $39.19$ & $51.95$ & $65.44$ & $80.88$ & 100 & 100 & $\mathrm{NaN}$ & $\mathrm{NaN}$ \\
+\hline 0 & $8.86$ & $17.65$ & $26.44$ & $35.55$ & $45.68$ & $58.07$ & $74.90$ & 100 & 100 & $\mathrm{NaN}$ \\
+\hline 0 & $4.43$ & $8.86$ & $13.36$ & $18.14$ & $23.66$ & $30.81$ & $41.52$ & $60.38$ & 100 & 75 \\
+\hline 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 50 \\
+\hline
+\end{tabular}
+\end{center}
+Notice the symmetry of this numerical data. This should be the case because of the symmetry of the given temperature distribution.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{img_1116}
+\caption{(a) (left) The mesh plot of the solution to the heat problem of Example 11.6. (b) (right) A surface plot of the same problem using a finer grid (Exercise for the Reader 11.6).}
+\end{figure}
+\noindent EXERCISE FOR THE READER 11.6: (a) Write a MATLAB function M-file that is designed precisely to solve the Dirichlet problem for the Laplace equation $\Delta u=0$ on the special triangulular domain with vertices $(0,0),(1,0)$, and $(0,1)$. The syntax should be as follows:
+\begin{center}
+\texttt{[Z,x,y]=triangledirichletsolver(n,leftdata, bottomdata, slantdata)}
+\end{center} 
+where, \texttt{n=} the common number of interior grid values on the $x$ - and $y$-axes $(h=k)$, and the remaining three input variables are vectors having $n+2$ components giving the boundary data on the three faces of the triangle: \texttt{leftdata} gives the boundary values at the nodes on the left face read from top to bottom, \texttt{bottomdata} gives the boundary values at the nodes on the bottom face read from left to right, and \texttt{slantdata} gives the boundary data at the nodes on the slanted face read from top to bottom. The output variables are: $\mathrm{Z}$ an $(n+2) \times(n+2)$ matrix of the values of the solution at the corresponding grid values of the triangle: the first column of $z$ should thus be the vector \texttt{leftdata}, the main diagonal the vector \texttt{slantdata}, etc. The entries of the matrix $Z$ above the main diagonal should be NaN's. The last two output variables $x$ and $y$ should simply be the $(n+2)$ vectors giving the $x$ - and $y$-grid values; however, $y$ should be \texttt{surf(x,y,z)} will give a plot of the numerical solution. \\
+(b) Test the program on the BVP of Example $11.6$ but with $n=49$ and obtain a graphic of the numerical solution as in Figure $11.16 \mathrm{~b}$. Next, use the data to obtain an isotherm (contour) plot as in Figure 11.17.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{img_1117}
+\caption{Isotherms (lines of constant temperature) for the heat problem in Example 11.6. This plot was obtained in Exercise for the Reader 11.6.}
+\end{figure}
+\noindent We close this section with some theoretical comments about the finite difference method applied to Dirichlet problems. From a purely linear algebraic perspective, it is not at all clear that a finite difference scheme will have a solution (i.e., if the coefficient matrix will be nonsingular). This turns out to be the case if we apply the method to the Poisson PDE on any rectilinear domain on which the boundary data is specified. We state this as our next theorem:\\\\
+\noindent\textbf{ THEOREM 11.2}: \textit{(Existence and Uniqueness of the Finite Difference Method for Dirichlet Problems)} Suppose that the domain $D$ is bounded, connected and rectilinear\footnote{This means that the boundary of the domain is made up of vertical and horizontal line segments only. Such domains are allowed to have holes (e.g., an $L$-shaped region with some rectangular holes punched out). The connectedness assumption simply means (informally) that the domain is all in one piece. More technically, it means that any two points in the domain can be joined by an arc which lies entirely in the domain. This assumption is not at all restrictive since BVPs on nonconnected domains can be broken into separate problems on connected domains.} and that the finite difference method is used to solve the Dirichlet problem for the Poisson equation:
+$$
+\left\{\begin{array}{ll}
+\Delta u=f(x, y) & \text { on } D \\
+u=g(x, y) & \text { on } \partial D
+\end{array} \quad u=u(x, y)\right.
+$$
+where that data $f(x, y)$ and $g(x, y)$ are arbitrary functions (not necessarily continuous). If any grid (with $h=x$-step and $k=y$-step not necessarily equal) is used for which each corner point of the boundary of $D$ is a node, then the finite difference method will produce a unique solution.\\
+
+\noindent \textit{Proof}: We give the proof for the case in which $h=k$, since the ideas present themselves most elegantly in this case. The general case will be left to the exercises. First we assume that $f(x, y)=0$ (i.e., the Laplace equation). So we can think of the BVP as a steady-state heat distribution problem. Recall that harmonic functions (solutions of $\Delta u=0$ ) satisfy the maximum principle: If $u(x, y)$ attains a maximum (or minimum) in the interior of a domain (as opposed to a boundary point), then $u(x, y)$ must be a constant function. We will show that finite difference solutions to the Laplace equation also have this important property. Indeed the finite difference scheme for the Laplace equation (16) $4 u_{i, j}-u_{i+1, j}-u_{i-1, j}$ $-u_{i, j+1}-u_{i, j-1}=0$, when rewritten as
+$$
+u_{i, j}=\frac{1}{4}\left[u_{i+1, j}+u_{i-1, j}+u_{i, j+1}+u_{i, j-1}\right] \text {, }
+$$
+\noindent can be thought of as saying that the value of the finite difference solution at an interior point will be the average of the values of the finite difference solution at the four neighbors (right, left, top, bottom; see Figure 11.10). It follows that if this finite difference solution were to have a maximum at some interior point, then each of the four neighbors would share this maximum value (if just one was less, then so would the average and hence $u_{i, j}$ ). We then apply this same argument to each of the neighbor nodes that are interior nodes. By the connectedness assumption, if we continue to repeat this argument, eventually all the nodes of the domain will be accounted for and shown to have the same maximum value. This proves the maximum principle for finite difference solutions.\\
+
+\noindent A slight modification of this proof will prove the analogous minimum principle: If a finite difference solution attains a minimum value at an interior point, then the finite difference solution must be a constant. From these principles, it is easy to show that finite difference solutions are unique for the Poisson equation. Indeed, if $u_{i, j}$ and $v_{i, j}$ were both finite difference solutions to the above Poisson BVP, then $w_{i, j} \equiv u_{i, j}-v_{i, j}$ would be a finite difference solution of the the Laplace equation $\Delta u=0$ and have zero boundary data (since the boundary data of $u_{i, j}$ and $v_{i, j}$ are the same). By the maximum and minimum principles, it follows that $w_{i, j} \equiv 0$ (i.e., $u_{i, j} \equiv v_{i, j}$ ); this proves uniqueness. Next, any finite difference solution $u_{i, j}$ is a solution of a linear system of $N$ equations and $N$ unknowns ( $N=$ total number of interior nodes). For such a linear system (with square coefficient matrix), existence of a solution is equivalent to uniqueness of solutions (and to the coefficient matrix being invertible); see [HoKu-71].\\
+
+\noindent We caution the reader that although the finite difference method can be extended to more complicated PDEs in natural ways, care must be taken with respect to the underlying mathematical theory. Such problems may not have existence and uniqueness for mathematical solutions and in such circumstances we cannot have much hope for any numerical scheme. Mathematical existence and uniqueness theory for PDE is a vast field of contemporary research and much remains to be discovered (especially for nonlinear equations). In the theorem below we give a small sampling of some existence and uniqueness theorems for elliptic boundary value problems. In each we make the underlying assumption that the domain $\Omega$ lies in, the plane and that its boundary $\partial \Omega$ is \textbf{piecewise smooth}, meaning that $\partial \Omega$ can be broken up into a finite number of pieces, each of which is the graph of a function of either $x$ or $y$ with continuous second derivative. We also say that a function is smooth if its second (partial) derivatives are all continuous.\\
+
+\noindent \textbf{THEOREM 11.3}: \textit{(Existence and Uniqueness for Some Elliptic Boundary Value Problems)} Suppose that $\Omega$ is a smooth domain in the plane.\\
+(a) If $g(x, y)$ is a continuous function on $\partial \Omega$ then the Dirichlet problem for the Laplace equation:
+$$
+\left\{\begin{array}{l}
+\Delta u=0 \text { on } \Omega \\
+u=g(x, y) \text { on } \partial \Omega
+\end{array}  \right.
+$$
+has a unique solution that is continuous on $\Omega \cup \partial \Omega$ and agrees with $g(x, y)$ on $\partial \Omega$.\\
+(b) Suppose that the PDE (11):
+$$
+\begin{aligned}
+&a(x, y) u_{x x}+b(x, y) u_{x y}+c(x, y) u_{y y}+d(x, y) u_{x}+e(x, y) u_{y}+f(x, y) u \\
+&=q(x, y),
+\end{aligned}
+$$
+is uniformly elliptic on $\Omega\left(b^{2}-4 a c<-\delta<0\right.$ throughout $\Omega$, for some positive number $\delta$ ), that the coefficients have piecewise continuous partial derivatives throughout $\Omega$, and that $a(x, y) \geq 0$ and $f(x, y) \leq 0$ throughout $\Omega$. If $g(x, y)$ has continuous second derivatives in some tube about $\partial \Omega$, then there exists a unique solution $u(x, y)$ of the PDE (11) that satisfies the BC $u=g(x, y)$ on $\partial \Omega$.\\
+
+\noindent Some of the smoothness requirements can be weakened. The result of part (a), for example, can be extended to work for very general domains, including domains with fractal boundaries. The proofs of such theorems are quite involved and are not within the scope of the text; we refer the interested reader to [GiTr83]. In part (b), the requirement that $f(x, y) \leq 0$ is essential. Indeed, it is well known that for any such domain $\Omega$ the Laplace operator can have \textbf{eigenvalues} $\lambda<0$ for which the PDE $\Delta u=\lambda u$ has nonzero solutions with zero boundary data. By analogy with matrix theory, these nonzero solutions are called (associated) \textbf{eigenfunctions}. As a simple example, in case $\Omega$ is the unit square $\{(x, y): 0<x, y<1\}$, the eigenvalues are $\lambda=-\left(n^{2}+m^{2}\right) \pi^{2}$ for any integers $n$ and $m$, and associated eignfunctions are $u(x, y)=\sin (n \pi x) \sin (n \pi y)$. It can be readily checked that these functions satisfy the PDE $\Delta u=\lambda u$ and have zero boundary values. Since $u(x, y)=0$ is also (an obvious) solution of this same BVP, uniqueness is violated. Furthermore, if $\lambda$ is a negative number not equal to one of these eigenvalues, it can be shown that one cannot arbitrarily assign continuous boundary data for the PDE $\Delta u=\lambda u$ and always have a solution (nonexistence).\footnote{
+There is an interesting problem about these so-called eigenvalues of the Laplacian. If the planar domain $\Omega$ is thought of as a drumhead, the (negatives of these) associated eigenvalues can be shown to be natural frequencies of vibration (see Chapter 10 of [Str-92] for details). The set of all of eigenvalues of $\Omega$, the so-called \textbf{spectrum}, can be shown to be an infinite set satisfying: $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \cdots \rightarrow-\infty$. This spectrum can thus be thought of as the totality of the range of tones which can be emmitted from a drumhead of shape $\Omega$. In a famous 1966 paper entitled "\textit{Can you hear the shape of a drum}" [Kac-66], it was asked that if one knows the spectrum of a given domain $\Omega$, is the shape of $\Omega$ completely determined (up to congruence): In other words, do domains of different shapes have different spectra? The problem drew a lot of interest but remained open until 1992, when Carolyn Gordon, David Webb, and Scott Wolpert published their paper "\textit{One cannot hear the shape of a drum,}" where they found a counterexample of two noncongruent planar domains with the same spectra. Despite the fact that their domains were simple polygons, their construction actually relied on some sophisticated results from group theory.}\\
+\rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+	\item (a) Use the finite difference method with $N=4$ interior grid values on the $x$-axis and $M=9$ interior grid values on the $y$-axis, to solve the following steady-state temperature distribution problem:
+	$$
+	\begin{cases}(\mathrm{PDE}) & \Delta u=0, \quad u=u(x, y) \quad 0<x<1,0<y<2 \\ (\mathrm{BC}) & u(x, 1)=8\equiv t(x), u(x, 0)=0 \equiv b(x) \\ & u(.5, y)=y^{3} \equiv r(y), u(0, y)=4 y  \equiv  \ell(y) .\end{cases}
+	$$
+	Afterwards, graph the resulting approximation to the solution.\\
+	(b) Repeat with $N=9$ and $M=19$.
+	\item (a) Redo part (a) of Exercise 1 using $N=9=M$ interior grid values on both the $x$ - and $y$-axis.\\
+	(b) Repeat with $N=19=M$.
+	\item Consider a steel alloy rectangular plate that is 10 feet long and 6 feet wide. Suppose that the bottom ( 10 -foot) edge is maintained at $400^{\circ} \mathrm{F}$, the top edge is maintained at $250^{\circ} \mathrm{F}$ and both vertical edges are maintained at $150^{\circ} \mathrm{F}$. Assume that the flat faces of the plate are insulated.\\ (a) Use the finite difference method to solve for the temperatures within the plate using a spacing of 1 foot (= $h=k$ ). Plot the approximate location of the $300^{\circ} \mathrm{F}$ isothermal curve within the plate (i.e., the contour in the plate on which the temperature is constantly $300^{\circ} \mathrm{F}$ ) and also the $200^{\circ} \mathrm{F}$ contour.\\
+	(b) Repeat part (a) using a 4 inch step size $(=h=k)$.
+	\item Consider a steel alloy plate that is 10 feet long and 6 feet wide, and is insulated on its flat surfaces. Suppose the left edge is maintained at $1000^{\circ} \mathrm{F}$ (very hot) and the other three edges are all maintained at $50^{\circ} \mathrm{F}$.\\
+	(a) Use the finite difference method to solve for the temperatures within the plate using a spacing of 1 foot (= $h=k$ ).\\
+	(b) Shade (or color, preferably in red) the part of the plate which will be over $140^{\circ} \mathrm{F}$ (hot part of the plate).\\
+	(c) Repeat parts (a) and (b) using a grid spacing of 4 inches $(=h=k)$.
+	\item (a) Use the finite difference method with $N=4$ interior grid values on the $x$-axis and $M=9$ interior grid values on the $y$-axis, to solve the following Poisson boundary value problem:
+	$$
+		\begin{cases}(\mathrm{PDE}) & \Delta u=\sin (\pi x), \quad u=u(x, y) \quad 0 \leq x \leq 1,0 \leq y \leq 2 \\ (\mathrm{BC}) & u(x, 2)=6 \equiv t(x), u(x, 0)=0 \equiv b(x) \\ & u(1, y)=3 y \equiv r(y), u(0, y)=3 \cos (\pi y) \equiv \ell(y) .\end{cases}
+	$$
+	Afterwards, graph the resulting approximation to the solution.\\
+	(b) Repeat with $N=9$ and $M=19$.
+	\item (a) Use the finite difference method with $N=9$ interior grid values on the $x$-axis and $M=9$ interior grid values on the $y$-axis, to solve the following Poisson boundary value problem:
+	$$
+	\begin{cases}(\mathrm{PDE}) & \Delta u=x^{2}+y^{2}, \quad u=u(x, y) \quad 0 \leq x \leq 1,0 \leq y \leq 2 \\ (\mathrm{BC}) & u(x, 2)=0 \equiv t(x), u(x, 0)=0=b(x) \\ & u(1, y)=100 \equiv r(y), u(0, y)=100 \equiv \ell(y) .\end{cases}
+	$$
+	Afterwards, graph the resulting approximation to the solution.\\
+	(b) Repeat with $N=M=19$.
+	\item (a) Prove that the indexing scheme (18) $k=i+N(M-j)$ always results in the reading order of indices $k$ for the nodes $\left(x_{i}, y_{j}\right)$ in a rectangle.\\
+	(b) How would the formula (18) change if we wished to index the nodes so they started on the bottom row, went left to right, and then moved up one row at a time?
+	\item (a) Set up the finite difference method for the steady-state heat problem for the Laplace equation $\Delta u=0$ on the domain shown in Figure 11.18(a) with specified Dirichlet data and using a common stepsize $h=k=1$.\\
+	(b) Get MATLAB to solve the linear system and give a surface plot of the solution.\\
+	(c) Get MATLAB to give a corresponding isotherm plot.\\
+	(d) Repeat parts (a) through (c) using a step size $h=k=0.5$.
+	\item Repeat each part of Exercise 8 on the domain of Figure $11.18($a$)$, but change the boundary Dirichlet data as follows: $u \leq 0$ on all four sides of the outer boundary, while on the four inner boundary sides, $u$ is specified by: $u(x, 3)=u(x, 7)=25(x-5)^{2}, \quad u(3, y)=u(7, y)=100$.
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{img_1118}
+	\caption{(a) (left) and (b): Two planar domains with boundary data for Dirichlet problems for Exercises 8-11.}
+	\end{figure}
+	\item (a) Set up the finite difference method for the steady-state heat problem for the Laplace equation $\Delta u=0$ on the domain shown in Figure $11.18(\mathrm{~b})$ with specified Dirichlet data and using a common stepsize $h=k=1$.\\
+	(b) Get MATLAB to solve the linear system and give a surface plot of the solution.\\
+	(c) Get MATLAB to give a corresponding isotherm plot.\\
+	(d) Repeat parts (a) through (c) using a step size $h=k=0.25$.\\
+	\item Repeat each part of Exercise 10 on the domain of Figure $11.18(b)$, but change the boundary Dirichlet data (only) on the four vertical sides to be linear, increasing from 0 to 100 as $y$ increases from 2 to 8.
+	\item (a) Formulate a finite difference method using $N=M=9$ interior grid values on both the $x$ - and $y$-axes to solve the following elliptic boundary value problem:
+	$$
+	\left\{\begin{array}{l}
+	(\mathrm{PDE})\left(e^{x} u_{x}\right)_{x}+\left(e^{y} u_{y}\right)_{y}=2 e^{x+y}\left(e^{x}+e^{y}\right), 0<x<1,0<y<1, u=u(x, y) \\
+	(\mathrm{BC}) \quad u(x, 0)=e^{x}, u(x, 1)=e^{x+1}, u(0, y)=e^{y}, u(1, y)=e^{y+1}
+	\end{array} .\right.
+	$$
+	Use MATLAB to numerically solve it and compare with the exact solution $u(x, y)=e^{x+y}$. What does the existence and uniqueness theorem (Theorem 11.3) say about this problem?\\
+	(b) Solve again with the finer grid $N=M=19$.\\
+	(c) Repeat parts (a) and (b) for the BVP obtained by the above by changing all boundary values to zero, i.e., $u(x, y)=0$ at all boundary points.	
+\end{enumerate}
+NOTE: \textit{(Steady-State Fluid Flow Equation)} An important BVP that arises in applications of steadystate two-dimensional fluid flow is the following:
+$$
+\left\{\begin{array}{l}
+(\mathrm{PDE})\left(a u_{x}\right)_{x}+\left(b u_{y}\right)_{y}+c u=f(x, y) \text { on } D \\
+(\mathrm{BC}) u=g(x, y) \text { on the boundary of } D
+\end{array} .\right.
+$$
+Here the function $u(x, y)$ denotes the pressure, $a$ and $b$ (which can be functions of $x$ and $y$ ) denote fluid conductivity coefficients in the $x$ - and $y$ - directions. In this setting, the vector $\left(-a u_{x},-b u_{y}\right)$ turns out to be the fluid flux and $f(x, y)$ denotes the amount of fluid being added at the point $(x, y)$. The PDE can be derived in a similar fashion to how the heat equation was done.
+\begin{enumerate}[resume]
+	\item Set up a finite difference scheme for the steady-state fluid flow problem above using the parameters: $a=b=1, \mathrm{c}=-1$, and $f(x, y)=x^{2}$. Use $N=M=9$ interior grid points on both the $x$-and $y$-axis on the square domain $D=\{0<x<1,0<y<1\}$. Imposing zero boundary conditions on each side, solve the linear system and plot the resulting surface. Give also a contour plot of the isopressure lines. What does the existence and uniqueness theorem (Theorem 11.3) say about this problem?
+	\item Repeat all parts of exercise 13 on the problem modified as follows:
+	$$
+	a(x, y)=2 e^{x}, b(x, y)=x+y+1, f(x, y)=3 \text {, if } x>0.5 ;=0, \text { if } x=0.5 ;-3, \text { if } x<0.5
+	$$
+\end{enumerate}
+NOTE: \textit{(Nine-Point Formula for the Laplacian)} The following so-called \textbf{nine-point formula}
+$$
+\Delta u(x, y) \approx \frac{1}{6 h^{2}}\left[\begin{array}{c}
+4 u(x+h, y)+4 u(x-h, y)+4 u(x, y+h)+4 u(x, y-h) \\
+u(x+h, y+h)+u(x-h, y+h)+u(x+h, y-h) \\
++u(x-h, y-h)-20 u(x, y)
+\end{array}\right],
+$$
+turns out to be extremely accurate, with truncation order $O\left(h^{6}\right)$ when used for the Laplace equation.\footnote{
+Letting $\Delta_{h}^{(9)} u(x, y)$ denote this approximation, it can be shown using Taylor's theorem that if $u$ has sufficiently many continuous partial derivatives, then
+$$
+\begin{aligned}
+&\Delta_{h}^{(9)} u(x, y)-\Delta u(x, y)=\frac{1}{2} h^{2} \Delta^{2} u(x, y)+\frac{2}{6 !} h^{4}\left[\Delta^{3} u(x, y)+2(\Delta u)_{x x y y}(x, y)\right] \\
+&+\frac{2}{8 !} \frac{h^{6}}{3}\left[3 \Delta^{4} u(x, y)+16\left(\Delta^{2} u\right)_{x x y y}(x, y)+20 u_{x x x x y y y y y}(x, y)\right]+O\left(h^{7}\right),
+\end{aligned}
+$$
+where $\Delta^{2} u$ means $\Delta(\Delta u)$, etc.; see [KaKr- 58 ]. From this it clearly follows that in case $u$ is harmonic (Laplace equation) the approximation is $O\left(h^{6}\right)$, but in general it is only $O\left(h^{2}\right.$ ), and thus cannot be much better than the usual five-point approximation. Note that the approximation is still $O\left(h^{6}\right)$ when used for a Poisson equation $\Delta u=f(x, y)$ whenever $\Delta f=f_{x x y y}=0$, and so in particular whenever $f(x, y)$ is a polynomial of the form $A+B x+C y+D x y+E\left(x^{2}-y^{2}\right)$.} The next three exercises will examine its use.
+\begin{enumerate}[resume]
+	\item (a) Use the nine-point formula in a finite difference method to solve the Dirichlet problem\\
+	
+	(PDE) $\Delta u(x, y)=0,0<x<1,1<y<2$\\
+	(BC) $u(x, 1)=\ln \left(x^{2}+1\right), u(x, 2)=\ln \left(x^{2}+2\right), u(0, y)=\ln \left(y^{2}\right), u(1, y)=\ln \left(y^{2}+1\right)$,\\
+	
+	using $N=4$ interior grid points on the $x$-axis and $M=4$ interior grid points on the $y$-axis. Look at the errors by comparing with the exact solution $u(x, y)=\ln \left(x^{2}+y^{2}\right)$. Solve also using the standard five-point finite difference formula and compare the errors.\\
+	(b) Repeat part (a), this time using $N=M=9$.\\
+	(c) Re-solve Exercise for the Reader 11.4, this time incorporating the nine-point formula. How does the performance compare (use the exact solution provided to get the errors) with that of the standard finite difference method?
+	\item Repeat each part of Exercise 8, but this time incorporating the nine-point formula.
+	\item (a) Prove Theorem $11.2$ in the general case of step sizes that are not necessarily equal.\\
+	(b) Prove an extension to Theorem $11.2$ to the case of the following more general boundary value problem:
+	$$\left\{\begin{array}{l}a u_{x x}+b u_{x x}=f(x, y) \text { on } D \\ u=g(x, y) \quad \text { on } \partial D\end{array} \quad u=u(x, y)\right.$$
+	where $a$ and $b$ are nonzero real numbers of the same sign. Is the result still valid if $a$ and $b$ are real numbers of opposite signs? How does this tie in with ellipticity?\\
+	(c) Does the extension of part (b) continue to be valid in case $a$ and $b$ are allowed to be (continuous) functions $a=a(x, y), b=b(x, y)$ that are of the same sign?
+\end{enumerate}
+
+\section{GENERAL BOUNDARY CONDITIONS FOR ELLIPTIC PROBLEMS AND BLOCK MATRIX FORMULATIONS}
+
+Our introduction to finite difference methods in the last section centered on elliptic problems with Dirichlet boundary conditions. Allowing more general boundary conditions will lead to related methods, all of which can be very nicely expressed in the language of block matrices. The notations and concepts of this section coupled with MATLAB's ease of handling matrices will make the task of writing MATLAB codes for finite difference methods a very natural one. Furthermore, this centralized approach will carry over well into the development of finite difference methods for other sorts of PDEs, some more of which will be examined in the next chapter.\\
+
+We begin with the Dirichlet problem for the Poisson equation in two space dimensions:
+\begin{equation}
+\left\{\begin{aligned}
+(\mathrm{PDE}) \Delta u=f(x, y) & \text { on } \Omega, u=u(x, y) \\
+(\mathrm{BC}) \quad u=g(x, y) & \text { on } \partial \Omega
+\end{aligned}\right.,
+\end{equation}
+The domain $\Omega$ will be a rectangle in the plane, which for convenience we assume has its lower-left vertex at the origin: $\Omega=\{(x, y): 0<x<a, 0<y<b\}$. The symbol $\partial \Omega$ denotes the boundary of the domain $\Omega$, which in this case consists of the four sides of the rectangle. Unlike for the parabolic and hyperbolic problems that we will discuss in the next chapter, the relation of horizontal to vertical step sizes is not so important for elliptic problems, so for simplicity we will use equal step sizes $(h=k)$. We assume that a step size $h>0$ has been chosen so that $a=(N+1) h$ and $b=(M+1) h$. The $x$-grid points and $y$-grid points are then specified by:
+\begin{equation}
+x_{i}=i h(0 \leq i \leq N+1), \quad y_{j}=j h(0 \leq j \leq M+1)
+\end{equation}
+and the corresponding functional values are then denoted by:
+\begin{equation}
+u_{i, j}=u\left(x_{i}, y_{j}\right)=u(i h, j h) \quad(0 \leq i \leq N+1,0 \leq j \leq M+1)
+\end{equation}
+We use analogous notation for the data functions of the problem: $f_{i, j}, g_{i, j}$ (of course, the latter is defined only for indices corresponding to boundary points).\\
+
+\noindent Substituting the central difference approximations (14) and (15) into the PDE (22) results in the following discretization of the Poisson PDE:
+\begin{equation}
+\frac{u_{i+1, j}-2 u_{i, j}+u_{i-1, j}}{h^{2}}+\frac{u_{i, j+1}-2 u_{i, j}+u_{i, j-1}}{h^{2}}=f_{i, j}(1 \leq i \leq N, 1 \leq j \leq M) .
+\end{equation}
+Since the central difference formula employed has error $O\left(h^{2}\right)$, it follows that the local truncation error of the discretization $(25)$ is $O\left(h^{2}\right)+O\left(h^{2}\right)=O\left(h^{2}\right)$. We rewrite $(25)$ in the following simpler form:
+\begin{equation}
+4 u_{i, j}-u_{i+1, j}-u_{i-1, j}-u_{i, j+1}-u_{i, j-1}=-h^{2} f_{i, j}, \quad(1 \leq i \leq N, 1 \leq j \leq M) .
+\end{equation}
+This is a linear system with $N M$ equations in the unknown interior grid values of $u(x, y)$ that we index using the scheme (18) into the components of a vector $U$ :
+\begin{equation}
+P_{k} \equiv\left(x_{i}, y_{j}\right), U_{k} \equiv u\left(P_{k}\right)=u_{i, j}, k=i+N(M-j) .
+\end{equation}
+Recall that this indexing scheme results in the "reading order" labeling of the interior grid points (see Figure 11.11).\\
+
+\noindent We wish to look carefully in the matrix form of this linear system:
+\begin{equation}
+A U=C .
+\end{equation}
+Observe that we have relabeled only the unknown values of the $u_{i, j}$ that appear in (26); the Dirichlet boundary conditions of $(22)$ give us the following data:
+\begin{equation}
+\begin{aligned}
+&u_{i, 0}=g_{i, 0}, u_{i, M+1}=g_{i, M+1} \quad(0 \leq i \leq N+1), \\
+&u_{0, j}=g_{0, j}, u_{N+1, j}=g_{N+1, j}(0 \leq j \leq M+1) .
+\end{aligned}
+\end{equation}
+If we directly incorporate the indexing scheme (27) into (26), we arrive at the following:
+\begin{equation}
+4 U_{k}-U_{k+1}-U_{k-1}-U_{k-N}-U_{k+N}=-h^{2} f_{k} \text {, }
+\end{equation}
+which, however, needs to be corrected in case any of the $u$-values in (26) is a known boundary value. If this happens, such values need to be substituted by the $g$-values in (29) and then moved to the right side. Let us carefully consider each case when such corrections are needed. It is most helpful to view such cases by thinking about the "reading order" indexing of the interior nodes $P_{k}=\left(x_{i}, y_{j}\right)$, $(k=i+N(M-j))$ (as in Figure 11.11) as well as the stencil for our finite difference method (Figure 11.10).\\\\
+\textit{Case 1}: $P_{k}$ lies on the top row (so $j=M$ ). The value $U_{k+N}$ is thus known and should be moved to the right side as $g_{i, M+1}$.\\
+\textit{Case 2}: $P_{k}$ lies on the bottom row (so $j=1$ ). The value $U_{k-N}$ is thus known and should be moved to the right side as $g_{i, 0}$.\\
+\textit{Case 3}: $P_{k}$ lies on the right edge (so $i=M$ ). The value $U_{k+1}$ is thus known and should be moved to the right side as $g_{N+1, j}$.\\
+\textit{Case 4}: $P_{k}$ lies on the left edge (so $i=0$ ). The value $U_{k-1}$ is thus known and should be moved to the right side as $g_{0, j}$.\\
+
+\noindent Note that Cases 1 and 2 cannot occur simultaneously, nor can Cases 3 and 4, but either of the last two cases can occur in conjunction with either of the first two. In light of the blocklike structure of the above cases, the $N M \times N M$ coefficient matrix A in (28) is readily expressed as an $M \times M$ \textbf{block matrix} where each block is an $N \times N$ (ordinary) matrix as indicated below:
+\begin{equation}
+A=\left[\begin{array}{c|c|c|c|cc|c}
+T_{N} & -I_{N} & 0_{N} & \cdots & & \cdots & 0_{N} \\
+\hline -I_{N} & T_{N} & -I_{N} & 0_{N} & & & \vdots \\
+\hline 0_{N} & -I_{N} & T_{N} & -I_{N} & & & \\
+\hline \vdots & 0_{N} & -I_{N} & T_{N} & \ddots & & \vdots \\
+\hline & & \ddots & \ddots & \ddots & \ddots & 0_{N} \\
+\vdots & & & \ddots & \ddots & \ddots & -I_{N} \\
+\hline 0_{N} & \cdots & & \cdots & 0_{N} & -I_{N} & T_{N}
+\end{array}\right]
+\end{equation}
+where $I_{N}$ denotes the $N \times N$ identity matrix, $0_{N}$ denotes the $N \times N$ zero matrix, and $T_{N}$ is the following $N \times N$ tridiagonal matrix:
+\begin{equation}
+T_{N}=\left[\begin{array}{cccccc}
+4 & -1 & & & & \\
+-1 & 4 & -1 & & 0 & \\
+& -1 & 4 & \ddots & & \\
+& & \ddots & \ddots & \ddots & \\
+& 0 & & \ddots & \ddots & -1 \\
+& & & & -1 & 4
+\end{array}\right]
+\end{equation}
+The block matrix $A$ in (31) is said to have tridiagonal block structure. Using this same decomposition into blocks, the $N M \times 1$ vectors $U$ and $C$ of (28) can be expressed as the following juxtapositions of $M N \times 1$ vectors:
+\begin{equation}
+U=\left[\begin{array}{c}
+U^{\prime} \\
+U^{2} \\
+\vdots \\
+U^{M}
+\end{array}\right], \quad C=\left[\begin{array}{c}
+B_{1}-h^{2} F_{1} \\
+B_{2}-h^{2} F_{2} \\
+\vdots \\
+B_{M}-h^{2} F_{M}
+\end{array}\right]
+\end{equation}
+where
+\begin{equation}
+U^{j}=\left[\begin{array}{c}
+U_{1+(M-j) N} \\
+U_{2+(M-j) N} \\
+U_{3+(M-j) N} \\
+\vdots \\
+U_{N-1+(M-j) N} \\
+U_{(M-j+1) N}
+\end{array}\right], \quad F_{j}=\left[\begin{array}{c}
+f_{1+(M-j) N} \\
+f_{2+(M-j) N} \\
+f_{3+(M-j) N} \\
+\vdots \\
+f_{N-1+(M-j) N} \\
+f_{(M-j+1) N}
+\end{array}\right],
+\end{equation}
+and
+\begin{equation}
+B_{i}=\left[\begin{array}{c}
+g_{1, M+1}+g_{0, M} \\
+g_{2, M+1} \\
+g_{3, M+1} \\
+\vdots \\
+g_{N-1, M+1} \\
+g_{N, M+1}+g_{N+1, M}
+\end{array}\right], B_{j}=\left[\begin{array}{c}
+g_{0, M+1-j} \\
+0 \\
+0 \\
+\vdots \\
+0 \\
+g_{N+1, M+1-j}
+\end{array}\right](1<j<M), B_{M}=\left[\begin{array}{c}
+g_{1,0}+g_{0,1} \\
+g_{2,0} \\
+g_{3,0} \\
+\vdots \\
+g_{N-1,0} \\
+g_{N, 0}+g_{N+1,1}
+\end{array}\right]
+\end{equation}
+Note that the coefficient matrix $A$ is quite sparse; indeed, it is a banded matrix with 5 bands: the main diagonal, the sub- and superdiagonals, and the diagonals that lie $M$ units above and below the main diagonal. By Proposition $7.14, A$ is invertible (in fact positive definite). In Section $7.7$, it was shown how the SOR method can very effectively solve linear systems having $A$ as the coefficient matrix. Such sparse solution techniques will greatly expand the resolution that we will be able to attain in our numerical PDE solution techniques. Indeed, if we wanted to have a resolution of, say, 100 interior grid values on the $x$ - and $y$-axes (with a square domain), this would mean that the linear system (28) that is needed to be solved would involve a $10,000 \times 10,000$ coefficient matrix $A$. Even storing such a matrix would tax most home PCs; attempting to solve the system with the general Gaussian elimination method would require on the order of $(10,000)^{3}=10^{12}$ flops. Even at the rate of 1 million flops/second, this would take nearly two weeks to solve! MATLAB's left divide is able to take advantage of the special structure of positive definite matrices, like $A$, which arise in finite difference methods. This results in MATLAB's ability to solve such linear systems as long as it is possible to store the coefficient matrix. Furthermore, many of the matrices that arise in numerical differential equations are sparse, and so taking advantage of scarcity will permit the solution of even larger systems (see Section 7.7). In order to keep this chapter more accessible, we will be using this left divide solver in lieu of iterative methods; however, readers who have studied Section $7.7$ are encouraged to apply some of the methods they have learned on the linear systems that come up in this and subsequent sections.\\
+
+\noindent Our next example will demonstrate how the above notation will allow us to code this finite difference method into a succinct MATLAB program.\\
+
+\noindent \textbf{EXAMPLE 11.7}: (a) Use the finite difference method to solve the following Poisson problem\footnote{The reason that we used a negative coefficient in the Poisson PDE is to highlight the interpretation of the Poisson equation as a model of steady-state heat distributions with internal heat source term $f(x, y)$; cf. (6) of this chapter for the one-dimensional analogue (put $u_{t}=0$ ). For this reason the Poisson equation is often written as $-\Delta u=f$.}:
+$$
+\left\{\begin{array}{rl}
+(\mathrm{PDE}) & \Delta u=-f(x, y) \text { on } \Omega=\{0<x, y<1\}, u=u(x, y) \\
+(\mathrm{BC}) \quad & u(x, 0)=u(x, 1)=5 x \\
+& u(0, y)=0, u(1, y)=5
+\end{array},\right.
+$$
+where $f(x, y)$ is defined by:
+$$
+f(x, y)=\left\{\begin{array}{l}
+800, \text { if } \frac{1}{4}<x<\frac{1}{2} \text { and } \frac{1}{2}<y<\frac{3}{4} . \\
+0, \text { otherwise }
+\end{array}\right.
+$$
+Use a step size $h=0.02$.\\
+(b) Plot the numerical solution as a surface plot.\\
+(c) Give a two-dimensional contour plot of the solution.\\
+
+\noindent NOTE: Recall that the Poisson equation models steady-state temperature distribution with a time-independent heat source $f(x, y)$. Thus, we can view the solution to the above problem as the steady-state temperature distribution on the unit square $\Omega$ with the edges maintained at the temperatures specified by the $B C$ and with a homogeneous heat source concentrated on the specified smaller square of sidelength 1/4. The contours of the plot in part (c) are then the isotherms of the temperature distribution.\\
+
+\noindent SOLUTION: As we have been doing thus far in our development of numerically solving boundary value problems for PDEs, we will solve this problem in a way that can be easily generalized to the creation of an M-file for solving more general problems.\\
+
+\noindent Notice that with $h=0.02$, from $N+1=1 / h$, we see that there will be $N=49$ interior grid points on both the $x$ - and $y$-axes. Thus the linear system to be solved, $A U=C$, will have a coefficient matrix of size $N^{2} \times N^{2}\left(N^{2}=2401\right)$. Creating the coefficient matrix $A$ of (32) can be done quite efficiently using MATLAB's \texttt{diag} function\footnote{Note: Some of the matrix creation commands may take a second or two to execute, depending on the speed of your computer.}:
+\begin{lstlisting}[numbers=none,frame=none]
+>> N=49;
+>> A=diag(4*ones(l,N^2))-diag{ones(l,N^2-N), N)-diag{ones(1,N^2-N),—
+N);
+>> %next create vector for sub\super diagonals
+>> v1=-ones(1,N-l); v=[v1 0];
+>> for i=1:N—1
+	if i<N-l
+	 v=[v v1 0];
+	else
+	 v=[v v1]:
+	end
+end
+>> A=A+diag(v,1)+diag(v,-1);   
+\end{lstlisting}
+In order to create the vector $C$ of $(33)$, we first store the given boundary values at our grid points, using some rather obvious notation:
+\begin{lstlisting}[numbers=none,frame=none]
+>> leftdata=zeros(1,N+2): rightdata=5*ones(1,N+2);
+>> xgrid=0:.02:1;
+>> topdata=5*xgrid; bottomdata=topdata:
+>> Bprep1=t0pdata(2:N+1); Bpreplast=bottomdata(2:N+1);
+>> C=[];
+>> Fprep=zeros(l,N);
+>> h=0.02;
+\end{lstlisting}
+We also store the following M-file for the function on the right side of the PDE:
+\begin{lstlisting}[numbers=none,frame=none]
+function z = squareheatsource(x,y)
+if x>=.25 & x<=.5 & y>=.5 & y<=.75
+	z=-800:
+else
+	z=0;
+end
+
+>> for j=l:N
+	F=Fprep:
+	for i=1:N
+		F(i)=-h^2*feval{'squareheatsource',h*i,1—h*j};
+	end
+	F(1)=F(1)+leftdata(1+j):
+	F(N)=F(N)+rightdata(1+j):
+	if j==l
+		F=F+Bprep1;
+	elseif j==N 
+		F=F+Bpreplast:
+	end
+	C=[C; F'];
+end
+>> $now we can assemble the matrix Z of u-values
+>> U=A\C;
+>> Z=zeros(N,N):
+>> Z(:)=U; Z=Z';
+>> z=[topdata(2:N+1); Z: bottomdata(2:N+l)]:
+>> Z=[leftdata' Z rightdata']:   
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{img_1119}
+\caption{(a) (left) Temperature mesh plot for Example 11.7. (b) (right) Corresponding isotherms.}
+\end{figure}
+\begin{lstlisting}[numbers=none,frame=none]
+>> size(xgrid)
+->ans = 1 51
+for i=1:51
+ygrid(i}=xgrid(52-i};
+end %as usual, we reverse the order of y-grid for plots to be
+correct.
+>> mesh(xgrid,ygrid,Z)
+>> hidden off, xlabel('x-axis'), ylabel('y-axis')
+>> c=contour(xgrid, ygrid,Z,20):
+>> clabel(c, 'manual')   
+\end{lstlisting}
+EXERCISE FOR THE READER 11.7: (a) Write a MATLAB function M-file that is precisely designed to solve the Dirichlet problem for the Poisson equation $\Delta u=f$ on the rectangle with vertices $(0,0),(\mathrm{a}, 0),(\mathrm{a}, \mathrm{b})$, and $(0, \mathrm{~b})$. The syntax should be as follows:
+\begin{center}
+\texttt{[Z, x, y]=rectanglepoissonsolver (h, a, b, varf, leftdata, rightdata, topdata, bottomdata)}
+\end{center}
+where $h=$ the common step size on the $x$ - and $y$-axes $(h=k)$ (assumed to divide into both $a$ and $b), a$ and $b$ are the dimensions of the rectangular domain, \texttt{varf} is either an $\mathrm{M}$-file or an inline function for the function $f$ appearing in the PDE, and the remaining four input variables are vectors for the boundary data. The first two should be column vectors of length $M=b / h+1$, with the boundary values given from top to bottom. The last two should be row vectors of length $N=a / h+$ 1 with boundary values given from left to right. The first output variables is $\mathrm{z}$, an $(N+2) \times(M+2)$ matrix of the values of the solution at the corresponding grid values of the rectangle: The first column of $Z$ should thus be the vector \texttt{leftdata}, etc. The last two output variables $x$ and $y$ should simply be the vectors giving the $x$-and $y$-grid values; however, $y$ should be given in decreasing order to facilitate plotting.\\
+(b) Test the program by re-solving Example 11.7.\\
+
+\noindent We now proceed to discuss the generalized Neumann problem for the Poisson equation in two space dimensions:
+\begin{equation}
+\left\{\begin{aligned}
+(\mathrm{PDE}) & \Delta u=f(x, y) \text { on } \Omega, \quad u=u(x, y) \\
+(\mathrm{BC}) & \partial u / \partial n=g(x, y) \text { on } \partial \Omega
+\end{aligned}\right.
+\end{equation}
+Here $\partial u / \partial n$ denotes the derivative of $u(x, y)$ in the direction of the outwardpointing normal vector $n$ for points on the boundary. Recall that when this BVP models steady-state heat distribution (with time-independent heat source), the generalized Neumann boundary conditions specify the rate at which heat is lost $(g$ $>0)$ or gained $(g<0)$ at the boundary point $(x, y)$.\footnote{
+Traditionally, the term "Neumann boundary conditions" is reserved for the special case tha $h(x, y) \equiv 0$ (insulated boundary).}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{img_1120}
+\caption{Illustration of the unit outward normal vector at a boundary point $(x, y)$ of a planar domain $\Omega$.}
+\end{figure}
+\noindent Unlike the Dirichet problem for the Poisson equation, the Neumann problem requires an additional consistency hypothesis in order for a solution to exist. Also, it is clear that if $u(x, y)$ is a solution to the Neumann problem (36) and $C$ is any constant, then $u(x, y)+C$ will also be a solution (why?). Apart from this we do have uniqueness. The following theorem makes these statements more precise.\\
+
+\noindent \textbf{THEOREM 11.4:}\textit{(Existence and Uniqueness for the Poisson PDE with Neumann Boundary Conditions)} Suppose that $\Omega$ is a smooth bounded planar domain and that in the BVP $(36)$ :
+$$
+\left\{\begin{array}{rl}
+(\mathrm{PDE}) & \Delta u=f(x, y) \quad \text { on } \Omega, \quad u=u(x, y) \\
+(\mathrm{BC}) & \partial u / \partial n=g(x, y)
+\end{array},\right.
+$$
+$f(x, y)$ has piecewise continuous partial derivatives throughout $\Omega$ and $g(x, y)$ is piecewise continuous on $\partial \Omega$. Then the BVP has a solution if and only if the data satisfies the following \textbf{compatibility condition}:
+\begin{equation}
+\iint_{\Omega} f(x, y) d x d y=\int_{\partial \Omega} g(x, y) d s
+\end{equation}
+where the latter integral is with respect to arc length along the boundary. In this case, the solution is unique up to an additive constant.\\
+
+\noindent A few comments are in order. If we interpret the BVP (36) as a steady-state heat flow problem, the $(B C)$ can be interpreted as requiring that the heat flux (net heat flow across the boundary) at $(x, y)$ is given by $g(x, y)$. The right-side integral in (37) thus becomes the net heat flux lost through the boundary of the region. The left-side integral is the net heat produced within the region. For equilibrium (steady-state) the amount of internal heat produced must equal the net heat lost through the boundary (conservation of heat). This is why the compatibility condition is required. As for the nonuniqueness, this is plausible since the BVP is only stating the net heat production within the region and the net heat flux. There is no reference to how the temperature is being measured (Fahrenheit or Celsius?) or to how much heat energy is contained in the region, and so it is natural the additive constant must appear as a point of reference.\\
+
+\noindent While for the Dirichlet problem on the square it is quite common for the boundary data to be continuous, for the Neumann problem it is typical that the boundary data is discontinuous at the corners. Indeed, at each corner point, the most typical situation would allow two values of $g(x, y)$, depending on from which side we are looking at normal derivatives. This simply corresponds to the fact that the direction of the normal vector (with respect to which we are measuring the rate of change of $u(x, y))$ takes a sharp (discontinuous) turn at each corner point and the rate of heat flow will change with the direction in which we are measuring it. To make the Neumann problem well-posed (have a unique solution) we could require an additional condition that the temperature be a certain value at a certain point in the domain. Vector calculus can be used to prove Theorem 11.4; some elements of the proof will appear in the exercises.\\
+
+\noindent Turning to finite difference methods for solving the Neumann problem (36), we need to approximate the derivative $\mathrm{BC}$ using a finite difference formula. The following so-called forward difference and backward difference formulas appear to be rather plausible to this end:
+
+\noindent \textbf{LEMMA 11.5}: \textit{(Forward/Backward Difference Formulas)} (a) Suppose that $f(x)$ is a function having a continuous second derivative in the interval $a \leq x \leq a+h$; then we have the \textbf{forward difference approximation}:
+\begin{equation}
+f^{\prime}(a)=\frac{f(a+h)-f(a)}{h}+O(h)
+\end{equation}
+(b) Suppose that $f(x)$ is a function having a continuous second derivative in the interval $a-h \leq x \leq a$; then we have the backward difference approximation:
+\begin{equation}
+f^{\prime}(a)=\frac{f(a)-f(a-h)}{h}+O(h) .
+\end{equation}
+The lemma is an easy consequence of Taylor's theorem (Exercise 14). A plausible way to set up a finite difference method for the Neumann problem (on a rectangle) would be by incorporating the boundary data with the forward difference scheme on the left and bottom edge nodes, and the backward difference scheme on the right and top edge nodes. While this could indeed be developed into a viable scheme, the drawback is that the $O(h)$ errors introduced by forward/backward difference portions of the schemes would contaminate the much better $O\left(h^{2}\right)$ local truncation errors that came up from the central difference approximation used in the internal node discretization of the PDE. A better approach is to use the central difference approximations both for the PDE and the boundary conditions. This can be accomplished by introducing additional nodes, so-called ghost nodes, as we will now explain (see Figure 11.21). The forward and backward difference schemes, however, will be of use in finite difference methods for parabolic and hyperbolic BVPs, which are studied in the next chapter.\\
+
+\noindent Our next example will explain how to develop a finite difference scheme for a Neumann problem that will have local disretization error $O\left(h^{2}\right)$.\\
+
+\noindent \textbf{EXAMPLE 11.8}: Use a finite difference method with common step size $h=0.1$ to solve the following steady-state temperature distribution Neumann problem:
+$$
+\begin{cases}(\mathrm{PDE}) & \Delta u=2, \quad u=u(x, y) \\ (\mathrm{BC}) & u_{y}(x, 1)=-2, u_{y}(x, 0)=4 \\ & u_{x}(.5, y)=4-8 y, u_{x}(0, y)=0\end{cases}
+$$
+with the additional requirement that $u(0,0)=0$. Afterwards, graph the resulting approximation to the solution.\\
+
+\noindent SOLUTION: The reader may check that both of the integrals in (37) have a common value of 1 , so we know this Neumann problem has a solution. In contrast to the corresponding method for the Dirichlet problem (Example 11.5) the new scheme will require us to solve for the values of $u$ at both the interior nodes as well as the boundary nodes. These nodes as well as the ghost nodes we will need are illustrated in Figure $11.21$ (compare with Figure 11.11). The picture illustrates how the index scheme for the Dirichlet method should be modified. We briefly highlight the general notations that will be used:
+$$
+x_{i}=(i-1) h(0 \leq i \leq N+1), \quad y_{j}=(j-1) h(-1 \leq j \leq M+1)
+$$
+\begin{multicols}{2}
+\begin{figure}[H]
+\includegraphics[scale=.8]{img_1121}
+\end{figure}
+\columnbreak
+\noindent (note that now $x_{0}, x_{N+1}$ correspond to the ghost nodes, so, as before, $x_{1}, \cdots, x_{n}$ correspond to unknown function values, and similarly for $y$ 's). The indexing scheme is as before:
+$$
+P_{k} \equiv\left(x_{i}, y_{j}\right), \quad U_{k} \equiv u\left(P_{k}\right)=u_{i, j} \text {, }
+$$
+$$
+k=i+N(M-j)
+$$
+(ghost nodes are not indexed with $k$ ). The discretization of Poisson's PDE is just as before (26) (with equal step sizes)
+$$
+\begin{gathered}
+4 u_{i, j}-u_{i+1, j}-u_{i-1, j}-u_{i, j+1}-u_{i, j-1}=-h^{2} f_{i, j} \\
+(1 \leq i \leq N, 1 \leq j \leq M) .
+\end{gathered}
+$$
+\captionof{figure}{A grid for the Neumann problem of Example 11.7. The solid-labeled nodes are the ones (function values) that need to be solved for; the hollow nodes are the ghost nodes needed to set up the method.}
+\end{multicols}
+In our example, of course, $N=6, M=11$, and $f(x, y)=-(2 y)^{2}$, but we wish to present the general development. To allow for different Neumann data at corner points, we use the following notations for the Neumann data:
+$$
+\begin{array}{ll}
+g_{i, j}^{h}=g^{h}\left(x_{i}, y_{j}\right) & \text { (horizontal side) } \\
+g_{i, j}^{v}=g^{v}\left(x_{i}, y_{j}\right) & (\text { vertical side })
+\end{array}
+$$
+Now we use the central difference formula to eliminate any ghost node values that appear in (26). To see how this works, let us first assume that $i=N$ (so we are dealing with a node on the right side of the rectangular domain). Then $u_{i+1 j}=u_{N+1 j}$ is a ghost value. The central difference formula gives us that
+$$
+\frac{u_{N+1,j}-u_{N-1, j}}{2 h}=g_{N, j}^{v} \Rightarrow u_{N+1, j}=u_{N-1, j}+2 h g_{N, j}^{v},
+$$
+which causes (26) to become:
+$$
+4 u_{N, j}-2 u_{N-1, j}-u_{N, j+1}-u_{N, j-1}=-h^{2} f_{i, j}+2 h g_{N, j}^{v}(1<j<M) .
+$$
+We left out the two cases $j=1$ and $j=M$, since these each need another ghost node to be accounted for. Analogously, these give the following:
+$$
+\begin{gathered}
+4 u_{N, 1}-2 u_{N-1,1}-2 u_{N, 2}=-h^{2} f_{i, j}+2 h\left(g_{N, 1}^{v}+g_{N, 1}^{h}\right), \text { and } \\
+4 u_{N, M}-2 u_{N-1, M}-2 u_{N, M-1}=-h^{2} f_{i, j}+2 h\left(g_{N, M}^{v}+g_{N, M}^{h}\right) .
+\end{gathered}
+$$
+Similar equations can be thus obtained for nodes on the other three sides. These considerations lead us to the linear system:
+\begin{equation}
+AU=C
+\end{equation}
+$
+\text { where the } N M \times N M \text { matrix } A \text { is given by: }
+$
+\begin{equation}
+A=\left[\begin{array}{c|c|c|c|cc|c}
+W_{N} & -2 I_{N} & 0_{N} & \cdots & & \cdots & 0_{N} \\
+\hline-I_{N} & W_{N} & -I_{N} & 0_{N} & & & \vdots \\
+\hline 0_{N} & -I_{N} & W_{N} & -I_{N} & & & \\
+\hline \vdots & 0_{N} & -I_{N} & W_{N} & \ddots & & \vdots \\
+\hline \vdots & & \ddots & \ddots & \ddots & \ddots & 0_{N} \\
+\hline 0_{N} & \cdots & & \cdots & 0_{N} & -2 I_{N} & W_{N}
+\end{array}\right]
+\end{equation}
+
+\noindent Note that $\mathrm{A}$ is an $M \times M$ block matrix made up of the indicated $N \times N$ matrix blocks. Here $I_{N}$ denotes the $N \times N$ identity matrix, $0_{N}$ denotes the $N \times N$ zero matrix, and $W_{N}$ is the following $N \times N$ tridiagonal matrix:
+\begin{equation}
+W_{N}=\left[\begin{array}{cccccc}
+4 & -2 & & & & \\
+-1 & 4 & -1 & & 0 & \\
+& -1 & 4 & \ddots & & \\
+& & \ddots & \ddots & \ddots & \\
+& 0 & & -1 & \ddots & -1 \\
+& & & & -2 & 4
+\end{array}\right]
+\end{equation}
+The $N M \times 1$ vectors $U$ and $C$ of $(28)$ can be expressed as the following juxtapositions of $M N \times 1$ vectors:
+\begin{equation}
+U=\left[\begin{array}{c}
+U^{\prime} \\
+U^{2} \\
+\vdots \\
+U^{M}
+\end{array}\right], \quad C=\left[\begin{array}{c}
+2 h B_{1}-h^{2} F_{1} \\
+2 h B_{2}-h^{2} F_{2} \\
+\vdots \\
+2 h B_{M}-h^{2} F_{M}
+\end{array}\right]
+\end{equation}
+where
+\begin{equation}
+U^{j}=\left[\begin{array}{c}
+U_{1+(j-1) N} \\
+U_{2+(j-1) N} \\
+U_{3+(j-1) N} \\
+\vdots \\
+U_{N-1+(j-1) N} \\
+U_{j N}
+\end{array}\right], \quad F_{j}=\left[\begin{array}{c}
+f_{1+(j-1) N} \\
+f_{2+(j-1) N} \\
+f_{3+(j-1) N} \\
+\vdots \\
+f_{N-1+(j-1) N} \\
+f_{j N}
+\end{array}\right]
+\end{equation}
+and
+\begin{equation}
+B_{i}=\left[\begin{array}{c}
+g_{1, M}^{\nu}+g_{1, M}^{h} \\
+g_{2, M}^{h} \\
+g_{3, M}^{h} \\
+\vdots \\
+g_{N-1, M}^{h} \\
+g_{N, M}^{\nu}+g_{N, M}^{h}
+\end{array}\right], B_{j}=\left[\begin{array}{c}
+g_{1, M-j}^{\nu} \\
+0 \\
+0 \\
+\vdots \\
+0 \\
+g_{N, M-j}^{v}
+\end{array}\right](1<j<M), B_{M}=\left[\begin{array}{c}
+g_{1,1}^{v}+g_{1,1}^{h} \\
+g_{2,1}^{h} \\
+g_{3,1}^{h} \\
+\vdots \\
+g_{N-1,1}^{h} \\
+g_{N, 1}^{v}+g_{N, 1}^{h}
+\end{array}\right] .
+\end{equation}
+This block matrix system shares some resemblance to the one we derived earlier in this section for the Dirichlet problem-but there is one important difference! Whereas the coefficient matrix $A$ for the Dirichlet problem is symmetric, positive definite, and well-conditioned, the above matrix $A$ is, in fact, singular! This can be readily verified since the sum of the entries in each row of $A$ equals zero and therefore the vector $\left[\begin{array}{lllll}1 & 1 & 1 & \cdots & 1\end{array}\right]$ ' is a solution of the homogeneous system $A U=$ 0 . This property of our finite difference model corresponds nicely to the property of the BVP mentioned in Theorem $11.3$ that the solution of the Neumann problem (if exists) is unique only up to an additive constant. Indeed, the fact that $\left[\begin{array}{lllll}1 & 1 & 1 & \cdots & 1\end{array}\right]^{\prime}$ is a solution of the homogeneous system $A U=0$ lets us add a constant vector $\left.c[\begin{array}{ccccc}1 & 1 & 1 & \cdots & 1\end{array}\right]$ ' to any solution of the linear system $A U=C$ and still have a solution. What is even more interesting is that the compatibility condition (37) $\int_{\Omega} f(x, y) d x d y=\int_{\partial \Omega} g(x, y) d s$ for the existence of a solution to the Neumann problem turns out to have the following discrete analogue for the solvability of the discrete system $A U=C$ :
+\begin{equation}
+\frac{1}{2} \sum_{P_{k} \text { corner }} c_{k}+\sum_{P_{k} \text { edge }} c_{k}+2 \sum_{P_{k} \text { interior }} c_{k}=0
+\end{equation}
+We leave the proofs of the facts that (46) is equivalent to $A U=C$ having a solution and that (46) can be viewed as the discrete analogue of the compatibility condition (37) to Exercises 20, and 21. For now, we proceed to verify the compatibility condition and then solve the system, $A U=C$. Since we are dealing with a singular system our usual methods cannot be applied here.\\
+
+\noindent We begin coding the problem into MATLAB; as usual, we do so in a way that is amenable to the creation of more general codes.
+
+\begin{lstlisting}[numbers=none,frame=none]
+>> N=6: M=11: h=0.1;
+>> %next create vector for +/— N-diaqonals
+>> vN=-2*ones(1,N);
+>> for i=2:M—1
+	vN((i—1)*N+1:i*N)=—ones(1,N);
+end
+>> for i=1:length(vN}
+	vNbott(i)=vN(length(vN)+1-i):
+end
+>> A=diag(4*ones(1,N*M))+diag(vN, N)+diag(vNbott,—N);
+
+%next create vector for sub/super diagonals
+>> vl=-ones(1,N-1); v1(1)=—2; v=[v1 0];
+>> v2=-ones(1,N-1); v2(N—1)=-2; vbott=[v2 0];   
+>> for i=1:M-1
+if i<M-l
+	v=[v v1 0]; vbott = [vbott v2 0]:
+else
+	v=[v v1]; vbott=[vb0tt v2];
+end
+end
+>> A=A+diag(v,1)+diag(vbott,-1);   
+\end{lstlisting}
+We next create the relevant boundary data and inhomogeneity (right-hand side) function:
+\begin{lstlisting}[numbers=none,frame=none]
+>> xgrid=0:.1:.5; ygrid=0:.1:1;
+>> leftdata=zeros(size(ygrid))'; rightdata= (4-8*ygrid)';
+>> topdata=-2*ones(size(xgrid)); bottomdata=4*ones(size(xgrid)}:
+>> f = inline('2', 'x', 'y');   
+\end{lstlisting}
+from which we may now construct the needed vector $C$:
+\begin{lstlisting}[numbers=none,frame=none]
+>> C=zeros(N*M,1):
+>> for j=M:—1:1
+for i-lzN
+	C(i+N*(M-j))=-h^2*f(xgrid(i),ygrid(j)):
+	if i == 1
+		C(i+N*(M-j))=C(i+N*(M—j))+2*h*leftdata{j):
+	elseif 1 == N
+		C(i+N*(M-j))=C(i+N*(M-j})+2*h*rightdata{j);
+end
+end
+end
+>> C(1:N)=C(1:N)+2*h*topdata';
+>> C(M*N-N+1:M*N)= C(M*N-N+1:M*N)+2*h*bottomdata':   
+\end{lstlisting}
+We now have constructed the known matrices $A$ and $C$ of the singular linear system $A U=C$. For good measure we check the validity of the discrete compatibility condition (46):
+$$
+\frac{1}{2} \sum_{P_{i} \text { corner }} c_{k}+\sum_{P_{k} \text { edge }} c_{k}+2 \sum_{P_{k} \text { interior }} c_{k}=0 .
+$$
+We need to distinguish the indices $k$ in these three sets. Using some MATLAB notation, these three index sets may be expressed as follows:\\
+\textit{Corners}: $k=1, N, M N-1, M N$,\\
+\textit{Edges}: $k=2:(N-1),(N+1): N:(M N-1),(2 N): N:((M-1) N)$\\
+\textit{Interior nodes}: all remaining indices $k$\\
+
+\noindent The following loop will now evaluate the sum of (46):
+\begin{lstlisting}[numbers=none,frame=none]
+>> sum=0;
+for k=1:length(C)
+	if ismember(k,[l N M*N—N+1 M*N])
+		sum=sum+C(k)/2:
+	elseif ismember(k, {2:(N-1) (N+1):N:(M*N) (2*N):N:((M—1)*N) ...
+		(M*N-N+1):(M*N—l)])
+		 sum=sum+C(k};
+	else   
+ 		 sum=sum+2*C(k);
+ 	end
+end
+>>sum
+\end{lstlisting}
+\mycode{$\rightarrow$sum = 2.2204e-015}\\
+Taking into account floating point errors, this sum is zero, so the system will have a solution. To solve it numerically, we cannot use left divide. We use MATLAB's \texttt{rref} to put the corresponding augmented matrix $[A | C]$ into reduced row echelon form:\footnote{
+We do not advocate using \texttt{rref} to solve singular systems, although we could get more reliable results by working with the Symbolic Toolbox. Apart from this example, we will not be needing to solve any singular linear systems in this book, so we will not delve into a serious discussion of the available numerical methods. Numerical methods for solving singular linear systems are rather sophisticated. The interested reader is encouraged to refer to Chapter 6 of [GoVL-83] or to look at the paper of A. Neumaier [Neu-98] for details.}
+\begin{lstlisting}[numbers=none,frame=none]
+>> Aug=[A C]; Augred=rref(Aug);
+\end{lstlisting}
+We now check that the row reduced augmented matrix has the expected form:
+\begin{lstlisting}[numbers=none,frame=none]
+>> max(abs(Augred(66,:)))
+\end{lstlisting}
+\mycode{$\rightarrow$ans = 0 (Shows the last row is all zeros.)}\\
+If the compatibility condition (46) failed, then the last entry would not be zero, but all other entries in the last row would be zero so there would be no solution.
+\begin{lstlisting}[numbers=none,frame=none]
+>> max(max(abs((Augred(1:65,1:65)-eye(65)))))
+\end{lstlisting}
+\mycode{$\rightarrow$ ans $=0$ (Shows the upper $65 \times 65$ submatrix of Augred is the identity matrix.)}
+A simple solution of $A U=C$ is now obtained by setting $U_{66}=0$ which, because of the special form observed above of Augred, simply amounts to taking $U$ to be the last column of Augred:
+\begin{lstlisting}[numbers=none,frame=none]
+>> U=Augred(:,67);
+\end{lstlisting}
+Since we would like to have $(u(0,0)=) U_{61}$ to equal zero and since constants can be added to solutions, the solution to our problem will be contained in the vector:
+\begin{lstlisting}[numbers=none,frame=none]
+>> U=U-U(61);
+\end{lstlisting}
+We may now build an appropriate matrix of the $u$-values and plot as usual:
+\begin{lstlisting}[numbers=none,frame=none]
+>> Z=zeros(N,M); Z(:)=U; Z=Z';
+
+for i=1:M
+y(i)=ygrid(M+1-i);
+end %as usual, we reverse the order of y-grid for plots
+to be correct.
+>> surf(xgrid,y,Z)
+>> hidden off, xlabel('x-axis'), ylabel('y—axis')   
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.8]{img_1122}
+\caption{(a) (left) Surface plot of the solution to the Neumann problem of Example 11.7. (b) (right) Corresponding plot of isotherms.}
+\end{figure}
+The plot is shown in Figure $11.22$ along with a corresponding isotherm plot. Note the effect of the various boundary conditions on the heat distribution near the edges. Some comments are in order. Such Neumann problems are not very stable numerically. Indeed, for the linear system to have a solution, an exact condition must hold (the discrete compatibility condition (46)); small roundoff errors can lead to a false conclusion of insolvability. Even worse, the discrete compatiblity condition (46) may not hold even when the integral version holds (37). This would happen, for example, if we changed the PDE in the above example to $\Delta u=6 y^{2}$ but leave the $\mathrm{BCs}$ intact. In this case, the reader could check that although the compatibility condition $(37)$ is still valid, the discrete compatibility condition is no longer valid. See Exercise 22 for more details on such pathologies.\\
+
+\noindent Despite the fact that Neumann problems are not very amenable to finite difference schemes (due basically to the exact requirement of the compatibility condition (37)), any other BCs on Poisson's equation (Robin, Dirichlet, or mixed, even with Neumann conditions on some-but not all of the boundary) give rise to a stable problem that can be solved by blending the methods used thus far. We state a relevant theorem and then give an example.\\
+
+\noindent \textbf{THEOREM 11.6:} \textit{(Existence and Uniqueness for the Poisson PDE with Mixed Boundary Conditions)}Suppose that $\Omega$ is a smooth bounded planar domain and that in the BVP
+\begin{equation}
+\left\{\begin{array}{ll}
+(P D E) & \Delta u=f(x, y) \text { on } \Omega, \quad u=u(x, y) \\
+(B C) & p(x, y) \partial u / \partial n+r(x, y) u=g(x, y) \text { on } \partial \Omega
+\end{array},\right.
+\end{equation}
+where $f(x, y)$ has piecewise continuous partial derivatives throughout $\Omega$ and $g(x, y), p(x, y)$, and $r(x, y)$ are piecewise continuous on $\partial \Omega$, with $p(x, y), r(x, y) \geq 0$, and $p(x, y)+r(x, y)>0$ throughout $\partial \Omega$. If $r(x, y)>0$ on some portion of $\partial \Omega$ of positive arclength, then the BVP (47) has a unique solution.\\
+
+\noindent Like Theorem $11.5$, this one can be proved using vector calculus (see for example Sections 81 and 82 of classical textbook [BrCh-93]). The last hypothesis appearing in this theorem simply ensures that the $\mathrm{BCs}$ are not purely Neumann (without this we we could infer nonuniqueness from Theorem 11.5). Problems with such mixed boundary conditions are usually quite amenable to solution by the finite difference methods of this section. For each boundary node involving Neumann or Robin conditions, we introduce a ghost node, while Dirichlet boundary points $(p=0, r>0)$ do not require them. The next exercise for the reader requires such a mixing of methods. Even on a simple rectangular domain, for a mixed BVP (having the same type of $B C$ on each edge) there are $3^{4}=81$ different types of $\mathrm{BC}$ configurations. Thus a general matrix description would not be feasible, but after working through the next exercise for the reader and some of the exercises at the end of this section, the reader should become quite adept at dealing with any sort of $\mathrm{BCs}$.\\
+
+\noindent EXERCISE FOR THE READER 11.8: (a) Numerically solve the following Laplace problem with "mixed type" boundary conditions:
+$$
+\left\{\begin{array}{ll}
+(\mathrm{PDE}) & \Delta u=0, \quad u=u(x, y) \\
+(\mathrm{BC}) & u(x, 0)=0, u_{y}(x, 1)=20 \\
+& u(0, y)=100, u_{x}(1, y)=0
+\end{array} \quad 0 \leq x \leq 1,0 \leq y \leq 1\right.
+$$
+Use a common step size of $h=0.05$. Obtain a surface graph of the solution along with an isotherm plot and interpret as a steady-state heat distribution.
+(b) Repeat with $h=0.02$. Your plots should look like those in Figure $11.23$.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.8]{img_1123}
+\caption{(a) (left) Mesh plot of the solution of the mixed BVP of Exercise for the Reader $11.8$, using a common grid spacing of $h=0.02$. Note how each of the boundary conditions are well depicted near the edges. (b) (right) Corresponding isotherm contour plot. The plots obtained for $h=0.05$ appeared quite identical to these.}
+\end{figure}
+
+\noindent \rule{485pt}{2pt}
+\begin{exercises}\end{exercises}
+\begin{enumerate}
+	\item \textit{(Dirichlet Problems for the Laplace Equation)} For each BVP given, do the following: (i) Set up the finite difference method for solving the problem using common $x$-and $y$-mesh size $h=0.1$, and write down the linear system in block matrix notation. (ii) Use MATLAB to solve the resulting linear system, and produce a mesh plot of the solution surface. (iii) Obtain a contour plot of the isotherms. (iv) Repeat parts (i) through (iii) using $h=0.05$. (v) Repeat parts (i) through (iii) using $h=0.02$.
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item $\left\{\begin{array}{l}\text { (PDE) } \Delta u=0 \text { on } \Omega=\{0<x<2,0<y<1\}, \quad u=u(x, y) \\ (\mathrm{BC}) \quad u(x, 0)=0, u(x, 1)=100, u(0, y)=0, u(2, y)=100\end{array}\right.$
+	\item $\left\{\begin{array}{l}(\mathrm{PDE}) \Delta u=0 \text { on } \Omega=\{0<x, y<1\}, \quad u=u(x, y) \\ (\mathrm{BC}) u(x, 0)=50 x, u(x, 1)=-50 x, u(0, y)=0, u(1, y)=y^{2}-101 y+50\end{array}\right.$
+	\item $\left\{\begin{array}{l}(\mathrm{PDE}) \Delta u=0 \text { on } \Omega=\{3<x<4,2<y<3\}, u=u(x, y) \\ (\mathrm{BC}) \quad u(x, 2)=0, u(x, 3)=0, u(3, y)=0, u(4, y)=100\end{array}\right.$
+	\item $\left\{\begin{array}{l}(\mathrm{PDE}) \Delta u=0 \text { on } \Omega=\{0<x<1,0<y<1\}, u=u(x, y) \\ (\mathrm{BC}) u(x, 0)=20 \sin (2 \pi x), u(x, 1)=50 x(1-x), u(0, y)=u(1, y)=0\end{array}\right.$
+	\end{enumerate}
+	\item \textit{(Dirichlet Problems for the Poisson Equation)} Go through each of parts (i) through (v) of Exercise $\mid$ for the following BVPs:
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item In the BVP of Exercise I(a), change the PDE to $\Delta u=100\left(1-(x-1)^{2}\right)$.
+	\item In the BVP of Exercise I(b), change the PDE to $\Delta u=-f(x, y)$, where $f(x, y)$ is the "bump" function of Example 11.7.
+	\item In the BVP of Exercise 1(c), change the PDE to $\Delta u=f(x, y)$, where
+	$$
+	f(x, y)= \begin{cases}500, & \text { if } x<3.5 \\ 0, & \text { otherwise }\end{cases}
+	$$
+	\item In the BVP of Exercise I(a), change the PDE to $\Delta u=-(2 x)^{2}-(5 y)^{2}$. 
+	\end{enumerate}
+	\item \textit{(Mixed Boundary Value Problems for the Laplace Equation)} Go through each of parts (i) through (v) of Exercise 1 by making the following changes in the BVP (a) of Exercise 1:
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=-20, u_{y}(x, l)=40$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=u_{y}(x, 1)=u_{x}(0, y)=-50$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=u_{y}(x, 1)=u_{x}(0, y)=50$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)+u(x, 0)=u_{y}(x, 1)+u(x, 1)=50$.
+	\end{enumerate}
+	\item \textit{(Mixed Boundary Value Problems for the Poisson Equation)} Go through each of parts (i) through (v) of Exercise 1 by making the following changes in the BVP (a) of Exercise 2 :
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=40, u_{x}(0, y)=40 y$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=-40, u_{x}(0, y)=-40 y$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=u_{y}(x, 1)=10 e^{x}, u_{x}(0, y)=0$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 0)=u_{y}(x, 1)=10 e^{x}, u_{x}(0, y)+u(0, y)=0$.
+	\end{enumerate}
+	\item \textit{(Mixed Boundary Value Problems for the Poisson Equation)} Go through each of parts (i) through (v) of Exercise 1 by making the following changes in the BVP (c) of Exercise 2 :
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 3)=u_{y}(x, 2)=u_{x}(3, y)=80$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{y}(x, 3)=u_{y}(x, 2)=u_{x}(3, y)=-80$.
+	\item Replace the corresponding $\mathrm{BC}$ with $u_{x}(3, y)+10 u(3, y)=0, u_{x}(4, y)+10 u(4, y)=40$.
+	\item Replace the corresponding $\mathrm{BC}$ with $10 u_{x}(3, y)+u(3, y)=0,10 u_{x}(4, y)+u(4, y)=40$.
+	\end{enumerate}
+	\item \begin{enumerate}[label=(\alph*),align=left]
+	\item Using a finite difference method with grid step sizes $h=k=\pi / 5$, solve the following elliptic BVP:
+	$$
+	\begin{cases}(\mathrm{PDE}) & \Delta u+\left(x^{2}+y^{2}\right) u=0 \quad u=u(x, y) \quad 0 \leq x \leq \pi, 0 \leq y \leq \pi \\ (\mathrm{BC}) & u(x, \pi)=\sin (\pi x) \equiv t(x), u(x, 0)=0 \equiv b(x) \\ & u(\pi, y)=\sin (\pi y) \equiv r(y), u(0, y)=0 \equiv \ell(y)\end{cases}
+	$$
+	Plot your numerical solution and then print out the $6 \times 6$ matrix whose entries are the absolute values of the differences of the exact solution $\sin (x y)$ with the approximation at each of the grid points. What is the maximum single error occurring at a grid point?
+	\item Repeat part (a) using step sizes $h=k=\pi / 10$ (the grid for the second question will now be $11 \times 11)$.
+	\item Repeat part (a) once again using step sizes $h=k=\pi / 30$.
+	\end{enumerate}
+	\item \begin{enumerate}[label=(\alph*),align=left]
+	\item Using a central difference approximation for the first-order partial derivative, use the finite difference method to solve the following elliptic boundary value problem:
+	$$
+	\left\{\begin{array}{lll}
+	(\mathrm{PDE}) & \Delta u-u_{x}=2, \quad u=u(x, y) \quad 0 \leq x \leq 1,0 \leq y \leq 1 \\
+	(\mathrm{BC}) & u(x, 1)=0 \equiv t(x), u(x, 0)=0 \equiv b(x) \\
+	& u(.5, y)=0 \equiv r(y), u(0, y)=0 \equiv \ell(y)
+	\end{array}\right.
+	$$
+	with equal grid step sizes $h=k=0.2$.
+	\item Repeat with $h=k=0.1$ and compare the absolute value of the differences of this solution with that of part (a) on common grid points.
+	\item Repeat again with $h=k=0.05$ and compare the absolute value of the differences of this solution with that of part (b) on common grid points.
+	\end{enumerate}
+\end{enumerate}
+NOTE: The next four exercises will take advantage of sparse matrix storage and manipulations in MATLAB; this topic was discussed in Section 7.7.
+\begin{enumerate}[resume]
+	\item \begin{enumerate}[label=(\alph*),align=left]
+	\item Write an M-file whose syntax and functionality is identical to the \texttt{rectanglepoissonsolver} M-file of Exercise for the Reader $11.7$ except that internally this new one will create the coefficient matrix as a sparse matrix. Call this new M-file \texttt{rectanglepoissonsolversp}.
+	\item Test the new program out on the BVP of Example 11.7, and compare performance times with the original one for various step sizes. Allowing a maximum of five minutes on your computer, how many more internal nodes can your new M-file handle compared with the original?
+	\end{enumerate}
+	\item \textit{(Dirichet Problems for the Poisson Equation)} For each of the BVPs given in Exercise 2, start off with a common step size $h=1 / 4$ and solve it using the finite difference method but by storing the coefficient matrix as a sparse data type. Repeat with $h=1 / 8$. Compare the two solutions at common interior grid points. Continue this halving of step sizes and comparing consecutive solutions until the maximum error falls below 1/100 of the maximum observed amplitude of the most recent numerical solution, or the computation takes the computer more than 5 minutes.
+	\item \textit{(Mixed Boundany Value Problems for the Laplace Equation)} Repeat the instructions of Exercise 9 for each of the BVPs of Exercise $3 .$
+	\item \textit{(Mixed Boundary Value Problems for the Poisson Equation)} Repeat the instructions of Exercise 9 for each of the BVPs of Exercise 4 .
+	\item \textit{(A Block Matrix Finite Difference Method for Unequal Step Sizes)} We apply the finite difference method to the BVP (20): $\left\{\begin{aligned} \text { (PDE) } \Delta u=f(x, y) & \text { on } \Omega, \\(\mathrm{BC}) \quad u=g(x, y) & \text { on } \partial \Omega \end{aligned}\right.$ on a rectangular domain $\Omega=\{(x, y): 0<x<a, 0<y<b\}$; using step size $h$ in the $x$-direction and $k$ in the $y$-direction, the scheme is as in (20): $2\left(\frac{h^{2}}{k^{2}}+1\right) u_{i, j}-u_{i+1, j}-u_{i-1, j}-\left(\frac{h^{2}}{k^{2}}\right) u_{i, j+1}-\left(\frac{h^{2}}{k^{2}}\right) u_{i, j-1}=-h^{2} q_{i, j}$.
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Using the natural ordering of grid points (Figure 11.11), what would the block matrix representation $A U=C$ look like for this scheme?
+	\item Adapt the scheme of part (a) to solve the BVP of Exercise 1 (a) using step sizes $h=0.05$ and $k=0.025$.
+	\item Adapt the scheme of part (a) to solve the BVP of Exercise 1(d) using step sizes $h=0.02$ and $k=0.05$.
+	\end{enumerate} 
+	\item \textit{(A Block Matrix Finite Difference Method for a Mixed BVP with Unequal Step Sizes)} If we apply the finite difference method to the BVP :
+	$$
+	\left\{\begin{array}{ll}
+	(\mathrm{PDE}) & \Delta u=f(x, y), \quad u=u(x, y) \\
+	(\mathrm{BC}) & u(x, 0)=T_{b}, u_{y}(x, l)=G_{t} \\
+	& u(0, y)=T_{l}, u_{x}(1, y)=G_{r}
+	\end{array}, 0 \leq x \leq a, 0 \leq y \leq b\right.
+	$$
+	using step size $h$ in the $x$-direction and $k$ in the $y$-direction, the scheme is as in $(20)$ :
+	$$
+	2\left(\frac{h^{2}}{k^{2}}+1\right) u_{i, j}-u_{i+1, j}-u_{i-1, j}-\left(\frac{h^{2}}{k^{2}}\right) u_{i, j+1}-\left(\frac{h^{2}}{k^{2}}\right) u_{i, j-1}=-h^{2} q_{i, j} .
+	$$
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Using the natural ordering of grid points and using ghost nodes as needed (cf. Figure 11.21), what would the block matrix representation $A U=C$ look like for this scheme?
+	\item Adapt the scheme of part (a) to solve the BVP of Exercise for the Reader $11.8$ using step sizes $h=0.05$ and $k=0.025$.
+	\end{enumerate}
+	\item Use Taylor's theorem to prove the forward and backward difference formulas (38) and (39).
+\end{enumerate}
+NOTE: Many existence and uniqueness theorems for PDE boundary value problems, as well as the theoretical development of the finite element method, depend essentially on some integral identities known collectively as \textbf{Green's identfties}. These identities are easily derived from the \textbf{divergence theorem} of vector calculus. These theorems are valid in any number of dimensions $(2,3$, or more $)$ but we develop them now in the two-dimensional setting (of this chapter). The next several exercises are thus intended for students who have studied multivariable calculus. Indeed, the divergence theorem is introduced and dealt with extensively in vector calculus courses.\\
+
+\noindent \textbf{DIVERGENCE THEOREM}: If $\Omega$ is a bounded domain in the $x y$-plane that has a smooth boundary $\partial \Omega$, and $\vec{F}(x, y)=\left(F_{1}, F_{2}\right)$ is any vector-valued function with continuous first partial derivatives on $\Omega \cup \partial \Omega$, then we have $\Omega \cup \partial \Omega$
+\begin{equation}
+\iint_{\Omega} \operatorname{div} \vec{F}(x, y) d x d y=\int_{\infty} \vec{F}(x, y) \bullet n(x, y) d s
+\end{equation}
+where $\operatorname{div} \vec{F}(x, y)$ denotes the divergence of the vector field $\vec{F}: \operatorname{div} \vec{F}(x, y)=\partial F_{1} / \partial x+\partial F_{2} / \partial y, n=$ $n(x, y)$ is the outward pointing normal vector at the point $(x, y)$ on the boundary, and $d s$ denotes arclength. The product on the right is the dot product.
+\begin{enumerate}[resume]
+	\item \textit{(Green's Identities)} Use the divergence theorem to prove each of the following integral identities. In each, the domain $\Omega$ is as in the divergence theorem, and the functions $u=u(x, y)$ and $v=v(x, y)$ appearing in the integrals are assumed to have continuous second partial derivatives. Also, the \textbf{gradient} operator is denoted by $\nabla$, so, for example, $\nabla u(x, y)$ is the vector-valued function $\left(u_{x}, u_{y}\right)$.
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item \textbf{Green's First Identity}: $\iint_{\boldsymbol{\Omega}} v \frac{\partial u}{\partial n} d s=\iint_{\Omega} \nabla v \cdot \nabla u d x d y+\iint_{\Omega} v \Delta u d x d y$
+	\item \textbf{Green's Second Identity}: $\int_{\partial \Omega}\left(u \frac{\partial v}{\partial n}-v \frac{\partial u}{\partial n}\right) d s=\iint_{\Omega}(u \Delta v-v \Delta u) d x d y$
+	\end{enumerate}	
+	\textbf{Suggestion}: For part (a), first show that $\nabla \cdot(\nu \nabla u)=\nabla v \nabla u+v \Delta u$ and then apply the divergence theorem. Use part (a) to prove part (b).
+	\item \textit{(Proof of Uniqueness for the Dirichlet Problem for the Poisson's Equation)} Complete the following outline to prove part of the uniqueness statements of Theorem 11.3: The Dirichlet problem $\Delta u=f(x, y)$ on $\Omega$ (smooth) and $u=g(x, y)$ on $\partial \Omega$, can have at most one solution.
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Suppose that we have two solutions $u_{1}$ and $u_{2}$ of this BVP. Show that $u \equiv u_{1}-u_{2}$ is harmonic $(\Delta u=0)$ in $\Omega$ and vanishes on $\partial \Omega$.
+	\item Use Green's first identity to get that $\iint_{\Omega}|\nabla u(x, y)|^{2} d x d y=0$.
+	\item Show that $|\nabla u(x, y)|^{2} \equiv 0$ on $\Omega$ (see Exercise 14 of Section 10.5).
+	\item Show that $u$, having vanishing gradient on $\Omega$, must be constant on each component (piece) of $\Omega$. By the zero boundary conditions for $u$, we must have in fact $u \equiv 0$ and hence $u_{1} \equiv u_{2}$ on $\Omega$.
+	\end{enumerate}
+	\item \textit{(Proof of Uniqueness for the Neumann Problem for the Poisson's Equation)} Using the outline of the previous exercise as a guide, prove that if $u_{1}$ and $u_{2}$ both solve the Neumann problem $\Delta u=f(\dot{x}, y)$ on $\Omega$ (smooth) and $\partial u / \partial n=g(x, y)$ on $\partial \Omega$, then $u_{2} \equiv u_{1}+C$ throughout $\Omega$, for some constant $C$.
+	\item \textit{(Proof of Uniqueness for the Robin Problem for the Poissons Equation)} Using the outline of the Exercise 16 as a guide, prove that if $u_{1}$ and $u_{2}$ both solve the Robin problem $\Delta u=f(x, y)$ on $\Omega$ (smooth) and $\partial u / \partial n+r u=0$ on $\partial \Omega$, where $r>0$ throughout $\partial \Omega$, then $u_{2} \equiv u_{1}$ throughout $\Omega$.
+	\item \textit{(Dirichlet's Principle)} Consider the Dirichlet problem for the Laplace equation on a smooth domain $\Omega$ : $\Delta u=0$ on $\Omega$ and $u=g(x, y)$ on $\partial \Omega$. For any "admissible" function $v$ that has continuous partial derivatives on $\Omega$ and satisfies the boundary condition $v=g(x, y)$ on $\partial \Omega$, we define the \textbf{energy} of $v$ by:
+	$$
+	E(v)=\iint_{\Omega}|\nabla v(x, y)|^{2} d x d y .
+	$$
+	\textbf{Dirichlet's Principle} states that the solution of the Dirichlet problem has the lowest possible energy (physicists refer to this as the "ground state") among all admissible functions. In other words, if $u$ is the solution of the Dirichlet problem and $v$ is any other admissible function, then $E(v) \geq E(u)$. Follow the outline below to prove Dirichlet's principle:
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Consider the difference function $w=v-u$, which has zero boundary data. Show that we can expand:
+	$$
+	E(v)=E(u)+\iint_{\Omega} \nabla u \cdot \nabla w d x d y+E(w) .
+	$$
+	\item Use Green's first identity to show that the middle term (the double integral) in the above expansion is zero. Since each of the three energies is nonnegative, deduce Dirichlet's principle.
+	\end{enumerate}
+	\item \textit{(The Discrete Compatibility Condition for the Neumann Problem)}
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Consider the smallest possible discretization of a Neumann problem that actually has interior nodes: a $3 \times 3$ grid of nodes. The problem then has nine nodes, as shown in Figure 11.24. Show that the discretization $A U=C$ of the Neumann problem (36)
+	$$
+	\left\{\begin{array}{l}
+	\text { (PDE) } \Delta u=f(x, y) \text { on } \Omega, u=u(x, y) \\
+	(\mathrm{BC}) \partial u / \partial n=h(x, y) \text { on } \partial \Omega
+	\end{array}\right.
+	$$
+	has a solution if and only if the condition (46) (specialized to the present setting):
+	$$
+	\frac{1}{2} c_{1}+c_{2}+\frac{1}{2} c_{3}+c_{4}+2 c_{5}+c_{6}+\frac{1}{2} c_{7}+c_{8}+\frac{1}{2} c_{9}=0
+	$$
+	holds.
+	\item Generalize your proof in part (a) to show that a general discretization $A U=C$ of the Neumann problem (36) will have a solution if and only if (46)
+	$$
+	\frac{1}{2} \sum_{P_{k}\text {corner }} c_{k}+\sum_{P_{k} \text { edge }} c_{k}+2 \sum_{P_{k} \text { interior }} c_{k}=0
+	$$
+	holds.
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.8]{img_1124}
+	\caption{A small grid for easy visualization of some properties of finite difference schemes.}
+	\end{figure}
+	\textbf{Suggestion}: For part (a), use (46) to formulate the following sequence of elementary row operations to perform to the last row of the augmented matrix $[A \mid C]$
+	$$
+	R_{9} \rightarrow \frac{1}{2} R_{9}+R_{8}+\frac{1}{2} R_{7}+R_{6}+2 R_{5}+R_{4}+\frac{1}{2} R_{3}+R_{2}+\frac{1}{2} R_{1} .
+	$$
+	Verify that this will clear out the last row of $A$, and leave the expression in (46) in the last entry
+	\end{enumerate}
+	\item \textit{(Interpretation of the Discrete Compatibility Condition for the Neumann Problem)}
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item When specialized to the case of a $3 \times 3$ grid on a square as in Figure 11.24, with $a=b=1$, and $h=1 / 2$, interpret the condition (46) (specialized to the present setting) $\frac{1}{2} c_{1}+c_{2}+\frac{1}{2} c_{3}+c_{4}$ $+2 c_{5}+c_{6}+\frac{1}{2} c_{7}+c_{8}+\frac{1}{2} c_{9}=0$ as a discrete version of the compatibility condition $\int_{\Omega} f(x, y) d x d y=\int_{\partial \Omega} g(x, y) d s$.
+	\item Generalize your proof in part (a) to interpret condition
+	(46) $\frac{1}{2} \sum_{P_{k} \text { corner }} c_{k}+\sum_{P_{k} \text { edge }} c_{k}$ $+2 \sum_{p_{k} \text { interior }} c_{k}=0$ as a discrete version of the compatibility condition.
+	\end{enumerate}
+	\textbf{Suggestion}: For part (a), write out the vector $C$ as defined by (43), (44), (45):
+	$$
+	C=\left[2 h\left(g_{1,3}^{\nu}+g_{1,3}^{h}\right)-h^{2} f_{11}, 2 h g_{1,3}^{h}-h^{2} f_{12}, 2 h\left(g_{2,3}^{\nu}+g_{2,3}^{h}\right)-h^{2} f_{13}, 2 h g_{2,1}^{\nu}-h^{2} f_{21}, \ldots\right] \text { '. }
+	$$
+	Interpret each individual term of $(46)$ as an approximation to a subintegral of one of the integrals in (37); for example, for the first term $\frac{1}{2} c_{1}$ of (46), we can write:
+	$$
+	\begin{aligned}
+	\frac{1}{2} c_{1} &=h\left(g_{1,3}^{\nu}+g_{1,3}^{h}\right)-\frac{1}{2} h^{2} f_{11} \\
+	& \approx 2 \int_{3 / 4}^{1} g^{\nu}(0, y) d y+2 \int_{0}^{1 / 4} g^{h}(x, 1) d y-2 \int_{0}^{1 / 4} \int_{3 / 4}^{1} f(x, y) d y d x
+	\end{aligned}
+	$$
+	(simply approximate the functions on the sets of integration by the corresponding constants on the left). Once this is done, it will be apparent that the expression (46) is an approximation to $2\left(\int_{\partial \Omega} g(x, y) d s-\int_{\Omega} f(x, y) d x d y\right)$ and thus setting this latter expression equal to zero produces (37).
+	\item In Example 11.8, suppose that the PDE is changed to $\Delta u=6 y^{2}$ but the boundary conditions are left the same.
+	\begin{enumerate}[label=(\alph*),align=left]
+	\item Show that the compatibility condition (37) $\int_{\Omega} f(x, y) d x d y=\int_{\alpha \Omega} g(x, y) d s$ holds and thus this Neumann problem has a solution.
+	\item Using the same grids as were employed in Example $11.8$, show that the discrete compatibility condition (46) $\frac{1}{2} \sum_{P_{k} \text { corner }} c_{k}+\sum_{P_{k} \text { edge }} c_{k}+2 \sum_{P_{i} \text { interior }} c_{k}=0$ fails. Thus, for this BVP, although it has a solution, the associated linear system (from the finite difference method) does not have a solution.
+	\item In the language of Exercise 21, explain how these two compatibility conditions are not consistent.
+	\item In the language of Exercise 21, explain why the discrete approximations of (46) correspond exactly to the integrals of (37) for the original BVP of Example 11.8.
+	\end{enumerate}
+	\textbf{Suggestion}: For part (c), the discrete approximations corresponding to the boundary integral $\int_{\partial_{\Omega}} g(x, y) d s$ are exact, but those for the domain integral $\int_{\Omega} f(x, y) d x d y$ are not.
+	\item Construct a Neumann problem $\left\{\begin{array}{ll}(P D E) & \Delta u=f(x, y) \text { on } \Omega, u=u(x, y) \\ (B C) & \partial u / \partial n=g(x, y) \text { on } \partial \Omega\end{array}\right.$ on a rectangular domain along with a grid of nodes for the finite difference method having the property that the compatibility condition (37) $\int_{\Omega} f(x, y) d x d y=\int_{\partial \Omega} g(x, y) d s$ fails and thus this Neumann problem does not have a solution, but such that the corresponding discrete compatibility condition (46) $\frac{1}{2} \sum_{P_{k}\text {corner }} c_{k}+\sum_{P_{k} \text { edge }} c_{k}+2 \sum_{P_{k} \text { interior }} c_{k}=0$ does hold. Explain your example in the context of Theorem $11.6$ and Exercises 20 and 21 .
+\end{enumerate}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	\clearpage
+\end{document} 

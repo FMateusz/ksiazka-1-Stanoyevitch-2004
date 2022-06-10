@@ -1,0 +1,597 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\newpage
+
+\chapter{Appendix A: Introduction to MATLAB's Symbolic Toolbox }
+\label{chap:chap_14}
+
+\textbf{A.l: WHAT ARE SYMBOLIC COMPUTATIONS?}
+\\
+\\
+
+This appendix is meant as a quick reference for occasions in which exact 
+mathematical calculations or manipulations are needed and are too arduous to 
+expediently do by hand. Examples include the following: 
+\begin{enumerate}
+	\item Computing the (formula) for the derivative or antiderivative of a function
+	\item Simplifying or combining algebraic expressions
+	\item Computing a definite integral exactly and expressing the answer in terms of known functions and constants such as $\pi, e, \sqrt{7}$ (if possible)
+	\item Finding analytical solutions of differential equations (if possible)
+	\item Solving algebraic or matrix equations exactly (if possible)
+\end{enumerate}
+Such exact arithmetic computations are known collectively as \textbf{symbolic computations}. MATLAB is unable to perform symbolic computations but the Symbolic Math Toolbox is available (or included with the Student Version), which computing system. Thus, MATLAB has essentially subcontracted symbolic computations to MAPLE, and acts as a "middleman" so that it is not necessary to use two separate softwares while working on problems. Invoking such symbolic capabilities needs specific actions on the user's part, such as declaring certain variables to be symbolic variables. This is a safety device since symbolic calculations are usually much more expensive than the default floating point calculations and are usually not called for (see Chapter 5 ). It is important to point out that symbolic expressions are different data types than the other sorts of data types that MATLAB uses. Consequently, care needs to be taken when passing data from one type of data to the other. Moreover, most mathematical problems have answers that cannot be expressed in terms of well-known functions (e.g., $\ln (x), \sqrt{x}, \arcsin (x))$ and/or constants (e.g., $e, \pi, \sqrt{2})$, and therefore cannot be solved symbolically.
+\\
+\\
+There are also circumstances where the precision of MATLAB's floating point 
+arithmetic is not good enough for a given computation and we might wish to work 
+in more than the 15 (or so) significant digits that MATLAB uses as a default. As a 
+middle ground between this and exact arithmetic, the Symbolic Toolbox also 
+offers what is called variable precision arithmetic, where the user can specifyhow many significant digits to work with. We point out that there are a few 
+special occasions where symbolic calculations have been used in the text.\\ 
+The remainder of this appendix will present a brief survey of some of the 
+functionality and features of the Symbolic Toolbox that will be useful for our 
+needs. All of the MATLAB code and output given in a particular section results 
+from a new MATLAB session having been started at the beginning ofthat section.
+\\
+\\
+\textbf{A.2: ANALYTICAL MANIPULATIONS AND CALCULATIONS }
+\\
+\\
+To begin a symbolic calculation, we need to declare the relevant variables as 
+symbolic. To declare x, y as symbolic variables we enter: \\
+\\
+\texttt{>> syms x y}
+\\
+\\
+Let's now do a few algebraic manipulations. The basic algebra manipulation 
+commands that MAPLE has are as follows: \texttt{expand},\texttt{factor},\texttt{simplify}; they 
+work on algebraic expressions just as anyone who knows algebra would expect. 
+The next examples will showcase their functionality. We point out that any new 
+variable introduced whose formula depends on a symbolic variable will also be 
+symbolic. 
+\\
+\\
+\texttt{>> $p2=(x+2*y)^{\wedge}2 ; , p4= (x+2*y)^{\wedge}4;$ }\\
+\texttt{>> expand(p2) \%Multiplies out the binomial product. }\\
+\texttt{->ans = $x^{\wedge}2+4*x*y+4*y^{\wedge}2$}\\
+\texttt{>> expand(p4)}\\
+\texttt{-> $ans=x^{\wedge}4+8*x^{\wedge}3*y+24*x^{\wedge}2*y^{\wedge}2+32*x*y^{\wedge}3+16*y^{\wedge}4$}\\
+\texttt{>> pretty(ans) \%Puts the answer in a prettier form.}\\
+\texttt{>> 4 ~3~ 2 2 ~3~ 4 }\\
+\texttt{x + 8 x y + 24 x y + 32 x y +16y}
+\\
+\\
+In general, for any sort of analytical expression exp, the command 
+expand (exp) will use known analytical identities to try and rewrite exp in a 
+form in which sums and products are expanded whenever possible. 
+\\
+\\
+\texttt{>> prett y (expand (tan ($x+2*y$) ))->}
+$$
+\frac{\tan (x)+2 \frac{\tan (y)}{1-\tan (y)}}{} \frac{\tan (x) \tan (y)}{1-2-\tan (y)^{\wedge}2}
+$$
+To clean up (simplify) any sort of analytical expression (involving powers, 
+radicals, trig functions, exponential functions, logs, etc.), the \texttt{simplify} function 
+is extremely useful. 
+\texttt{>> simplify(log($2*sin(x)^{\wedge}2+cos(2*x)))$~~->ans=0 }\\
+\texttt{>> $h=x 6-x^{\wedge}5-12*x^4-2*x^{\wedge}3+41*x^{\wedge}2+51*x+18;$ }\\
+\texttt{>> pretty(factor(h)) }\\
+\texttt{->  ~~2 ~~~ 3 }\\
+\texttt{(x+2(x-3)(x+1)}\\
+\\
+This function will also factor positive integers into primes. This brings up an important point. MATLAB also has a function factor that (only) does this latter task. Due to the limitations of floating point arithmetic, MATLAB's version is more restrictive than MAPLE's; it is programmed to give an error if the input exceeds $2^{32} \approx 4.2950 \mathrm{e}+009$.
+\\
+\\
+\texttt{>> factor(3$^{\wedge}$101-1) }\\
+??? Error using ==> factor \\
+The maximum value of n allowed is 2$^{\wedge}$32\\
+\texttt{>> factor(sym(3$^{\wedge}$101-1)) \%declaring the integer input as symbolic 
+}\\
+\texttt{\%brings forth the MAPLE version this command. 
+}\\
+\texttt{>>ans = (2)$^{\wedge}110^*(43)^*(47)^*(89)^*(6622026029) $}
+\\
+\\
+Whereas the Student Version of MATLAB includes access to many of the 
+Symbolic Toolbox commands that one might need to supplement MATLAB 
+functionality, the complete Symbolic Toolbox (for MATLAB's professional 
+version) includes unrestricted access to all of MAPLE's commands. AH of the 
+Symbolic Toolbox commands that we discuss in this Appendix are available with 
+the Student Version. To learn more about additional Symbolic Toolbox 
+commands available on the version of MATLAB that you are using, consult the 
+Help menu. 
+\\
+\\
+The factor function is programmed to look only for real rational factors, so it will not perform factorizations such as $x^{2}-3=(x+\sqrt{3})(x-\sqrt{3})$ or $x^{2}+1=(x+i)(x-i)$. Recall (Chapter 6) that it is not always possible to find explicit expressions for all roots/factors of a polynomial, but nevertheless, by the fundamental theorem of algebra, any degree $n$ polynomial always has $n$ roots (counted according to multiplicity) that can be real or complex numbers. In cases where it is possible, the solve command can find them for us; otherwise, it produces decimal approximations.
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&If \texttt{exp} is a symbolic expression that involves the symbolic variable \texttt{var},\\
+&this command asks MAPLE to find all real and complex roots of the\\
+\texttt{solve (exp,var ) -> }&equation exp=0. In cases where they cannot be found exactly\\
+&(symbolically), numerical (decimal) approximations are found. If there are\\
+& additional symbolic variables, MAPLE solves for var in terms of them.\\
+\hline
+\end{tabular}
+\end{center}
+To solve the equation $x^{5}-5 x^{4}+8 x^{3}-40 x^{2}+16 x-80=0$, we simply enter:
+\\
+\\
+\texttt{>>solve($x^{\wedge}5-5^*x^{\wedge}4+8^*x 3-40^*x 2+16^*x-80$ ) }\\
+\texttt{>> \%shorter syntax if only one var }\\
+\texttt{->ans = [2*i] [2i] [5]}\\
+\texttt{[-2*i] [-2i] }\\
+The slightly perturbed polynomial equation $x^{5}-5 x^{4}+8 x^{3}-40 x^{2}+16 x-78=0$, also has five different roots, but they cannot be expressed exactly, so MAPLE will give us numerical approximations, in its default 32 digits:\\
+\\
+\texttt{>> solve($x^{\wedge}5-5^*x 4+8^*x 3-40^*x 2+16^*x-78) $}\\
+\\
+\texttt{->ans =}
+\texttt{[ -.28237724125630031806612784925449e-1 -}\\
+\texttt{2.1432362125064684675126753513414'i]}\\
+\texttt{[ -.28237724125630031806612784925449e-1 + }\\
+\texttt{2.1432362125064684675126753513414*i]}\\
+\texttt{[ .29428740076409528006464576345708e-1 -}\\
+\texttt{1.8429038593310837866143850920505*1] }\\
+\texttt{[ .294287400764095280064645763457086-1 + }\\
+\texttt{1.8429038593310837866143850920505*1] }\\
+\texttt{[ 4.9976179680984410076002964171595] }
+\\
+\\
+\newpage
+We can get the quadratic formula for the solutions of $ax^2
+ +bx + c = 0$ with the 
+following commands: 
+\\
+\\
+\texttt{>> syms a b c, solve($a^*x^{\wedge}2+b^*x+c,x$) }\\
+\texttt{-> ans = [ $1/2/a^*(-b+(b^{\wedge}
+2-4^*a^*c)^{\wedge}
+(1/2))] [ 1/2/a^*(-b-(b^{\wedge}
+2-4^*a^*c)^{\wedge}
+(1/2))$] }
+\\
+\\
+Similarly, the Tartaglia formulas for the three solutions of the general cubic 
+$ax^3-bx^2+cx+d=0$, could be obtained.
+\\
+\\
+\textbf{A.3: CALCULUS }
+\\
+\\
+Table A.l summarizes the Symbolic Toolbox commands needed to perform the 
+most common "clerical" tasks in calculus: differentiation and integration. 
+\\
+\\
+\textbf{TABLE A.l:} Differentiation and integration using the Symbolic Toolbox. 
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+Assume that f has been stored as a symbolic function of symbolic variables: \\f(x) (or /(x,y...), if we have a function of several variables. \\
+\hline
+\texttt{diff(f,x ) -> }&Computes $f^{\prime}(x)=\frac{d f}{d x}\left(\right.$ or $\left.\frac{\partial f}{\partial x}\right)$\\
+\hline
+\texttt{diff(f,x ) -> }&Computes $f^{\prime}(x)=\frac{d^2f}{dx^2}\left(\right.$ or $\left.\frac{\partial^2 f}{\partial x^2}\right)$\\
+\hline
+\texttt&Calculates (if possible) an antiderivative\\
+{int(f,x ) -> }& of $f(x)$ : $\int f(x) d x$ (does not add on integration\\
+&constant). If there are other variables,\\
+& they are treated as constant parameters.\\
+\hline
+&Calculates (exactly, if possible) the definite\\
+\texttt{int(f,x,a,b ) ->}& integral: $\int_{a}^{b} f(x) d x$ (does not add on integration\\
+& constant).If there are other variables,\\
+& they are treated as constant parameters.\\
+	\hline
+\end{tabular}
+\end{center}
+\begin{center}
+(a) $\frac{d}{d x} x^{x}$~~~~~~~~~~~~~~~~~~~~~~~~
+(b) $\frac{\partial^{3}}{\partial x \partial y^{2}}\left(\frac{\cos \left(x+y^{2}+z^{3}\right)}{1+x^{2}+y^{2}}\right)$~~~~~~~~~~~~~~~~~~~~~~~~~
+(c) $\int \ln (x) d x$\\
+(d) $\int \sin \left(x^{2}\right) d x$~~~~~~~~~~~~~~~~~~~~~~~~~
+(e) $\int_{0}^{1} \sin \left(x^{2}\right) d x$~~~~~~~~~~~~~~~~~~~~~~
+(f) $\int_{-\infty}^{-\infty} e^{-x^{2}} d x$\\
+\end{center}
+SOLUTION: Part (a): 
+\\
+\\
+\texttt{>> syms x y z }\\
+\texttt{>> $diff(x^{\wedge}x ) ->ans=x^{\wedge}x*(log(x)+1)$ }
+\\
+\\
+So the answer is $x^{\wedge}x(lnx+1).$ 
+\\
+\\
+Part (b): 
+\\
+\\
+\texttt{>> f=cos($x+y^{\wedge}2+z^{\wedge}3)/ (l+x^{\wedge}2+y^{\wedge}2$); }\\
+\texttt{>> pdf=diff (diff (f,y, 2),x) ~~~ -> pdf= }\\
+\texttt{$4*sin(x+y^{\wedge}2+z^{\wedge}3)*y^{\wedge}
+2/(x^{\wedge}
+2+1+y^{\wedge}
+2)+8*cos(x+y^{\wedge}
+2+z^{\wedge}
+3)*y^{\wedge}
+2/(x^{\wedge}
+2+1+y^{\wedge}
+2)^{\wedge}
+2^{*}x$}\\
+\texttt{$2*cos(x+y^{\wedge}
+2+z^{\wedge}
+3)/(x^{\wedge}
+2+1+y^{\wedge}
+2)+4*sin(x+y^{\wedge}
+2+z^{\wedge}
+3)/(x^{\wedge}
+2+1+y^{\wedge}
+2)^{\wedge}
+2*x+8*cos(x+y^{\wedge}
+2+z^{\wedge}
+3)y^{\wedge}2/(x^{\wedge} $}\\
+\texttt{$2+1+y^{\wedge}2)^{\wedge}2-32*sin(x+y^{\wedge}2+z^{\wedge}3)*y^{\wedge}2/(x^{\wedge}2+1+y^{\wedge}2)^{\wedge}3*x-8*sin(x+y^{\wedge}2+z^{\wedge}3)/x^{\wedge}2+1+y^{\wedge}2)^{\wedge}3*y^{\wedge}2- $}\\
+\texttt{$48*cos(x+y^{\wedge}
+2+z^{\wedge}
+3)/(x^{\wedge}
+2+1+y^{\wedge}
+2)^{\wedge}
+4^{\wedge}2*x+2*sin(x+y^{\wedge}
+2+z^{\wedge}
+3)/(x^{\wedge}
+2+1+y^{\wedge}
+2)^{\wedge}
+2+8*cos(x+y^{\wedge}
+2+z^{\wedge}3)$}
+\texttt{$/(x 2+1+y 2)^{\wedge}3*x $}
+\\
+\\
+We shall refrain from putting this mess in usual mathematical notation, but we will 
+do something else with it later (which is why we gave it a name). 
+\\
+\\
+Part(c):\texttt{$>> int (log (x))~~~ -> ans=x*log(x)-x$}
+\\
+\\
+Part (d):\texttt{$>> int (sin (x^{\wedge}2), x)~~~ -> ans= 1/2*2^{\wedge}
+(1/2)*pi^{\wedge}
+(1/2)*FresnelS(2^{\wedge}
+(1/2)/pi^{\wedge}
+(1/2)*x) $ }
+\\
+\\
+\\
+This answer to part (d) needs a bit of explanation. Most indefinite integrals 
+cannot be expressed in terms of the elementary functions. Using some additional 
+special functions (e.g., Bessel functions, hypergeometric functions, the error 
+function, and the above Fresnel sine function), additional integrals can be 
+computed (but still only relatively few); thus MAPLE has found an antiderivative 
+for us, but for most practical purposes this answer by itself is not so interesting. A 
+similar result turns up (by the fundamental theorem of calculus) for the 
+corresponding definite integral. 
+\\
+\\
+Part (e):\texttt{$>> int (sin (x*2), x, 0, 1)~~~ -> ans=1/2*FresnelS(2^{\wedge}
+(1/2)/pi^{\wedge}
+(1/2))*2^{\wedge}
+(1/2)*pi^{\wedge}
+(1/2)$} 
+\\
+\\
+The following commands show how to get a more useful decimal answer out of 
+this or any answer to a symbolic computation: 
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&If a is a symbolic answer representing a number and d is a\\
+\texttt{vpa (a, d) ->}&nonnegative number, this command will convert the number a to \\
+&decimal form with d significant digits, \texttt{vpa} stands for variable\\
+&precision arithmetic. The default value is \texttt{$d=32^{1}$} \\
+\hline
+\texttt{digits(d )}&Has the same result as above, but now the default value of \texttt{d=32} digits\\
+\texttt{vpa (a) -> }&of MAPLE's arithmetic is reset to d in subsequent calculations. \\
+\hline
+\end{tabular}
+\end{center}
+\footnotetext[1]{
+ Thus, MAPLE uses approximately a 32-digit floating point arithmetic system in cases where exact 
+answers are not possible. This is about double of what MATLAB uses and for many computations is 
+overkill since large-scale calculations would proceed much more slowly. Thus, generally speaking, use 
+of the Symbolic Toolbox should be limited to symbolic computations, except in the occasional 
+instances where, say, the problem being solved is very ill-conditioned and roundoff errors run out of 
+control with IEEE floating point arithmetic (see Chapter 5).}
+\texttt{>> vpa (ans)~~~ ->ans =31026830172338110180815242316540}\\
+\\
+If we (for whatever reason) wanted to see the first 100 digits of $\Pi$, we could 
+simply enter: 
+\\
+\\
+\texttt{>>vpa (pi, 100) ~~~ ->ans=3.14159265358979323846264338327950288419716939937510582 
+ }
+ \texttt{0974944592307816406286208998628034825342117068}\\
+\\
+Part (f): Improper integrals are done with the same syntax as proper integrals. 
+\\
+\\
+\texttt{>> int ($exp(-x^{\wedge}2),x,-Inf, Inf)~~~ ->ans = pi^{\wedge}(1/2)$}
+\\
+\\
+Thus we get that $\int_{-\infty}^{-\infty} e^{-x^{2}} d x=\sqrt{\pi}$
+\\
+\\
+Often, we need to evaluate a symbolic expression or substitute some of its 
+variables with other variables or expressions. The following command subs is 
+very useful in this respect: 
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&If S is a symbolic expression, old is a symbolic variable appearing\\
+&in S (or a vector of variables), new is a symbolic number or\\
+\texttt{subs (S,old ,new) ->}&symbolic expression (or a vector of such things having the same\\
+&size as old), this command will produce the symbolic expression\\
+&resulting from substituting in S each occurrence of \texttt{old} by the\\
+&corresponding expression in \texttt{new}. \\
+\hline
+\end{tabular}
+\end{center}
+For example, suppose (in the setting of Example A.l) we wanted to compute
+$$
+\left.\frac{\partial^{3}}{\partial x \partial y^{2}}\left(\frac{\cos \left(x+y^{2}+z^{3}\right)}{1+x^{2}+y^{2}}\right)\right|_{\substack{x=\pi \\ y=\pi / 2}\\z=0}
+$$
+From what we have already computed, we could simply enter:
+\\
+\\
+\texttt{>> subs (pdf, [x y z], [pi pi/2 0]) -> ans =-0.2016 }
+\\
+\\
+Since all symbolic variables were substituted with nonsymbolic (ordinary 
+MATLAB floating point) numbers, the result is now a regular MATLAB floating 
+point number. To retain the accuracy of symbolic computation in the substitution, 
+we could instead enter: 
+\\
+\\
+\texttt{>> exact=subs(pdf,[ x y z] , sym([p i pi/ 2 0))) ; \%suppress messy output }\\
+\texttt{>> vpa(exact) \%could specif y more o r les s digit s here . }\\
+\texttt{->ans = -.20163609585811087949860391144560 }
+\\
+\\
+Note that the main difference is that in the latter we declared the numbers to be 
+symbolic (exact): 
+\\
+\\
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&if \texttt{sbn} is a (MAPLE) symbolic number, this command creates a\\
+\texttt{fpn=double(sbn) ->}&(MATLAB) floating point number \texttt{fpn } from it essentially by rounding it \\
+&off to about 16 digits of accuracy. \\
+\hline
+&If fpn is a (MATLAB) floating point number, this command creates a\\
+\texttt{sbn=sym(fpn ) ->}&(MAPLE) symbolic number sbn from it by treating it as an exact number.\\
+\hline
+\end{tabular}
+\end{center}
+The Symbolic Toolbox has a simple way for computing Taylor series: \\
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&If \texttt{<fun> } is a symbolic expression representing a function of a\\
+&(previously declared) symbolic variable (say x), n is a positive integer,\\
+\texttt{taylor (<fun>, n,a ) ->}&and a is a real number, this command will produce the Taylor 
+\\
+&polynomial of the function centered at JC = a of order (degree at most)\\
+&\texttt{n-1} . The last input a is optional, the default value is a = 0. \\
+\hline
+\end{tabular}
+\end{center}
+\textbf{EXAMPLE A.2:} Obtain the 15th-order Taylor polynomial of $f(x) = x^2
+ tan(x^3) centered at x = 0. $\\
+ \\
+SOLUTION:\\
+\\
+\texttt{>> taylor ($x^{\wedge}3*tan(x^{\wedge}2),16) -> ans =x^{\wedge}5+1/3*x^{\wedge}9+2/15*x^{\wedge}13$}\\
+\\
+In the notation of Chapter 2, we can thus write $p_{15}(x)=x^{5}+\frac{x^{9}}{3}+\frac{2 x^{13}}{15}$.
+\\
+\\
+\textbf{A.4: ORDINARY DIFFERENTIAL EQUATIONS$^{2}$ }
+\\
+\\
+\footnotetext[2]{
+ Since this book does not assume that the reader has had any experience with differential equations, it 
+is advised that those readers without such experience wait to read this subsection until they have started 
+studying Part II of the book (ordinary differential equations).}
+Analytic (symbolic) solutions of ordinary differential equations and systems of 
+them, if they exist, can be found using the \texttt{dsolve} function from the Symbolic 
+Toolbox.$^3$
+\footnotetext[3]{Although most ODEs (like indefinite integrals) do not have analytic solutions, this tool is 
+occasionally useful when dealing with special well-known types of ODE which do have analytic 
+solutions. The Symbolic Toolbox freely uses a collection of special functions when it looks for 
+symbolic solutions}
+ Since the function has many available features, we roughly indicate the 
+possible syntaxes for its use and give examples of each. 
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&Looks for the analytic general solution of the differential \\
+\texttt{dsolve ($'<diff\_eq> ' $)->}&equation: \texttt{$<dif\_f\underline eq>$}, in which first, second, third, etc.\\
+&derivatives are denoted by D, D2, D3, etc., using the default\\
+&independent variable t. \\
+\hline
+\texttt{dsolve($'<diff \_ eq>','var'$) -> )}&Works as above but specifies the independent variable to be \texttt{var. }\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{EXAMPLE A.3:} Find, if possible, analytic general solutions of the following 
+ODEs:\\
+(a) $y^{\prime}=y^{2}-2 y, y=y(t)$\\
+(b) $u^{\prime \prime}+5 u^{\prime}-6 u=\cos (x), u=u(x)$\\
+(c) $y^{\prime \prime}=y^{2}-2 y, y=y(t)$\\
+\\
+SOLUTION: Part (a): 
+\\
+\\
+\texttt{>> y= dsolve ( $'Dy=y^{\wedge}2-2*y'$) }\\
+\texttt{>>y=2/(1+2*exp(2*t)*C1) }\\
+\\
+\\
+So we have the general solution,$y(t)=\frac{2}{1+2 C e^{2 t}}$,  where C is an arbitrary 
+constant. Note that the dsolv e did not even require us to declare any symbolic 
+variables. The \texttt{subs} function, however, does require symbolic variables. Thus, if 
+we try to set \texttt{C1} equal to zero in y directly, we get an error message. But by first 
+declaring \texttt{C1} as a symbolic variable, we get the intended result:
+\\
+\\
+\texttt{>> subs(y,C1,0 ) }\\
+\texttt{??? Undefined function or variable 'C1'}\\
+\\
+\texttt{>> syms C1 }\\
+\texttt{>> subs(y,Cl,0 )}\\
+\texttt{-> ans =2 
+}\\
+\\
+Part (b): If we do not specifically declare x as the independent variable, x will be 
+treated as a constant and we get an unintended solution of a more trivial 
+differential equation. The second MATLAB code below gives us what we want. 
+\\
+\\
+\texttt{>> dsolve('D2u+5*Du-6*u=cos(x)') 
+}\\
+\texttt{>> ans=-1/6*cos(x)+C1*exp(t)+C2*exp(-6*t) }\\
+\\
+\texttt{>> dsolve('D2u+5*Du-6*u=cos(x)', 'x') 
+}\\
+\texttt{-> ans = -7/74*cos(x)+5/74*sin(x)+C1*exp(x)+C2*exp(-6*x) }\\
+\\
+So we have the general solution: 
+$$
+u(x) = C_1e^x+C_2e^{-6x}-(7/74)cos(x)+(5/74)sin(x) 
+$$
+where $C_1$, $C_2$ are arbitrary constants.
+\\
+\\
+ Part (c): \\
+ \\
+\texttt{>> dsolve('D2y=$y^{\wedge}2-2*y$' ,'x' ) }\\
+\texttt{-> Warning: Explicit solution could not be found; implicit solution returned.}\\
+\texttt{> In C:\ MATLAB6p5\ toolbox\ symbolic\ dsolve.m at line 292 }\\
+\texttt{->ans =[ $3*Int(1/(6*a^{\wedge}3-18*a^{\wedge}2+9*C1)^{\wedge}(1/2),a=''..y)-x-C2=0, -3*Int(1/(6*a^{\wedge}3-$}
+\texttt{$18*a^{\wedge}2+9*C1)^{\wedge}(1/2),a=''..y)-x-C2=0] $}\\
+\\
+Thus we see that, despite its simplicity (and similarity to the ODE in part (a)), the 
+ODE of Part (c) does not have symbolic solutions. 
+\\
+\\
+The \texttt{dsolve} function can also solve initial and boundary value problems, the 
+conditions need only be inserted as additional inputs after the DE:
+\\
+\\
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+\texttt{dsolve('<diff\_ eq>','cond1',}&Syntax is as above but with additional inputs \\
+\texttt{'cond2',. . .,'var')->}&corresponding to auxiliary conditions (boundary or\\
+&initial) which we would like the solution to satisfy.\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{EXAMPLE A.4:} Solve the following ODE problems.\\
+(a) $\left\{\begin{array}{l}y^{\prime}(t)=2 t y \\ y(1)=1\end{array}\right.$\\
+(b) $\left\{\begin{array}{l}y^{\prime \prime}+y=e^{x} \cos (x) \\ y(0)=1, y^{\prime}(\pi)=0\end{array}\right.$
+\\
+\\
+SOLUTION:
+\\
+\\
+Part (a): 
+\\
+\\
+\texttt{>> $y=dsolve ( Dy=2*t*y' , ' y (1) =1') ->y =1/exp(1)*exp(t^{\wedge}2)$}\\
+\\
+Thus we get the exact solution y(t)=$e^{t^2-1}$
+\\
+\\
+Part (b): 
+\\
+\\
+\texttt{>>y=dsolve('D2y+y=exp(x)*cos(x)'y(0)=1' ,Dy(pi)=0,'x' ) }\\
+\texttt{-> ans =-1/10*exp(x)*(sin(2*x)2*cos(2*x))*cos(x) +}\\
+\texttt{(l/5*(cos(x)+2*sin(x))*exp(x)*cos(x)+2/5*exp(x))*sin(x)+4/5*cos(x)+(-3/5*cosh(pi)-}\\
+\texttt{3/5*sinh(pi))*sin(x)}
+\\
+\\
+To plot a symbolic function, we could use the subs command to create vectors of 
+y-coordinates and plot using MATLAB as shown in Chapter 1. Alternatively, the 
+Symbolic Toolbox supplies a function \texttt{ezplot} that will directly and painlessly 
+plot a symbolic function of a single symbolic variable.
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&If f represents a symbolic function of a single symbolic variable (say \\
+\texttt{ezplotff f, [ab] ) ->}&x), and a < b are real numbers, this command will produce a plot of\\
+&f(x) over the interval [a, b]. \\
+\hline
+\end{tabular}
+\end{center}
+With \texttt{y} still stored as the solution of the last boundary value problem, the following 
+command will result in the plot shown in Figure A.1.
+ \\
+ \\
+\texttt{>> ezplot(y, [0 pi])}
+\begin{figure}[H]
+\includegraphics[width=0.9\linewidth]{40}
+	\centering
+	\label{pfig:ch13_40}
+\end{figure}
+\textbf{FIGURE A.l:} Plot of the solution of the boundary value problem of Example A.4(b).
+\\
+\\
+The final useful feature of \texttt{dsolv} e is that it can solve systems of ODE. The 
+syntax is a natural extension of the previous codes: 
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+&Syntax is as above but with additional\\
+\texttt{dsolve ('<diff\_ eql>','<diff\_ eq2>' , . . .}&differential equations with other\\
+\texttt{'cond1','cond2',...,'var')->}&unknown functions and a listing of all\\
+&additional conditions to be satisfied by\\
+&the unknown functions.\\
+\hline
+\end{tabular}
+\end{center}
+\textbf{EXAMPLE A.5:} Solve the following linear first order system of ODEs: 
+$$
+\left\{\begin{array}{ll}
+x^{\prime}(t)=3 x+2 y+z, & x(0)=1 \\
+y^{\prime}(t)=x-y+z, & y(0)=2 \\
+z^{\prime}(t)=2 x+2 y+2 z, & z(0)=3
+\end{array} .\right.
+$$
+\\
+\\
+SOLUTION
+\\
+\\
+\texttt{>> [x,y,x]=dsolve('Dx=3*x+2*y+z','Dy=x-)}\\
+\texttt{y+z','Dz=2*(x+y+z)','x(0)=1, 'y(0)=2','z(0)=3') }\\
+\\
+\texttt{-> x=4/41*(-328*exp(t)+369*exp(-1/2*(-3+41$^{\wedge}$(l/2))*t)-81*41$^{\wedge}$(1/2)*exp(-1/2*(-}\\
+\texttt{3+41 $^{\wedge}$( 1 /2))*t)+81 *41 $^{\wedge}$( 1 /2)*exp( 1 /2*(3+41 $^{\wedge}$( 1 /2))* t)+369*exp( 112 *(3+41 $^{\wedge}$( 1 /2)) *t))/( 1 +41 $^{\wedge}$( 1}\\
+\texttt{1+41$^{\wedge}$(1/2))}\\
+\\
+\texttt{y=-2/41*(-738*exp(-1/2*(-3+41$^{\wedge}$(1/2))*t)-18*41$^{\wedge}$(1/2)*exp(-1/2*(-3+41$^{\wedge}$(1/2))*t)-}\\
+\texttt{164*exp(t)+18*41 $^{\wedge}$( 1/2)*exp(1 /2*(3+41 $^{\wedge}$(1/2))*t)-738*exp(1/2*(3+41 $^{\wedge}$( 1/2))*t))/(1+41 $^{\wedge}$(1/2-1+41$^{\wedge}$(1/2)) }\\
+\\
+\texttt{z =-4/41 *(-369*exp(-1 /2*(-3+41$^{\wedge}$( 1 /2))*t)+81 *41$^{\wedge}$( 1 /2)*exp(-1 /2 *(-3+41$^{\wedge}$( 1 /2))*t)-492*exp}\\
+\texttt{81*41$^{\wedge}$(1/2)*exp(1/2*(3+41$^{\wedge}$(1/2))*t)}\\
+\texttt{-369*exp(1/2*(3+41$^{\wedge}$(1/2))*t))/(1+41$^{\wedge}$(1/2))/(-1+41$^{\wedge}$(1/2))}
+\\
+\\
+By themselves, these solutions do not appear to be very enlightening. But like any 
+other symbolic functions, they can be manipulated and combined and vectors can 
+be created from them using subs, so that much qualitative analysis, as is done in 
+the text, can be performed.
+\newpage
+\newpage
+
+\clearpage
+\end{document} 
