@@ -2480,11 +2480,21 @@ Reader \ref{exreader:7_14}), but the condition number introduced later in this c
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{fig_7_26}
-    \caption{Three possibilities for the system (21)
+    \caption[Three possibilities for the system (21)] {Three possibilities for the system (21)
         $\begin{cases}
                 ax+by=e \\
                 cx+dy=f
             \end{cases}$
+%         $ \left\{ \alpha \\  \right. $
+%         \protect{%
+%         \left\{%
+%          \begin{array}{c}%
+%			ax+by=e \\%
+%            cx+dy=f%
+%          \end{array}%
+%         \right.%
+%         }%
+%         $
         (a) well-conditioned, (b) ill-conditioned (nearly parallel lines), and (c) singular (parallel lines).}
     \label{fig:fig_7_26}
 \end{figure}
@@ -5650,7 +5660,10 @@ Thus $A$ transforms the two-dimensional vector $x$ into another vector $y=\left[
 
 Sometimes, however, there will exist vectors $x$ for which $y$ will be parallel to $x$ (meaning that $y$ will point in either the same direction or the opposite direction as $x$; see Figure 7.38b ). In symbols, this would mean that we could write $y=\lambda x$ for some scalar (number) $\lambda$. Such a vector $x$ is called an eigenvector for the matrix $A$, and the number $\lambda$ is called an associated eigenvalue. Note that if $\lambda$ is positive, then $x$ and $y=\lambda x$ point in the same direction and len $(y)=\lambda \cdot \operatorname{len}(x)$, so that $\lambda$ acts as a magnification factor. If $\lambda$ is negative, then (as in Figure 7.38b) $y$ points in the opposite direction as $x$, and finally if $\lambda=0$, then $y$ must be the zero vector (so has no direction). By convention, the zero vector is parallel to any vector. This is permissible, as long as $x$ is not the zero vector. This definition generalizes to square matrices of any size.
 \begin{figure}[H]
-\includegraphics[width=1\textwidth]{img_5}\caption{Actions of the matrix $A=\left[\begin{array}{cc}-2 & -1 \\ 0 & 1\end{array}\right]$ on a pair of vectors: (a) (left) The (shorter) vector $x=\left[\begin{array}{l}1 \\ 1\end{array}\right]$ of length $\sqrt{2}$ gets transformed to the vector $y=A x=\left[\begin{array}{c}-3 \\ 1\end{array}\right]$ of length $\sqrt{10}$. Since the two vectors are not parallel, $x$ is not an eigenvector of $A$. (b) (right) The (shorter) unit vector $x=\left[\begin{array}{l}1 \\ 0\end{array}\right]$ gets transformed to the vector $y=A x=\left[\begin{array}{c}-2 \\ 0\end{array}\right]$ (red) of length 2 , which is parallel to $x$, therefore $x$ is an eigenvector for $A$.
+\includegraphics[width=1\textwidth]{img_5}
+\caption[lalala ]
+{Actions of the matrix 
+$A=\left[\begin{array}{cc}-2 & -1 \\ 0 & 1\end{array}\right]$ on a pair of vectors: (a) (left) The (shorter) vector $x=\left[\begin{array}{l}1 \\ 1\end{array}\right]$ of length $\sqrt{2}$ gets transformed to the vector $y=A x=\left[\begin{array}{c}-3 \\ 1\end{array}\right]$ of length $\sqrt{10}$. Since the two vectors are not parallel, $x$ is not an eigenvector of $A$. (b) (right) The (shorter) unit vector $x=\left[\begin{array}{l}1 \\ 0\end{array}\right]$ gets transformed to the vector $y=A x=\left[\begin{array}{c}-2 \\ 0\end{array}\right]$ (red) of length 2 , which is parallel to $x$, therefore $x$ is an eigenvector for $A$.
 }
 \end{figure}
 \noindent

@@ -197,10 +197,13 @@ $t_{n+1}=t+h, \quad y_{n+1}=y_{n}+h f\left(t_{n}, y_{n}\right)$,\\
 $n=1,2,3, \cdots$\\
 \hline
 \end{tabular}
-\captionof{figure}{Illustration of Euler's method for solving the first-order IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ using step size $h$. The approximation is the dotted graph and the actual solution is the solid graph.}
-\columnbreak
+
+%\captionof{figure}{Illustration of Euler's method for solving the first-order IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ using step size $h$. The approximation is the dotted graph and the actual solution is the solid graph.}
+%\columnbreak
+
 \begin{figure}[H]
 \includegraphics[width=0.4\textwidth]{img_16}
+\caption[Opis zastepczy]{Illustration of Euler's method for solving the first-order IVP $\left\{\begin{array}{l}y^{\prime}(t)=f(t, y(t)) \\ y(a)=y_{0}\end{array}\right.$ using step size $h$. The approximation is the dotted graph and the actual solution is the solid graph.}
 \end{figure}
 \end{multicols}
 
@@ -648,7 +651,7 @@ This plot is shown of Figure 8.12a. Since the Runge-Kutta plot cannot be disting
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{img_25}
-\caption{In solving the initial value problem of Example $8.7$ using step size $h=$ $0.01$, only the graph of the Euler approximation $\left(\begin{array}{llll}0 & 0 & 0 & 0\end{array}\right)$ is distinguishable from that of the exact solution (solid graph) (Upper Left). The remaining three plots compare errors. Upper Right: Euler (o o o o) vs. improved Euler $(x \times \times \times x)$; Lower Left: improved Euler vs. Runge-Kutta (+ + + +); and Lower Right: Runge-Kutta. Note the scale of the $y$-axes to see how very much smaller the errors are with the Runge-Kutta method.}
+\caption[Opis zastepczy]{In solving the initial value problem of Example $8.7$ using step size $h=$ $0.01$, only the graph of the Euler approximation $\left(\begin{array}{llll}0 & 0 & 0 & 0\end{array}\right)$ is distinguishable from that of the exact solution (solid graph) (Upper Left). The remaining three plots compare errors. Upper Right: Euler (o o o o) vs. improved Euler $(x \times \times \times x)$; Lower Left: improved Euler vs. Runge-Kutta (+ + + +); and Lower Right: Runge-Kutta. Note the scale of the $y$-axes to see how very much smaller the errors are with the Runge-Kutta method.}
 \end{figure}
 \noindent
 EXERCISE FOR THE READER 8.4: Indicate the changes needed in the creation of the vectors ye, yie, and yrk of the above example. Also, assuming these vectors have been constructed, give MATLAB commands which would produce Figure $8.12 \mathrm{~b}$.
@@ -935,7 +938,7 @@ Part (b): As warned in the cautionary note above, even the simple function $f(t,
       \hspace{0.05\linewidth}
       \begin{minipage}{0.40\linewidth}
           \begin{figure}[H]
-              \includegraphics[width=\linewidth]{fig_8_14}
+              \includegraphics[width=\linewidth]{fig_8_14.png}
               \label{fig:fig_8_14}
               \caption{Plot of the Runge-Kutta approximation to the solution of the IVP of Example 8.11. Note the size of the y-coordinates.}
           \end{figure}
@@ -1540,7 +1543,7 @@ for some function $Q$. Numerical stability of the method will be equivalent to $
 \begin{figure}{H}
 	\centering
  	\includegraphics[width=0.8\linewidth]{fig_8_21}
-	 \captionof{figure}{(a) (left) Instability of the Euler method and (b) (right) of the Runge-Kutta method in solving the simple IVP: $\left\{\begin{array}{l}y^{\prime}(t)=-2 y \\ y(0)=5\end{array}\right.$, whose exact solution $y(t)=5 e^{-2t}$ (flat) decays rapidly to zero. The numerical solutions (jagged/curved) diverge exponentially; the Euler solution does so in an oscillatory fashion, while the Runge-Kutta solution does so unilaterally. A larger step size was needed to make the Runge-Kutta method unstable.}
+	 \caption[lalala]{(a) (left) Instability of the Euler method and (b) (right) of the Runge-Kutta method in solving the simple IVP: $\left\{\begin{array}{l}y^{\prime}(t)=-2 y \\ y(0)=5\end{array}\right.$, whose exact solution $y(t)=5 e^{-2t}$ (flat) decays rapidly to zero. The numerical solutions (jagged/curved) diverge exponentially; the Euler solution does so in an oscillatory fashion, while the Runge-Kutta solution does so unilaterally. A larger step size was needed to make the Runge-Kutta method unstable.}
 	 \label{fig:fig_8_21}
 \end{figure}
 
