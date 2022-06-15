@@ -22,7 +22,7 @@ The FEM methods basically split up the domain of the problem into small pieces, 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch13_2}
-	\caption{\textsf{A triangulation of a planar domain consisting of a rectangle with two circles deleted. The circular boundary portions are thus approximated by polygons (as shown). This triangulation was created using MATLAB's PDE Toolbox. }}
+	\caption[A triangulation of a planar domain consisting of a rectangle with two circles deleted.]{\textsf{A triangulation of a planar domain consisting of a rectangle with two circles deleted. The circular boundary portions are thus approximated by polygons (as shown). This triangulation was created using MATLAB's PDE Toolbox. }}
 	\label{pfig:ch13_2}
 \end{figure}
 Even in two dimensions, of course, there are numerous ways to perform such a triangulation. We point out some important features of the triangulation in Figure 13.2. First, notice that the triangles in the mesh all seem to be roughly the same size. This uniformity is not necessary, but for a general problem on a given domain it is usually the best generic triangulation scheme. Another important property is that none of the sidelengths of any triangle in the mesh is much shorter than the other two sides of the same triangle. Another way to describe this property is that the area of the inscribed circle of any of thesetriangles is not much smaller than the area of the triangle. This feature is essential in order that the finite element method be stable. 
@@ -77,7 +77,7 @@ Figure 13.2:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch13_3}
-	\caption{\textsf{A FEM solution of the steady-state heat problem (1) on the domain and triangulation as pictured in Figure 13.2. Contour lines have been added. This solution was created using MATLAB's PDE Toolbox.}}
+	\caption[A FEM solution of the steady-state heat problem]{\textsf{A FEM solution of the steady-state heat problem (1) on the domain and triangulation as pictured in Figure 13.2. Contour lines have been added. This solution was created using MATLAB's PDE Toolbox.}}
 	\label{pfig:ch13_3}
 \end{figure}
 
@@ -89,7 +89,7 @@ In the triangulation process, it is not always efficient to make the triangles b
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch13_4}
-	\caption{\textsf{A triangularon of the planar domain of Figure 13.2 that was obtained using an adaptive FEM to solve the steady-state heat problem (1). Compare with the triangularon of Figure 13.2 and, in particular, notice how the triangles closer to the boundaries of the circles (facing inward) are much smaller than the farther away triangles. This triangularon was created using MATLAB's PDE Toolbox. .}}
+	\caption[A triangularon of the planar domain]{\textsf{A triangularon of the planar domain of Figure 13.2 that was obtained using an adaptive FEM to solve the steady-state heat problem (1). Compare with the triangularon of Figure 13.2 and, in particular, notice how the triangles closer to the boundaries of the circles (facing inward) are much smaller than the farther away triangles. This triangularon was created using MATLAB's PDE Toolbox. .}}
 	\label{pfig:ch13_4}
 \end{figure}
 
@@ -138,7 +138,7 @@ hexagonal domain shown in Figure 13.5.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{ch13_5}
-	\caption{\textsf{A simple triangulation of a hexagonal domain. The eight nodes are labeled in red and the eight triangles are also labeled. The ordering is somewhat arbitrary. It is just a coincidence that the number of nodes coincides with the number of triangles. At this point we left out x- and y-coordinates so as to emphasize the element numbering.}}
+	\caption[A simple triangulation of a hexagonal domain.]{\textsf{A simple triangulation of a hexagonal domain. The eight nodes are labeled in red and the eight triangles are also labeled. The ordering is somewhat arbitrary. It is just a coincidence that the number of nodes coincides with the number of triangles. At this point we left out x- and y-coordinates so as to emphasize the element numbering.}}
 	\label{pfig:ch13_5}
 \end{figure}
 
@@ -154,7 +154,7 @@ the node $\#4$ of Figure 13.5 is illustrated in Figure 13.6.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{ch13_6}
-	\caption{\textsf{A graph of the piecewise linear basis or pyramid function $\Phi_4 =\Phi_4 (x,y)$ for node $\#4$ in the triangularon of the hexagonal domain of Figure 13.5. The function takes on the value 1 at node $\#4$, zero at all other nodes, and is linear on each triangle. Thus, on the unshaded triangles, the pyramid function is identically zero. 
+	\caption[A graph of the piecewise linear basis or pyramid function]{\textsf{A graph of the piecewise linear basis or pyramid function $\Phi_4 =\Phi_4 (x,y)$ for node $\#4$ in the triangularon of the hexagonal domain of Figure 13.5. The function takes on the value 1 at node $\#4$, zero at all other nodes, and is linear on each triangle. Thus, on the unshaded triangles, the pyramid function is identically zero. 
 }}
 	\label{pfig:ch13_6}
 \end{figure}
@@ -351,7 +351,7 @@ heights for the edges, the coloring is not very elaborate. With finer triangulat
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch13_7}
-	\caption{\textsf{MATLAB's graphical rendition of the basis function $\Phi_4(x,y)$ of Example 13.1. }}
+	\caption[MATLAB's graphical rendition of the basis function]{\textsf{MATLAB's graphical rendition of the basis function $\Phi_4(x,y)$ of Example 13.1. }}
 	\label{pfig:ch13_7}
 \end{figure}
 Given a triangulation of a domain and any function or data / defined on the 
@@ -399,7 +399,7 @@ Figure 13.8 illustrates the Delaunay triangulation for a very small set of four 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch13_8}
-	\caption{\textsf{Two triangulations are shown for the same 4-point set $\left\{ p_1,p_2,p_3, p_4 \right\}$. (a) (left) The first one violates the Delaunay condition since $p_3$ lies in the circumcircle of the larger triangle, (b) (right) The second gives the Delaunay triangulation. Circles and centers are drawn in to show the validity of the condition. }}
+	\caption[Two triangulations are shown for the same 4-point set]{\textsf{Two triangulations are shown for the same 4-point set $\left\{ p_1,p_2,p_3, p_4 \right\}$. (a) (left) The first one violates the Delaunay condition since $p_3$ lies in the circumcircle of the larger triangle, (b) (right) The second gives the Delaunay triangulation. Circles and centers are drawn in to show the validity of the condition. }}
 	\label{pfig:ch13_8}
 \end{figure}
 
@@ -614,7 +614,7 @@ $$
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch13_13}
-	\caption{\textsf{  Illustration of a typical region $\Omega_n$ (shaded) for the triangulation scheme of part (c) of Example 13.2. Such regions are useful for general triangulation schemes when it is desired to have large finer meshes near a special point of the domain. }}
+	\caption[Illustration of a typical region  for the triangulation scheme of part]{\textsf{  Illustration of a typical region $\Omega_n$ (shaded) for the triangulation scheme of part (c) of Example 13.2. Such regions are useful for general triangulation schemes when it is desired to have large finer meshes near a special point of the domain. }}
 	\label{pfig:ch13_13}
 \end{figure}
 
@@ -708,14 +708,14 @@ Plotting of the nodes as well as the corresponding triangulation is accomplished
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{ch13_14}
-	\caption{\textsf{  Node distribution from the solution of part (c) of Example 13.2. The 1457 nodes are constructed in clusters with each cluster getting its grid gap size cut in half as we move in towards the special boundary point (1,0). The exercises will examine some related schemes for this domain where there is a smoother transition in gap sizes of nodes as we progress toward (0,1).  }}
+	\caption[Node distribution from the solution]{\textsf{  Node distribution from the solution of part (c) of Example 13.2. The 1457 nodes are constructed in clusters with each cluster getting its grid gap size cut in half as we move in towards the special boundary point (1,0). The exercises will examine some related schemes for this domain where there is a smoother transition in gap sizes of nodes as we progress toward (0,1).  }}
 	\label{pfig:ch13_14}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{ch13_15}
-	\caption{\textsf{(a) (left) The Delaunay triangulation corresponding to the network of nodes of Figure 13.14 that has 2733 triangles, (b) (right) A $20 \times$ magnification of the triangulation of (a) near the point of focus (1,0).}}
+	\caption[The Delaunay triangulation corresponding to the network of nodes]{\textsf{(a) (left) The Delaunay triangulation corresponding to the network of nodes of Figure 13.14 that has 2733 triangles, (b) (right) A $20 \times$ magnification of the triangulation of (a) near the point of focus (1,0).}}
 	\label{pfig:ch13_15}
 \end{figure}
 
@@ -929,7 +929,7 @@ end
 \includegraphics[width=0.9\linewidth]{4}
 	\centering
 	\label{pfig:ch13_1}
-	\caption{A spy diagram of the stiffness matrix for Example 13.4. The possible 
+	\caption[A spy diagram of the stiffness matrix]{A spy diagram of the stiffness matrix for Example 13.4. The possible 
 nonzero entries account for only 0.46$\%$ of all of the entries, so this stiffness matrix is sparse 
 as stiffness matrices usually are. The fuzzy patterns (top and bottom) correspond to the 
 boundary nodes being added after the interior nodes. The number of such patterns is the 
@@ -1158,7 +1158,7 @@ of this problem called \texttt{inpolygon} that will test if a given point lies w
 \includegraphics[width=0.9\linewidth]{6}
 	\centering
 	\label{pfig:ch13_6}
-	\caption{Two triangulations of airfoils, (a) (left) A single component airfoil similar to that in 
+	\caption[Two triangulations of airfoils]{Two triangulations of airfoils, (a) (left) A single component airfoil similar to that in 
 Figure 13.20(d). The triangulation is structured using lines normal to the surface (with increasing 
 density as we near the boundary), (b) A more complex airfoil with flaps. The triangulation is done in 
 a way that the node density increases as we near crucial portions of the configuration$^8$}
@@ -1181,7 +1181,8 @@ with the FEM are used to model aerodynamics and design space and air vessels.}
 \includegraphics[width=0.9\linewidth]{7}
 	\centering
 	\label{pfig:ch13_7}
-	\caption{(a) (left) Illustration of a typical rectangular element with its four nodes consisting 
+	\caption[Illustration of a typical rectangular element with its four nodes consisting 
+of its vertices]{(a) (left) Illustration of a typical rectangular element with its four nodes consisting 
 of its vertices, (b) (right) Tessellation of a domain into rectangular elements.}
 \end{figure}
 	\item For the domain in Figure 13.22(b), let the outer vertices be (1,1), (7,1), (7,3), (3,3), (3,6), (7,6), 
@@ -1245,11 +1246,11 @@ $$
 where $\lambda(x)$ is a positive-valued step function on $a \leq x \leq b$, i.e., there is a partition of $a \leq x \leq b: a=a_{0}<a_{1}<a_{2}<\cdots<a_{n+1}=b$ into $n+1$ subintervals $I_{i}=\left[a_{i-1}, a_{i}\right] \quad(1 \leq i \leq n+1)$ and corresponding positive numbers $c_{i}(1 \leq i \leq n+1)$, such that $\lambda(x)$ can be written as: $\lambda(x)=c_{i} \Leftrightarrow x \in I_{i}(1 \leq i \leq n+1)$. A typical horizontally blocklike domain is illustrated in Figure 13.23.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{8}
+\caption{Illustration of a typical horizontally blocklike domain a for Exercise 20.}
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.23:}  Illustration of a typical horizontally blocklike domain a for Exercise 20.
-\\
+
 (a) Write an M-file, \texttt{[x  y  nodes elems] =recttess\_hbd\_basic (a, c, h)}, that will perform a basic rectangular tessellation of a horizontally blocklike domain in the following fashion. The input parameters are firstly two vectors a and $c$ that contain the defining parameters of the horizontally blocklike domain to be tessellated. It is assumed of course that $c$ has one less component than a, the components of a are increasing, and the components of $c$ are positive (otherwise they would not define a horizontally blocklike domain).
 The final input variable, $h$, will be the (approximate) sidelength of each of the rectangles used in the tessellation. More specifically, each of the elements (rectangles) in the tessellation should have its length $\left(l\right.$ ) and width (w) lying within the interval: $\frac{1}{2} h \leq w, l \leq 2 \cdot h$. The tessellation will be a basic one in the sense that it will be completely determined by a single set of horizontal and vertical grid lines. (Note: This is not the case for the tessellation of Figure 13.22(b), since different sets of vertical lines are used for the grids in the upper and lower passages.) The first two output variables $x$ and $y$ are vectors of the values of the corresponding vertical lines and horizontal lines defining the tessellation. The third output variable, nodes, is a 2-column matrix giving all of the nodes of the tessellation. The fourth and final output variable, elems, is a 4-column matrix giving the node numbers of the each of the elements, where the ordering of the elements starts at the lower left, moves all the way up, then back down to the bottom to the next element on the right, and so on.
 (b) Run your program using the following sets of input variables:
@@ -1264,13 +1265,12 @@ The final input variable, $h$, will be the (approximate) sidelength of each of t
 and for each of these for which a tessellation is created, plot the tessellation. For (iii), your plot should look like the one shown in Figure 13.24.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{9}
+\caption{A tessellation of a horizontally blocklike domain obtained using a program of 
+Exercise 16 using the input data of part (b)(iii). There are 4694 nodes and 4432 rectangular 
+elements.}
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.24:} A tessellation of a horizontally blocklike domain obtained using a program of 
-Exercise 16 using the input data of part (b)(iii). There are 4694 nodes and 4432 rectangular 
-elements.
-\\
 \textbf{Suggestions:} Part (a): First use the sort command to create a vector \texttt{cvals}  of the values of $c$ (in increasing order), with zero appended as the smallest value. Now find the minimum gaps occurring in the vectors \texttt{cvals}  and a. The inputted \texttt{sidelength}  should not be too small relative to the smaller of these two gaps. If the \texttt{sidelength} exceeds, say, twice this minimum gap value, have the function exit with an error flag (and no tessellation). Now move on to defining a vector $x$ for the vertical gridlines of the tessellation. Use a loop, running through each of the gaps determined from the values of a. If the size of a certain gap is less than twice the \texttt{sidelength}, let $x$ simply contain the values of a at the ends of this gap (no interior grid values); otherwise, use $k-1$ interior and equally spaced gridlines within the gap, where \texttt{k=cei l (gap/sidelength).}. (You need to verify that this will result in elements having horizontal sidelengths within the desired bounds.) In a similar fashion, define a vector $y$ for the horizontal gridlines of the tessellation. Next, use the vectors a, c, $x$, and $y$ to define the matrix \texttt{nodes}. This can be done with a double loop, but note that you will need to set it up so the larger $c$ value is used in cases where $x$ (i) lies on an interface of two blocks. Finally use the vectors $x, y$ and the matrix nodes to create the matrix \texttt{elems} of elements. You should set things up so that for a given element (row of the \texttt{elems} matrix) the nodes progress, say counterclockwise, around the element. With this being done, plotting of the tessellations (part (b)) can easily be accomplished using the following simple loop:
 \\
 \texttt{hold on, [el e2]=size(elems) ;
@@ -1313,20 +1313,19 @@ $$
 \texttt{Suggestion:} First use some properties of determinants from Chapter 7 to observe that the determinant will not change if a constant $X$ is added to all of the $x$-coordinates (first column) and/or a constant $Y$ is added to all the $y$-coordinates (second column). The corresponding effect on the triangle is simply a shift, leaving the area unchanged. Thus, we may assume that the triangle lies in the first quadrant. Furthermore, reduce to a configuration such as that shown in Figure 13.25. Express the area of the triangle shown as the difference of the sum of the areas of the two trapezoids between the top two edges of the triangle and the $x$-axis, less the area of the trapezoid between the bottom edge of the triangle and the $x$-axis. Compare this expression with the $\operatorname{det}(M)$. Recall that the area of a trapezoid with base $b$ and heights $h_{1}, h_{2}$ equals $(b / 2)\left(h_{1}+h_{2}\right)$.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{10}
+\caption{Geometric diagram for the proof in Exercise 22.}
 	\centering
 	\label{pfig:ch13_8}
-\end{figure}
-\textbf{FIGURE 13.25:} Geometric diagram for the proof in Exercise 22. 
+\end{figure} 
 	\item To gain a deeper understanding of elements, it is often convenient to work with a so-called \textbf{standard element}, which is essentially equivalent to all elements. For our triangular elements, with three nodes at the vertices, we will use the standard element $\tilde{T}$ that has vertices $v_{1}=(1,0)$, $v_{2}=(0,1)$, \text { and } $v_{3}=(0,0)$ \text {. This standard element is illustrated in Figure 13.26. }
 	\begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{11}
+\caption{Illustration of the standard element for all triangular elements with three nodes 
+at the vertices}
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.26:} Illustration of the standard element for all triangular elements with three nodes 
-at the vertices
-\\
-\\
+
 (a) Show that the standard local basis functions (viz. (7)) for the standard element of Figure $13.26$ are given by:
 $$
 \phi_{1}(x, y)=x, \phi_{2}(x, y)=y \text {, and } \phi_{3}(x, y)=1-x-y \text {. }
@@ -1353,13 +1352,12 @@ $$
 For clarity, we have used two different sets of coordinates, $(\tilde{x}, \tilde{y})$ for the coordinates of the plane for $\tilde{T}$ and $(x, y)$ for the coordinates of the plane of $T$. The action of this affine transformation is illustrated in Figure 13.27.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{12}
+\caption{Illustration of the action of the affine mapping of Exercise 23(b) that takes the 
+standard element T onto an arbitrary element T. }
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.27:} Illustration of the action of the affine mapping of Exercise 23(b) that takes the 
-standard element T onto an arbitrary element T. 
-\\
-\\
+
 (c) Discover and then prove a relationship for the determinant of the $2 \times 2$ matrix of the affine transformation of part (b) and the areas of the two elements $T, \tilde{T}$. If you are not sure of the relationship, do some experiments using MATLAB. For the proof, cf., Exercise 22 .
 \\
 \\
@@ -1375,15 +1373,13 @@ $$
 where, in order to simplify notation, we have omitted subscripts and superscripts on the six coefficients $a, b, c, d, e, f$. Since we now have six local basis functions (for each term), we will need to correspondingly have six nodes on each element in order that the coefficients be uniquely determined. A very natural (and as it turns out effective) way to do this is to put three extra nodes on the midpoints of each of the edges of the elements. The corresponding standard element (see Exercise 23), is shown in Figure 13.28.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{13}
+\caption{The standard triangular element with six nodes for piecewise quadratic FEM. 
+The three additional nodes from the piecewise linear standard elements are placed at the 
+midpoints of the segments, the numbering is as before for the vertex nodes, while the midpoint 
+nodes are numbered counterclockwise in order of the opposite vertices.}
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.28:} The standard triangular element with six nodes for piecewise quadratic FEM. 
-The three additional nodes from the piecewise linear standard elements are placed at the 
-midpoints of the segments, the numbering is as before for the vertex nodes, while the midpoint 
-nodes are numbered counterclockwise in order of the opposite vertices.
-\\
-\\
 (a) Show that (by analogy with (7)) the corresponding standard local basis functions for the standard element of Figure $13.26$ are given by:
 $$
 \begin{aligned}
@@ -1410,13 +1406,12 @@ where the $\phi_{j}$ 's are the piecewise linear standard local basis functions 
 \textbf{Suggestion:} One way to get high-resolution plots over such a triangular region is to triangulate it into much smaller elements and then use the \texttt{trimesh}.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{14}
+\caption{Graphical illustration of two of the quadratic local basis functions for the 
+standard triangular element of Figure 13.28.}
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.29:} Graphical illustration of two of the quadratic local basis functions for the 
-standard triangular element of Figure 13.28. 
-\\
-\\
+
 (b) Write down a formula for the (nonlocal) basis function $\Psi_{4}=\Psi_{4}(x, y)$ corresponding to the interior node $\$ 4$ of the triangulation of Figure $13.4$ using the nodal parameters given below Figure 13.5.
 \\
 \textbf{Suggestion:} The midpoint nodes will need to be numbered. This can be done systematically as in Example 13.1, but the linear systems will of course be larger.
@@ -1551,14 +1546,13 @@ EXERCISE FOR THE READER 13.5: Let $T$ denote any (convex) triangle in the plane 
 (b) $\iint_{T} \phi(x, y) d x d y=\frac{1}{3} \operatorname{Area}(T)$.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{15}
+\caption{ A typical (convex) triangular element whose local basis function $\phi=\phi_{3}$ 
+is analyzed in Exercise for the Reader 13.5. Since the element is convex, the (blue) altitude 
+vector $\vec{a}$ shown will lie inside the triangle. }
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
-\textbf{FIGURE 13.30:} A typical (convex) triangular element whose local basis function $\phi=\phi_{3}$ 
-is analyzed in Exercise for the Reader 13.5. Since the element is convex, the (blue) altitude 
-vector $\vec{a}$ shown will lie inside the triangle. 
-\\
-\\
+
 \textbf{EXAMPLE 13.5:} Let $\Omega$ be the hexagonal domain of Figure 13.5 with eight nodes (as labeled) given by: $\#1$: $(1,1), \#2:(2.5,1), \#3:(0,0), \#4:(1,0)$, $\#5$:
 $(2.5,0)$, $\#6$: $(3.5,0), \# 7:(1,-1)$, and $\#8$: $(2.5,-1)$. Consider the following Poisson BVP for this domain:
 $$
@@ -1616,6 +1610,7 @@ respectively (we have incorporated the change needed to accommodate the node num
 We initialize a $2 \times 2$ stiffness matrix $A$ of zeros and the corresponding $2 \times 1$ initial load vector $b$ and pass now to a detailed calculation of the first iteration of the assembly loop: $\ell=1$ corresponding to the first element $T_{1}$ of Figure 13.5. Figure $13.31$ shows this element and its corresponding element stiffness matrix $A^{\prime}$.
 \begin{figure}[H]
 \includegraphics[width=0.3\linewidth]{16}
+\caption[Illustration of the first element T1]{(a) (left) Illustration of the first element $T_{1}$ of Figure $13.5$ with the global node numbers (from Figure 13.5) as well as the local node numbers from the matrix $T$. (b) (right) The corresponding element stiffness matrix $A^{\prime}$ along with a labeling of the corresponding nodes.}
 	\centering
 	\label{pfig:ch13_8}
 \end{figure}
@@ -1637,8 +1632,7 @@ a_{31}^{1} & a_{32}^{1} & a_{33}^{1}
 \end{array}
 \end{aligned}
 $$
-\textbf{FIGURE 13.31:} (a) (left) Illustration of the first element $T_{1}$ of Figure $13.5$ with the global node numbers (from Figure 13.5) as well as the local node numbers from the matrix $T$. (b) (right) The corresponding element stiffness matrix $A^{\prime}$ along with a labeling of the corresponding nodes.
-\\
+
 Of the nodes for $T_{1}$, only node $\# 4(\alpha=3)$ is an interior node so we need only compute the single entry:
 $$
 a_{33}^{1}=\iint_{T_{1}} \nabla \Phi_{4} \cdot \nabla \Phi_{4} d x d y
@@ -1917,26 +1911,24 @@ With this small system (solved on MATLAB) exact arithmetic was feasible. The FEM
 The resulting plot is shown in Figure 13.32. 
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{17}
+\caption{Plot of our first FEM solution to the BVP of Example 13.5. Only 8 
+elements and 2 internal nodes were used, so the plot is rather coarse.}
 	\centering
 	\label{pfig:ch13_17}
 \end{figure}
-\textbf{FIGURE 13.32:} Plot of our first FEM solution to the BVP of Example 13.5. Only 8 
-elements and 2 internal nodes were used, so the plot is rather coarse. 
-\\
-\\
+
 EXERCISE FOR THE READER 13.6: If in the BVP of Example $13.5$ we change the $B C$ to $u \equiv 2$ on $\partial \Omega$, but leave all else the same, how would the exact solution of this modified problem compare with that of the original? Perform the FEM on this modified problem (with the same triangulation) and compare the numerical solution with that of the original problem.
 \\
 \\
 The resolution used in the last example was made deliberately coarse so that we could focus on the various facets of the FEM. We now move on to apply the FEM to a problem with a much more elaborate triangulation of the domain. The added complexity will force us to write some MATLAB loops to make the FEM feasible. The BVP we choose, the Laplace equation with Dirichlet boundary conditions on the unit disk, is rather special in that an explicit solution is available. We will thus be able to compare our FEM solution with the exact solution. Such examples are important as an aid for creating and testing production-level FEM codes. We state as a theorem this beautifully explicit result due to Poisson$^{11}$.
 \begin{figure}[H]
 \includegraphics[width=0.35\linewidth]{18}
+\caption{Simeon-Denis Poisson (1781-1840), French 
+mathematician.}
 	\centering
 	\label{pfig:ch13_17}
 \end{figure}
-\textbf{Figure 13.33:} Simeon-Denis Poisson (1781-1840), French 
-mathematician.
-\\
-\\
+
 \textbf{THEOREM 13.1:} (Poisson's Integral Formula) Suppose that $f(\theta)$ is a continuous function (given in polar coordinates) on the circle $x^{2}+y^{2}=R^{2}(\theta$ is the polar coordinate angle $)$. If $\Omega$ is the disk inside this circle, $\Omega=$ $\left\{p=(x, y) \in \mathbb{R}^{2}:\|p\|_{2}<R\right\}$, then the solution of the Dirichlet problem:
 \begin{equation}
 \left\{\begin{array}{lcl}
@@ -2067,13 +2059,12 @@ In order to use dblquad to integrate over regions other than rectangles the foll
 \end{equation}
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{20}
+\caption{Illustration of a typical planar region on which integrals can be computed 
+using (21). }
 	\centering
 	\label{pfig:ch13_17}
 \end{figure}
-\textbf{FIGURE 13.34:} Illustration of a typical planar region on which integrals can be computed 
-using (21). 
-\\
-\\
+
 Here, the region $T$ need not be a triangle, but rather any region in the plane bounded below by the curve ylow $(x)$ and above by the curve ytop $(x)$ and over the range [xmin, xmax]; see Figure 13.34.
 \\
 \\
@@ -2225,13 +2216,12 @@ $$
 \textbf{SOLUTION:} Part (a): The triangulation can be done in exactly the same fashion as was done in Method 2 of part (a) of the solution of Example $13.2$ (simply change the value of delta=sqrt (pi/90); everything else is the same). The code is thus omitted here; the nodes were stored in vectors $x$ and $y$ and the triangulation in the matrix tri. The triangulation is shown in Figure 13.35.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{21}
+\caption{Triangulation for the FEM solution of Example 13.7(a). There are 99 
+nodes and 163 triangular elements.}
 	\centering
 	\label{pfig:ch13_21}
 \end{figure}
-\textbf{FIGURE 13.35:} Triangulation for the FEM solution of Example 13.7(a). There are 99 
-nodes and 163 triangular elements.
-\\
-\\
+
 By the way in which the nodes were created, the numbering scheme conforms to that of the procedure outline (the boundary nodes are indexed last). In the notation of the procedure, $m=99$ (= total number of nodes), as seen by entering \texttt{size(x).} We can use a simple MATLAB loop to compute $n$ (= number of interior nodes):
 \\
 \\
@@ -2447,13 +2437,12 @@ The result is now easily plotted using the \texttt{trimesh} function of the last
 The resulting plot is shown in Figure 13.36.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{22}
+\caption[Plot of the FEM solution of the Dirichlet problem]{Plot of the FEM solution of the Dirichlet problem of Example 13.7.
+Part (b): The following simple loop will implement the Poisson integral formula (20) to determine the value of the exact solution at each of the interior nodes $c_{i}(i \leq n)$. As has been the convention thus far, we continue to use MATLAB's numerical integrators for one-dimensional integrals; in this case we use quadl. We will leave the already assigned values at the boundary nodes $c_{i}(i>n)$. We first create and store an M-file for the integrand in the Poisson integral formula (20) using the boundary data of the current example. Since this function will be integrated (with quadl) we will need to construct it as shown in Chapter 4 so that it will appropriately handle vector inputs.}
 	\centering
 	\label{pfig:ch13_22}
 \end{figure}
-\textbf{FIGURE 13.36}: Plot of the FEM solution of the Dirichlet problem of Example 13.7.
-Part (b): The following simple loop will implement the Poisson integral formula (20) to determine the value of the exact solution at each of the interior nodes $c_{i}(i \leq n)$. As has been the convention thus far, we continue to use MATLAB's numerical integrators for one-dimensional integrals; in this case we use quadl. We will leave the already assigned values at the boundary nodes $c_{i}(i>n)$. We first create and store an M-file for the integrand in the Poisson integral formula (20) using the boundary data of the current example. Since this function will be integrated (with quadl) we will need to construct it as shown in Chapter 4 so that it will appropriately handle vector inputs.
-\\
-\\
+
 \texttt{function y = EX13\_7\_poisson(phi,r,th) }\\
 \texttt{for i = 1:length(phi)}\\
 \texttt{if (0<=phi(i))\&(phi(i)<=2)}
@@ -2492,14 +2481,13 @@ The plot of the exact solution just obtained ${ }^{14}$\footnotetext[14]{Of cour
 Part (c): The code in parts (a) and (b) is written in a way so that just one small change in one line of the code is required to do part (c). In the creation of the nodes (as in Method 2 of in the solution of Example 13.2(a)) we only need to change the paratmer $\delta$ to $\sqrt{\pi / 900}$. The resulting node set contains $m=897$ nodes of which the first $n=791$ are interior nodes, and the Delaunay triangulation contains 1686 elements. The main loop took close to an hour on the author's computer. See Figure $13.38$ for plots of the FEM solution and error.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{23}
+\caption[Plot of the error of the FEM solution]{Plot of the error of the FEM solution of Example 13.7, obtained by 
+comparing it to the exact solution over the same grid from the Poisson integral formula$^{15}$ \footnotetext[15]{More preciselely, this plot is the difference between the FEM solution and the piecewise linear 
+interpolant of the exact solution. }}
 	\centering
 	\label{pfig:ch13_23}
 \end{figure}
-\textbf{FIGURE 13.37}: Plot of the error of the FEM solution of Example 13.7, obtained by 
-comparing it to the exact solution over the same grid from the Poisson integral formula$^{15}$ \footnotetext[15]{More preciselely, this plot is the difference between the FEM solution and the piecewise linear 
-interpolant of the exact solution. }
-\\
-\\
+
 (and triangulation) and computes the corresponding FEM solution of a BVP. For each element, the $z$-stretch (the difference of maximum and minimum $z$-values of FEM solution over just the element) is recorded and those for which this stretch is in, say the largest $10 \%$ or exceeds a certain numerical value (this can be adjusted) are flagged. In the vicinity of such elements, extra nodes are added and a new mesh is created. This is iterated a certain number of times (which can be adjusted) or until the maximum $z$-streches fall below a certain prescribed value (which also can be adjusted). Such an adaptive scheme will be addressed in the exercises of this section.
 \\
 \\
@@ -2562,38 +2550,36 @@ $$
 where the load $f(x, y)$ equals 100 on the (small) disk of radius $r=0.125$ and center $(x, y)=(0,0.5)$, and zero elsewhere. Plot your FEM solution and indicate the number of nodes, internal nodes, and elements. Your solution plot should look like that in Figure 13.39(b).
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{24}
+\caption{(a) (top) Plot of the FEM solution to the BVP of Exercise for the Reader 
+13.11.}
 	\centering
 	\label{pfig:ch13_24}
 \end{figure}
 	\begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{25}
+\caption{(b) (bottom) Plot of the FEM solution to the BVP of Exercise for the Reader 
+13.12(a).}
 	\centering
 	\label{pfig:ch13_25}
 \end{figure}
-\textbf{FIGURE 13.39}: (a) (top) Plot of the FEM solution to the BVP of Exercise for the Reader 
-13.11. (b) (bottom) Plot of the FEM solution to the BVP of Exercise for the Reader 
-13.12(a).
-\\
-\\
+
 (b) The triangulation of part (a) was rather uniform and had 1795 nodes. In this part we try to work with a smaller number of nodes but deploy them in a strategy that concentrates more of them near where the inhomogeneity $f(x, y)$ has most of its action. Construct a triangulation using between 500 to 1000 nodes and distributed in the four subregions of Figure $13.40$ (a) as follows: Roughly $50 \%$ of the nodes are to be deployed in $\Omega_{1}, 25 \%$ in $\Omega_{2}, 15 \%$ in $\Omega_{3}$, and only $10 \%$ in $\Omega_{4}$. Each of these regions is simply the intersection of the whole domain with the insides of the circles with center $(0,1 / 2)$ having radii: $1 / 4,1 / 2,1$, and $3 / 2$,respectively. The distribution should be more or less uniform in each subregion. 
 Obtain and plot the FEM solution. Your solution should look something like the 
 one shown in Figure 13.40(c). 
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{26}
+
 	\centering
 	\label{pfig:ch13_26}
 \end{figure}
 	\begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{27}
+\caption[Diagram for node deployment strategy]{(a) (left) Diagram for node deployment strategy of part (b) in Exercise for the Reader 13.12. The unit disk $\Omega$ is split up into four subregions: $\Omega_{1}, \Omega_{2}, \Omega_{3}$, and $\Omega_{4}$.
+(b) (top right) A corresponding triangulation.(c) (bottom) The corresponding FEM solution; it appears graphically indistinguishable from the one obtained in part (a).}
 	\centering
 	\label{pfig:ch13_27}
 \end{figure}
-\textbf{FIGURE 13.40:} (a) (left) Diagram for node deployment strategy of part (b) in Exercise for the Reader 13.12. The unit disk $\Omega$ is split up into four subregions: $\Omega_{1}, \Omega_{2}, \Omega_{3}$, and $\Omega_{4}$.
-(b) (top right) A corresponding triangulation.
-(c) (bottom) The corresponding FEM solution; it appears graphically indistinguishable from the one obtained in part (a).
-\\
-\\
-\\
+
 We now move on to describe the FEM for the general case of the BVP (10):
 $$
 \left\{\begin{aligned}
@@ -2820,13 +2806,11 @@ We give special names to the node numbers of the endpoints of the segment
 \texttt{>> dir2 = nint + 1; '>>node (10,0)}\\
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{28}
+\caption[The triangulation of the parabolic region for the BVP]{(a) (left) The triangulation of the parabolic region for the BVP of Example 13.8(a). There are 388 nodes and 693 elements. With this resolution the curved boundary is rather well represented by the element boundaries, except near the top where the curvature of the parabola is most extreme. (b) (right) The FEM solution of Example 13.8(a). The exact solution is graphically indistinguishable, the maximum relative error being less than $1 \%$.}
 	\centering
 	\label{pfig:ch13_28}
 \end{figure}
-\textbf{FIGURE 13.41:} (a) (left) The` triangulation of the parabolic region for the BVP of Example 13.8(a). There are 388 nodes and 693 elements. With this resolution the curved boundary is rather well represented by the element boundaries, except near the top where the curvature of the parabola is most extreme. (b) (right) The FEM solution of Example 13.8(a). The exact solution is graphically indistinguishable, the maximum relative error being less than $1 \%$.
-\\
-\\
-\\
+
 From the key node indices found above, we conclude: 
 \\
 \\
@@ -3018,25 +3002,25 @@ the solution to Part (b) of Example 13.8. Your plot should look like the one in
 Figure 13.43(b). 
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{29}
+\caption[Error plots for the FEM solution]{ Error plots for the FEM solution of Example 13.8. (a) (left) Using the 
+triangulation of part (a), which had 693 elements, the actual error was less than 1\%. (b) 
+(right) Using the triangulation of part (b), which had 3587 elements, the actual error was 
+less than 0.1\%. }
 	\centering
 	\label{pfig:ch13_29}
 \end{figure}
-\textbf{FIGURE 13.42:} Error plots for the FEM solution of Example 13.8. (a) (left) Using the 
-triangulation of part (a), which had 693 elements, the actual error was less than 1\%. (b) 
-(right) Using the triangulation of part (b), which had 3587 elements, the actual error was 
-less than 0.1\%. 
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{30}
+\caption[Illustration of the domain and boundary conditions for the
+steady-state heat distribution problem]{(a) (left) Illustration of the domain and boundary conditions for the
+steady-state heat distribution problem of Exercise for the Reader 13.15. The parabolically
+shaped plate has an internal rectangular heat source (temperature = 200) shown by a dark
+rectangle. The bottom (flat) edge is maintained at temperature 0 and the curved part of the
+boundary has a Robin boundary condition, (b) (right) An FEM solution of this problem.}
 	\centering
 	\label{pfig:ch13_30}
 \end{figure}
-\textbf{FIGURE 13.43:}domain and boundary conditions for the 
-steady-state heat distribution problem of Exercise for the Reader 13.15. The parabolically 
-shaped plate has an internal rectangular heat source (temperature = 200) shown by a dark 
-rectangle. The bottom (flat) edge is maintained at temperature 0 and the curved part of the 
-boundary has a Robin boundary condition, (b) (right) An FEM solution of this problem. 
-\\
-\\
+
 EXERCISE FOR THE READER 13.16: (a) Contract a squarelike grid and then a 
 corresponding triangulation with between 2000 and 3000 nodes for the domain of 
 Figure 13.44(a). 
@@ -3046,17 +3030,16 @@ this domain with boundary conditions as shown in Figure 13.44(a) and then plot
 your solution. Your plot should look like the one shown in Figure 13.43(b). 
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{31}
-	\centering
-	\label{pfig:ch13_31}
-\end{figure}
-\textbf{FIGURE 13.44:} (a) (left) Illustration of the domain and boundary conditions for the BVP 
+\caption[Illustration of the domain and boundary conditions for the BVP 
+problem]{(a) (left) Illustration of the domain and boundary conditions for the BVP 
 problem of Exercise for the Reader 13.16. The circular (inner) boundary portion has 
 Dirichlet boundary conditions; the remaining (outer) boundary portions have the indicated 
 Neumann or Robin conditions, (b) (right) Plot of the FEM solution for the Laplace problem 
 having the indicated boundary data of (a). The triangulation used had 2655 nodes and 
-5024 elements. 
-\\
-\\
+5024 elements. }
+	\centering
+	\label{pfig:ch13_31}
+\end{figure}
 \line(2,0){\textwidth}
 \\
 \textbf{EXERCISES 13.3}
@@ -3095,12 +3078,12 @@ The vertical/horizontal distance between adjacent nodes is one, and node $\# 7$ 
 Compare with the solution obtained in part (a). 
 \begin{figure}[H]
 \includegraphics[width=0.7\linewidth]{32}
+\caption{Triangular 
+domain with basic triangulation 
+for Exercise 3. }
 	\centering
 	\label{pfig:ch13_32}
 \end{figure}
-\textbf{FIGURE 13.45:} Triangular 
-domain with basic triangulation 
-for Exercise 3. 
 	\item Repeat all parts of Exercise 3 for the following BVP on the domain $\Omega$ of Figure 13.45 described 
 there.
 $$
@@ -3226,12 +3209,11 @@ compare it with Figure 11.23(b).\\
 	\item (\textit{Determination of Maximum Tolerable Heat}) Consider the domain of Figure 13.46: 
 	\begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{33}
+	\caption{A domain consisting of two squares joined by a rectangular neck.}
 	\centering
 	\label{pfig:ch13_33}
 \end{figure}
-\textbf{FIGURE 13.46:} A domain consisting of two squares joined by a rectangular neck.
-\\
-\\
+
 
 (a) In this domain, an observer at location $(-3,1.5)$ (left side) cannot tolerate a temperature greater than 50 . All edges except for the right edge are kept insultated $\vec{n} \cdot \nabla u=0$ while the right edge will be maintained at a certain temperature $u=T_{\text {hot }}$. What is the maximum value of $T_{\text {hot }}$ so the observer's requirement is met? Try to get your answer accurate to at least two decimals. For the PDE in the domain use the basic Laplace equation $\Delta u=0$.\\
 (b) How would the answer in part (a) change if the rectangular length were to be doubled in length?\\
@@ -3253,10 +3235,10 @@ Plot your result and then repeat with the triangulation of part (b).
 (d) Repeat part (c) on the modified BVP gotten by changing the PDE to be (i), $-\Delta u=x^{2} / 2$, but  keeping alt else the same; and then to (ii)  $-\Delta u+e^{x / 2} u=x^{2} / 2$
 \begin{figure}[H]
 \includegraphics[width=0.5\linewidth]{34}
+\caption{Triangular domain  with basic triangulation for Exercise 3. }
 	\centering
 	\label{pfig:ch13_34}
 \end{figure}
-\textbf{FIGURE 13.47:} Triangular domain  with basic triangulation for Exercise 3. 
 	\item 
 	(a) Triangulate the domain of Figure $13.48$ using between 400 and 800 nodes, more or less equally spaced.\\
 (b) Repeat part (a) but this time use between 2000 and 2500 nodes.\\
@@ -3269,10 +3251,10 @@ Plot your result and then repeat with the triangulation of part (b).
 (h) Repeat both parts (c) and (d) on the modified BVP gotten by changing the PDE to be $\nabla \cdot\left(\left(\left[2^{x / 2}+y\right] u\right)+u=10\right.$, but keeping all else the same.
 \begin{figure}[H]
 \includegraphics[width=0.5\linewidth]{35}
+\caption[Boundary conditions for the heat problem]{ Boundary conditions for the heat problem of Exercise 11. The outer square boundary $\Gamma_{2}$ is insulated, while the four circular inner boundary portions $\Gamma_{1}^{i}, 1 \leq i \leq 4$, are each maintained at the indicated temperatures.}
 	\centering
 	\label{pfig:ch13_35}
 \end{figure}
-\textbf{FIGURE 13.48:} Boundary conditions for the heat problem of Exercise 11. The outer square boundary $\Gamma_{2}$ is insulated, while the four circular inner boundary portions $\Gamma_{1}^{i}, 1 \leq i \leq 4$, are each maintained at the indicated temperatures.
 	\item Let $\Omega$ be the domain between the $x$-axis and the graph of $y=e^{x}$ from $x=0$ to $x=4$.
 (a) For the function $u(x, y)=\sin (x /(y+1))+x^{2} y / 25$, determine functions $g(x), f(x, y)$ and $h(x, y)$ so that $u(x, y)$ solves the following BVP:
 	$$
@@ -3325,11 +3307,11 @@ implementations of the FEM. These are based on the simple refinement scheme of s
 into four similar elements by introducing a new node at the midpoint of each edge; see Figure 13.49. 
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{36}
+\caption{A refinement scheme for triangular meshes that is easily programmed into FEM 
+routines. }
 	\centering
 	\label{pfig:ch13_36}
 \end{figure}
-\textbf{FIGURE 13.49:} A refinement scheme for triangular meshes that is easily programmed into FEM 
-routines. 
 	\item (M-filefor Automatic Mesh Refinement) The scheme of Figure 13.49 gives rise to a very natural 
 refinement scheme that can be repeated for any number of iterations. Simply start off with any 
 triangularon \textit{$A_{0}$} of a given domain. For the first refinement \textit{$A_{1}$} of \textit{$A_{0}$}, the node set will 
@@ -3370,14 +3352,12 @@ given there).
 (ii) For each element, note its oscillation (= $\max$ value - min value of computed solution on three vertices).
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{37}
+\caption{Illustration of adaptive mesh refinement scheme of Exercise 27. (a) (left) Step 1, (b) 
+(middle) Step 2, and (c) (right) contingency plan for Step 3. }
 	\centering
 	\label{pfig:ch13_37}
 \end{figure}
-\textbf{FIGURE 13.50:} Illustration of adaptive mesh refinement scheme of Exercise 27. (a) (left) Step 1, (b) 
-(middle) Step 2, and (c) (right) contingency plan for Step 3. 
-\\
-\\
-\\
+
 (iii) Flag those elements whose oscillations are "large" (with respect so some specified indicator, 
 say more than double of the average)$^{17}$\footnotetext[17]{We are using a rather basic error indicator. More sophisticated error indicators can be developed 
 using advanced techniques of Sobolev spaces; see, for example, [CiLi-89], [Cia-02], or the classical 
@@ -3413,22 +3393,22 @@ stategies to mitigate problems that might arise. We will examine a certain Diric
 Suggestion: An elegant and illuminating way to do part (a) is to derive the Laplace operator in polar coordinates to be: $u_{x x}+u_{y y}=u_{r r}+(1 / r) u_{r}+\left(1 / r^{2}\right) u_{\theta \theta}$.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{38}
-	\centering
-	\label{pfig:ch13_38}
-\end{figure}
-\textbf{FIGURE 13.51:} Simple examples of domains with different sorts of angles at a boundary point O. (a) 
+\caption{Simple examples of domains with different sorts of angles at a boundary point O. (a) 
 (left) In general acute angles do not pose any problems for the FEM. (b) (middle) Obtuse angles can 
 sometimes lead to slower convergence of the FEM. (c) (right) The larger the obtuse angle, the greater 
 the potential difficulty. The extreme case is the slit domain. The indicated homogeneous Dirichlet 
-boundary conditions on the angular edges is relevant for Exercise 28. 
-\\
-\\
+boundary conditions on the angular edges is relevant for Exercise 28. }
+	\centering
+	\label{pfig:ch13_38}
+\end{figure}
+
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{39}
+\caption{Initial triangulation for the domains of Figure 13.51 for Exercise 28.}
 	\centering
 	\label{pfig:ch13_39}
 \end{figure}
-\textbf{FIGURE 13.52:} Initial triangulation for the domains of Figure 13.51 for Exercise 28.
+
 	\item Suppose that the FEM of this section is used to compute the solution of a BVP of form (10) whose exact solution is known to be a linear function $u(x, y)=a x+b y+c$. Assume the integrals are all computed exactly and that the domain and triangulation are such that the boundary of the domain consists entirely of edges of the triangulation. Will the FEM solution always coincide with the exact solution? Either explain whether this is true or, if you are unable to do so, perform a series of numerical experiments to test this hypothesis.\\
 \textbf{Note:} Since the basis functions are piecewise linear, this seems to be the most general type of solutions that the FEM might be able to produce exactly. An example of such a BVP and triangulation is given in Exercise $1 .$
 \end{enumerate}

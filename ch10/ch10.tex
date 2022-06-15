@@ -276,7 +276,7 @@ $$
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{fig_10_2}
-    \caption{The graph of the vertical deflection of the horizontal beam of Example 10.3. The bending is much less severe than the graph seems to indicate (compare units on the axes); both $x$-and $y$-values are given in feet.}
+    \caption[The graph of the vertical deflection of the horizontal beam]{The graph of the vertical deflection of the horizontal beam of Example 10.3. The bending is much less severe than the graph seems to indicate (compare units on the axes); both $x$-and $y$-values are given in feet.}
     \label{fig:fig_10_2}
 \end{figure}
 
@@ -477,7 +477,7 @@ on $m_{k}$, we have introducet the function
 of two variables $y(t,m_{k})\equiv y_{k}(t)$. The
 method is roughly illustrated and
 explained in Figure 10.3. \\\\\\\\\\\\\\\\\\\
-\caption{Illustration of the nonlinear shooting method for a BVP: \\
+\caption[Illustration of the nonlinear shooting method for a BVP]{Illustration of the nonlinear shooting method for a BVP: \\
 $ \left\{\begin{matrix} y{}''\left ( t \right )=f\left ( t,y,y{}' \right ) \\ y\left ( a \right )=\alpha ,y\left ( b \right )=\beta) \end{matrix}\right.$
 The initial approximation $y_{0}(t)=y(t,m_{0})$ is the solution of the corresponding IVP having the same DE, the same first condition, and satisfying the initial slope $y_{0}'(t)=m_{0}$,obtained numerically by methods of the last chapter. The desired second boundary condition is compared with $y_{0}(b)$, and ,if neccesery, this process is repeated with adjusted initial slopes $m_{1},m_{2},\cdots $ until we arrive at a solution that satisfies the second boundary condition(within a desired tolerance).\\
  The only detail left to tend to is the important issue of how best to choose our
@@ -610,7 +610,8 @@ Part (a): We can now perform the desired plots using the following while loop.
 end
 \end{lstlisting}
 \begin{SCfigure}[][h]
-\caption{Illustration of the nonlinear
+\caption[Illustration of the nonlinear
+shooting method applied to the BVP]{Illustration of the nonlinear
 shooting method applied to the BVP of
 Example 10.4(a). The successive approx-
 imations $y_{k}(t)$ are shown until the value of
@@ -637,7 +638,7 @@ we look at successive differences. This is also a good way to check global error
 \begin{SCfigure}[][h]
 \centering
 \includegraphics[scale=0.7]{img_105}
-\caption{These graphs display the successive differences $\left | y_{k+1}(t)-y_{k}(t) \right |$ for nonlinear shooting method in part (b) of Example 10.4;
+\caption[These graphs display the successive differences nonlinear shooting method]{These graphs display the successive differences $\left | y_{k+1}(t)-y_{k}(t) \right |$ for nonlinear shooting method in part (b) of Example 10.4;
 this time the iterations continue until $y_{k}(2)$ gets
 within $10^{-7}$ of the desired value -2 and only 5
 approximations ("shots") are needed.\\}
@@ -1126,7 +1127,7 @@ plot(X,Y), grid on
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img_107}\\
-	\caption{Graph of the solution of the beam-deflection problem of Example 10.6 using $N$=20 subdivisions.}
+	\caption[Graph of the solution of the beam-deflection problem]{Graph of the solution of the beam-deflection problem of Example 10.6 using $N$=20 subdivisions.}
 \end{figure}
 	
 
@@ -1164,7 +1165,8 @@ on subintervals $N$. $N$= 160, $N$=320, $N$=640,....
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img_108}
-	\caption{Plots of differences of finite difference approximated solutions to the
+	\caption[Plots of differences of finite difference approximated solutions to the
+	deflected beam problem]{Plots of differences of finite difference approximated solutions to the
 	deflected beam problem of Example 10.6. (a) The left graph is of the difference of the $N$ =
 	20 and $N$ = 40 interior grid point solutions and (b) the right one is the graph of the
 	difference of the $N$ = 40 and $N$ = 80 interior grid point solutions.}
@@ -1400,7 +1402,7 @@ A typical function in this space is depicted in Figure 10.10.
 \begin{figure}[H]
 	\centering    
     \includegraphics[scale=0.7]{img_1010}
-    \caption{llustration of a typical function in the space $\mathcal{A}(\mathscr{P})$.}
+    \caption[llustration of a typical function in the space A(P)]{llustration of a typical function in the space $\mathcal{A}(\mathscr{P})$.}
 \end{figure}
 \noindent Notice that a function $v \in \mathcal{A}(\mathscr{P})$ is entirely determined by its values at the interior grid points: $v\left(x_{1}\right), v\left(x_{2}\right), \cdots, v\left(x_{n}\right)$. This follows from linearity and continuity. We need a set of basis functions that can be used to easily describe functions in $\mathcal{A}(\mathscr{P})$. These $n$ functions are usually chosen so that each one equals zero on most of the interval $[0,1]$, so that it will have minimum interaction with other basis functions.
 \footnote{General Rayleigh-Ritz methods result from using any set of linearly independent functions which are
@@ -1410,7 +1412,7 @@ functions."}
 \begin{figure}[H]
 	\centering    
     \includegraphics[scale=0.7]{img_1011}
-    \caption{A typical hat function for a certain partition of $(0,1)$. Note the (possible) asymmetry.}
+    \caption[A typical hat function for a certain partition of (0,1)]{A typical hat function for a certain partition of $(0,1)$. Note the (possible) asymmetry.}
 \end{figure}
 \noindent We observe that any function $v \in \mathcal{A}(\mathscr{P})$ can be expressed in a unique way as a linear combination of the hat functions:
 \begin{equation}
@@ -1594,7 +1596,7 @@ Part (b): The right-hand side of the $\mathrm{DE}-u^{\prime \prime}(x)=f(x)$ has
 \begin{figure}[H]
 \centering
 \includegraphics[width=.6\textwidth]{img_1013}
-\caption{Graph of the right-hand side $f(x)$ of the DE $-u^{\prime \prime}(x)=f(x)$ of Example 10.7.}
+\caption[Graph of the right-hand side]{Graph of the right-hand side $f(x)$ of the DE $-u^{\prime \prime}(x)=f(x)$ of Example 10.7.}
 \end{figure}
 \noindent From Figure 10.13, we see that the inhomogeneity $f(x)$ is most oscillatory approximately on the interval $[0.35,0.65]$ and elsewhere is rather tame. With this perspective, it would seem that any grid that is uniformly highly dense would give rise to much wasted computation on the long intervals of inactivity. Motivated by Figure 10.13, we propose the following deployment of the 50 interior grid points.\\\\
 Put 6 in each of the intervals $[0,0.35)$ and $(0.65,1]$, and put the remaining 40 in $[0.35,0.65]$. We stipulate that the grid points in each of these intervals be uniformly spaced but this is by no means necessary (the Rayleigh-Ritz method is totally flexible). The linspace command will make the construction of these grid values particularly straightforward:
@@ -1647,7 +1649,7 @@ Part (c): From Figure $10.12$, we see that the amplitude of the solution is roug
 \begin{figure}[H]
 \centering
 \includegraphics[width=.6\textwidth]{img_1014}
-\caption{(a) (left) Rayleigh-Ritz solution obtained for Example 10.7(b) shown with
+\caption[Rayleigh-Ritz solution]{(a) (left) Rayleigh-Ritz solution obtained for Example 10.7(b) shown with
 diamonds, along with the exact solution in black. The grid used is nonuniform with more
 grid points (diamonds) deployed in the areas where the inhomogeneity is most active, (b)
 (right) Zoomed-in comparison of the Rayleigh-Ritz solutions in part (a) (circles) and part
@@ -2138,21 +2140,21 @@ At about this time, the main mathematics institute in Germany shifted from Berli
 	\ContinuedFloat*
 	\centering
 	\includegraphics[width=0.32\textwidth]{img_1018a}
-	\caption{\label{first}Augustin Louis Cauchy (1789-1857), French mathematician}
+	\caption[Augustin Louis Cauchy]{\label{first}Augustin Louis Cauchy (1789-1857), French mathematician}
 \end{figure}
 \columnbreak
 \begin{figure}[H]
 	\centering
 	\ContinuedFloat
 	\includegraphics[width=0.32\textwidth]{img_1018b}
-	\caption{\label{second}Viktor Yakovlevich Bunyakowsky (1804-1889), Russian mathematician. }
+	\caption[Viktor Yakovlevich Bunyakowsky]{\label{second}Viktor Yakovlevich Bunyakowsky (1804-1889), Russian mathematician. }
 \end{figure}
 \columnbreak
 \begin{figure}[H]
 	\centering
 	\ContinuedFloat
 	\includegraphics[width=0.32\textwidth]{img_1018c}
-	\caption{\label{third}Hermann Amandus Schwarz (1843-1921), German mathematician.}
+	\caption[Hermann Amandus Schwarz ]{\label{third}Hermann Amandus Schwarz (1843-1921), German mathematician.}
 \end{figure}
 \end{multicols}
 \noindent In manipulations with such integrals, it is often convenient to introduce the norm notation: $\|u\|=|\langle u, u\rangle|^{1 / 2}=\left(\int_{0}^{1} u(x)^{2} d x\right)^{1 / 2}$. Using this notation the Cauchy-Bunyakowski-Schwarz inequality takes on the more elegant form:

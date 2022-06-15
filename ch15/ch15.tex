@@ -161,6 +161,7 @@ on right below.
 We seek the x-coordinates of the two points marked with "x's" in the figure below.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{41}
+\caption[]{}
 	\centering
 	\label{pfig:ch13_41}
 \end{figure}
@@ -480,27 +481,24 @@ show rigorously). If we allow polynomials that do not have roots, then an exampl
 polynomial is possible, as shown in the left-hand figure below. For a specific example, we could take $f(x)=x^{2}+1$. For cycling as in the picture, we would want $x_{1}=x_{0}$. Putting this into Newton's formula and solving (the resulting quadratic) gives $x_{0}=1 / \sqrt{3}$. One can easily nun a MATLAB program to see that this indeed produces the asserted cycling. To get an example of polynomial cycling with a polynomial that actually has a root we need to use at least a third-degree polynomial. Working with $f(x)=x^{3}-x=x(x-1)(x+1)$, which has the three (equally spaced) roots $x=0, \pm 1$ the graph suggests that we can have a period-two cycling, so we put $x_{1}=x_{0}$ into Newton's formula. The resulting cubic equation is easily solved exactly (it factors) or with the Symbolic Toolbox (see Appendix A) or approximately using Newton's method. The solution $x_{0}=1 / \sqrt{5}$ produces the periodtwo cycling shown in the right-hand figure below, as can be checked by running Newton's method.
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{42}
-	\centering
-	\label{pfig:ch13_42}
-\end{figure}
-(b) On the right is an illustration of a 
+\caption[On the right is an illustration of a period-four cycle in Newton's method.]{(b) On the right is an illustration of a 
 period-four cycle in Newton's method. 
-An explicit such example is furnished 
-by f(x) = $x^3- x - 3 $. The calculations 
-would be, of course, more elaborate 
-than those of part (a); it turns out that 
-x0 should be taken to be a bit less than 
-zero. (More precisely, about -0.007446; 
-you may wish to run a couple of 
-hundred iterations of Newton's method 
-using this value for $x_0$ to observe the 
-cycling.) By contemplating the picture, 
+An explicit such example is furnished by f(x) = $x^3- x - 3 $. The calculations 
+would be, of course, more elaborate  than those of part (a); it turns out that 
+x0 should be taken to be a bit less than  zero. (More precisely, about -0.007446;
+you may wish to run a couple of hundred iterations of Newton's method 
+using this value for $x_0$ to observe the cycling.) By contemplating the picture, 
 it becomes clear that this function has 
 cycles of any order. Just move 
 JC0 closer to the right toward the 
-location where f'(x) has a root. 
+location where f'(x) has a root. }
+	\centering
+	\label{pfig:ch13_42}
+\end{figure}
+
 \begin{figure}[H]
 \includegraphics[width=0.9\linewidth]{43}
+
 	\centering
 	\label{pfig:ch13_43}
 \end{figure}
@@ -1867,10 +1865,10 @@ end
 \end{lstlisting}
 
 
-\begin{wrapfigure}{i}{0.55\textwidth} %this figure will be at the right
+\begin{figure}
     \centering
     \includegraphics[width=0.55\textwidth]{fig4}
-\end{wrapfigure}
+\end{figure}
 
 (b) The following commands will run
 the RKF45 program on the IVP of
@@ -2016,9 +2014,9 @@ for n=1:(nmax-1)
 end
 \end{lstlisting}
 \textbf{\texttt{EFR 9.3:}}
-\begin{wrapfigure}{r}{0.7\linewidth}
-\includegraphics[width=\linewidth]{fig5}
-\end{wrapfigure}
+\begin{figure}
+\includegraphics[width=0.6\linewidth]{fig5}
+\end{figure}
 The MATLAB code that produced the plot on the right is given below. To see the flow direction along these solution curves, we fix one of them, and consider the (unique) point $(1, y)$ with $y<1$ on the graph (directly below the equilibrium solution $(1,1)$ ). At this point the first differential equation of the system, $x^{\prime}=-x+x y$, tells us that $x^{\prime}$ is negative, so $x$ is decreasing and this forces a clockwise flow orientation. A more general phase-plane analysis technique will be presented Section $9.2$.
 \begin{lstlisting}[frame=none, numbers=none]
 >> xp=inline('-x+x*y',
@@ -2249,11 +2247,11 @@ The latter expression coincides with $y^{\prime \prime}(x)$ if $\theta^{2}=T / E
 
 \textbf{\texttt{EFR 10.5:}}\\
 
-\begin{wrapfigure}{r}{0.6\linewidth}
+\begin{figure}
 \begin{center}
 \includegraphics[width=0.6\linewidth]{fig11}
 \end{center}
-\end{wrapfigure}
+\end{figure}
 
 
 

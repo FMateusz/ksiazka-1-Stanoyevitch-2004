@@ -185,7 +185,7 @@ profile, but shifted to the left or right ct units along the x-axis.)
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\linewidth]{ch12_3}
-	\caption{\textsf{: A right-propagating pulse $f(x - ct$). The general solution (8) of the onedimensional wave equation $u_\eta = c^2 u_{xx}$
+	\caption[ A right-propagating pulse]{\textsf{: A right-propagating pulse $f(x - ct$). The general solution (8) of the onedimensional wave equation $u_\eta = c^2 u_{xx}$
 also includes a left-propagating pulse. Both
 wavefronts propagate without distortion.}}
 	\label{pfig:ch12_3}
@@ -364,7 +364,7 @@ Figure 12.6) in the space-time plane is called the \textbf{domain of dependence}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch12_6}
-	\caption{\textsf{  Illustration of the interval of dependence $[x-ct, x+ct]$ ] (on the x-axis)
+	\caption[Illustration of the interval of dependence for the wave equation on a line]{\textsf{  Illustration of the interval of dependence $[x-ct, x+ct]$ ] (on the x-axis)
 for the wave equation on a line. The shaded triangle in the space-time plane (jc/-plane) is
 called the domain of dependence. The values of the initial condition functions $\phi(x) and v(x)$ outside of the interval of dependence for $(x,t)$ are irrelevant to the
 determination of $u(x,t)$. 
@@ -443,7 +443,7 @@ data the extended functions $\hat{\phi}(x)$ and $\hat{V}(x)$ d v(x) for boundary
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch12_7}
-	\caption{\textsf{  Illustration of the extension (13) of a function $\phi(x)$ ) defined from x = 0 to x
+	\caption[Illustration of the extension of a function ]{\textsf{  Illustration of the extension (13) of a function $\phi(x)$ ) defined from x = 0 to x
 = L (heavy graph portion) to a ftinction $\hat{\phi}(x)$. that is odd about each of the endpoints x = 0
 and x - L }}
 	\label{pfig:ch12_7}
@@ -1431,7 +1431,7 @@ The resulting graphic is shown in Figure 12.13.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch12_13}
-	\caption{\textsf{Comparison of the computed finite difference solution's snapshots jagged) with the actual solution's snapshots (smooth) for the wave problem of Example 12.5. The four plots correspond to snapshots at  levels $t = 0.5, t = 1, t = 1.5, t = 2$, respectively. The numerical solution was obtained using $N=10$ interior grid points for x and M- 15 interior grid points for $x$, which resulted in a violation of the Courant-Friedrichs-Levy condition (31) with $\mu = 1.75... > 1$. All except the last profile show the numerical snapshots to be reasonably decent with only small errors that are  visible to the naked eye. At $t = 2$, however, the numerical graph starts to break its pattern and relative errors reach orders of magnitude of $100\%$. Time levels (from left to right) are $t = 0.5, t = 1, t = 1.5$, and $t =2$}}
+	\caption[Comparison of the computed finite difference solution's snapshots jagged) with the actual solution's snapshots (smooth) for the wave problem]{\textsf{Comparison of the computed finite difference solution's snapshots jagged) with the actual solution's snapshots (smooth) for the wave problem of Example 12.5. The four plots correspond to snapshots at  levels $t = 0.5, t = 1, t = 1.5, t = 2$, respectively. The numerical solution was obtained using $N=10$ interior grid points for x and M- 15 interior grid points for $x$, which resulted in a violation of the Courant-Friedrichs-Levy condition (31) with $\mu = 1.75... > 1$. All except the last profile show the numerical snapshots to be reasonably decent with only small errors that are  visible to the naked eye. At $t = 2$, however, the numerical graph starts to break its pattern and relative errors reach orders of magnitude of $100\%$. Time levels (from left to right) are $t = 0.5, t = 1, t = 1.5$, and $t =2$}}
 	\label{pfig:ch12_13}
 \end{figure}
 Part (b): In this case, if we plot (as in part (a)) and compare the numerical solution with the actual solution, the results are indistinguishable at both time levels / = 1 and t = 2. To compute the maximum absolute values of the differences, using again the index relation $j=\dfrac{(m+1)t_j}{2}$ (and adding one to j to get MATLAB's indices) we enter the following commands: 
@@ -1455,7 +1455,7 @@ The rather surprising result is shown in Figure 12.14.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{ch12_14}
-	\caption{\textsf{Plot of the snapshot of the numerical solution for part (c) of the wave problem of Example 12.5, using $N= 100$ interior grid points for $x$ and $M= 15$ interior grid points for t, which resulted in a serious violation of the Courant-Friedrichs-Levy condition (31) with $\mu = 16.07... > 1$. Note the amplitude of the graph is 31 orders of magnitude greater than the actual solution, so the result is quite meaningless. Note also that the grid used was actually finer than that used in part (a) (which gave much better results). Thus, blindly refining grids can lead to disastrous results that use more computing time, unless the Courant-Friedrichs-Levy condition is respected.}}
+	\caption[Plot of the snapshot of the numerical solution for part of the wave problem ]{\textsf{Plot of the snapshot of the numerical solution for part (c) of the wave problem of Example 12.5, using $N= 100$ interior grid points for $x$ and $M= 15$ interior grid points for t, which resulted in a serious violation of the Courant-Friedrichs-Levy condition (31) with $\mu = 16.07... > 1$. Note the amplitude of the graph is 31 orders of magnitude greater than the actual solution, so the result is quite meaningless. Note also that the grid used was actually finer than that used in part (a) (which gave much better results). Thus, blindly refining grids can lead to disastrous results that use more computing time, unless the Courant-Friedrichs-Levy condition is respected.}}
 	\label{pfig:ch12_14}
 \end{figure}
 
@@ -1549,7 +1549,7 @@ We point out the very large numbers ofN= 350 and M= 500 that were used. The disc
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch12_16}
-	\caption{\textsf{Wave profile near the end of the time interval $0 \leqslant t \leqslant 5$ of the numerical solution of Example 12.6. Note the small (secondary) oscillations. This type of numerical noise is not part of the exact solution; it arises since the finite difference method tries to 
+	\caption[Wave profile near the end of the time interval]{\textsf{Wave profile near the end of the time interval $0 \leqslant t \leqslant 5$ of the numerical solution of Example 12.6. Note the small (secondary) oscillations. This type of numerical noise is not part of the exact solution; it arises since the finite difference method tries to 
 smooth out certain discontinuities in the data of the problem. 
 }}
 	\label{pfig:ch12_16}
@@ -1575,7 +1575,7 @@ Thus with these notations, the general \textbf{implicit (three-level) finite dif
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{ch12_17}
-	\caption{\textsf{FIGURE 12.17: Stencil the implicit finite difference method (36) for the wave equation. At each iteration in the upward marching scheme, the hollow nodal values need to be determined. In the case where the parameter $\omega$ is $1/2$, the central row of nodes (time level $t_j$) is not present in the stencil. 
+	\caption[Stencil the implicit finite difference method ]{\textsf{FIGURE 12.17: Stencil the implicit finite difference method (36) for the wave equation. At each iteration in the upward marching scheme, the hollow nodal values need to be determined. In the case where the parameter $\omega$ is $1/2$, the central row of nodes (time level $t_j$) is not present in the stencil. 
 }}
 	\label{pfig:ch12_17}
 \end{figure}
@@ -2218,7 +2218,7 @@ $	(a)\begin{cases}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{ch12_21}
-	\caption{\textsf{The shock-wave phenomena of the nonlinear wave equation of Exercise 18. Higher 
+	\caption[The shock-wave phenomena of the nonlinear wave equation]{\textsf{The shock-wave phenomena of the nonlinear wave equation of Exercise 18. Higher 
 parts of the wave propagate faster than lower parts, eventually causing the wave profile to "break" from 
 being a function of x.}}
 	\label{pfig:ch12_21=}
@@ -2362,7 +2362,7 @@ The stencil for the method is shown in Figure 12.23(c). As before, we let  $\mu-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\linewidth]{ch12_23}
-	\caption{\textsf{Stencils for three finite difference methods for the parabolic BVP (42): (a) (left) The forward-time central-space scheme, an explicit method, (b) (middle) The backward-time central-space scheme, an implicit unconditionally stable method, (c) (right) The Crank-Nicolson scheme. .}}
+	\caption[Stencils for three finite difference methods for the parabolic BVP]{\textsf{Stencils for three finite difference methods for the parabolic BVP (42): (a) (left) The forward-time central-space scheme, an explicit method, (b) (middle) The backward-time central-space scheme, an implicit unconditionally stable method, (c) (right) The Crank-Nicolson scheme. .}}
 	\label{pfig:ch12_23}
 \end{figure}
 
@@ -2572,7 +2572,7 @@ The result is shown in Figure 12.24(a). The temperature profile plot shown in Fi
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{ch12_24}
-	\caption{\textsf{(a) (left) Surface graph of the (Crank-Nicolson) solution to the heat problem of Example 12.8. (b) (right) Individual temperature profiles of this solution for some particular values of /. The individual curves in (b) are simply "slices" of the surface in (a) with planes perpendicular to the time axis}}
+	\caption[Surface graph of the (Crank-Nicolson) solution and Individual temperature profiles of this solution ]{\textsf{(a) (left) Surface graph of the (Crank-Nicolson) solution to the heat problem of Example 12.8. (b) (right) Individual temperature profiles of this solution for some particular values of /. The individual curves in (b) are simply "slices" of the surface in (a) with planes perpendicular to the time axis}}
 	\label{pfig:ch12_24}
 \end{figure}
 
@@ -2617,7 +2617,7 @@ Part (d): For future reference, we first rewrite the stability condition (46) in
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{ch12_26}
-	\caption{\textsf{Illustration of instability when the forward-time central-space method is used with $\mu \approx .513...$ in the heat problem of Example 12.8. (a) (left) Mesh plot of the forward-time central-space showing the large-scale instability, (b) (right) Simultaneous plots of some heat profiles showing small-scale evolution of instability. }}
+	\caption[Illustration of instability when the forward-time central-space method]{\textsf{Illustration of instability when the forward-time central-space method is used with $\mu \approx .513...$ in the heat problem of Example 12.8. (a) (left) Mesh plot of the forward-time central-space showing the large-scale instability, (b) (right) Simultaneous plots of some heat profiles showing small-scale evolution of instability. }}
 	\label{pfig:ch12_26}
 \end{figure}
 The parameter in part (a) would give a value $\mu \approx 2.23...$ which would result in the forward-time central-space method being quite unstable. We will look at what happens with the forward-time central-space scheme with some values of $\mu$ that are much closer to the stability barrier. Using the same number of internal space
@@ -2649,7 +2649,7 @@ where $\phi(x)\begin{cases}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{ch12_27}
-	\caption{\textsf{With any given grid sizes, the (a) (left) backward-time central-space method usually outperforms the (b) (right) Crank-Nicolson method when the parabolic problem has discontinuous data, as is demonstrated from these two snapshots of the two methods on the problem of Exercise for the Reader 12.13. The oscillations in (b) are not part of the actual solution; using finer time grids will cause them to fade away.}}
+	\caption[Backward-time central-space method and Crank-Nicolson method]{\textsf{With any given grid sizes, the (a) (left) backward-time central-space method usually outperforms the (b) (right) Crank-Nicolson method when the parabolic problem has discontinuous data, as is demonstrated from these two snapshots of the two methods on the problem of Exercise for the Reader 12.13. The oscillations in (b) are not part of the actual solution; using finer time grids will cause them to fade away.}}
 	\label{pfig:ch12_27}
 \end{figure}
 We next move on to boundary conditions involving derivatives. Previously we have separated these sorts of boundary conditions into two kinds: Neumann and Robin. For a physical interpretation in terms of our heated-rod problem, it is helpful to consider both of these conditions as special cases of the following general condition: 

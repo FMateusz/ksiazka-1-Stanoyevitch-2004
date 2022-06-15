@@ -12,13 +12,13 @@
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{img_111}
-	\caption{Mesh net graph of a function $f(x,y)$ of two variables.}
+	\caption[Mesh net graph of a function f(x,y) of two variables.]{Mesh net graph of a function $f(x,y)$ of two variables.}
 \end{figure}
 \noindent In Figure 11.1, we have graphed a surface $z=f(x, y)$ with a mesh type of graph where images of equally spaced parallel lines of the form $x=c$ and $y=d$ under the function $f(x, y)$ are shown. In MATLAB, there are numerous ways of plotting and viewing the graph of a function of two variables. As with two-dimensional plots, the axis range can be specified. But to help with the third dimension, there are also other useful features such as viewing perspective (from where should we view the surface?), lighting, shading, and mesh grid lines. Color ranges can be used to vary with the height of the dependent variable. Often it is necessary to experiment with different versions of the same graph to find the best rendition of it for a particular purpose. The simplest way to understand how MATLAB does a plot of a function $z=f(x, y)$ is to consider the so-called mesh grid plots. These look a lot like the one in Figure 11.1, except only the points which are actually plotted are the grid points where one of the equally spaced horizontal lines $x=c$ meets a corresponding vertical line $y=d$-see Figure 11.2. Once the values of $f(x, y)$ are computed at these grid points, adjacent plotted points are connected by straight line segments.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{img_112}
-	\caption{When MATLAB plots a function $z=f(x, y)$ of two variables, it will evaluate the function only for grid points $(x, y)$ (the solid dots). Resolution can be improved by refining the grids (on both $x$-and $y$-axes). MATLAB has a function that will build the matrices of grid points from the corresponding vectors $x=\left(x_{1}, x_{2}, \cdots x_{n}\right)$ and $y=\left(y_{1}, y_{2}, \cdots y_{m}\right)$.}
+	\caption[MATLAB plots]{When MATLAB plots a function $z=f(x, y)$ of two variables, it will evaluate the function only for grid points $(x, y)$ (the solid dots). Resolution can be improved by refining the grids (on both $x$-and $y$-axes). MATLAB has a function that will build the matrices of grid points from the corresponding vectors $x=\left(x_{1}, x_{2}, \cdots x_{n}\right)$ and $y=\left(y_{1}, y_{2}, \cdots y_{m}\right)$.}
 \end{figure}
 \noindent As with all things numerical in MATLAB, three-dimensional plots in MATLAB will be obtained from appropriate matrices. Once the $x$ and $y$ vectors (determining $x$ - and $y$-coordinates of grid points) have been entered, we need to construct matrices $X$ and $Y$ of all of the $x$ - and $y$-coordinates for the grid points. If $x$ has $n$ elements and $y$ has $m$ elements then $X$ and $Y$ will be of size $n \times m$. MATLAB has a convenient function \texttt{meshgrid} that will construct these meshed matrices for us.
 $$
@@ -66,7 +66,7 @@ CAUTION: If you just type mesh (Z) you will get the same surface graph; however,
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{img_113}
-	\caption{Two MATLAB meshgrid plots of the function\\\\
+	\caption[Two MATLAB meshgrid plots of the function]{Two MATLAB meshgrid plots of the function\\\\
 	$z=\frac{3}{1+x^{2}+y^{2}}-\frac{10}{4+(x+1.5)^{2}+y^{2}}$\\\\
 	over the square $-3 \leq x, y \leq 3$. The first used only seven $x$ - and $y$-grid coordinates, while the second used 50 . The main plotting command was mesh $(X, Y, Z)$; see Example II.I. We point out some defaults in these plots: Colors are used with red for the highest $y$-values and blue for the lowest, this will come in handy for temperature plots. Also from our perspective, hidden parts of the mesh are not visible, and grid lines are shown.radar chart\protect\footnotemark ~}
 	\end{figure}
@@ -124,7 +124,7 @@ $$
 \footnotetext{The "3D Rotate" button on the MATLAB graphics window can be also used to change the viewing perspective.}
 
 \begin{SCfigure}[][h]
-\caption{ Measurement of the azimuth angle $\alpha$ and the elevation angle $\varepsilon$ for use of the MATLAB command \texttt{view(azimuth, elevation)} to change perspectives on three-dimensional plots.}
+\caption[Measurement of the azimuth ang]{ Measurement of the azimuth angle $\alpha$ and the elevation angle $\varepsilon$ for use of the MATLAB command \texttt{view(azimuth, elevation)} to change perspectives on three-dimensional plots.}
 \includegraphics[scale=1]{img_114}
 \end{SCfigure}
 \begin{exeforreader}
@@ -273,7 +273,7 @@ ends.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{img_116}
-	\caption{A one-dimensional rod of length $L$ that is insulated along its cylindrical surface but not necessarily on the flat edges at $x=0$ and $x=L$.}
+	\caption[A one-dimensional rod]{A one-dimensional rod of length $L$ that is insulated along its cylindrical surface but not necessarily on the flat edges at $x=0$ and $x=L$.}
 \end{figure}
 For this problem we are interested in the temperature of the rod as a function of the time $t$ and the position $x$ along the $x$-axis. We assume that the rod is very thin so that the temperature is constant for a given time throughout the cross-section. We call this function $u(x, t)$. The basic (and very intuitive) physical principle that we will use here, Fourier's Law, states that heat flows from hot places to cold places at a rate proportional to the temperature gradient. We will make this more precise shortly. The substance that the rod is made out of is relevant for knowing how quickly heat is transferred along the rod. To quantify this, we introduce
 \begin{center}
@@ -359,14 +359,14 @@ u_{t}=k \Delta u
 	\ContinuedFloat*
 	\centering
 	\includegraphics[width=0.32\textwidth]{img_117a}
-	\caption{\label{first}Pierre Simon de Laplace (1749-1827), French mathematician and astronomer.}
+	\caption[Pierre Simon de Laplace]{\label{first}Pierre Simon de Laplace (1749-1827), French mathematician and astronomer.}
 \end{figure}
 \columnbreak
 \begin{figure}[H]
 	\centering
 	\ContinuedFloat
 	\includegraphics[width=0.32\textwidth]{img_117b}
-	\caption{\label{second}Joseph Louis Lagrange (1736-1813), French/Italian mathematician. }
+	\caption[Joseph Louis Lagrange]{\label{second}Joseph Louis Lagrange (1736-1813), French/Italian mathematician. }
 \end{figure}
 \columnbreak
 \noindent If we consider \textbf{steady-state} heat distributions, for which time is no longer a relevant independent variable, we get the so-called \textbf{Laplace equation}
@@ -492,7 +492,7 @@ Look at Figure $11.8$ and convince yourself of why each of these conditions corr
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{img_118}
-	\caption{Dirichlet boundary conditions for the two-dimensional Laplace equation $u_{x x}+u_{y y}=0$ are specified on each of the four sides making up the boundary of a rectangular domain in the plane. If the four functions specified on each edge are continuous, then they give a well-posed problem for the Laplace equation.}
+	\caption[Dirichlet boundary conditions for the two-dimensional Laplace equation]{Dirichlet boundary conditions for the two-dimensional Laplace equation $u_{x x}+u_{y y}=0$ are specified on each of the four sides making up the boundary of a rectangular domain in the plane. If the four functions specified on each edge are continuous, then they give a well-posed problem for the Laplace equation.}
 \end{figure}
 \noindent Solutions of the Laplace equation $\Delta u=0$ (in any number of space dimensions) are known as \textbf{harmonic functions}. They include an incredibly vast collection of functions and are the subject of the very fruitful field of \textbf{potential theory}. Many aspects of potential theory have natural extensions to elliptic equations (even for nonlinear PDE). The most complete general reference on this is [GiTr-83], which is quite an advanced textbook. For example, any complex analytic function (the subject of the field of complex variables) will have harmonic functions as its real and imaginary parts. A fundamental result of potential theory is that harmonic functions satisfy the \textbf{maximum principle}, which roughly states that the maximum (or minimum) value of a harmonic function on any given (closed) bounded region in the space variables (like a rectangle) must be attained on the boundary and, furthermore, if the maximum is attained also at a point inside the boundary of the region then the harmonic function has to be a constant. In particular, applied to our steady-state temperature model for the rectangle, this says that the hottest spot on the rectangle must be on one of the edges. Again, this can be corroborated from thermodynamic principles.\\\\
 EXERCISE FOR THE READER 11.3: Which of the following functions harmonic?
@@ -622,7 +622,7 @@ If we substitute these approximations into the Laplace PDE $\Delta u=0$ of the e
 \end{equation}
 This is a system of $M \cdot N=4 \cdot 9=36$ equations in 36 unknowns. It is helpful to realize that each of the 36 equations in (16) involves values associated with the cross-shaped part of the grid shown in Figure 11.10, called the \textbf{(computational) stencil} for the finite difference method.
 \begin{SCfigure}[][h]
-\caption{Illustration of the stencil for the linear equation (16)\protect\footnotemark ~  These grid values form a cross centered at the $u_{i, j}$-grid value. Although the central grid value $u_{i, j}$ will be at a point interior to the rectangle, one or two of the other four grid values may be from boundary points.}
+\caption[Illustration of the stencil for the linear equation]{Illustration of the stencil for the linear equation (16)\protect\footnotemark ~  These grid values form a cross centered at the $u_{i, j}$-grid value. Although the central grid value $u_{i, j}$ will be at a point interior to the rectangle, one or two of the other four grid values may be from boundary points.}
 \includegraphics[scale=.75]{img_104}
 \end{SCfigure}
 \footnotetext{This particular stencil is often referred to as the \textit{(standard) five-point stencil for the Laplacian}.}
@@ -938,7 +938,7 @@ $$
 	\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{img_1115}
-	\caption{Spy plot of the coefficient matrix $A$ for Example 11.6. The $n z=148$ indicates the number of nonzero entries of the 1296 entries of $A$. We know the diagonal entries all equal 4 and all other nonzero entries equal $-1$. Such spy plots make the general structure of such matrices quite evident.} 
+	\caption[Spy plot of the coefficient matrix A]{Spy plot of the coefficient matrix $A$ for Example 11.6. The $n z=148$ indicates the number of nonzero entries of the 1296 entries of $A$. We know the diagonal entries all equal 4 and all other nonzero entries equal $-1$. Such spy plots make the general structure of such matrices quite evident.} 
 	\end{figure}
 \columnbreak
 \noindent Since we know the numerical values of all entries of the matrix (diagonal entries $=4$, off diagonal entries $=0$ or $-1$ ), rather than printing the matrix $A$, a more practical way to view it would be using MATLAB's spy function:\\
@@ -1436,7 +1436,7 @@ Traditionally, the term "Neumann boundary conditions" is reserved for the specia
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{img_1120}
-\caption{Illustration of the unit outward normal vector at a boundary point $(x, y)$ of a planar domain $\Omega$.}
+\caption[Illustration of the unit outward normal vector at a boundary point (x, y) of a planar domain .]{Illustration of the unit outward normal vector at a boundary point $(x, y)$ of a planar domain $\Omega$.}
 \end{figure}
 \noindent Unlike the Dirichet problem for the Poisson equation, the Neumann problem requires an additional consistency hypothesis in order for a solution to exist. Also, it is clear that if $u(x, y)$ is a solution to the Neumann problem (36) and $C$ is any constant, then $u(x, y)+C$ will also be a solution (why?). Apart from this we do have uniqueness. The following theorem makes these statements more precise.\\
 
@@ -1484,6 +1484,7 @@ $$
 \begin{multicols}{2}
 \begin{figure}[H]
 \includegraphics[scale=.8]{img_1121}
+\caption[A grid for the Neumann problem]{A grid for the Neumann problem of Example 11.7. The solid-labeled nodes are the ones (function values) that need to be solved for; the hollow nodes are the ghost nodes needed to set up the method.}
 \end{figure}
 \columnbreak
 \noindent (note that now $x_{0}, x_{N+1}$ correspond to the ghost nodes, so, as before, $x_{1}, \cdots, x_{n}$ correspond to unknown function values, and similarly for $y$ 's). The indexing scheme is as before:
@@ -1500,7 +1501,7 @@ $$
 (1 \leq i \leq N, 1 \leq j \leq M) .
 \end{gathered}
 $$
-\captionof{figure}{A grid for the Neumann problem of Example 11.7. The solid-labeled nodes are the ones (function values) that need to be solved for; the hollow nodes are the ghost nodes needed to set up the method.}
+
 \end{multicols}
 In our example, of course, $N=6, M=11$, and $f(x, y)=-(2 y)^{2}$, but we wish to present the general development. To allow for different Neumann data at corner points, we use the following notations for the Neumann data:
 $$
@@ -1757,7 +1758,7 @@ Use a common step size of $h=0.05$. Obtain a surface graph of the solution along
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.8]{img_1123}
-\caption{(a) (left) Mesh plot of the solution of the mixed BVP of Exercise for the Reader $11.8$, using a common grid spacing of $h=0.02$. Note how each of the boundary conditions are well depicted near the edges. (b) (right) Corresponding isotherm contour plot. The plots obtained for $h=0.05$ appeared quite identical to these.}
+\caption[Mesh plot of the solution of the mixed BVP]{(a) (left) Mesh plot of the solution of the mixed BVP of Exercise for the Reader $11.8$, using a common grid spacing of $h=0.02$. Note how each of the boundary conditions are well depicted near the edges. (b) (right) Corresponding isotherm contour plot. The plots obtained for $h=0.05$ appeared quite identical to these.}
 \end{figure}
 
 \noindent \rule{485pt}{2pt}
