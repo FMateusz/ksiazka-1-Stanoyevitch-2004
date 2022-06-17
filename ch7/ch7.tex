@@ -6464,10 +6464,46 @@ Table $7.1$ summarizes the form of the matrix $B$ for each of our three iteratio
 \\
 \\
 \textbf{TABLE 7.1:} Summary of matrix formulations of each of the three iteration schemes: Jacobi, Gauss-Seidel, and SOR.
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\textwidth]{img_9}
-\end{figure}
+
+
+$$
+\begin{array}{|l|lcc|}
+\hline \begin{array}{l}
+\text{Iteration Scheme:}\\
+\end{array}& \begin{array}{l}
+\text{Matrix B in the corresponding formulation (61)}
+ \\
+B x^{(k+1)}=(B-A) x^{(k)}+ \text{ b in terms of (60)}\\
+\text{A=D-L-U}
+\end{array} & \begin{array}{c}
+ \\
+\end{array} & \begin{array}{c}
+ \\
+\end{array} \\
+\cline { 1 - 4 }  
+\begin{array}{l}
+\text{Jacobi (see formula (57))}\\
+\text{Gauss-Seidel (see formula (58))}
+\end{array}& 
+\begin{array}{c}
+ \text{B=D}\\
+\text{B=D-L}
+\end{array}
+ &  &  \\
+\hline 
+\begin{array}{l}
+\text{SOR with relaxation parameter }\\ \omega \text{ (see formule(59)) }\\
+\end{array}
+ & \begin{array}{c}
+\text{B = }   \frac{1}{\infty } D - L
+\end{array}& & \\
+\hline
+\end{array}
+$$
+
+
+
+
 \noindent
 Thus far we have done only experiments with iterations. Now we turn to some of the theory.
 \\

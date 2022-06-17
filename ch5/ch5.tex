@@ -23,7 +23,7 @@ The number zero is represented as $.00 \cdots 0 \times \beta^{-m}$. In a compute
 
 \section{ FLOATING POINT ARITHMETIC: THE BASICS}
 
-Many students have gotten accustomed to the reliability and logical precision of exact mathematical arithmetic. When we get the computer to perform calculations for us, we must be aware that floating point arithmetic compounded with roundoff errors can lead to unexpected and undesirable results. Most large-scale numerical algorithms are not exact algorithms, and when such methods are used, attention must be paid to the error estimates. We saw this at a basic level in Chapter 2, and it will reappear again later on several occasions. Here we will talk about different sorts of errors, namely, those that arise and are compounded by the computer's floating point arithmetic. We stress the distinction with the first type of errors. Even if an algorithm is mathematically guaranteed to work, floating point errors may arise and spoil its success. All of our illustrations below will be in base 10 floating point arithmetic, since all of the concepts can be covered and better understood in this familiar setting; changing to a different base is merely a technical issue. To get a feel for the structure of a floating point number system, we begin with an example of a very small system.
+Many students have gotten accustomed to the reliability and logical precision of exact mathematical arithmetic. When we get the computer to perform calculations for us, we must be aware that floating point arithmetic compounded with roundoff errors can lead to unexpected and undesirable results. Most large-scale numerical algorithms are not exact algorithms, and when such methods are used, attention must be paid to the error estimates. We saw this at a basic level in Chapter 2, and it will reappear again later on several occasions. Here we will talk about different sorts of errors, namely, those that arise and are compounded by the computer's floating point arithmetic. We stress the distinction with the first type of errors. Even if an algorithm is mathematically guaranteed to work, floating point errors may arise and spoil its success. All of our illustrations below will be in base 10 floating point arithmetic, since all of the concepts can be covered and better understood in this familiar setting; changing to a different base is merely a technical issue. To get a feel for the structure of a floating point number system, we begin with an example of a very small system.\\
 
 EXAMPLE 5.1: Find all floating point numbers in the system with $\beta=10, s=$ $1, m=-1$, and $M=1$.
 
@@ -38,21 +38,18 @@ $$
 $$
 
 
-\begin{minipage}[t]{.6\linewidth}
 Apart from these, there is only $0=.0 \times 10^{-1}$. Of these 55 numbers, the nonnegative ones are pictured on the number line in Figure 5.1. We stress that the gaps between adjacent floating point numbers are not always the same; in general, these gaps become smaller near zero and more spread out far away from zero (larger numbers).
 
-\end{minipage}
-\hspace{0.02\linewidth}
-\begin{minipage}[t]{.5\linewidth}
-  \strut\vspace*{-\baselineskip}\newline\includegraphics[width=\linewidth]{fig51}
-  \captionof{figure}{The nonnegative floating point numbers of Example 5.1. The omitted negative floating point numbers are
+\begin{figure}[H]
+\centering
+\includegraphics[max width=\textwidth]{fig51}
+\caption{The nonnegative floating point numbers of Example 5.1. The omitted negative floating point numbers are
 just (in any floating point number system) the opposites of the positive numbers shown.
 The situation is typical in that as we approach zero, the density of floating point numbers
-increases.}
+increases }
 \label{fig:fig_5_1}
-\end{minipage}
-
-
+\end{figure}
+ 
 Let us now talk about how real numbers get converted to floating point numbers. Any real number $x$ can be expressed in the form
 $$
 x=\pm d_{1} d_{2} \cdots d_{s} d_{s+1} \cdots \times 10^{e}
@@ -95,7 +92,7 @@ Underflows, although less serious than overflows, can be a great source of probl
 
 The latter calculation had both underflows and overflows and resulted in $0 \star \operatorname{Inf}$ $(=0 \cdot \infty)$, which is undefined. We will give another example shortly of some of the tragedies that can occur as the result of underflows. But now we show two simple ways to convert a real number to a floating point number in case there is no overflow or underflow. So we assume the real number $x$ in (2) has exponent $e$ satisfying $m \leq e \leq M$. The two methods for converting the real number $x$ to its floating point representative $\mathrm{fl}(x)$ are as follows:
 
-\underline{(i) Chopped (or Truncated) Arithmetic}: With this system we simply drop all digits after $d_{s}$ :
+\noindent \underline{(i) Chopped (or Truncated) Arithmetic}: With this system we simply drop all digits after $d_{s}$ :
 $$
 \mathrm{fl}(x)=\mathrm{fl}\left(\pm . d_{1} d_{2} \cdots d_{s} d_{s+1} \cdots \times 10^{e}\right)=\pm d_{1} d_{2} \cdots d_{s} \times 10^{e}
 $$
@@ -566,8 +563,8 @@ $$
 (The elementary last inequality was written so as to make the new error bound easier to use, as we will now see.) With this new scheme much less work will be required to attain the same degree of accuracy. Indeed, if we wanted the error to be less than $10^{-7}$, this new scheme would require that the number of terms $N$ needed to sum should satisfy $1 / 2 N^{2} \leq 10^{-7}$ or $N \geq \sqrt{10^{7} / 2}=2236.07 \ldots$, a far cry less than the 10 million terms needed with the original method! By the same token, to get an error less than $10^{-10}$, we would need only take $N=70,711$ ! Let us now verify, on MATLAB, this 10-significant-digit approximation:
 
 \begin{lstlisting}[numbers=none]
-» Sum=0; N=70711;
-» for n=N:-l:l
+>> Sum=0; N=70711;
+>>for n=N:-l:l
 Sum=Sum +1/n^2;
 end
 >> format long
@@ -618,7 +615,7 @@ NOTE: Unless otherwise specified, assume that all floating point arithmetic in t
 
 \item Consider the infinite series: $1+\frac{1}{8}+\frac{1}{27}+\frac{1}{64}+\cdots \frac{1}{n^{3}}+\cdots$.\\
 (a) Does it converge? If it does not, stop here; otherwise continue.\\
-(b) How many terms would we have to sum to get an approximation to the infinite sum with an absolute ertor $<10^{-7}$ ?\\
+(b) How many terms would we have to sum to get an approximation to the infinite sum with an absolute error $<10^{-7}>$ ?\\
 (c) Obtain such an approximation.\\
 (d) Using an approach similar to what was done after Example 5.6, add an extra term to the partial sums so as to obtain an improved approximation for the infinite series. How many terms would be required with this improved scheme? Perform this approximation and compare the answer with that obtained in part (c).
 
@@ -626,7 +623,7 @@ NOTE: Unless otherwise specified, assume that all floating point arithmetic in t
 
 (a) Does it converge? If it does not, stop here, otherwise continue.
 
-(b) How many terms would we have to sum to get an approximation to the infinite sum with an absolute error $1 / 500$ ?
+(b) How many terms would we have to sum to get an approximation to the infinite sum with an absolute error $1/500$ ?
 
 (c) Obtain such an approximation.
 

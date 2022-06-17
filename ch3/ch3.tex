@@ -39,7 +39,7 @@ If the above lines are simply typed as is into a text file and saved as, say, ci
 >>circdrw 
 \end{lstlisting}
 
-and voilà! the graphic window pops up with the circle we desired. Please remember that any variables created in a script are global variables, i.e., they will enter the current workspace when the script is invoked in the command window. One must be careful of this since the script may have been written a long time ago and when it is run the lines of the script are not displayed (only executed).
+and voila! the graphic window pops up with the circle we desired. Please remember that any variables created in a script are global variables, i.e., they will enter the current workspace when the script is invoked in the command window. One must be careful of this since the script may have been written a long time ago and when it is run the lines of the script are not displayed (only executed).
 
 Function M-files are stored in the same way as script M-files but are quite different in the way they work. Function M-files accept any number of input variables and can output any number of output variables (or none at all). The variables introduced in a function M-file are local variables, meaning that they do not remain in the workspace after a function M-file is called in a MATLAB session. Also, the first line of a function M-file must be in the following format:
 
@@ -237,7 +237,7 @@ $
 \end{array}
 $\\
 
-The usage and syntax comments for quad apply here as well. In particular, if the whole last argument optimset (' ''o1X', to1) is omlued (along whth the comma that precedes it), a maximum error goal of $10^{-3}$ is assumed. Note the syntax for changing the default tolerance goal is a bit different than for quad. This is due to the fact that fminbnd has more options and is capable of doing a lot more than we will have occasion to use it for in this text. For more information, enter help optimset.
+The usage and syntax comments for quad apply here as well. In particular, if the whole last argument optimset (' 'To1X', tol) is omlued (along whth the comma that precedes it), a maximum error goal of $10^{-3}$ is assumed. Note the syntax for changing the default tolerance goal is a bit different than for quad. This is due to the fact that fminbnd has more options and is capable of doing a lot more than we will have occasion to use it for in this text. For more information, enter help optimset.
 
 \begin{lstlisting}[numbers=none]
 >>xmin=fminbnd('bumpy',-1.2,1 ) \%We first find the x-coordinate of 

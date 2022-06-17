@@ -145,7 +145,30 @@ MATLAB does not know geography but it could have certainly helped us with the ma
 (d) $>>\left(x=2*z\right) \mid\left(x^{\wedge} 2>50 \& y^{\wedge} 2>100\right)$ 
 \item The following while loops were separately entered in different MATLAB sessions. What will the resulting outputs be? Do this one carefully by hand and then use MATLAB to check your answers.
 
-\includegraphics[max width=\textwidth]{code41}
+\begin{lstlisting}[numbers=none]
+(a)
+>>i = 1; x = -3;
+>> while (i<3) & (x < 35)
+	x = x*(i+1)
+end
+\end{lstlisting}
+
+\begin{lstlisting}[numbers=none]
+(b)
+>>i = 1; x = -3;
+>> while (i<3) | (x < 35)
+	x = x*(i+1)
+end
+\end{lstlisting}
+
+\begin{lstlisting}[numbers=none]
+(c)
+>>i = 1; x = -3;
+>> while xor(i<3, x<35)
+	x = x*(i+1)
+end
+\end{lstlisting}
+
 
 \item The following while loops were separately entered in different MATLAB sessions. What will the resulting outputs be? Do this one carefully by hand and then use MATLAB to check your answers.\\
 
@@ -200,7 +223,9 @@ The gap in a for loop can even be a negative number, as in the following example
 that creates a vector in backwards order. The semicolon is omitted to help the
 reader convince himself or herself how the loop progresses. 
 
-\begin{lstlisting}[numbers=none]>> for i=3:-1: 1, y(i)=i, end\end{lstlisting}
+\begin{lstlisting}[numbers=none]
+>> for i=3:-1: 1, y(i)=i, end
+\end{lstlisting}
 
 $\rightarrow y=0 \quad 0 \quad 3$
 
@@ -298,7 +323,9 @@ end
 SOLUTION: Part (a): Both nested loops consist of two loops. The mother loop in each is, as usual, the outermost loop (with counter $n$ ). The first loop begins with the mother loop setting the counter $n$ to be 1 , then immediately moves to the second loop and sets $k$ to be 1 ; now in the second loop a is assigned to be the value of $n+k=1+1=2$ and this is printed (since there is no semicolon). Since a $=2$ now, the "if-condition" is not satisfied so the if-branch is bypassed and we now iterate the $k$-loop by bumping up $k$ by 1 (= default gap). Note that the mother loop's $n$ will not get bumped up again until the secondary $k$-loop runs its course. So now with $k=2$, a is reassigned as $\mathrm{a}=n+k=1+2=3$ and printed, the ifbranch is again bypassed and $k$ gets bumped up to 3 (its ending value), $a$ is now reassigned as $a=n+k=1+3=4$ (and printed). The if-branch condition is now met, so the commands within it (in this case only a single "break" command) are run. So we will break out of the $k$-loop (which is actually redundant at this point since $k$ was at its ending value and the $k$-loop was about to end anyway). But we are still progressing within the mother $n$-loop. So now $n$ gets bumped up by 1 to be 2 and we start afresh the $k$-loop again with $k=1$. The variable a is now assigned as $\mathrm{a}=n+k=2+1=3$ (and printed), the if-branch is bypassed since the condition is not met and $k$ gets bumped up to be 2 . Next a gets reassigned as $\mathrm{a}=$ $n+k=2+2=4$, and printed. Now the if-branch condition is met so we exit the $k$-loop (this time prematurely) and $n$ now gets bumped up to be 3 . Next entering the $k$-loop with $k=1$, a gets set to be $n+k=3+1=4$, and printed, the "ifbranch condition" is immediately satisfied, and we exit the $k$-loop and n now gets bumped up to be 4. As in the last iteration, the $k$-loop will just reassign a to be 5 and print this, break and $n$ will go to 5 (its final value). In the final stage, a gets assigned as 6 , the if-branch breaks us out of the $k$-loop, and since $\mathrm{n}$ is at its ending value, the mother loop exits.
 The actual output for part (a) is thus:
 
-\begin{lstlisting}[numbers=none]-> a=2  a=3  a=4  a=3  a=4  a=4  a=5  a=6 \end{lstlisting}
+\begin{lstlisting}[numbers=none
+]-> a=2  a=3  a=4  a=3  a=4  a=4  a=5  a=6
+ \end{lstlisting}
 
 
 Part (b): Apart from the fprintf command, the main difference here is the replacement of the break command with the return command. As soon as the if-branch condition is satisfied, the conditions within will be executed and the return will cause the whole nested loop to stop in its tracks. The output will be as follows:\\
@@ -310,7 +337,7 @@ Part (b): Apart from the fprintf command, the main difference here is the replac
 
 EXERCISE FOR THE READER 4.1: Below are two nested loops. Carefully analyze each of them and try to predict resulting outputs and then use MATLAB to verify your predictions. For the second loop the output should be given in the default format short.
 
-(a)
+\noindent(a)
 \begin{lstlisting}[numbers=none]
 >>for i=1:5
 	i
@@ -318,7 +345,7 @@ EXERCISE FOR THE READER 4.1: Below are two nested loops. Carefully analyze each 
 end
 \end{lstlisting}
 
-(b)
+\noindent(b)
 \begin{lstlisting}[numbers=none]
 >>for i=l:8, x(i)=0; end %initialize vector
 >>for i=6:-2:2
@@ -377,7 +404,9 @@ end
 
 It is tempting to now obtain the desired plot using the usual command sequence:
 
-\begin{lstlisting}[numbers=none]>>x=-4:.001:4 ; y=ex4_5(x); plot(x,y) \end{lstlisting}
+\begin{lstlisting}[numbers=none]
+>>x=-4:.001:4 ; y=ex4_5(x); plot(x,y)
+\end{lstlisting}
 
 There is a subtle problem here, though. If we were to enter these commands, we would obtain the graph of (the last function in the formula) $y=|x|$ on the whole interval $[-4,4]$. Before we explain this and show how to resolve this problem, it would behoove the reader to try to decide what is causing this to happen and to figure out a way to fix this problem.
 
@@ -392,10 +421,8 @@ If we carefully go on to see what went wrong with the last attempt at a plot, we
 Here is what MATLAB did in the above attempt to plot our function. Since $x$ is a (large) vector, the first condition $\mathrm{x}<-1$ produced another vector as the same size as $x$ made up of (both) 0's and 1's. Since the vector was not all true ( 1 's), the condition as a whole was not satisfied so it moved on to the next condition $\mathrm{x}>$ 1 , which for the same reason was also not satisfied and so bypassed. This left us with the catch-all command $\mathrm{y}=\mathrm{abs}(\mathrm{x})$ for the whole vector $x$, which, needless to say, is not what we had intended.\\
 
 So now how can we fix this problem? One simple fix would be to use a for loop to construct the $y$-coordinate vector using ex 4 \_ (x) with only scalar values for $x$.\\
+Here is one such way to construct $y$ :
 
-Here is one such way to construct $y$ :\\
-
-\begin{minipage}[t]{.6\linewidth}
 \begin{lstlisting}[numbers=none]
 >> size(x) %first we find out
 » % the size of x
@@ -406,14 +433,14 @@ end
 >> plot(x,y) %now we can
 >>% get the desired plot 
 \end{lstlisting}
+	
 
-\end{minipage}
-\hspace{0.02\linewidth}
-\begin{minipage}[t]{.5\linewidth}
-  \strut\vspace*{-\baselineskip}\newline\includegraphics[width=\linewidth]{fig41}
-  \captionof{figure}{The plot of the function of Example 4.5.  }
-\label{fig:fig4_2}
-\end{minipage}
+\begin{figure}[H]
+\centering
+\includegraphics[max width=\textwidth]{fig41}
+\caption{The plot of the function of Example 4.5. }
+\label{fig:fig_4_2}
+\end{figure}
  
   
 A more satisfying solution would be to rebuild the M-file in such a way that when vectors are inputted for $x$, the if-branch testing is done separately for each component. The following program will do the job:
@@ -434,7 +461,9 @@ end
 
 With this M-file stored in our path the following commands would then indeed produce the desired plot of Figure 4.1:
 
-\begin{lstlisting}[numbers=none]>> x=-4:.001:4 ; y=ex4_5v2(x); plot(x,y )\end{lstlisting}
+\begin{lstlisting}[numbers=none]
+>> x=-4:.001:4;  y=ex4_5v2(x);  plot(x,y)
+\end{lstlisting}
 
 In dealing with questions involving integers, MATLAB has several numbertheoretic functions available. We mention three here. They will be useful in the
 following exercise for the reader as well as in the exercises of this section. \\
@@ -460,7 +489,10 @@ $
 \end{array}
 $ \\
 
-For example, floor $(2.5)=2$, ceil $(2.5)=3$, ceil $(-2.5)=-1$, and round $(-2.2)=-2$. Observe that a real number $x$ is an integer exactly when it equals its floor (or ceiling, or round $(x)=x)$. EXERCISE FOR THE READER 4.2: (a) Write a MATLAB function M-file, call it sum2sq, that will take as input a positive integer $n$ and will produce the following output:\\
+For example, $floor(2.5)=2$, $ceil(2.5)=3$, $ceil(-2.5)=-1$, and round $(-2.2)=-2$. Observe that a real number $x$ is an integer exactly when it equals its floor (or ceiling, or round $(x)=x)$. 
+\\
+
+EXERCISE FOR THE READER 4.2: (a) Write a MATLAB function M-file, call it $sum2sq$, that will take as input a positive integer $n$ and will produce the following output:\\
 
 (i) In case $n$ cannot be written as a sum of squares (i.e., if it is not possible to write $n=a^{2}+b^{2}$ for some nonnegative integers $a$ and $b$ ) then the output should be the statement: "the integer $\langle n\rangle$ cannot be written as a sum of squares" (where $\langle n\rangle$ will print as an actual numerical value).
 
@@ -525,7 +557,7 @@ clear a %lets us start with a fresh vector a on each run
 
 Enter a positive integer: 5 (MATLAB gives the first message, we only enter 5, and enter to then get
 all of the informative output below.)
--»Collate iteration with initial value a(1) = 5 took
+->Collate iteration with initial value a(1) = 5 took
 5 iterations before reaching the value 1 and beginning
 to cycle. The resulting pre-cycling sequence is as follows:
 a =5 16 8 4 2 1 
@@ -549,11 +581,11 @@ $$
 
 where $k$ is the largest odd integer that does not exceed $n$. If this sum is less than I million, the output will be the actual sum (a number); if this sum is greater than or equal to 1 million, the output will be the statement " $<n>$ is too big" where $<n>$ will appear as the actual number that was inputted.
 
-\item Write a function $\mathrm{M}$-file, call it sevenpow $(\mathrm{n})$, that inputs a positive integer $n$ and that figures out how many factors of $7 n$ has (call this number $k$ ) and outputs the statement: "The largest power of 7 which $\langle n\rangle$ contains as a factor is $\langle k\rangle . "$ So for example, if you run sevenpow(98) your output should be the sentence "The largest power of 7 which 98 contains as a factor is $2$." Run the commands: $sevenpow(36067)$, $sevenpow (671151153)$, and $sevenpow (3080641535629)$.
+\item Write a function $\mathrm{M}$-file, call it $sevenpow(n)$, that inputs a positive integer $n$ and that figures out how many factors of $7 n$ has (call this number $k$ ) and outputs the statement: "The largest power of 7 which $\langle n\rangle$ contains as a factor is $\langle k\rangle . "$ So for example, if you run $sevenpow(98)$ your output should be the sentence "The largest power of 7 which 98 contains as a factor is $2$." Run the commands: $sevenpow(36067)$, $sevenpow (671151153)$, and $sevenpow (3080641535629)$.
  
-\item (a) Write a function M-file, call it sumsq $(n)$, that will input a positive integer $n$ and output the sum of the squares of all positive integers that are less than or equal to $n$ $(sumsq(n)$ $\left.=1^{2}+2^{2}+3^{2}+\cdots+n^{2}\right)$. Check and debug this program with the results $sumsq(1)=1$, $sumsq(3)=14$.
+\item (a) Write a function M-file, call it $sumsq(n)$, that will input a positive integer $n$ and output the sum of the squares of all positive integers that are less than or equal to $n$ $(sumsq(n)$ $\left.=1^{2}+2^{2}+3^{2}+\cdots+n^{2}\right)$. Check and debug this program with the results $sumsq(1)=1$, $sumsq(3)=14$.
 
-\item (a) Write a MATLAB function M-file, call it sum $2 s(n)$, that will take as input a positive integer $n$ and will produce for the output either of the following:
+\item (a) Write a MATLAB function M-file, call it $sum2s(n)$, that will take as input a positive integer $n$ and will produce for the output either of the following:
 
 (i) The sum of all of the positive powers of $2(2+4+8+16+\ldots)$ that do not exceed $n$, provided this sum is less than 50 million.
 
@@ -561,9 +593,9 @@ where $k$ is the largest odd integer that does not exceed $n$. If this sum is le
 
 (b) Run your function with the following inputs: $n=1, n=10, n=265, n=75,000$, $n=65,000,000$. 
 
-(c) Write a short MATLAB code that will determine the largest integer $n$ for which this program does not produce "overflow."
+(c) Write a short MATLAB code that will \underline{determine the largest integer} $n$ for which this program \underline{does not} produce "overflow."
 
-\item (a) Write a MATLAB function M-file, called bigpro $(x)$, that does the following: The input is a real number $x$. The only output of your function should be the real number formed by the product $x(2 x)(3 x)(4 x) \cdots(n x)$, where $n$ is the first positive integer such that either $n x$ is an integer or $|n x|$ exceeds $x^{2}$ (whichever comes first).
+\item (a) Write a MATLAB function M-file, called $bigpro(x)$, that does the following: The input is a real number $x$. The \underline{only} output of your function should be the real number formed by the product $x(2 x)(3 x)(4 x) \cdots(n x)$, where $n$ is the first positive integer such that either $n x$ is an integer or $|nx|$ exceeds $x^{2}$ (whichever comes first).
 
 (b) Of course, after you write the program you need to debug it. What values should result if we were to use the (correctly created) program to find: bigpro(4), bigpro(2.5), bigpro(12.7)? Run your program for these values as well as for the values $x=-3677 / 9, x=233.6461$, and $x=125,456.789$.
 
@@ -585,7 +617,7 @@ $$
 
 
 \begin{minipage}[t]{.6\linewidth}
-\item Write a function $M$-file, call it pythag $(n)$, that inputs a positive integer $n$ and determines whether $\boldsymbol{n}$ is the hypotenuse of a right triangle with sides of integer lengths. Thus your program will determine whether the equation $n^{2}=a^{2}+b^{2}$ has a solution with $a$ and $b$ both being positive integers.
+\item Write a function $M$-file, call it pythag $(n)$, that inputs a positive integer $n$ and determines whether $n$ is the hypotenuse of a right triangle with sides of integer lengths. Thus your program will determine whether the equation $n^{2}=a^{2}+b^{2}$ has a solution with $a$ and $b$ both being positive integers.
 
 \end{minipage}
 \hspace{0.02\linewidth}
@@ -858,11 +890,13 @@ Our next exercise for the reader will require the ability to store strings of te
 \begin{lstlisting}[numbers=none]
 >> T = 'Test' , v = [1 2 3 4 5 6]
 ->T = Test, v= 1 2 3 4 5 6 
-
 \end{lstlisting}
 
 If we examine how MATLAB has stored each of these two objects, we learn that both are "arrays," but $T$ is a "character array" and $v$ is a "double array" (meaning a matrix of numbers):
-\begin{lstlisting}[numbers=none]>> whos T  \end{lstlisting}
+\begin{lstlisting}[numbers=none]
+>> whos T
+ \end{lstlisting}
+
 \noindent \begin{tabular}{cccc}
 ->Name  &Size  &Bytes & Class  \\
 T & 1x4 & 8 & char array\\
@@ -965,7 +999,11 @@ The next four exercises will revisit the Collatz conjecture that was introduced 
 
   \item (Number Theory: The Collatz Problem) Modify the script file, col1at , of Example 4.7 in the text to a new one, collatzg, that will interactively take the same input and intemally construct the same vector a, but instead of producing output on the command window, it should produce a graphic of the vector a's values versus the index of the vector. Arrange the plot to be done using blue pentagrams connected with lines. Run the script using the following inputs: 7 , 15,27,137,444,657.
 
-Note: The syntax for this plot style would be \begin{verbatim}plot (index, a, bp-).\end{verbatim}
+Note: The syntax for this plot style would be
+
+\begin{lstlisting}[numbers=none]
+>>plot (index, a, bp-)
+\end{lstlisting}
 
 \item (Number Theory: The Collatz Problem) If a Collatz experiment is started using a negative integer for $a(1)$, all experiments so far done by researchers have shown that the sequence will eventually cycle. However, in this case, there is more than one possible cycle. Write a script, $collatz2$, that will take an input for $a(1)$ in the same way as the script collatz in Example 4.7 did, and the script will continue to do the Collatz iteration until it detects a cycle. The output should include the number of iterations done before detecting a cycle as well as the actual cycle vector. Run your script using the following inputs: $-2,-4,-8,-10,-56,-88, -129$.
 

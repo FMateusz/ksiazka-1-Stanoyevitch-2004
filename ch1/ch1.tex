@@ -54,9 +54,9 @@ external interface tasks may vary.}
 Instructions for starting MATLAB are similar to those for starting any installed
 software on your system. For example, on most windows-based systems, you
 should be able to simply double click on MATLAB's icon. Once MATLAB is
-started, a command window should pop up with a \textbf {prompt:}» (or EDU » if you
+started, a command window should pop up with a \textbf {prompt:}>> (or EDU >> if you
 are using the Student Version). In what follows, if we tell you to enter something
-like » 2+2 (on the command window), you enter 2+2 only at the prompt—
+like >> 2+2 (on the command window), you enter 2+2 only at the prompt >>
 which is already there waiting for you to type something. Before we begin our
 first brief tutorial, we point out that there is a way to create a file containing all
 interactions with a particular MATLAB session. The command diar y will do
@@ -149,9 +149,9 @@ your outputs are displayed. For example, if we enter:
 
 \noindent we will see the previous answer displayed with 15 digits. All subsequent
 calculations will be displayed in this format until you change it again. To change
-back to the default format, enter » format short. Other popular formats are
-» format bank (displays two decimal places, useful for applications to
-finance) and » format rat (approximates all answers as fractions of small
+back to the default format, enter >> format short. Other popular formats are
+>> format bank (displays two decimal places, useful for applications to
+finance) and >> format rat (approximates all answers as fractions of small
 integers and displays them as such). It is not such a good idea to work in
 format ra t unless you know for sure the numbers you are working with are
 fractions as opposed to irrational numbers, like 71 = 3.14159265..., whose
@@ -228,7 +228,7 @@ following two matrices:
 
 \begin{lstlisting}[numbers=none]
 >> B = [2 5 -3 ; 1 0 -1 ; 8 4 0] 
->>-> B=
+-> B=
 \end{lstlisting}
 
 \begin{tabular}{ccc}
@@ -279,7 +279,7 @@ command who:
  >> whos
 \end{lstlisting}
 \noindent \begin{tabular}{cccc}
--»		name&size&bytes&class\\
+->		name&size&bytes&class\\
 		A&2x2&32 double&array\\
 
 		B&3x3&72 double&array\\
@@ -571,9 +571,16 @@ perhaps even different colors. Table 1.1 is a summary of the codes you can use i
 a MATLAB plot command to get different plot styles and colors: 
 
 \begin{table}[H]
-\caption{ MATLAB codes for plot colors and styles.  }
 \centering
-\includegraphics[width=0.8\textwidth,height=30mm]{tab11}
+\begin{tabular}{llll}
+\multicolumn{2}{l}{\cellcolor[HTML]{000000}{\color[HTML]{FFFFFF} Color/code}} & \multicolumn{2}{l}{\cellcolor[HTML]{000000}{\color[HTML]{FFFFFF} Plot Style/Code}} \\ \hline
+\multicolumn{1}{|l|}{black/k}          & \multicolumn{1}{l|}{red/r}           & \multicolumn{1}{l|}{solid/-}            & \multicolumn{1}{l|}{stars/$*$}             \\ \hline
+\multicolumn{1}{|l|}{blue/b}           & \multicolumn{1}{l|}{white/w}         & \multicolumn{1}{l|}{dashed/--}          & \multicolumn{1}{l|}{x-marks/$x$}           \\ \hline
+\multicolumn{1}{|l|}{cyan/c}           & \multicolumn{1}{l|}{yellow/y}        & \multicolumn{1}{l|}{dotted/:}           & \multicolumn{1}{l|}{circles/$o$}           \\ \hline
+\multicolumn{1}{|l|}{green/g}          & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{das-dot/-.}         & \multicolumn{1}{l|}{plus-marks/$+$}        \\ \hline
+\multicolumn{1}{|l|}{magenta/m}        & \multicolumn{1}{l|}{}                & \multicolumn{1}{l|}{points/.}           & \multicolumn{1}{l|}{pentacles/$p$}         \\ \hline
+\end{tabular}
+\caption{ MATLAB codes for plot colors and styles. }
 \label{tab:tab_1_1}
 \end{table}
 
@@ -952,12 +959,7 @@ See Figure 1.7 for the MATLAB graphics outputs.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth,height=55mm]{fig17}
-\caption{(a) (top) Graph of the unpaid balance in dollars, as a function of elapsed
-months in the loan of \$100,000 that is being analyzed, (b) (bottom) Graph of the total
-interest paid in dollars, as a function of elapsed months in the loan of \$100,000 that is being
-analyzed. }
-\label{fig:fig_1_7}
+\includegraphics[width=0.8\textwidth,height=55mm]{fig17}v
 \end{figure}
 
 We have now taken care of parts (a) and (b). The answer to part (c) is now well
@@ -1074,13 +1076,45 @@ Finally, by making use of any decent word processing software, we can embellish
 this rather raw data display into a more elegant form such as Table 1.2. 
 
 \begin{table}[H]
-\caption{Summary of annual data for the \$100,000 loan that was analyzed in this
-section. 
-  }
+\caption{Summary of annual data for the \$100,000 loan that was analyzed in this 
+section.  }
 \centering
-\includegraphics[width=0.8\textwidth,height=100mm]{tab14}
-\label{tab:tab_1_4}
+\begin{tabular}{>{\columncolor{lightgray}}c>{\columncolor{white}}c>{\columncolor{lightgray}}c}
+Years Elapsed:  &Account Balance:  &Total Interest Paid:  \\
+		0&100000.00& \$ 0\\
+
+		1&95850.02&7850.02\\
+
+		2&91355.60&15355.60\\
+
+		3&86488.15&22488.15\\
+
+		4&81216.69&29216.69\\
+
+		5&75507.71 &35507.71\\
+
+		6&69324.89&41324.89\\
+		
+		7&62628.90&46628.90\\
+		
+		8&55377.14&51377.14\\
+		
+		9&47523.49&55523.49\\
+		
+		10&39017.99&59017.99\\
+		
+		11&29806.54&61806.54\\
+		
+		12&19830.54&63830.54\\
+		
+		13&9026.54 &65026.54\\
+		
+		13 + 10 months&0.00&65341.29\\
+\end{tabular}
+
+\label{fig:tab_1_2}
 \end{table}
+
 
 Part (e): We can run the same program but we need only modify the line with the 
 recursion formula for the vector B: It now becomes:$ B(i + 1) = B(i)+I( i + 1)-1500;$ . With this done, we arrive at the following data: 
@@ -1099,7 +1133,7 @@ recursion formula for the vector B: It now becomes:$ B(i + 1) = B(i)+I( i + 1)-1
 
 \begin{enumerate}
 
-\item Use a while loop to add all of the odd numbers up: 1 + 3 + 5 + 7 + · · · until the sum exceeds 5 
+\item Use a while loop to add all of the odd numbers up: 1 + 3 + 5 + 7 + \ldots until the sum exceeds 5 
 million. What is the actual sum? How many odd numbers were added?
 
 \item Redo Exercise 1 by adding up the even numbers rather than the odd ones.
